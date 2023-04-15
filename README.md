@@ -24,9 +24,27 @@ npm clean-install
 
 **please do not use the command npm install as it might upgrade dependencies unintentionally**
 
-### Running the application
+### Setup database
 
-Add `.env` in your project and set all envs before running the following command
+1. Setup environment variables by coping `.env-sample` file to `.env` and fill it proper values
+2. Run the PostgreSQL using docker-compose:
+
+```shell
+docker-compose --profile dev up -d [--build]
+```
+
+If you encounter problems with docker-compose, you may run:
+
+```
+$ docker-compose down [--rmi local] [--remove-orphans] [-v]
+```
+
+- `docker-compose down` will stop & remove the containers
+- `--rmi local` will remove local images
+- `--remove-orphans` will remove unneeded orphan containers
+- `-v` will remove volumes (**WARNING: THIS WILL WIPE ALL YOUR OLD LOCAL DATABASE DATA**)
+
+### Running the application
 
 ```shell
 npm run dev
