@@ -1,10 +1,20 @@
 import express, { Express, Request, Response } from 'express'
 import dotenv from 'dotenv'
+import connectDB from './infrastructure/database/typeorm'
 
 dotenv.config()
 
 const app: Express = express()
-const port = process.env.PORT as string
+const port = process.env.API_PORT as string
+
+connectDB
+  .initialize()
+  .then(() => {
+    console.log(`Data Source has been initialized`)
+  })
+  .catch((err) => {
+    console.error(`Data Source initialization error`, err)
+  })
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Express + TypeScript Server')
