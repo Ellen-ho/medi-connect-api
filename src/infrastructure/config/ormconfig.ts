@@ -1,8 +1,7 @@
-import { DataSource } from 'typeorm'
+import { DataSourceOptions } from 'typeorm'
 import 'dotenv/config'
 
-// TODO: need to create a config class for envs
-const connectDB = new DataSource({
+const OrmConfig: DataSourceOptions = {
   type: 'postgres',
   host: process.env.POSTGRES_HOST,
   port: process.env.POSTGRES_PORT as unknown as number, // TODO: need to fix this
@@ -11,8 +10,11 @@ const connectDB = new DataSource({
   database: process.env.POSTGRES_DB_NAME,
   synchronize: false,
   logging: true,
-  entities: ['src/infrastructure/adapters/**/entities/*.ts'],
+  entities: ['./src/infrastructure/adapters/**/entities/*.ts'],
   migrations: ['./migrations/*.ts'],
-})
+  migrationsTableName: 'migrations',
+}
 
-export default connectDB
+export default function getOrmConfig(): DataSourceOptions {
+  return OrmConfig
+}

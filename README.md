@@ -59,3 +59,32 @@ Reference: [Setting up ESlint with Standard and Prettier](https://medium.com/ner
 ### Local API testing
 
 We use [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) extension to test the API locally. You can find the API test scripts in `docs/scripts` folder.
+
+### Migrations
+
+Generate new migration file from an entity:
+
+Automatic migration generation creates a new migration file and writes all sql queries that must be executed to update the database.
+If no there were no changes generated, the command will exit with code 1.
+
+```
+$ npm run typeorm migration:generate ./migrations/{MigrationName}
+```
+
+Run migrations:
+
+```
+$ npm run typeorm migration:run
+```
+
+Reverts last executed migration:
+
+```
+$ npm run typeorm migration:revert
+```
+
+Important notes:
+
+- When creating a PR with migrations check if your timestamp is the latest. Otherwise, when outdated migration is merged it will be ignored by `typeorm run` command.
+
+Reference: [Why need to setup typeorm-ts-node-commonjs in typeorm script](https://typeorm.io/using-cli#if-entities-files-are-in-typescript)

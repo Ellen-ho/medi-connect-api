@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 import express, { Express, Request, Response } from 'express'
 import dotenv from 'dotenv'
-import connectDB from './infrastructure/config/typeorm'
+import { AppDataSource } from './infrastructure/config/dataSource'
 import mainRoutes from './infrastructure/http/routes'
 
 dotenv.config()
@@ -9,8 +9,7 @@ dotenv.config()
 const app: Express = express()
 const port = process.env.API_PORT as string
 
-connectDB
-  .initialize()
+AppDataSource.initialize()
   .then(() => {
     console.log(`Data Source has been initialized`)
   })
