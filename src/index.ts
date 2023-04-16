@@ -1,6 +1,8 @@
+import 'reflect-metadata'
 import express, { Express, Request, Response } from 'express'
 import dotenv from 'dotenv'
-import connectDB from './infrastructure/database/typeorm'
+import connectDB from './infrastructure/config/typeorm'
+import mainRoutes from './infrastructure/http/routes'
 
 dotenv.config()
 
@@ -15,6 +17,9 @@ connectDB
   .catch((err) => {
     console.error(`Data Source initialization error`, err)
   })
+
+app.use(express.json())
+app.use(mainRoutes)
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Express + TypeScript Server')

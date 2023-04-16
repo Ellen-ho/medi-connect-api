@@ -1,0 +1,20 @@
+@hostname = http://localhost:8080
+
+@users = {{hostname}}/api/users
+
+### get user
+@userId = 623f1bac71d1137d56ec42b0
+GET {{users}}/{{userId}}
+Content-Type: application/json
+###
+
+### validate PAID invoice
+GET {{users}}/{{userId}}
+Content-Type: application/json
+
+{
+  "name": "user1",
+  "email": "user1@mail.com",
+  "password": "password",
+}
+###

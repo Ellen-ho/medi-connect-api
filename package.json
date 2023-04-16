@@ -16,12 +16,15 @@
   "dependencies": {
     "express": "^4.18.2",
     "pg": "^8.10.0",
-    "typeorm": "^0.3.15"
+    "typeorm": "^0.3.15",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.17",
+    "@types/uuid": "^9.0.1",
     "@typescript-eslint/eslint-plugin": "^5.58.0",
     "@typescript-eslint/parser": "^5.58.0",
+    "dotenv": "^16.0.3",
     "eslint": "^8.38.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-config-standard": "^17.0.0",
@@ -33,7 +36,6 @@
     "prettier": "^2.8.7",
     "rimraf": "^5.0.0",
     "ts-node": "^10.9.1",
-    "typescript": "^5.0.4",
-    "dotenv": "^16.0.3"
+    "typescript": "^5.0.4"
   }
 }

@@ -11,7 +11,7 @@ const connectDB = new DataSource({
   database: process.env.POSTGRES_DB_NAME,
   synchronize: false,
   logging: true,
-  entities: ['src/entity/**/*.ts'],
+  entities: ['src/infrastructure/adapters/**/entities/*.ts'],
   migrations: ['./migrations/*.ts'],
 })
 
