@@ -1,11 +1,17 @@
 import { Router } from 'express'
-import { UserController } from '../controllers/UserController'
-import { asyncHandler } from '../middlewares/asyncHandler'
+import { IUserController } from '../controllers/UserController'
+import { asyncHandler } from '../middlewares/AsyncHandler'
 
-const userController = new UserController()
-const userRoutes = Router()
+export class UserRoutes {
+  private readonly routes: Router
+  constructor(private readonly userController: IUserController) {
+    this.routes = Router()
+  }
 
-userRoutes.get('/', asyncHandler(userController.getUser))
-userRoutes.post('/', asyncHandler(userController.createUser))
+  public createRouter(): Router {
+    this.routes.get('/', asyncHandler(this.userController.getUserById))
+    this.routes.post('/', asyncHandler(this.userController.registerNewUser))
 
-export default userRoutes
+    return this.routes
+  }
+}

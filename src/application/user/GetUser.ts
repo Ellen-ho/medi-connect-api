@@ -13,12 +13,18 @@ export class GetUser {
   async execute(request: GetUserRequestDTO): Promise<GetUserResponseDTO> {
     const { id } = request
 
-    const userExists = await this.userRepository.findById(id)
+    const existingUser = await this.userRepository.findById(id)
 
-    if (userExists == null) {
+    if (existingUser == null) {
       throw new Error('User not found')
     }
 
-    return userExists
+    // TODO: need to create a mapper to map the UserEntity to User
+    return new User({
+      id: existingUser.id,
+      name: existingUser.name,
+      email: existingUser.email,
+      password: existingUser.password,
+    })
   }
 }

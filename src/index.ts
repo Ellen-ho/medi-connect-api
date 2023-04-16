@@ -1,29 +1,59 @@
 import 'reflect-metadata'
 import express, { Express, Request, Response } from 'express'
 import dotenv from 'dotenv'
-import { AppDataSource } from './infrastructure/config/dataSource'
-import mainRoutes from './infrastructure/http/routes'
+import { PostgresDatabase } from './infrastructure/database/PostgresDatabase'
+import { UuidService } from './infrastructure/utils/uuid'
+import { UserRepository } from './infrastructure/adapters/User/repositories/UserRepository'
+import { GetUser } from './application/user/GetUser'
+import { CreateUser } from './application/user/CreateUser'
+import { UserController } from './infrastructure/http/controllers/UserController'
+import { UserRoutes } from './infrastructure/http/routes/UserRoutes'
+import { MainRoutes } from './infrastructure/http/routes'
 
-dotenv.config()
+void main()
 
-const app: Express = express()
-const port = process.env.API_PORT as string
+async function main(): Promise<void> {
+  // TODO: should active only on dev environment
+  dotenv.config()
 
-AppDataSource.initialize()
-  .then(() => {
-    console.log(`Data Source has been initialized`)
+  const app: Express = express()
+  const port = process.env.API_PORT as string
+
+  /**
+   * Database Connection
+   */
+  const postgresDatabase = new PostgresDatabase()
+  await postgresDatabase.connect()
+  const dataSource = postgresDatabase.getDataSource()
+
+  /**
+   * Shared Services
+   */
+  const uuidService = new UuidService()
+
+  /**
+   * User Domain
+   */
+  const userRepository = new UserRepository(dataSource)
+  const getUser = new GetUser(userRepository)
+  const createUser = new CreateUser(userRepository, uuidService)
+  const userController = new UserController(getUser, createUser)
+
+  /**
+   * Routes
+   */
+  const userRoutes = new UserRoutes(userController)
+  const mainRoutes = new MainRoutes(userRoutes)
+
+  app.use(express.json())
+  app.use('/api', mainRoutes.createRouter())
+
+  // TODO: for testing only, remove later
+  app.get('/', (req: Request, res: Response) => {
+    res.send('Express + TypeScript Server')
   })
-  .catch((err) => {
-    console.error(`Data Source initialization error`, err)
+
+  app.listen(port, () => {
+    console.log(`Server is running at http://localhost:${port}`)
   })
-
-app.use(express.json())
-app.use(mainRoutes)
-
-app.get('/', (req: Request, res: Response) => {
-  res.send('Express + TypeScript Server')
-})
-
-app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`)
-})
+}

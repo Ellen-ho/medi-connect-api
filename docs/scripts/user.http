@@ -3,13 +3,13 @@
 @users = {{hostname}}/api/users
 
 ### get user
-@userId = 623f1bac71d1137d56ec42b0
+@userId = 299ea3fc-a729-4804-a284-d6312ff4ee90
 GET {{users}}/{{userId}}
 Content-Type: application/json
 ###
 
-### validate PAID invoice
-GET {{users}}/{{userId}}
+### Register new user
+POST {{users}}
 Content-Type: application/json
 
 {

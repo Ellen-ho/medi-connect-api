@@ -1,8 +1,15 @@
 import { Router } from 'express'
-import userRoutes from './UserRoutes'
+import { UserRoutes } from './UserRoutes'
 
-const mainRoutes = Router()
+export class MainRoutes {
+  private readonly routes: Router
+  constructor(private readonly userRoutes: UserRoutes) {
+    this.routes = Router()
+  }
 
-mainRoutes.use('/users', userRoutes)
+  public createRouter(): Router {
+    this.routes.use('/users', this.userRoutes.createRouter())
 
-export default mainRoutes
+    return this.routes
+  }
+}
