@@ -19,7 +19,6 @@ export class UserController implements IUserController {
   ): Promise<Response> => {
     try {
       const id = req.params.id
-      console.log(this.getUser)
       const user = await this.getUser.execute({ id })
 
       return res.status(200).json(user)
