@@ -13,20 +13,26 @@ export class UserController implements IUserController {
     private readonly createUser: CreateUser
   ) {}
 
-  async getUserById(req: Request, res: Response): Promise<Response> {
+  public getUserById = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
     try {
       const id = req.params.id
-
+      console.log(this.getUser)
       const user = await this.getUser.execute({ id })
 
       return res.status(200).json(user)
     } catch (error) {
       // TODO: move this to a middleware
-      return res.status(400).json({ message: 'get user error' })
+      return res.status(400).json({ message: error })
     }
   }
 
-  async registerNewUser(req: Request, res: Response): Promise<Response> {
+  public registerNewUser = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
     try {
       const { name, email, password } = req.body
 

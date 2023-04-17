@@ -20,7 +20,9 @@ export class CreateUser {
     private readonly uuidService: IUuidService
   ) {}
 
-  async execute(request: CreateUserRequestDTO): Promise<CreateUserResponseDTO> {
+  public async execute(
+    request: CreateUserRequestDTO
+  ): Promise<CreateUserResponseDTO> {
     const { name, email, password } = request
 
     const userExists = await this.userRepository.findByEmail(email)

@@ -6,12 +6,11 @@ export class UserRoutes {
   private readonly routes: Router
   constructor(private readonly userController: IUserController) {
     this.routes = Router()
+    this.routes.get('/:id', asyncHandler(this.userController.getUserById))
+    this.routes.post('/', asyncHandler(this.userController.registerNewUser))
   }
 
   public createRouter(): Router {
-    this.routes.get('/', asyncHandler(this.userController.getUserById))
-    this.routes.post('/', asyncHandler(this.userController.registerNewUser))
-
     return this.routes
   }
 }

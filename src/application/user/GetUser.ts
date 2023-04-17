@@ -10,7 +10,9 @@ interface GetUserResponseDTO extends User {}
 export class GetUser {
   constructor(private readonly userRepository: IUserRepository) {}
 
-  async execute(request: GetUserRequestDTO): Promise<GetUserResponseDTO> {
+  public async execute(
+    request: GetUserRequestDTO
+  ): Promise<GetUserResponseDTO> {
     const { id } = request
 
     const existingUser = await this.userRepository.findById(id)

@@ -15,8 +15,6 @@ void main()
 async function main(): Promise<void> {
   // TODO: should active only on dev environment
   dotenv.config()
-
-  const app: Express = express()
   const port = process.env.API_PORT as string
 
   /**
@@ -45,13 +43,14 @@ async function main(): Promise<void> {
   const userRoutes = new UserRoutes(userController)
   const mainRoutes = new MainRoutes(userRoutes)
 
+  const app: Express = express()
   app.use(express.json())
   app.use('/api', mainRoutes.createRouter())
 
   // TODO: for testing only, remove later
-  app.get('/', (req: Request, res: Response) => {
-    res.send('Express + TypeScript Server')
-  })
+  // app.get('/', (req: Request, res: Response) => {
+  //   res.send('Express + TypeScript Server')
+  // })
 
   app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`)
