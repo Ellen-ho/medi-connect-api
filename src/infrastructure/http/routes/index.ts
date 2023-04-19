@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import { UserRoutes } from './UserRoutes'
+import passport from '../../config/passport'
 
 export class MainRoutes {
   private readonly routes: Router
