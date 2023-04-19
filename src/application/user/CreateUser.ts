@@ -1,6 +1,7 @@
-import { User } from '../../domain/user/models/User'
+import { User } from '../../domain/user/User'
 import { IUserRepository } from '../../domain/user/interfaces/repositories/IUserRepository'
-import { IUuidService } from '../../domain/user/interfaces/services/IUuidService'
+import { IUuidService } from '../../domain/utils/IUuidService'
+import { IHashGenerator } from '../../domain/utils/IHashGenerator'
 
 interface CreateUserRequestDTO {
   name: string
@@ -17,7 +18,8 @@ interface CreateUserResponseDTO {
 export class CreateUser {
   constructor(
     private readonly userRepository: IUserRepository,
-    private readonly uuidService: IUuidService
+    private readonly uuidService: IUuidService,
+    private readonly hashGenerator: IHashGenerator
   ) {}
 
   public async execute(
@@ -31,11 +33,13 @@ export class CreateUser {
       throw new Error('User already exists with this email.')
     }
 
+    const hashedPassword = await this.hashGenerator.hash(password)
+
     const user = new User({
       id: this.uuidService.generateUuid(),
       name,
       email,
-      password,
+      hashedPassword,
     })
 
     await this.userRepository.save(user)

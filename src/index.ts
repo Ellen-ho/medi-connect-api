@@ -1,14 +1,16 @@
 import 'reflect-metadata'
-import express, { Express, Request, Response } from 'express'
+import express, { Express } from 'express'
 import dotenv from 'dotenv'
 import { PostgresDatabase } from './infrastructure/database/PostgresDatabase'
-import { UuidService } from './infrastructure/utils/uuid'
-import { UserRepository } from './infrastructure/adapters/User/repositories/UserRepository'
+import { UuidService } from './infrastructure/utils/UuidService'
+import { UserRepository } from './infrastructure/adapters/User/UserRepository'
 import { GetUser } from './application/user/GetUser'
 import { CreateUser } from './application/user/CreateUser'
 import { UserController } from './infrastructure/http/controllers/UserController'
 import { UserRoutes } from './infrastructure/http/routes/UserRoutes'
 import { MainRoutes } from './infrastructure/http/routes'
+import { errorHandler } from './infrastructure/http/middlewares/ErrorHandler'
+import { BcryptHashGenerator } from './infrastructure/utils/BcryptHashGenerator'
 
 void main()
 
@@ -28,13 +30,14 @@ async function main(): Promise<void> {
    * Shared Services
    */
   const uuidService = new UuidService()
+  const hashGenerator = new BcryptHashGenerator()
 
   /**
    * User Domain
    */
   const userRepository = new UserRepository(dataSource)
   const getUser = new GetUser(userRepository)
-  const createUser = new CreateUser(userRepository, uuidService)
+  const createUser = new CreateUser(userRepository, uuidService, hashGenerator)
   const userController = new UserController(getUser, createUser)
 
   /**
@@ -46,11 +49,7 @@ async function main(): Promise<void> {
   const app: Express = express()
   app.use(express.json())
   app.use('/api', mainRoutes.createRouter())
-
-  // TODO: for testing only, remove later
-  // app.get('/', (req: Request, res: Response) => {
-  //   res.send('Express + TypeScript Server')
-  // })
+  app.use(errorHandler)
 
   app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`)

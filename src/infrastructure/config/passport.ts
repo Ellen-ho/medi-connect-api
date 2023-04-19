@@ -1,89 +1,96 @@
-import passport from 'passport'
-import { Request } from 'express'
-import LocalStrategy from 'passport-local'
-import FacebookStrategy from 'passport-facebook'
-import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt'
-import bcrypt from 'bcrypt'
-import { User } from '../models'
-import  { getRepository }  from 'typeorm'
+import passport, { PassportStatic } from 'passport'
+import { Strategy as LocalStrategy } from 'passport-local'
+// import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt'
+import { IUserRepository } from '../../domain/user/interfaces/repositories/IUserRepository'
+import jwt from 'jsonwebtoken'
+import { IHashGenerator } from '../../domain/utils/IHashGenerator'
 
-passport.use(new LocalStrategy(
-  {
-    usernameField: 'email',
-    passwordField: 'password',
-    passReqToCallback: true,
-  },
-  async (req: Request, email: string, password: string, cb: any) => {
-    try {
-      const userRepository = getRepository(User);
-      const user = await userRepository.findOne({ where: { email } });
+export class Passport {
+  private readonly JWT_SECRET: string
+  constructor(
+    private readonly userRepository: IUserRepository,
+    private readonly hashgenerator: IHashGenerator,
+    private readonly jwtSecret: string
+  ) {
+    this.JWT_SECRET = this.jwtSecret
+  }
 
-      if (!user) {
-        const error = new Error('驗證失敗！');
-        error.status = 401;
-        return cb(error);
-      }
+  public init(): PassportStatic {
+    return passport.use(
+      new LocalStrategy((email, password, done) => {
+        this.userRepository
+          .findByEmail(email)
+          .then(async (user) => {
+            if (user == null) {
+              done(null, false, { message: 'Incorrect email.' })
+              return
+            }
 
-      const isPasswordValid = await bcrypt.compare(password, user.password);
+            const isPasswordValid = await this.hashgenerator.compare(
+              password,
+              user.hashedPassword
+            )
+            if (!isPasswordValid) {
+              done(null, false, { message: 'Incorrect password.' })
+              return
+            }
+            // Generate a JWT token
+            const payload = { id: user.id, email: user.email }
+            const token = jwt.sign(payload, this.JWT_SECRET, {
+              expiresIn: '1h',
+            })
 
-      if (!isPasswordValid) {
-        const error = new Error('驗證失敗！');
-        error.status = 401;
-        return cb(error);
-      }
-
-      return cb(null, user);
-    } catch (err) {
-      cb(err);
-    }
-  },
-));
-
-const jwtOptions = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: process.env.JWT_SECRET,
+            done(null, { token })
+          })
+          .catch((err) => {
+            done(err)
+          })
+      })
+    )
+  }
 }
 
-passport.use(new JWTStrategy(jwtOptions, async (jwtPayload: any, cb: any) => {
-  try {
-    const userRepository = getRepository(User);
-    const user = await userRepository.findOne(jwtPayload.id, {
-      relations: ['followers', 'followings'],
-    });
+// const jwtOptions = {
+//   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+//   secretOrKey: process.env.JWT_SECRET,
+// }
 
-    if (user) {
-      cb(null, user);
-    } else {
-      cb(new Error('User not found'));
-    }
-  } catch (err) {
-    cb(err);
-  }
-}));
+// passport.use(
+//   new JWTStrategy(jwtOptions, async (jwtPayload: any, cb: any) => {
+//     try {
+//       const userRepository = getRepository(User)
+//       const user = await userRepository.findOne(jwtPayload.id, {
+//         relations: ['followers', 'followings'],
+//       })
 
-passport.serializeUser((user: User, cb: any) => {
-  cb(null, user.id);
-});
+//       if (user) {
+//         cb(null, user)
+//       } else {
+//         cb(new Error('User not found'))
+//       }
+//     } catch (err) {
+//       cb(err)
+//     }
+//   })
+// )
 
-passport.deserializeUser(async (id: number, cb: any) => {
-  try {
-    const userRepository = getRepository(User);
-    const user = await userRepository.findOne(id, {
-      relations: ['followers', 'followings'],
-    });
+// passport.serializeUser((user: User, cb: any) => {
+//   cb(null, user.id)
+// })
 
-    if (user) {
-      cb(null, user);
-    } else {
-      cb(new Error('User not found'));
-    }
-  } catch (err) {
-    cb(err);
-  }
-})
+// passport.deserializeUser(async (id: number, cb: any) => {
+//   try {
+//     const userRepository = getRepository(User)
+//     const user = await userRepository.findOne(id, {
+//       relations: ['followers', 'followings'],
+//     })
 
-
-
-
-
-export default passport
+//     if (user) {
+//       cb(null, user)
+//     } else {
+//       cb(new Error('User not found'))
+//     }
+//   } catch (err) {
+//     cb(err)
+//   }
+// })
