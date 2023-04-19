@@ -1,5 +1,5 @@
 import 'reflect-metadata'
-import express, { Express, Request, Response } from 'express'
+import express, { Express } from 'express'
 import dotenv from 'dotenv'
 import { PostgresDatabase } from './infrastructure/database/PostgresDatabase'
 import { UuidService } from './infrastructure/utils/uuid'
@@ -46,11 +46,6 @@ async function main(): Promise<void> {
   const app: Express = express()
   app.use(express.json())
   app.use('/api', mainRoutes.createRouter())
-
-  // TODO: for testing only, remove later
-  // app.get('/', (req: Request, res: Response) => {
-  //   res.send('Express + TypeScript Server')
-  // })
 
   app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`)
