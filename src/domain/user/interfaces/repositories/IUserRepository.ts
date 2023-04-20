@@ -1,8 +1,7 @@
-import { UserEntity } from '../../../../infrastructure/adapters/User/entities/User'
-import { User } from '../../models/User'
+import { User } from '../../User'
 
 export interface IUserRepository {
-  findById: (id: string) => Promise<UserEntity | null>
-  findByEmail: (email: string) => Promise<UserEntity | null>
+  findById: (id: string) => Promise<User | null>
+  findByEmail: (email: string) => Promise<User | null>
   save: (user: User) => Promise<void>
 }
