@@ -2,7 +2,7 @@ export interface IUserProps {
   id: string
   name: string
   email: string
-  password: string
+  hashedPassword: string
 }
 
 export class User {
@@ -18,5 +18,9 @@ export class User {
 
   public get email(): string {
     return this.props.email
+  }
+
+  public get hashedPassword(): string {
+    return this.props.hashedPassword
   }
 }
