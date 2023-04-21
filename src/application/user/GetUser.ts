@@ -1,4 +1,4 @@
-import { User } from '../../domain/user/models/User'
+import { User } from '../../domain/user/User'
 import { IUserRepository } from '../../domain/user/interfaces/repositories/IUserRepository'
 
 interface GetUserRequestDTO {
@@ -21,12 +21,6 @@ export class GetUser {
       throw new Error('User not found')
     }
 
-    // TODO: need to create a mapper to map the UserEntity to User
-    return new User({
-      id: existingUser.id,
-      name: existingUser.name,
-      email: existingUser.email,
-      password: existingUser.password,
-    })
+    return existingUser
   }
 }
