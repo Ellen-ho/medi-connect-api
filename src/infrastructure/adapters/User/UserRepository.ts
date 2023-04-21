@@ -2,8 +2,8 @@ import { DataSource, Repository } from 'typeorm'
 import { IUserRepository } from '../../../domain/user/interfaces/repositories/IUserRepository'
 import { User } from '../../../domain/user/User'
 import { BaseRepository } from '../BaseRepository'
-import { UserEntity } from './UserEntity'
 import { UserMapper } from './UserMapper'
+import { UserEntity } from './UserEntity'
 
 export class UserRepository
   extends BaseRepository<UserEntity>

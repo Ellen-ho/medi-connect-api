@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  UpdateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
 } from 'typeorm'
@@ -10,8 +11,8 @@ export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
   public id!: string
 
-  @Column({ name: 'name', unique: true, type: 'varchar', length: 20 })
-  public name!: string
+  @Column({ name: 'display_name', unique: true, type: 'varchar', length: 50 })
+  public displayName!: string
 
   @Column({ name: 'email', unique: true, type: 'varchar', length: 100 })
   public email!: string
@@ -21,4 +22,7 @@ export class UserEntity {
 
   @CreateDateColumn({ name: 'created_at' })
   public createdAt!: Date
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  public updatedAt!: Date
 }
