@@ -7,9 +7,11 @@ import {
 } from 'typeorm'
 import {
   GenderType,
+  HeightUnitType,
   IAllergy,
   IFamilyHistoryItem,
   IMedicalHistoryItem,
+  IMedicinceUsageItem,
 } from '../../../domain/patient/Patient'
 
 @Entity('patients')
@@ -43,6 +45,12 @@ export class PatientEntity {
 
   @Column({ name: 'height', type: 'number', length: 20 })
   public height!: number
+
+  @Column({ name: 'height', type: 'varchar', length: 20 })
+  public heightUnit!: HeightUnitType
+
+  @Column({ name: 'medicince_usage', type: 'jsonb' })
+  public medicinceUsage!: IMedicinceUsageItem[]
 
   @CreateDateColumn({ name: 'created_at' })
   public createdAt!: Date

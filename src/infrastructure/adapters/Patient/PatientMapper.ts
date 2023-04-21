@@ -14,6 +14,8 @@ export class PatientMapper {
       allergy: entity.allergy,
       familyHistory: entity.familyHistory,
       height: entity.height,
+      heightUnit: entity.heightUnit,
+      medicinceUsage: entity.medicinceUsage,
     })
     return patient
   }
@@ -30,6 +32,8 @@ export class PatientMapper {
     patientEntity.allergy = domainModel.allergy
     patientEntity.familyHistory = domainModel.familyHistory
     patientEntity.height = domainModel.height
+    patientEntity.heightUnit = domainModel.heightUnit
+    patientEntity.medicinceUsage = domainModel.medicinceUsage
 
     return patientEntity
   }

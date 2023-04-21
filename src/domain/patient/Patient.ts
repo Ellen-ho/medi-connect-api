@@ -9,6 +9,12 @@ export interface IPatientProps {
   allergy: IAllergy
   familyHistory: IFamilyHistoryItem[]
   height: number
+  heightUnit: HeightUnitType
+  medicinceUsage: IMedicinceUsageItem[]
+}
+
+export enum HeightUnitType {
+  CENTIMETER = 'CENTIMETER',
 }
 
 export enum GenderType {
@@ -49,6 +55,33 @@ export interface IAllergy {
   medicine: string | null
   food: string | null
   other: string | null
+}
+
+export interface IMedicinceUsageItem {
+  medicineName: string
+  medicineDosage: number
+  medicineUnit: medicineUnitType
+  medicineFrequency: MedicineFrequencyType
+  medicineTime: MedicineTimeType
+}
+
+export enum medicineUnitType {
+  MILLIGRAM = 'MILLIGRAM',
+  MILLILITER = 'MILLILITER',
+}
+
+export enum MedicineFrequencyType {
+  ONCE_DAILY = 'ONCE_DAILY',
+  TWICE_DAILY = 'TWICE_DAILY',
+  THREE_TIMES_A_DAY = 'THREE_TIMES_A_DAY',
+  FOUR_TIMES_A_DAY = 'FOUR_TIMES_A_DAY',
+  OTHER = 'OTHER',
+}
+
+export enum MedicineTimeType {
+  BEFORE_MEAL = 'BEFORE_MEAL',
+  AFTER_MEAL = 'AFTER_MEAL',
+  OTHER = 'OTHER',
 }
 
 export class Patient {
@@ -92,5 +125,13 @@ export class Patient {
 
   public get height(): number {
     return this.props.height
+  }
+
+  public get heightUnit(): HeightUnitType {
+    return this.props.heightUnit
+  }
+
+  public get medicinceUsage(): IMedicinceUsageItem[] {
+    return this.props.medicinceUsage
   }
 }
