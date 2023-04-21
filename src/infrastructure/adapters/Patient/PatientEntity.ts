@@ -20,6 +20,7 @@ import { BloodPressureRecordEntity } from '../bloodPressureRecord/BloodPressureR
 import { BloodSugarRecordEntity } from '../bloodSugarRecord/BloodSugarRecordEntity'
 import { ExerciseRecordEntity } from '../ExerciseRecord/ExerciseRecordEntity'
 import { FoodRecordEntity } from '../FoodRecord/FoodRecordEntity'
+import { GlycatedHemoglobinRecordEntity } from '../glycatedHemoglobinRecord/GlycatedHemoglobinRecordEntity'
 import { SleepRecordEntity } from '../sleepRecord/SleepRecordEntity'
 import { UserEntity } from '../User/UserEntity'
 
@@ -100,4 +101,10 @@ export class PatientEntity {
     (bloodSugarRecord) => bloodSugarRecord.patient
   )
   bloodSugarRecords!: BloodSugarRecordEntity[]
+
+  @OneToMany(
+    () => GlycatedHemoglobinRecordEntity,
+    (glycatedHemoglobinRecord) => glycatedHemoglobinRecord.patient
+  )
+  glycatedHemoglobinRecords!: GlycatedHemoglobinRecordEntity[]
 }

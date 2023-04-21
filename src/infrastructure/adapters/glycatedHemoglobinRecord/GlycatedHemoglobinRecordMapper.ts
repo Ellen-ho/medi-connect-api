@@ -9,6 +9,9 @@ export class GlycatedHemoglobinRecordMapper {
       id: entity.id,
       glycatedHemoglobinDate: entity.glycatedHemoglobinDate,
       glycatedHemoglobinValue: entity.glycatedHemoglobinValue,
+      glycatedHemoglobinUnit: entity.glycatedHemoglobinUnit,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
     })
     return glycatedHemoglobinRecord
   }
@@ -22,6 +25,10 @@ export class GlycatedHemoglobinRecordMapper {
       domainModel.glycatedHemoglobinDate
     glycatedHemoglobinRecordEntity.glycatedHemoglobinValue =
       domainModel.glycatedHemoglobinValue
+    glycatedHemoglobinRecordEntity.glycatedHemoglobinUnit =
+      domainModel.glycatedHemoglobinUnit
+    glycatedHemoglobinRecordEntity.createdAt = domainModel.createdAt
+    glycatedHemoglobinRecordEntity.updatedAt = domainModel.updatedAt
 
     return glycatedHemoglobinRecordEntity
   }
