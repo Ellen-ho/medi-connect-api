@@ -1,5 +1,5 @@
 import { ExerciseRecord } from '../../../domain/exerciseRecord/ExerciseRecord'
-import { ExerciseRecordEntity } from './ExerciseRecord'
+import { ExerciseRecordEntity } from './ExerciseRecordEntity'
 
 export class ExerciseRecordMapper {
   public static toDomainModel(entity: ExerciseRecordEntity): ExerciseRecord {

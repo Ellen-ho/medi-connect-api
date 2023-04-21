@@ -1,6 +1,6 @@
 import { DataSource, Repository } from 'typeorm'
 import { BaseRepository } from '../BaseRepository'
-import { ExerciseRecordEntity } from './ExerciseRecord'
+import { ExerciseRecordEntity } from './ExerciseRecordEntity'
 import { IExerciseRecordRepository } from '../../../domain/exerciseRecord/interfaces/repositories/IExerciseRepository'
 import { ExerciseRecord } from '../../../domain/exerciseRecord/ExerciseRecord'
 import { ExerciseRecordMapper } from './ExerciseRecordMapper'
