@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
   OneToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm'
 import {
   GenderType,
@@ -15,6 +16,8 @@ import {
   IMedicalHistoryItem,
   IMedicinceUsageItem,
 } from '../../../domain/patient/Patient'
+import { ExerciseRecordEntity } from '../ExerciseRecord/ExerciseRecordEntity'
+import { SleepRecordEntity } from '../sleepRecord/SleepRecordEntity'
 import { UserEntity } from '../User/UserEntity'
 
 @Entity('patients')
@@ -70,4 +73,13 @@ export class PatientEntity {
   @OneToOne(() => UserEntity, { nullable: false })
   @JoinColumn({ name: 'user_id' })
   public user!: UserEntity
+
+  @OneToMany(
+    () => ExerciseRecordEntity,
+    (exerciseRecord) => exerciseRecord.patient
+  )
+  exerciseRecords!: ExerciseRecordEntity[]
+
+  @OneToMany(() => SleepRecordEntity, (sleepRecord) => sleepRecord.patient)
+  sleepRecords!: SleepRecordEntity[]
 }
