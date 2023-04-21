@@ -9,7 +9,10 @@ export class BloodSugarRecordMapper {
       id: entity.id,
       bloodSugarDate: entity.bloodSugarDate,
       bloodSugarValue: entity.bloodSugarValue,
+      bloodSugarUnit: entity.bloodSugarUnit,
       bloodSugarNote: entity.bloodSugarNote,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
     })
     return bloodSugarRecord
   }
@@ -21,7 +24,10 @@ export class BloodSugarRecordMapper {
     bloodSugarRecordEntity.id = domainModel.id
     bloodSugarRecordEntity.bloodSugarDate = domainModel.bloodSugarDate
     bloodSugarRecordEntity.bloodSugarValue = domainModel.bloodSugarValue
+    bloodSugarRecordEntity.bloodSugarUnit = domainModel.bloodSugarUnit
     bloodSugarRecordEntity.bloodSugarNote = domainModel.bloodSugarNote
+    bloodSugarRecordEntity.createdAt = domainModel.createdAt
+    bloodSugarRecordEntity.updatedAt = domainModel.updatedAt
 
     return bloodSugarRecordEntity
   }

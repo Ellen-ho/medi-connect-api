@@ -3,6 +3,14 @@ export interface IBloodSugarRecordProps {
   bloodSugarDate: Date
   bloodSugarValue: number
   bloodSugarNote: string | null
+  bloodSugarUnit: BloodSugarUnitType
+  createdAt: Date
+  updatedAt: Date
+}
+
+export enum BloodSugarUnitType {
+  MG_PER_DL = 'mg/dl',
+  MMO_PER_L = 'mmol/L',
 }
 
 export class BloodSugarRecord {
@@ -22,5 +30,17 @@ export class BloodSugarRecord {
 
   public get bloodSugarNote(): string | null {
     return this.props.bloodSugarNote
+  }
+
+  public get bloodSugarUnit(): BloodSugarUnitType {
+    return this.props.bloodSugarUnit
+  }
+
+  public get createdAt(): Date {
+    return this.props.createdAt
+  }
+
+  public get updatedAt(): Date {
+    return this.props.updatedAt
   }
 }

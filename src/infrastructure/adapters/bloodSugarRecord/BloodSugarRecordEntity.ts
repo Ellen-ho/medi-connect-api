@@ -4,9 +4,13 @@ import {
   UpdateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm'
+import { BloodSugarUnitType } from '../../../domain/bloodSugarRecord/BloodSugarRecord'
+import { PatientEntity } from '../Patient/PatientEntity'
 
-@Entity('bloodSugarRecords')
+@Entity('blood_sugar_records')
 export class BloodSugarRecordEntity {
   @PrimaryGeneratedColumn('uuid')
   public id!: string
@@ -14,8 +18,11 @@ export class BloodSugarRecordEntity {
   @Column({ name: 'blood_sugar_date' })
   public bloodSugarDate!: Date
 
-  @Column({ name: 'blood_sugar_value', type: 'number', length: 50 })
+  @Column({ name: 'blood_sugar_value', type: 'int' })
   public bloodSugarValue!: number
+
+  @Column({ name: 'blood_sugar_unit', type: 'varchar', length: 20 })
+  public bloodSugarUnit!: BloodSugarUnitType
 
   @Column({ name: 'blood_sugar_note', type: 'varchar', length: 150 })
   public bloodSugarNote!: string | null
@@ -25,4 +32,8 @@ export class BloodSugarRecordEntity {
 
   @UpdateDateColumn({ name: 'updated_at' })
   public updatedAt!: Date
+
+  @ManyToOne(() => PatientEntity, (patient) => patient.bloodSugarRecords)
+  @JoinColumn({ name: 'patient_id' })
+  patient!: PatientEntity
 }

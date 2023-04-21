@@ -17,6 +17,7 @@ import {
   IMedicinceUsageItem,
 } from '../../../domain/patient/Patient'
 import { BloodPressureRecordEntity } from '../bloodPressureRecord/BloodPressureRecordEntity'
+import { BloodSugarRecordEntity } from '../bloodSugarRecord/BloodSugarRecordEntity'
 import { ExerciseRecordEntity } from '../ExerciseRecord/ExerciseRecordEntity'
 import { FoodRecordEntity } from '../FoodRecord/FoodRecordEntity'
 import { SleepRecordEntity } from '../sleepRecord/SleepRecordEntity'
@@ -93,4 +94,10 @@ export class PatientEntity {
     (bloodPressureRecord) => bloodPressureRecord.patient
   )
   bloodPressureRecords!: BloodPressureRecordEntity[]
+
+  @OneToMany(
+    () => BloodSugarRecordEntity,
+    (bloodSugarRecord) => bloodSugarRecord.patient
+  )
+  bloodSugarRecords!: BloodSugarRecordEntity[]
 }
