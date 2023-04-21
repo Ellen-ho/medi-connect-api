@@ -1,4 +1,5 @@
 import { ExerciseRecord } from '../../../domain/exerciseRecord/ExerciseRecord'
+import { PatientMapper } from '../Patient/PatientMapper'
 import { ExerciseRecordEntity } from './ExerciseRecordEntity'
 
 export class ExerciseRecordMapper {
@@ -7,10 +8,13 @@ export class ExerciseRecordMapper {
       id: entity.id,
       exerciseDate: entity.exerciseDate,
       exerciseType: entity.exerciseType,
-      exerciseDuration: entity.exerciseDuration,
+      exerciseDurationMinute: entity.exerciseDurationMinute,
       exerciseIntensity: entity.exerciseIntensity,
-      caloriesBurned: entity.caloriesBurned,
+      kcaloriesBurned: entity.kcaloriesBurned,
       exerciseNote: entity.exerciseNote,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
+      patient: PatientMapper.toDomainModel(entity.patient),
     })
     return exerciseRecord
   }
@@ -22,10 +26,16 @@ export class ExerciseRecordMapper {
     exerciseRecordEntity.id = domainModel.id
     exerciseRecordEntity.exerciseDate = domainModel.exerciseDate
     exerciseRecordEntity.exerciseType = domainModel.exerciseType
-    exerciseRecordEntity.exerciseDuration = domainModel.exerciseDuration
+    exerciseRecordEntity.exerciseDurationMinute =
+      domainModel.exerciseDurationMinute
     exerciseRecordEntity.exerciseIntensity = domainModel.exerciseIntensity
-    exerciseRecordEntity.caloriesBurned = domainModel.caloriesBurned
+    exerciseRecordEntity.kcaloriesBurned = domainModel.kcaloriesBurned
     exerciseRecordEntity.exerciseNote = domainModel.exerciseNote
+    exerciseRecordEntity.createdAt = domainModel.createdAt
+    exerciseRecordEntity.updatedAt = domainModel.updatedAt
+    exerciseRecordEntity.patient = PatientMapper.toPersistence(
+      domainModel.patient
+    )
 
     return exerciseRecordEntity
   }

@@ -4,8 +4,10 @@ export interface ISleepRecordProps {
   sleepTime: Date
   wakeUpTime: Date
   sleepQuality: SleepQualityType
-  sleepDuration: number
+  sleepDurationHour: number
   sleepNote: string | null
+  createdAt: Date
+  updatedAt: Date
 }
 
 export enum SleepQualityType {
@@ -38,11 +40,19 @@ export class SleepRecord {
     return this.props.sleepQuality
   }
 
-  public get sleepDuration(): number {
-    return this.props.sleepDuration
+  public get sleepDurationHour(): number {
+    return this.props.sleepDurationHour
   }
 
   public get sleepNote(): string | null {
     return this.props.sleepNote
+  }
+
+  public get createdAt(): Date {
+    return this.props.createdAt
+  }
+
+  public get updatedAt(): Date {
+    return this.props.updatedAt
   }
 }

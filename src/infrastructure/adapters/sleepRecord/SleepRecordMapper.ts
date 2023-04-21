@@ -9,8 +9,10 @@ export class SleepRecordMapper {
       sleepTime: entity.sleepTime,
       wakeUpTime: entity.wakeUpTime,
       sleepQuality: entity.sleepQuality,
-      sleepDuration: entity.sleepDuration,
+      sleepDurationHour: entity.sleepDurationHour,
       sleepNote: entity.sleepNote,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
     })
     return sleepRecord
   }
@@ -22,8 +24,10 @@ export class SleepRecordMapper {
     sleepRecordEntity.sleepTime = domainModel.sleepTime
     sleepRecordEntity.wakeUpTime = domainModel.wakeUpTime
     sleepRecordEntity.sleepQuality = domainModel.sleepQuality
-    sleepRecordEntity.sleepDuration = domainModel.sleepDuration
+    sleepRecordEntity.sleepDurationHour = domainModel.sleepDurationHour
     sleepRecordEntity.sleepNote = domainModel.sleepNote
+    sleepRecordEntity.createdAt = domainModel.createdAt
+    sleepRecordEntity.updatedAt = domainModel.updatedAt
 
     return sleepRecordEntity
   }

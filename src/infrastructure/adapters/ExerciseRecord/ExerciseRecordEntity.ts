@@ -4,13 +4,16 @@ import {
   UpdateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm'
 import {
   ExerciseType,
   IntensityType,
 } from '../../../domain/exerciseRecord/ExerciseRecord'
+import { PatientEntity } from '../Patient/PatientEntity'
 
-@Entity('exerciseRecords')
+@Entity('exercise_records')
 export class ExerciseRecordEntity {
   @PrimaryGeneratedColumn('uuid')
   public id!: string
@@ -21,14 +24,19 @@ export class ExerciseRecordEntity {
   @Column({ name: 'exercise_type', type: 'varchar', length: 100 })
   public exerciseType!: ExerciseType
 
-  @Column({ name: 'exercise_duration', type: 'number', length: 50 })
-  public exerciseDuration!: number
+  @Column({
+    name: 'exercise_duration_minute',
+    type: 'numeric',
+    precision: 5,
+    scale: 2,
+  })
+  public exerciseDurationMinute!: number
 
   @Column({ name: 'exercise_intensity', type: 'varchar', length: 100 })
   public exerciseIntensity!: IntensityType
 
-  @Column({ name: 'calories_burned', type: 'number', length: 50 })
-  public caloriesBurned!: number
+  @Column({ name: 'kcalories_burned', type: 'numeric', precision: 5, scale: 2 })
+  public kcaloriesBurned!: number
 
   @Column({ name: 'exercise_note', type: 'varchar', length: 150 })
   public exerciseNote!: string | null
@@ -38,4 +46,8 @@ export class ExerciseRecordEntity {
 
   @UpdateDateColumn({ name: 'updated_at' })
   public updatedAt!: Date
+
+  @ManyToOne(() => PatientEntity, (patient) => patient.exerciseRecords)
+  @JoinColumn({ name: 'patient_id' })
+  patient!: PatientEntity
 }

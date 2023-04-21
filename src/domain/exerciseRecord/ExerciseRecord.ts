@@ -1,32 +1,37 @@
+import { Patient } from '../patient/Patient'
+
 export interface IExerciseRecordProps {
   id: string
   exerciseDate: Date
   exerciseType: ExerciseType
-  exerciseDuration: number
+  exerciseDurationMinute: number
   exerciseIntensity: IntensityType
-  caloriesBurned: number
+  kcaloriesBurned: number
   exerciseNote: string | null
+  createdAt: Date
+  updatedAt: Date
+  patient: Patient
 }
 
 export enum ExerciseType {
   'WALKING' = 'WALKING',
   'STRETCHING' = 'STRETCHING',
   'YOGA' = 'YOGA',
-  'Slow-DANCE' = 'Slow-DANCE',
+  'SLOW_DANCE' = 'SLOW_DANCE',
   'BICYCLE' = 'BICYCLE',
   'GOLF' = 'GOLF',
   'SWIMMING' = 'SWIMMING',
-  'PING-PONG' = 'PING-PONG',
+  'PING_PONG' = 'PING_PONG',
   'BASEBALL' = 'BASEBALL',
   'BADMINTON' = 'BADMINTON',
-  'FAST-DANCE' = 'FAST-DANCE',
-  'WEIGHT-TRAINING' = 'WEIGHT-TRAINING',
+  'FAST_DANCE' = 'FAST_DANCE',
+  'WEIGHT_TRAINING' = 'WEIGHT_TRAINING',
   'RUNNING' = 'RUNNING',
-  'SPINNING-BIKE' = 'SPINNING-BIKE',
+  'SPINNING_BIKE' = 'SPINNING_BIKE',
   'BASKETBALL' = 'BASKETBALL',
   'SOCCER' = 'SOCCER',
   'TENNIS' = 'TENNIS',
-  'AEROBIC-EXERCISE' = 'AEROBIC-EXERCISE',
+  'AEROBIC_EXERCISE' = 'AEROBIC_EXERCISE',
   'OTHER' = 'OTHER',
 }
 
@@ -51,19 +56,31 @@ export class ExerciseRecord {
     return this.props.exerciseType
   }
 
-  public get exerciseDuration(): number {
-    return this.props.exerciseDuration
+  public get exerciseDurationMinute(): number {
+    return this.props.exerciseDurationMinute
   }
 
   public get exerciseIntensity(): IntensityType {
     return this.props.exerciseIntensity
   }
 
-  public get caloriesBurned(): number {
-    return this.props.caloriesBurned
+  public get kcaloriesBurned(): number {
+    return this.props.kcaloriesBurned
   }
 
   public get exerciseNote(): string | null {
     return this.props.exerciseNote
+  }
+
+  public get createdAt(): Date {
+    return this.props.createdAt
+  }
+
+  public get updatedAt(): Date {
+    return this.props.updatedAt
+  }
+
+  public get patient(): Patient {
+    return this.props.patient
   }
 }
