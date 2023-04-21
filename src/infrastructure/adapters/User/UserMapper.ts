@@ -6,8 +6,10 @@ export class UserMapper {
     const user = new User({
       id: entity.id,
       email: entity.email,
-      name: entity.name,
+      displayName: entity.displayName,
       hashedPassword: entity.password,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
     })
     return user
   }
@@ -16,8 +18,10 @@ export class UserMapper {
     const userEntity = new UserEntity()
     userEntity.id = domainModel.id
     userEntity.email = domainModel.email
-    userEntity.name = domainModel.name
+    userEntity.displayName = domainModel.displayName
     userEntity.password = domainModel.hashedPassword
+    userEntity.createdAt = domainModel.createdAt
+    userEntity.updatedAt = domainModel.updatedAt
 
     return userEntity
   }

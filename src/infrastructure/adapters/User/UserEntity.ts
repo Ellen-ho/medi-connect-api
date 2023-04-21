@@ -4,6 +4,7 @@ import {
   UpdateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm'
 
 @Entity('users')
@@ -11,8 +12,8 @@ export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
   public id!: string
 
-  @Column({ name: 'name', unique: true, type: 'varchar', length: 20 })
-  public name!: string
+  @Column({ name: 'display_name', unique: true, type: 'varchar', length: 50 })
+  public displayName!: string
 
   @Column({ name: 'email', unique: true, type: 'varchar', length: 100 })
   public email!: string
