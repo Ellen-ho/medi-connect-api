@@ -9,9 +9,11 @@ export class FoodRecordMapper {
       foodTime: entity.foodTime,
       foodItem: entity.foodItem,
       foodCategory: entity.foodCategory,
-      amount: entity.amount,
-      calories: entity.calories,
+      foodAmount: entity.foodAmount,
+      kcalories: entity.kcalories,
       foodNote: entity.foodNote,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
     })
     return foodRecord
   }
@@ -23,9 +25,12 @@ export class FoodRecordMapper {
     foodRecordEntity.foodTime = domainModel.foodTime
     foodRecordEntity.foodItem = domainModel.foodItem
     foodRecordEntity.foodCategory = domainModel.foodCategory
-    foodRecordEntity.amount = domainModel.amount
-    foodRecordEntity.calories = domainModel.calories
+    foodRecordEntity.foodAmount = domainModel.foodAmount
+    foodRecordEntity.kcalories = domainModel.kcalories
     foodRecordEntity.foodNote = domainModel.foodNote
+    foodRecordEntity.createdAt = domainModel.createdAt
+    foodRecordEntity.updatedAt = domainModel.updatedAt
+
     return foodRecordEntity
   }
 }

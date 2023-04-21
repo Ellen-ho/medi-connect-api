@@ -4,9 +4,11 @@ export interface IFoodRecordProps {
   foodTime: Date
   foodItem: string | null
   foodCategory: FoodCategoryType
-  amount: number
-  calories: number
+  foodAmount: number
+  kcalories: number
   foodNote: string | null
+  createdAt: Date
+  updatedAt: Date
 }
 
 export enum FoodCategoryType {
@@ -54,15 +56,23 @@ export class FoodRecord {
     return this.props.foodCategory
   }
 
-  public get amount(): number {
-    return this.props.amount
+  public get foodAmount(): number {
+    return this.props.foodAmount
   }
 
-  public get calories(): number {
-    return this.props.calories
+  public get kcalories(): number {
+    return this.props.kcalories
   }
 
   public get foodNote(): string | null {
     return this.props.foodNote
+  }
+
+  public get createdAt(): Date {
+    return this.props.createdAt
+  }
+
+  public get updatedAt(): Date {
+    return this.props.updatedAt
   }
 }

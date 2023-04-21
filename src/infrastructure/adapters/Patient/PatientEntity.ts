@@ -17,6 +17,7 @@ import {
   IMedicinceUsageItem,
 } from '../../../domain/patient/Patient'
 import { ExerciseRecordEntity } from '../ExerciseRecord/ExerciseRecordEntity'
+import { FoodRecordEntity } from '../FoodRecord/FoodRecordEntity'
 import { SleepRecordEntity } from '../sleepRecord/SleepRecordEntity'
 import { UserEntity } from '../User/UserEntity'
 
@@ -82,4 +83,7 @@ export class PatientEntity {
 
   @OneToMany(() => SleepRecordEntity, (sleepRecord) => sleepRecord.patient)
   sleepRecords!: SleepRecordEntity[]
+
+  @OneToMany(() => FoodRecordEntity, (foodRecord) => foodRecord.patient)
+  foodRecords!: FoodRecordEntity[]
 }
