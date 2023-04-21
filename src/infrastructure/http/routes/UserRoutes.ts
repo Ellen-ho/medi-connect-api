@@ -1,3 +1,4 @@
+
 import { Router } from 'express'
 import { IUserController } from '../controllers/UserController'
 import { asyncHandler } from '../middlewares/AsyncHandler'
