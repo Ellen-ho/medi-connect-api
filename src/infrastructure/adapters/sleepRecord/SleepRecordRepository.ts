@@ -1,45 +1,34 @@
 import { DataSource, Repository } from 'typeorm'
-import { IUserRepository } from '../../../domain/user/interfaces/repositories/IUserRepository'
-import { User } from '../../../domain/user/User'
 import { BaseRepository } from '../BaseRepository'
-import { UserEntity } from './SleepRecordEntity'
-import { UserMapper } from './SleepRecordMapper'
+import { SleepRecordEntity } from './SleepRecordEntity'
+import { SleepRecordMapper } from './SleepRecordMapper'
+import { SleepRecord } from '../../../domain/sleepRecord/SleepRecord'
+import { ISleepRecordRepository } from '../../../domain/sleepRecord/interfaces/repositories/ISleepRecordRepository'
 
-export class UserRepository
-  extends BaseRepository<UserEntity>
-  implements IUserRepository
+export class SleepRecordRepository
+  extends BaseRepository<SleepRecordEntity>
+  implements ISleepRecordRepository
 {
-  private readonly repo: Repository<UserEntity>
+  private readonly repo: Repository<SleepRecordEntity>
   constructor(dataSource: DataSource) {
-    super(UserEntity, dataSource)
+    super(SleepRecordEntity, dataSource)
     this.repo = this.getRepo()
   }
 
-  public async findById(id: string): Promise<User | null> {
+  public async findById(id: string): Promise<SleepRecord | null> {
     try {
       const entity = await this.getRepo().findOne({
         where: { id },
       })
-      return entity != null ? UserMapper.toDomainModel(entity) : null
+      return entity != null ? SleepRecordMapper.toDomainModel(entity) : null
     } catch (e) {
       throw new Error('repository findById error')
     }
   }
 
-  public async findByEmail(email: string): Promise<User | null> {
+  public async save(sleepRecord: SleepRecord): Promise<void> {
     try {
-      const entity = await this.getRepo().findOne({
-        where: { email },
-      })
-      return entity != null ? UserMapper.toDomainModel(entity) : null
-    } catch (e) {
-      throw new Error('repository findByEmail error')
-    }
-  }
-
-  public async save(user: User): Promise<void> {
-    try {
-      await this.getRepo().save(user)
+      await this.getRepo().save(sleepRecord)
     } catch (e) {
       throw new Error('repository findByEmail error')
     }

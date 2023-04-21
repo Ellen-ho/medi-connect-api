@@ -1,24 +1,30 @@
-import { User } from '../../../domain/user/User'
-import { UserEntity } from './SleepRecordEntity'
+import { SleepRecord } from '../../../domain/sleepRecord/SleepRecord'
+import { SleepRecordEntity } from './SleepRecordEntity'
 
-export class UserMapper {
-  public static toDomainModel(entity: UserEntity): User {
-    const user = new User({
+export class SleepRecordMapper {
+  public static toDomainModel(entity: SleepRecordEntity): SleepRecord {
+    const sleepRecord = new SleepRecord({
       id: entity.id,
-      email: entity.email,
-      name: entity.name,
-      hashedPassword: entity.password,
+      sleepDate: entity.sleepDate,
+      sleepTime: entity.sleepTime,
+      wakeUpTime: entity.wakeUpTime,
+      sleepQuality: entity.sleepQuality,
+      sleepDuration: entity.sleepDuration,
+      sleepNote: entity.sleepNote,
     })
-    return user
+    return sleepRecord
   }
 
-  public static toPersistence(domainModel: User): UserEntity {
-    const userEntity = new UserEntity()
-    userEntity.id = domainModel.id
-    userEntity.email = domainModel.email
-    userEntity.name = domainModel.name
-    userEntity.password = domainModel.hashedPassword
+  public static toPersistence(domainModel: SleepRecord): SleepRecordEntity {
+    const sleepRecordEntity = new SleepRecordEntity()
+    sleepRecordEntity.id = domainModel.id
+    sleepRecordEntity.sleepDate = domainModel.sleepDate
+    sleepRecordEntity.sleepTime = domainModel.sleepTime
+    sleepRecordEntity.wakeUpTime = domainModel.wakeUpTime
+    sleepRecordEntity.sleepQuality = domainModel.sleepQuality
+    sleepRecordEntity.sleepDuration = domainModel.sleepDuration
+    sleepRecordEntity.sleepNote = domainModel.sleepNote
 
-    return userEntity
+    return sleepRecordEntity
   }
 }
