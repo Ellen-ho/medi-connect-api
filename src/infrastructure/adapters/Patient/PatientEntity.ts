@@ -4,6 +4,8 @@ import {
   UpdateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm'
 import {
   GenderType,
@@ -13,6 +15,7 @@ import {
   IMedicalHistoryItem,
   IMedicinceUsageItem,
 } from '../../../domain/patient/Patient'
+import { UserEntity } from '../User/UserEntity'
 
 @Entity('patients')
 export class PatientEntity {
@@ -43,10 +46,16 @@ export class PatientEntity {
   @Column({ name: 'family_history', type: 'jsonb' })
   public familyHistory!: IFamilyHistoryItem[]
 
-  @Column({ name: 'height', type: 'number', length: 20 })
+  @Column({
+    name: 'height',
+    type: 'numeric',
+    precision: 5,
+    scale: 2,
+    default: 0,
+  })
   public height!: number
 
-  @Column({ name: 'height', type: 'varchar', length: 20 })
+  @Column({ name: 'height_unit', type: 'varchar', length: 20 })
   public heightUnit!: HeightUnitType
 
   @Column({ name: 'medicince_usage', type: 'jsonb' })
@@ -57,4 +66,8 @@ export class PatientEntity {
 
   @UpdateDateColumn({ name: 'updated_at' })
   public updatedAt!: Date
+
+  @OneToOne(() => UserEntity, { nullable: false })
+  @JoinColumn({ name: 'user_id' })
+  public user!: UserEntity
 }
