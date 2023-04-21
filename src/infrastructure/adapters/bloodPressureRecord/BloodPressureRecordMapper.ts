@@ -12,6 +12,8 @@ export class BloodPressureRecordMapper {
       diastolicBloodPressure: entity.diastolicBloodPressure,
       heartBeat: entity.heartBeat,
       bloodPressureNote: entity.bloodPressureNote,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
     })
     return bloodPressureRecord
   }
@@ -28,6 +30,8 @@ export class BloodPressureRecordMapper {
       domainModel.diastolicBloodPressure
     bloodPressureRecordEntity.heartBeat = domainModel.heartBeat
     bloodPressureRecordEntity.bloodPressureNote = domainModel.bloodPressureNote
+    bloodPressureRecordEntity.createdAt = domainModel.createdAt
+    bloodPressureRecordEntity.updatedAt = domainModel.updatedAt
 
     return bloodPressureRecordEntity
   }

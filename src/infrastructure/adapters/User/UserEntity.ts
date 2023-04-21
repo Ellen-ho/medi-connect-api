@@ -4,7 +4,6 @@ import {
   UpdateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm'
 
 @Entity('users')

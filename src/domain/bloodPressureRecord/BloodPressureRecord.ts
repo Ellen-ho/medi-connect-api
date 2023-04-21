@@ -5,6 +5,8 @@ export interface IBloodPressureRecordProps {
   diastolicBloodPressure: number
   heartBeat: number
   bloodPressureNote: string | null
+  createdAt: Date
+  updatedAt: Date
 }
 
 export class BloodPressureRecord {
@@ -32,5 +34,13 @@ export class BloodPressureRecord {
 
   public get bloodPressureNote(): string | null {
     return this.props.bloodPressureNote
+  }
+
+  public get createdAt(): Date {
+    return this.props.createdAt
+  }
+
+  public get updatedAt(): Date {
+    return this.props.updatedAt
   }
 }
