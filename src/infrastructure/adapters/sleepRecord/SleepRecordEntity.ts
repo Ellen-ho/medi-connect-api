@@ -33,6 +33,6 @@ export class SleepRecordEntity {
   @CreateDateColumn({ name: 'created_at' })
   public createdAt!: Date
 
-  @UpdateDateColumn({ name: 'update_at' })
-  public updateAt!: Date
+  @UpdateDateColumn({ name: 'updated_at' })
+  public updatedAt!: Date
 }
