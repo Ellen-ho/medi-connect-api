@@ -1,8 +1,10 @@
 export interface IUserProps {
   id: string
-  name: string
   email: string
   hashedPassword: string
+  displayName: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 export class User {
@@ -12,8 +14,8 @@ export class User {
     return this.props.id
   }
 
-  public get name(): string {
-    return this.props.name
+  public get displayName(): string {
+    return this.props.displayName
   }
 
   public get email(): string {
@@ -22,5 +24,13 @@ export class User {
 
   public get hashedPassword(): string {
     return this.props.hashedPassword
+  }
+
+  public get createdAt(): Date {
+    return this.props.createdAt
+  }
+
+  public get updatedAt(): Date {
+    return this.props.updatedAt
   }
 }
