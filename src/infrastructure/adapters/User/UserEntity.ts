@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  UpdateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
 } from 'typeorm'
@@ -21,4 +22,7 @@ export class UserEntity {
 
   @CreateDateColumn({ name: 'created_at' })
   public createdAt!: Date
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  public updatedAt!: Date
 }
