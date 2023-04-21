@@ -2,9 +2,10 @@ export interface IExerciseRecordProps {
   id: string
   exerciseDate: Date
   exerciseType: ExerciseType
-  duration: number
-  intensity: IntensityType
+  exerciseDuration: number
+  exerciseIntensity: IntensityType
   caloriesBurned: number
+  exerciseNote: string | null
 }
 
 export enum ExerciseType {
@@ -33,7 +34,6 @@ export enum IntensityType {
   'LOW' = 'LOW',
   'MODERATE' = 'MODERATE',
   'HIGH' = 'HIGH',
-  'OTHER' = 'OTHER',
 }
 
 export class ExerciseRecord {
@@ -51,15 +51,19 @@ export class ExerciseRecord {
     return this.props.exerciseType
   }
 
-  public get duration(): number {
-    return this.props.duration
+  public get exerciseDuration(): number {
+    return this.props.exerciseDuration
   }
 
-  public get intensity(): IntensityType {
-    return this.props.intensity
+  public get exerciseIntensity(): IntensityType {
+    return this.props.exerciseIntensity
   }
 
   public get caloriesBurned(): number {
     return this.props.caloriesBurned
+  }
+
+  public get exerciseNote(): string | null {
+    return this.props.exerciseNote
   }
 }

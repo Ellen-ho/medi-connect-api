@@ -21,14 +21,17 @@ export class ExerciseRecordEntity {
   @Column({ name: 'exercise_type', type: 'varchar', length: 100 })
   public exerciseType!: ExerciseType
 
-  @Column({ name: 'duration', type: 'number', length: 50 })
-  public duration!: number
+  @Column({ name: 'exercise_duration', type: 'number', length: 50 })
+  public exerciseDuration!: number
 
-  @Column({ name: 'intensity', type: 'varchar', length: 100 })
-  public intensity!: IntensityType
+  @Column({ name: 'exercise_intensity', type: 'varchar', length: 100 })
+  public exerciseIntensity!: IntensityType
 
   @Column({ name: 'calories_burned', type: 'number', length: 50 })
   public caloriesBurned!: number
+
+  @Column({ name: 'exercise_note', type: 'varchar', length: 150 })
+  public exerciseNote!: string | null
 
   @CreateDateColumn({ name: 'created_at' })
   public createdAt!: Date

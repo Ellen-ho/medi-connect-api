@@ -7,9 +7,10 @@ export class ExerciseRecordMapper {
       id: entity.id,
       exerciseDate: entity.exerciseDate,
       exerciseType: entity.exerciseType,
-      duration: entity.duration,
-      intensity: entity.intensity,
+      exerciseDuration: entity.exerciseDuration,
+      exerciseIntensity: entity.exerciseIntensity,
       caloriesBurned: entity.caloriesBurned,
+      exerciseNote: entity.exerciseNote,
     })
     return exerciseRecord
   }
@@ -21,9 +22,10 @@ export class ExerciseRecordMapper {
     exerciseRecordEntity.id = domainModel.id
     exerciseRecordEntity.exerciseDate = domainModel.exerciseDate
     exerciseRecordEntity.exerciseType = domainModel.exerciseType
-    exerciseRecordEntity.duration = domainModel.duration
-    exerciseRecordEntity.intensity = domainModel.intensity
+    exerciseRecordEntity.exerciseDuration = domainModel.exerciseDuration
+    exerciseRecordEntity.exerciseIntensity = domainModel.exerciseIntensity
     exerciseRecordEntity.caloriesBurned = domainModel.caloriesBurned
+    exerciseRecordEntity.exerciseNote = domainModel.exerciseNote
 
     return exerciseRecordEntity
   }
