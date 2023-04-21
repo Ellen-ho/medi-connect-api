@@ -10,7 +10,7 @@ const OrmConfig: DataSourceOptions = {
   database: process.env.POSTGRES_DB_NAME,
   synchronize: false,
   logging: true,
-  entities: ['./src/infrastructure/adapters/**/entities/*.ts'],
+  entities: ['./src/infrastructure/adapters/**/*Entity.ts'],
   migrations: ['./migrations/*.ts'],
   migrationsTableName: 'migrations',
 }
