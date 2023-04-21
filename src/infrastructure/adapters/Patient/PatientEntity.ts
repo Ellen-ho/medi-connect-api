@@ -41,6 +41,9 @@ export class PatientEntity {
   @Column({ name: 'family_history', type: 'jsonb' })
   public familyHistory!: IFamilyHistoryItem[]
 
+  @Column({ name: 'height', type: 'number', length: 20 })
+  public height!: number
+
   @CreateDateColumn({ name: 'created_at' })
   public createdAt!: Date
 

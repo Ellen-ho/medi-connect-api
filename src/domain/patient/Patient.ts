@@ -8,6 +8,7 @@ export interface IPatientProps {
   medicalHistory: IMedicalHistoryItem[]
   allergy: IAllergy
   familyHistory: IFamilyHistoryItem[]
+  height: number
 }
 
 export enum GenderType {
@@ -87,5 +88,9 @@ export class Patient {
 
   public get familyHistory(): IFamilyHistoryItem[] {
     return this.props.familyHistory
+  }
+
+  public get height(): number {
+    return this.props.height
   }
 }
