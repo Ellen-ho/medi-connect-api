@@ -33,9 +33,13 @@ export class UserController implements IUserController {
     res: Response
   ): Promise<Response> => {
     try {
-      const { name, email, password } = req.body
+      const { displayName, email, password } = req.body
 
-      const newUser = await this.createUser.execute({ name, email, password })
+      const newUser = await this.createUser.execute({
+        displayName,
+        email,
+        password,
+      })
 
       return res.status(201).json(newUser)
     } catch (error) {

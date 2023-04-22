@@ -13,7 +13,7 @@ POST {{users}}
 Content-Type: application/json
 
 {
-  "name": "user1",
+  "displayName": "user1",
   "email": "user1@mail.com",
   "password": "password",
 }
