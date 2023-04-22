@@ -1,15 +1,25 @@
 @hostname = http://localhost:8080
 
-@users = {{hostname}}/api/users
+@usersPath = {{hostname}}/api/users
+
+### post user
+POST {{usersPath}}/login
+Content-Type: application/json
+
+{
+  "email": "user1@mail.com",
+  "password": "user1"
+}
+###
 
 ### get user
 @userId = 5630a6d0-656b-4fa1-b20d-d6d47d3b5f19
-GET {{users}}/{{userId}}
+GET {{usersPath}}/{{userId}}
 Content-Type: application/json
 ###
 
 ### Register new user
-POST {{users}}
+POST {{usersPath}}
 Content-Type: application/json
 
 {

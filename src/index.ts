@@ -11,13 +11,18 @@ import { UserRoutes } from './infrastructure/http/routes/UserRoutes'
 import { MainRoutes } from './infrastructure/http/routes'
 import { errorHandler } from './infrastructure/http/middlewares/ErrorHandler'
 import { BcryptHashGenerator } from './infrastructure/utils/BcryptHashGenerator'
+import { PassportConfig } from './infrastructure/config/passportConfig'
+import passport from 'passport'
+import { User } from './domain/user/User'
+import jwt from 'jsonwebtoken'
 
 void main()
 
 async function main(): Promise<void> {
   // TODO: should active only on dev environment
   dotenv.config()
-  const port = process.env.API_PORT as string
+  const env = process.env
+  const port = env.API_PORT as string
 
   /**
    * Database Connection
@@ -40,15 +45,37 @@ async function main(): Promise<void> {
   const createUser = new CreateUser(userRepository, uuidService, hashGenerator)
   const userController = new UserController(getUser, createUser)
 
+  const app: Express = express()
+  app.use(express.urlencoded({ extended: true }))
+  app.use(express.json())
+  // eslint-disable-next-line no-new
+  new PassportConfig(userRepository)
+
   /**
    * Routes
    */
   const userRoutes = new UserRoutes(userController)
   const mainRoutes = new MainRoutes(userRoutes)
-
-  const app: Express = express()
-  app.use(express.json())
   app.use('/api', mainRoutes.createRouter())
+  app.post(
+    '/api/users/login',
+    passport.authenticate('local', { session: false }),
+    (req, res, next) => {
+      try {
+        const { id, email, createdAt, displayName } = req.user as User
+
+        const token = jwt.sign({ id, email }, env.JWT_SECRET as string, {
+          expiresIn: '30d',
+        })
+        res.json({
+          token,
+          user: { id, createdAt, displayName },
+        })
+      } catch (err) {
+        next(err)
+      }
+    }
+  )
   app.use(errorHandler)
 
   app.listen(port, () => {

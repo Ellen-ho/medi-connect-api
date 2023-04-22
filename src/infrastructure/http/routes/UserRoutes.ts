@@ -1,13 +1,16 @@
-
 import { Router } from 'express'
 import { IUserController } from '../controllers/UserController'
 import { asyncHandler } from '../middlewares/AsyncHandler'
-
+import { authenticated } from '../middlewares/Auth'
 export class UserRoutes {
   private readonly routes: Router
   constructor(private readonly userController: IUserController) {
     this.routes = Router()
-    this.routes.get('/:id', asyncHandler(this.userController.getUserById))
+    this.routes.get(
+      '/:id',
+      authenticated,
+      asyncHandler(this.userController.getUserById)
+    )
     this.routes.post('/', asyncHandler(this.userController.registerNewUser))
   }
 
