@@ -4,14 +4,14 @@ import { IUuidService } from '../../domain/utils/IUuidService'
 import { IHashGenerator } from '../../domain/utils/IHashGenerator'
 
 interface CreateUserRequestDTO {
-  name: string
+  displayName: string
   email: string
   password: string
 }
 
 interface CreateUserResponseDTO {
   id: string
-  name: string
+  displayName: string
   email: string
 }
 
@@ -25,7 +25,7 @@ export class CreateUser {
   public async execute(
     request: CreateUserRequestDTO
   ): Promise<CreateUserResponseDTO> {
-    const { name, email, password } = request
+    const { displayName, email, password } = request
 
     const userExists = await this.userRepository.findByEmail(email)
 
@@ -37,16 +37,18 @@ export class CreateUser {
 
     const user = new User({
       id: this.uuidService.generateUuid(),
-      name,
+      displayName,
       email,
       hashedPassword,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     })
 
     await this.userRepository.save(user)
 
     return {
       id: user.id,
-      name: user.name,
+      displayName: user.displayName,
       email: user.email,
     }
   }
