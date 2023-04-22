@@ -34,7 +34,6 @@ export class CreateUser {
     }
 
     const hashedPassword = await this.hashGenerator.hash(password)
-
     const user = new User({
       id: this.uuidService.generateUuid(),
       displayName,

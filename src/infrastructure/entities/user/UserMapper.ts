@@ -1,8 +1,9 @@
+import { IEntityMapper } from '../../../domain/shared/IEntityMapper'
 import { User } from '../../../domain/user/User'
 import { UserEntity } from './UserEntity'
 
-export class UserMapper {
-  public static toDomainModel(entity: UserEntity): User {
+export class UserMapper implements IEntityMapper<UserEntity, User> {
+  public toDomainModel(entity: UserEntity): User {
     const user = new User({
       id: entity.id,
       email: entity.email,
@@ -14,7 +15,7 @@ export class UserMapper {
     return user
   }
 
-  public static toPersistence(domainModel: User): UserEntity {
+  public toPersistence(domainModel: User): UserEntity {
     const userEntity = new UserEntity()
     userEntity.id = domainModel.id
     userEntity.email = domainModel.email

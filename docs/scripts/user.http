@@ -15,6 +15,6 @@ Content-Type: application/json
 {
   "displayName": "user1",
   "email": "user1@mail.com",
-  "password": "password",
+  "password": "user1"
 }
 ###
