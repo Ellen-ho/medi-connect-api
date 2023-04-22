@@ -3,7 +3,7 @@
 @users = {{hostname}}/api/users
 
 ### get user
-@userId = 299ea3fc-a729-4804-a284-d6312ff4ee90
+@userId = 5630a6d0-656b-4fa1-b20d-d6d47d3b5f19
 GET {{users}}/{{userId}}
 Content-Type: application/json
 ###

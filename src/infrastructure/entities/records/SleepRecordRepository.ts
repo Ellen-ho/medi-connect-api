@@ -6,12 +6,12 @@ import { SleepRecord } from '../../../domain/record/SleepRecord'
 import { ISleepRecordRepository } from '../../../domain/record/interfaces/repositories/ISleepRecordRepository'
 
 export class SleepRecordRepository
-  extends BaseRepository<SleepRecordEntity>
+  extends BaseRepository<SleepRecordEntity, SleepRecord>
   implements ISleepRecordRepository
 {
   private readonly repo: Repository<SleepRecordEntity>
   constructor(dataSource: DataSource) {
-    super(SleepRecordEntity, dataSource)
+    super(SleepRecordEntity, new SleepRecordMapper(), dataSource)
     this.repo = this.getRepo()
   }
 
@@ -20,17 +20,9 @@ export class SleepRecordRepository
       const entity = await this.getRepo().findOne({
         where: { id },
       })
-      return entity != null ? SleepRecordMapper.toDomainModel(entity) : null
+      return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
       throw new Error('repository findById error')
-    }
-  }
-
-  public async save(sleepRecord: SleepRecord): Promise<void> {
-    try {
-      await this.getRepo().save(sleepRecord)
-    } catch (e) {
-      throw new Error('repository findByEmail error')
     }
   }
 }
