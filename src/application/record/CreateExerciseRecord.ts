@@ -7,15 +7,16 @@ import {
 import { IExerciseRecordRepository } from '../../domain/record/interfaces/repositories/IExerciseRepository'
 import { IUuidService } from '../../domain/utils/IUuidService'
 
-interface CreateExerciseRecordRequestDTO {
+interface CreateExerciseRecordRequest {
   exerciseDate: Date
   exerciseType: ExerciseType
   exerciseDurationMinute: number
   exerciseIntensity: IntensityType
   exerciseNote: string | null
+  patient: Patient
 }
 
-interface CreateExerciseRecordResponseDTO {
+interface CreateExerciseRecordResponse {
   id: string
   exerciseDate: Date
   exerciseType: ExerciseType
@@ -34,8 +35,8 @@ export class CreateExerciseRecord {
   ) {}
 
   public async execute(
-    request: CreateExerciseRecordRequestDTO
-  ): Promise<CreateExerciseRecordResponseDTO> {
+    request: CreateExerciseRecordRequest
+  ): Promise<CreateExerciseRecordResponse> {
     const {
       exerciseDate,
       exerciseType,
@@ -51,7 +52,7 @@ export class CreateExerciseRecord {
       exerciseType,
       exerciseDurationMinute,
       exerciseIntensity,
-      kcaloriesBurned: 355,
+      kcaloriesBurned: 355, // TODO: this is a mock, need standard mapping later
       exerciseNote,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -69,7 +70,6 @@ export class CreateExerciseRecord {
       exerciseNote: exerciseRecord.exerciseNote,
       createdAt: exerciseRecord.createdAt,
       updatedAt: exerciseRecord.updatedAt,
-      patient: exerciseRecord.patient,
     }
   }
 }

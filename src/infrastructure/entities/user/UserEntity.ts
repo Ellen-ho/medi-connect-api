@@ -5,6 +5,7 @@ import {
   Entity,
   PrimaryGeneratedColumn,
 } from 'typeorm'
+import { UserRoleType } from '../../../domain/user/User'
 
 @Entity('users')
 export class UserEntity {
@@ -19,6 +20,9 @@ export class UserEntity {
 
   @Column({ name: 'password', type: 'varchar', length: 255 })
   public password!: string
+
+  @Column({ name: 'role', type: 'varchar', length: 50 })
+  public role!: UserRoleType
 
   @CreateDateColumn({ name: 'created_at' })
   public createdAt!: Date

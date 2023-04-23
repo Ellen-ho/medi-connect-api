@@ -3,28 +3,22 @@ import { FoodCategoryType, FoodRecord } from '../../domain/record/FoodRecord'
 import { IFoodRecordRepository } from '../../domain/record/interfaces/repositories/IFoodRecordRepository'
 import { IUuidService } from '../../domain/utils/IUuidService'
 
-interface CreateFoodRecordRequestDTO {
-  foodImage: string | null
+interface CreateFoodRecordRequest {
   foodTime: Date
-  // foodItem: string | null
   foodCategory: FoodCategoryType
   foodAmount: number
-  // kcalories: number
   foodNote: string | null
 }
 
-interface CreateFoodRecordResponseDTO {
+interface CreateFoodRecordResponse {
   id: string
-  foodImage: string | null
   foodTime: Date
-  // foodItem: string | null
   foodCategory: FoodCategoryType
   foodAmount: number
   kcalories: number
   foodNote: string | null
   createdAt: Date
   updatedAt: Date
-  patient: Patient
 }
 
 export class CreateFoodRecord {
@@ -34,26 +28,19 @@ export class CreateFoodRecord {
   ) {}
 
   public async execute(
-    request: CreateFoodRecordRequestDTO
-  ): Promise<CreateFoodRecordResponseDTO> {
-    const {
-      foodImage,
-      foodTime,
-      // foodItem,
-      foodCategory,
-      foodAmount,
-      foodNote,
-    } = request
+    request: CreateFoodRecordRequest
+  ): Promise<CreateFoodRecordResponse> {
+    const { foodTime, foodCategory, foodAmount, foodNote } = request
 
     // kc,foodTime,foodImage
     const foodRecord = new FoodRecord({
       id: this.uuidService.generateUuid(),
-      foodImage,
+      foodImage: null,
       foodTime,
-      foodItem,
+      foodItem: null,
       foodCategory,
       foodAmount,
-      kcalories: 355,
+      kcalories: 355, // TODO: mock here, need standard mapping later
       foodNote,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -63,16 +50,13 @@ export class CreateFoodRecord {
 
     return {
       id: foodRecord.id,
-      foodImage: foodRecord.foodImage,
       foodTime: foodRecord.foodTime,
-      foodItem: foodRecord.foodItem,
       foodCategory: foodRecord.foodCategory,
       foodAmount: foodRecord.foodAmount,
       kcalories: foodRecord.kcalories,
       foodNote: foodRecord.foodNote,
       createdAt: foodRecord.createdAt,
       updatedAt: foodRecord.updatedAt,
-      patient: foodRecord.patient,
     }
   }
 }

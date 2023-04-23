@@ -1,18 +1,16 @@
 import { User } from '../../domain/user/User'
 import { IUserRepository } from '../../domain/user/interfaces/repositories/IUserRepository'
 
-interface GetUserRequestDTO {
+interface GetUserRequest {
   id: string
 }
 
-interface GetUserResponseDTO extends User {}
+interface GetUserResponse extends User {}
 
 export class GetUser {
   constructor(private readonly userRepository: IUserRepository) {}
 
-  public async execute(
-    request: GetUserRequestDTO
-  ): Promise<GetUserResponseDTO> {
+  public async execute(request: GetUserRequest): Promise<GetUserResponse> {
     const { id } = request
 
     const existingUser = await this.userRepository.findById(id)

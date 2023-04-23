@@ -10,35 +10,24 @@ import {
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { IUuidService } from '../../domain/utils/IUuidService'
 
-interface CreatePatientRequestDTO {
-  avatar: string
+interface CreatePatientRequest {
+  userId: string
+  avatar: string | null
   firstName: string
   lastName: string
   birthDate: Date
   gender: GenderType
-  medicalHistory: IMedicalHistoryItem[]
+  medicalHistory: IMedicalHistoryItem[] | null
   allergy: IAllergy
-  familyHistory: IFamilyHistoryItem[]
+  familyHistory: IFamilyHistoryItem[] | null
   height: number
   heightUnit: HeightUnitType
-  medicinceUsage: IMedicinceUsageItem[]
+  medicinceUsage: IMedicinceUsageItem[] | null
 }
 
-interface CreatePatientResponseDTO {
+interface CreatePatientResponse {
   id: string
-  avatar: string
-  firstName: string
-  lastName: string
-  birthDate: Date
-  gender: GenderType
-  medicalHistory: IMedicalHistoryItem[]
-  allergy: IAllergy
-  familyHistory: IFamilyHistoryItem[]
-  height: number
-  heightUnit: HeightUnitType
-  medicinceUsage: IMedicinceUsageItem[]
   createdAt: Date
-  updatedAt: Date
 }
 
 export class CreatePatient {
@@ -48,9 +37,10 @@ export class CreatePatient {
   ) {}
 
   public async execute(
-    request: CreatePatientRequestDTO
-  ): Promise<CreatePatientResponseDTO> {
+    request: CreatePatientRequest
+  ): Promise<CreatePatientResponse> {
     const {
+      userId,
       avatar,
       firstName,
       lastName,
@@ -64,7 +54,7 @@ export class CreatePatient {
       medicinceUsage,
     } = request
 
-    const patientExists = await this.patientRepository.findById(id)
+    const patientExists = await this.patientRepository.findById(userId)
 
     if (patientExists != null) {
       throw new Error('Patient already exists.')
@@ -91,19 +81,7 @@ export class CreatePatient {
 
     return {
       id: patient.id,
-      avatar: patient.avatar,
-      firstName: patient.firstName,
-      lastName: patient.lastName,
-      birthDate: patient.birthDate,
-      gender: patient.gender,
-      medicalHistory: patient.medicalHistory,
-      allergy: patient.allergy,
-      familyHistory: patient.familyHistory,
-      height: patient.height,
-      heightUnit: patient.heightUnit,
-      medicinceUsage: patient.medicinceUsage,
       createdAt: patient.createdAt,
-      updatedAt: patient.updatedAt,
     }
   }
 }

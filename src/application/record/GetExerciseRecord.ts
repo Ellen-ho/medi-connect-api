@@ -1,11 +1,11 @@
 import { ExerciseRecord } from '../../domain/record/ExerciseRecord'
 import { IExerciseRecordRepository } from '../../domain/record/interfaces/repositories/IExerciseRepository'
 
-interface GetExerciseRecordRequestDTO {
+interface GetExerciseRecordRequest {
   id: string
 }
 
-interface GetExerciseRecordResponseDTO extends ExerciseRecord {}
+interface GetExerciseRecordResponse extends ExerciseRecord {}
 
 export class GetExerciseRecord {
   constructor(
@@ -13,8 +13,8 @@ export class GetExerciseRecord {
   ) {}
 
   public async execute(
-    request: GetExerciseRecordRequestDTO
-  ): Promise<GetExerciseRecordResponseDTO> {
+    request: GetExerciseRecordRequest
+  ): Promise<GetExerciseRecordResponse> {
     const { id } = request
 
     const existingExerciseRecord = await this.exerciseRecordRepository.findById(
@@ -28,3 +28,8 @@ export class GetExerciseRecord {
     return existingExerciseRecord
   }
 }
+
+/**
+ * Get list filter by food category, execercise type
+ * Get single record by id
+ */

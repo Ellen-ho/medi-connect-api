@@ -1,18 +1,20 @@
-import { User } from '../../domain/user/User'
+import { User, UserRoleType } from '../../domain/user/User'
 import { IUserRepository } from '../../domain/user/interfaces/repositories/IUserRepository'
 import { IUuidService } from '../../domain/utils/IUuidService'
 import { IHashGenerator } from '../../domain/utils/IHashGenerator'
 
-interface CreateUserRequestDTO {
+interface CreateUserRequest {
   displayName: string
   email: string
   password: string
+  role: UserRoleType
 }
 
-interface CreateUserResponseDTO {
+interface CreateUserResponse {
   id: string
   displayName: string
   email: string
+  role: UserRoleType
 }
 
 export class CreateUser {
@@ -23,9 +25,9 @@ export class CreateUser {
   ) {}
 
   public async execute(
-    request: CreateUserRequestDTO
-  ): Promise<CreateUserResponseDTO> {
-    const { displayName, email, password } = request
+    request: CreateUserRequest
+  ): Promise<CreateUserResponse> {
+    const { displayName, email, password, role } = request
 
     const userExists = await this.userRepository.findByEmail(email)
 
@@ -39,6 +41,7 @@ export class CreateUser {
       displayName,
       email,
       hashedPassword,
+      role,
       createdAt: new Date(),
       updatedAt: new Date(),
     })
@@ -49,6 +52,7 @@ export class CreateUser {
       id: user.id,
       displayName: user.displayName,
       email: user.email,
+      role: user.role,
     }
   }
 }

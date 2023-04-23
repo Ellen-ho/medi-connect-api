@@ -53,12 +53,13 @@ export class UserController implements IUserController {
     res: Response
   ): Promise<Response> => {
     try {
-      const { displayName, email, password } = req.body
+      const { displayName, email, password, role } = req.body
 
       const newUser = await this.createUser.execute({
         displayName,
         email,
         password,
+        role,
       })
 
       return res.status(201).json(newUser)

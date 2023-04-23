@@ -6,13 +6,13 @@ import {
 import { IGlycatedHemoglobinRecordRepository } from '../../domain/record/interfaces/repositories/IGlycatedHemoglobinRecordRepository'
 import { IUuidService } from '../../domain/utils/IUuidService'
 
-interface CreateGlycatedHemoglobinRecordRequestDTO {
+interface CreateGlycatedHemoglobinRecordRequest {
   glycatedHemoglobinDate: Date
   glycatedHemoglobinValue: number
   glycatedHemoglobinUnit: GlycatedHemoglobinUnitType
 }
 
-interface CreateGlycatedHemoglobinRecordResponseDTO {
+interface CreateGlycatedHemoglobinRecordResponse {
   id: string
   glycatedHemoglobinDate: Date
   glycatedHemoglobinValue: number
@@ -28,8 +28,8 @@ export class CreateGlycatedHemoglobinRecord {
   ) {}
 
   public async execute(
-    request: CreateGlycatedHemoglobinRecordRequestDTO
-  ): Promise<CreateGlycatedHemoglobinRecordResponseDTO> {
+    request: CreateGlycatedHemoglobinRecordRequest
+  ): Promise<CreateGlycatedHemoglobinRecordResponse> {
     const {
       glycatedHemoglobinDate,
       glycatedHemoglobinValue,
@@ -54,7 +54,6 @@ export class CreateGlycatedHemoglobinRecord {
       glycatedHemoglobinUnit: glycatedHemoglobinRecord.glycatedHemoglobinUnit,
       createdAt: glycatedHemoglobinRecord.createdAt,
       updatedAt: glycatedHemoglobinRecord.updatedAt,
-      patient: glycatedHemoglobinRecord.patient,
     }
   }
 }

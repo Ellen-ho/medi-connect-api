@@ -3,16 +3,15 @@ import { SleepQualityType, SleepRecord } from '../../domain/record/SleepRecord'
 import { ISleepRecordRepository } from '../../domain/record/interfaces/repositories/ISleepRecordRepository'
 import { IUuidService } from '../../domain/utils/IUuidService'
 
-interface CreateSleepRecordRequestDTO {
+interface CreateSleepRecordRequest {
   sleepDate: Date
   sleepTime: Date
   wakeUpTime: Date
   sleepQuality: SleepQualityType
-  sleepDurationHour: number
   sleepNote: string | null
 }
 
-interface CreateSleepRecordResponseDTO {
+interface CreateSleepRecordResponse {
   id: string
   sleepDate: Date
   sleepTime: Date
@@ -31,16 +30,10 @@ export class CreateSleepRecord {
   ) {}
 
   public async execute(
-    request: CreateSleepRecordRequestDTO
-  ): Promise<CreateSleepRecordResponseDTO> {
-    const {
-      sleepDate,
-      sleepTime,
-      wakeUpTime,
-      sleepQuality,
-      sleepDurationHour,
-      sleepNote,
-    } = request
+    request: CreateSleepRecordRequest
+  ): Promise<CreateSleepRecordResponse> {
+    const { sleepDate, sleepTime, wakeUpTime, sleepQuality, sleepNote } =
+      request
 
     const sleepRecord = new SleepRecord({
       id: this.uuidService.generateUuid(),
@@ -48,7 +41,7 @@ export class CreateSleepRecord {
       sleepTime,
       wakeUpTime,
       sleepQuality,
-      sleepDurationHour,
+      sleepDurationHour: 0, // TODO: Calculate sleep duration
       sleepNote,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -66,7 +59,6 @@ export class CreateSleepRecord {
       sleepNote: sleepRecord.sleepNote,
       createdAt: sleepRecord.createdAt,
       updatedAt: sleepRecord.updatedAt,
-      patient: sleepRecord.patient,
     }
   }
 }

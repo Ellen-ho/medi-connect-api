@@ -6,14 +6,14 @@ import {
 import { IBloodSugarRecordRepository } from '../../domain/record/interfaces/repositories/IBloodSugarRecordRepository'
 import { IUuidService } from '../../domain/utils/IUuidService'
 
-interface CreateBloodSugarRecordRequestDTO {
+interface CreateBloodSugarRecordRequest {
   bloodSugarDate: Date
   bloodSugarValue: number
   bloodSugarNote: string | null
   bloodSugarUnit: BloodSugarUnitType
 }
 
-interface CreateBloodSugarRecordResponseDTO {
+interface CreateBloodSugarRecordResponse {
   id: string
   bloodSugarDate: Date
   bloodSugarValue: number
@@ -30,8 +30,8 @@ export class CreateBloodSugarRecord {
   ) {}
 
   public async execute(
-    request: CreateBloodSugarRecordRequestDTO
-  ): Promise<CreateBloodSugarRecordResponseDTO> {
+    request: CreateBloodSugarRecordRequest
+  ): Promise<CreateBloodSugarRecordResponse> {
     const { bloodSugarDate, bloodSugarValue, bloodSugarNote, bloodSugarUnit } =
       request
 
@@ -55,7 +55,6 @@ export class CreateBloodSugarRecord {
       bloodSugarUnit: bloodSugarRecord.bloodSugarUnit,
       createdAt: bloodSugarRecord.createdAt,
       updatedAt: bloodSugarRecord.updatedAt,
-      patient: bloodSugarRecord.patient,
     }
   }
 }

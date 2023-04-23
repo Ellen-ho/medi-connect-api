@@ -4,7 +4,7 @@ import { IBloodPressureRecordRepository } from '../../domain/record/interfaces/r
 
 import { IUuidService } from '../../domain/utils/IUuidService'
 
-interface CreateBloodPressureRecordRequestDTO {
+interface CreateBloodPressureRecordRequest {
   bloodPressureDate: Date
   systolicBloodPressure: number
   diastolicBloodPressure: number
@@ -12,7 +12,7 @@ interface CreateBloodPressureRecordRequestDTO {
   bloodPressureNote: string | null
 }
 
-interface CreateBloodPressureRecordResponseDTO {
+interface CreateBloodPressureRecordResponse {
   id: string
   bloodPressureDate: Date
   systolicBloodPressure: number
@@ -30,8 +30,8 @@ export class CreateBloodPressureRecord {
   ) {}
 
   public async execute(
-    request: CreateBloodPressureRecordRequestDTO
-  ): Promise<CreateBloodPressureRecordResponseDTO> {
+    request: CreateBloodPressureRecordRequest
+  ): Promise<CreateBloodPressureRecordResponse> {
     const {
       bloodPressureDate,
       systolicBloodPressure,
@@ -62,7 +62,6 @@ export class CreateBloodPressureRecord {
       heartBeat: bloodPressureRecord.heartBeat,
       createdAt: bloodPressureRecord.createdAt,
       updatedAt: bloodPressureRecord.updatedAt,
-      patient: bloodPressureRecord.patient,
     }
   }
 }
