@@ -18,7 +18,6 @@ const authenticated = (
     'jwt',
     { session: false },
     (err: any, user: Express.User | false | null) => {
-      console.table({ err, user })
       // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
       if (err || !user) {
         return res.status(401).json({ status: 'error', message: '驗證失敗！' })

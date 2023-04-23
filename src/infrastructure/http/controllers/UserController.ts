@@ -38,11 +38,7 @@ export class UserController implements IUserController {
     res: Response
   ): Promise<Response> => {
     try {
-      console.table({
-        in: 'getUserById controller',
-        user: JSON.stringify(req.user),
-      })
-      const id = req.params.id
+      const { id } = req.user as User
       const user = await this.getUser.execute({ id })
 
       return res.status(200).json(user)

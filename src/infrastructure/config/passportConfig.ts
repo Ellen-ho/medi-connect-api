@@ -22,13 +22,13 @@ export class PassportConfig {
           passwordField: 'password',
           passReqToCallback: true,
         },
-        (req, email, password, cb) => {
+        (req, email, password, done) => {
           this.userRepo
             .findByEmail(email)
             .then((user) => {
               if (user == null) {
                 const error = new Error('驗證失敗！')
-                cb(error)
+                done(error)
                 return
               }
 
@@ -37,17 +37,17 @@ export class PassportConfig {
                 .then((res) => {
                   if (!res) {
                     const error = new Error('驗證失敗！')
-                    cb(error)
+                    done(error)
                     return
                   }
-                  cb(null, user)
+                  done(null, user)
                 })
                 .catch((err) => {
-                  cb(err)
+                  done(err)
                 })
             })
             .catch((err) => {
-              cb(err)
+              done(err)
             })
         }
       )
@@ -60,19 +60,20 @@ export class PassportConfig {
       secretOrKey: process.env.JWT_SECRET,
     }
     passport.use(
-      new JWTStrategy(jwtOptions, (jwtPayload, cb) => {
+      new JWTStrategy(jwtOptions, (jwtPayload, done) => {
         this.userRepo
           .findById(jwtPayload.id)
           .then((user) => {
             if (user !== null) {
-              cb(null, user)
+              done(null, user)
+              return
             }
 
             const error = new Error('Extract JWT Error')
-            cb(error)
+            done({ error }, false)
           })
-          .catch((err) => {
-            cb(err)
+          .catch((error) => {
+            done({ error }, false)
           })
       })
     )
