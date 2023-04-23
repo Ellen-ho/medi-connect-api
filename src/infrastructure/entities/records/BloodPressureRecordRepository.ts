@@ -1,5 +1,4 @@
-import { DataSource, Repository } from 'typeorm'
-
+import { DataSource } from 'typeorm'
 import { BaseRepository } from '../BaseRepository'
 import { BloodPressureRecordEntity } from './BloodPressureRecordEntity'
 import { IBloodPressureRecordRepository } from '../../../domain/record/interfaces/repositories/IBloodPressureRecordRepository'
@@ -7,13 +6,15 @@ import { BloodPressureRecord } from '../../../domain/record/BloodPressureRecord'
 import { BloodPressureRecordMapper } from './BloodPressureRecordMapper'
 
 export class BloodPressureRecordRepository
-  extends BaseRepository<BloodPressureRecordEntity>
+  extends BaseRepository<BloodPressureRecordEntity, BloodPressureRecord>
   implements IBloodPressureRecordRepository
 {
-  private readonly repo: Repository<BloodPressureRecordEntity>
   constructor(dataSource: DataSource) {
-    super(BloodPressureRecordEntity, dataSource)
-    this.repo = this.getRepo()
+    super(
+      BloodPressureRecordEntity,
+      new BloodPressureRecordMapper(),
+      dataSource
+    )
   }
 
   public async findById(id: string): Promise<BloodPressureRecord | null> {
@@ -21,19 +22,9 @@ export class BloodPressureRecordRepository
       const entity = await this.getRepo().findOne({
         where: { id },
       })
-      return entity != null
-        ? BloodPressureRecordMapper.toDomainModel(entity)
-        : null
+      return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
       throw new Error('repository findById error')
-    }
-  }
-
-  public async save(bloodPressureRecord: BloodPressureRecord): Promise<void> {
-    try {
-      await this.getRepo().save(bloodPressureRecord)
-    } catch (e) {
-      throw new Error('repository findByEmail error')
     }
   }
 }

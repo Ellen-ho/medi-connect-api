@@ -1,8 +1,9 @@
 import { Patient } from '../../../domain/patient/Patient'
+import { IEntityMapper } from '../../../domain/shared/IEntityMapper'
 import { PatientEntity } from './PatientEntity'
 
-export class PatientMapper {
-  public static toDomainModel(entity: PatientEntity): Patient {
+export class PatientMapper implements IEntityMapper<PatientEntity, Patient> {
+  public toDomainModel(entity: PatientEntity): Patient {
     const patient = new Patient({
       id: entity.id,
       avatar: entity.avatar,
@@ -20,7 +21,7 @@ export class PatientMapper {
     return patient
   }
 
-  public static toPersistence(domainModel: Patient): PatientEntity {
+  public toPersistence(domainModel: Patient): PatientEntity {
     const patientEntity = new PatientEntity()
     patientEntity.id = domainModel.id
     patientEntity.avatar = domainModel.avatar

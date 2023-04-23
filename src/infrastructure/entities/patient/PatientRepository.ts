@@ -1,4 +1,4 @@
-import { DataSource, Repository } from 'typeorm'
+import { DataSource } from 'typeorm'
 import { IPatientRepository } from '../../../domain/patient/interfaces/repositories/IPatientRepository'
 import { BaseRepository } from '../BaseRepository'
 
@@ -7,13 +7,11 @@ import { PatientEntity } from './PatientEntity'
 import { PatientMapper } from './PatientMapper'
 
 export class PatientRepository
-  extends BaseRepository<PatientEntity>
+  extends BaseRepository<PatientEntity, Patient>
   implements IPatientRepository
 {
-  private readonly repo: Repository<PatientEntity>
   constructor(dataSource: DataSource) {
-    super(PatientEntity, dataSource)
-    this.repo = this.getRepo()
+    super(PatientEntity, new PatientMapper(), dataSource)
   }
 
   public async findById(id: string): Promise<Patient | null> {
@@ -21,17 +19,9 @@ export class PatientRepository
       const entity = await this.getRepo().findOne({
         where: { id },
       })
-      return entity != null ? PatientMapper.toDomainModel(entity) : null
+      return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
       throw new Error('repository findById error')
-    }
-  }
-
-  public async save(patient: Patient): Promise<void> {
-    try {
-      await this.getRepo().save(patient)
-    } catch (e) {
-      throw new Error('repository findByEmail error')
     }
   }
 }
