@@ -2,7 +2,8 @@
 
 @usersPath = {{hostname}}/api/users
 
-### post user
+### user login
+# @name login
 POST {{usersPath}}/login
 Content-Type: application/json
 
@@ -11,15 +12,17 @@ Content-Type: application/json
   "password": "user1"
 }
 ###
+@accessToken = Bearer {{login.response.body.token}}
 
 ### get user
-@userId = 5630a6d0-656b-4fa1-b20d-d6d47d3b5f19
-GET {{usersPath}}/{{userId}}
+GET {{usersPath}}/me
+Authorization: {{accessToken}}
 Content-Type: application/json
 ###
 
 ### Register new user
 POST {{usersPath}}
+Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
