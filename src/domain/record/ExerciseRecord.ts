@@ -32,7 +32,6 @@ export enum ExerciseType {
   'SOCCER' = 'SOCCER',
   'TENNIS' = 'TENNIS',
   'AEROBIC_EXERCISE' = 'AEROBIC_EXERCISE',
-  'OTHER' = 'OTHER',
 }
 
 export enum IntensityType {
