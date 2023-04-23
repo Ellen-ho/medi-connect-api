@@ -1,9 +1,13 @@
 import { GlycatedHemoglobinRecord } from '../../../domain/record/GlycatedHemoglobinRecord'
+import { IEntityMapper } from '../../../domain/shared/IEntityMapper'
 import { PatientMapper } from '../patient/PatientMapper'
 import { GlycatedHemoglobinRecordEntity } from './GlycatedHemoglobinRecordEntity'
 
-export class GlycatedHemoglobinRecordMapper {
-  public static toDomainModel(
+export class GlycatedHemoglobinRecordMapper
+  implements
+    IEntityMapper<GlycatedHemoglobinRecordEntity, GlycatedHemoglobinRecord>
+{
+  public toDomainModel(
     entity: GlycatedHemoglobinRecordEntity
   ): GlycatedHemoglobinRecord {
     const glycatedHemoglobinRecord = new GlycatedHemoglobinRecord({
@@ -13,12 +17,12 @@ export class GlycatedHemoglobinRecordMapper {
       glycatedHemoglobinUnit: entity.glycatedHemoglobinUnit,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
-      patient: PatientMapper.toDomainModel(entity.patient),
+      patient: new PatientMapper().toDomainModel(entity.patient),
     })
     return glycatedHemoglobinRecord
   }
 
-  public static toPersistence(
+  public toPersistence(
     domainModel: GlycatedHemoglobinRecord
   ): GlycatedHemoglobinRecordEntity {
     const glycatedHemoglobinRecordEntity = new GlycatedHemoglobinRecordEntity()
@@ -31,7 +35,7 @@ export class GlycatedHemoglobinRecordMapper {
       domainModel.glycatedHemoglobinUnit
     glycatedHemoglobinRecordEntity.createdAt = domainModel.createdAt
     glycatedHemoglobinRecordEntity.updatedAt = domainModel.updatedAt
-    glycatedHemoglobinRecordEntity.patient = PatientMapper.toPersistence(
+    glycatedHemoglobinRecordEntity.patient = new PatientMapper().toPersistence(
       domainModel.patient
     )
 

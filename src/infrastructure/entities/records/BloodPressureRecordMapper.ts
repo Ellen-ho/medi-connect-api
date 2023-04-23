@@ -1,11 +1,12 @@
 import { BloodPressureRecord } from '../../../domain/record/BloodPressureRecord'
+import { IEntityMapper } from '../../../domain/shared/IEntityMapper'
 import { PatientMapper } from '../patient/PatientMapper'
 import { BloodPressureRecordEntity } from './BloodPressureRecordEntity'
 
-export class BloodPressureRecordMapper {
-  public static toDomainModel(
-    entity: BloodPressureRecordEntity
-  ): BloodPressureRecord {
+export class BloodPressureRecordMapper
+  implements IEntityMapper<BloodPressureRecordEntity, BloodPressureRecord>
+{
+  public toDomainModel(entity: BloodPressureRecordEntity): BloodPressureRecord {
     const bloodPressureRecord = new BloodPressureRecord({
       id: entity.id,
       bloodPressureDate: entity.bloodPressureDate,
@@ -15,12 +16,12 @@ export class BloodPressureRecordMapper {
       bloodPressureNote: entity.bloodPressureNote,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
-      patient: PatientMapper.toDomainModel(entity.patient),
+      patient: new PatientMapper().toDomainModel(entity.patient),
     })
     return bloodPressureRecord
   }
 
-  public static toPersistence(
+  public toPersistence(
     domainModel: BloodPressureRecord
   ): BloodPressureRecordEntity {
     const bloodPressureRecordEntity = new BloodPressureRecordEntity()
@@ -34,7 +35,7 @@ export class BloodPressureRecordMapper {
     bloodPressureRecordEntity.bloodPressureNote = domainModel.bloodPressureNote
     bloodPressureRecordEntity.createdAt = domainModel.createdAt
     bloodPressureRecordEntity.updatedAt = domainModel.updatedAt
-    bloodPressureRecordEntity.patient = PatientMapper.toPersistence(
+    bloodPressureRecordEntity.patient = new PatientMapper().toPersistence(
       domainModel.patient
     )
 

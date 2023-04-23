@@ -1,9 +1,12 @@
 import { FoodRecord } from '../../../domain/record/FoodRecord'
+import { IEntityMapper } from '../../../domain/shared/IEntityMapper'
 import { PatientMapper } from '../patient/PatientMapper'
 import { FoodRecordEntity } from './FoodRecordEntity'
 
-export class FoodRecordMapper {
-  public static toDomainModel(entity: FoodRecordEntity): FoodRecord {
+export class FoodRecordMapper
+  implements IEntityMapper<FoodRecordEntity, FoodRecord>
+{
+  public toDomainModel(entity: FoodRecordEntity): FoodRecord {
     const foodRecord = new FoodRecord({
       id: entity.id,
       foodImage: entity.foodImage,
@@ -15,12 +18,12 @@ export class FoodRecordMapper {
       foodNote: entity.foodNote,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
-      patient: PatientMapper.toDomainModel(entity.patient),
+      patient: new PatientMapper().toDomainModel(entity.patient),
     })
     return foodRecord
   }
 
-  public static toPersistence(domainModel: FoodRecord): FoodRecordEntity {
+  public toPersistence(domainModel: FoodRecord): FoodRecordEntity {
     const foodRecordEntity = new FoodRecordEntity()
     foodRecordEntity.id = domainModel.id
     foodRecordEntity.foodImage = domainModel.foodImage
@@ -32,7 +35,9 @@ export class FoodRecordMapper {
     foodRecordEntity.foodNote = domainModel.foodNote
     foodRecordEntity.createdAt = domainModel.createdAt
     foodRecordEntity.updatedAt = domainModel.updatedAt
-    foodRecordEntity.patient = PatientMapper.toPersistence(domainModel.patient)
+    foodRecordEntity.patient = new PatientMapper().toPersistence(
+      domainModel.patient
+    )
 
     return foodRecordEntity
   }

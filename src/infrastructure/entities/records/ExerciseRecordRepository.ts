@@ -1,4 +1,4 @@
-import { DataSource, Repository } from 'typeorm'
+import { DataSource } from 'typeorm'
 import { BaseRepository } from '../BaseRepository'
 
 import { IExerciseRecordRepository } from '../../../domain/record/interfaces/repositories/IExerciseRepository'
@@ -7,13 +7,11 @@ import { ExerciseRecordEntity } from './ExerciseRecordEntity'
 import { ExerciseRecordMapper } from './ExerciseRecordMapper'
 
 export class ExerciseRecordRepository
-  extends BaseRepository<ExerciseRecordEntity>
+  extends BaseRepository<ExerciseRecordEntity, ExerciseRecord>
   implements IExerciseRecordRepository
 {
-  private readonly repo: Repository<ExerciseRecordEntity>
   constructor(dataSource: DataSource) {
-    super(ExerciseRecordEntity, dataSource)
-    this.repo = this.getRepo()
+    super(ExerciseRecordEntity, new ExerciseRecordMapper(), dataSource)
   }
 
   public async findById(id: string): Promise<ExerciseRecord | null> {
@@ -21,17 +19,9 @@ export class ExerciseRecordRepository
       const entity = await this.getRepo().findOne({
         where: { id },
       })
-      return entity != null ? ExerciseRecordMapper.toDomainModel(entity) : null
+      return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
       throw new Error('repository findById error')
-    }
-  }
-
-  public async save(exerciseRecord: ExerciseRecord): Promise<void> {
-    try {
-      await this.getRepo().save(exerciseRecord)
-    } catch (e) {
-      throw new Error('repository findByEmail error')
     }
   }
 }

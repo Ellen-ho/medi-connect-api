@@ -1,9 +1,12 @@
 import { SleepRecord } from '../../../domain/record/SleepRecord'
+import { IEntityMapper } from '../../../domain/shared/IEntityMapper'
 import { PatientMapper } from '../patient/PatientMapper'
 import { SleepRecordEntity } from './SleepRecordEntity'
 
-export class SleepRecordMapper {
-  public static toDomainModel(entity: SleepRecordEntity): SleepRecord {
+export class SleepRecordMapper
+  implements IEntityMapper<SleepRecordEntity, SleepRecord>
+{
+  public toDomainModel(entity: SleepRecordEntity): SleepRecord {
     const sleepRecord = new SleepRecord({
       id: entity.id,
       sleepDate: entity.sleepDate,
@@ -14,12 +17,12 @@ export class SleepRecordMapper {
       sleepNote: entity.sleepNote,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
-      patient: PatientMapper.toDomainModel(entity.patient),
+      patient: new PatientMapper().toDomainModel(entity.patient),
     })
     return sleepRecord
   }
 
-  public static toPersistence(domainModel: SleepRecord): SleepRecordEntity {
+  public toPersistence(domainModel: SleepRecord): SleepRecordEntity {
     const sleepRecordEntity = new SleepRecordEntity()
     sleepRecordEntity.id = domainModel.id
     sleepRecordEntity.sleepDate = domainModel.sleepDate
@@ -30,6 +33,9 @@ export class SleepRecordMapper {
     sleepRecordEntity.sleepNote = domainModel.sleepNote
     sleepRecordEntity.createdAt = domainModel.createdAt
     sleepRecordEntity.updatedAt = domainModel.updatedAt
+    sleepRecordEntity.patient = new PatientMapper().toPersistence(
+      domainModel.patient
+    )
 
     return sleepRecordEntity
   }

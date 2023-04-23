@@ -1,4 +1,4 @@
-import { DataSource, Repository } from 'typeorm'
+import { DataSource } from 'typeorm'
 import { BaseRepository } from '../BaseRepository'
 import { BloodSugarRecordEntity } from './BloodSugarRecordEntity'
 import { IBloodSugarRecordRepository } from '../../../domain/record/interfaces/repositories/IBloodSugarRecordRepository'
@@ -6,13 +6,11 @@ import { BloodSugarRecord } from '../../../domain/record/BloodSugarRecord'
 import { BloodSugarRecordMapper } from './BloodSugarRecordMapper'
 
 export class BloodSugarRecordRepository
-  extends BaseRepository<BloodSugarRecordEntity>
+  extends BaseRepository<BloodSugarRecordEntity, BloodSugarRecord>
   implements IBloodSugarRecordRepository
 {
-  private readonly repo: Repository<BloodSugarRecordEntity>
   constructor(dataSource: DataSource) {
-    super(BloodSugarRecordEntity, dataSource)
-    this.repo = this.getRepo()
+    super(BloodSugarRecordEntity, new BloodSugarRecordMapper(), dataSource)
   }
 
   public async findById(id: string): Promise<BloodSugarRecord | null> {
@@ -20,19 +18,9 @@ export class BloodSugarRecordRepository
       const entity = await this.getRepo().findOne({
         where: { id },
       })
-      return entity != null
-        ? BloodSugarRecordMapper.toDomainModel(entity)
-        : null
+      return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
       throw new Error('repository findById error')
-    }
-  }
-
-  public async save(bloodSugarRecord: BloodSugarRecord): Promise<void> {
-    try {
-      await this.getRepo().save(bloodSugarRecord)
-    } catch (e) {
-      throw new Error('repository findByEmail error')
     }
   }
 }
