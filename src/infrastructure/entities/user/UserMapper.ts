@@ -9,6 +9,7 @@ export class UserMapper implements IEntityMapper<UserEntity, User> {
       email: entity.email,
       displayName: entity.displayName,
       hashedPassword: entity.password,
+      role: entity.role,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
     })
@@ -21,6 +22,7 @@ export class UserMapper implements IEntityMapper<UserEntity, User> {
     userEntity.email = domainModel.email
     userEntity.displayName = domainModel.displayName
     userEntity.password = domainModel.hashedPassword
+    userEntity.role = domainModel.role
     userEntity.createdAt = domainModel.createdAt
     userEntity.updatedAt = domainModel.updatedAt
 

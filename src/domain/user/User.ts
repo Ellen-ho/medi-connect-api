@@ -3,8 +3,14 @@ export interface IUserProps {
   email: string
   hashedPassword: string
   displayName: string
+  role: UserRoleType
   createdAt: Date
   updatedAt: Date
+}
+
+export enum UserRoleType {
+  PATIENT = 'PATIENT',
+  DOCTOR = 'DOCTOR',
 }
 
 export class User {
@@ -24,6 +30,10 @@ export class User {
 
   public get hashedPassword(): string {
     return this.props.hashedPassword
+  }
+
+  public get role(): UserRoleType {
+    return this.props.role
   }
 
   public get createdAt(): Date {

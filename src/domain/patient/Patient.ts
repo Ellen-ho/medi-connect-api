@@ -1,16 +1,18 @@
 export interface IPatientProps {
   id: string
-  avatar: string
+  avatar: string | null
   firstName: string
   lastName: string
   birthDate: Date
   gender: GenderType
-  medicalHistory: IMedicalHistoryItem[]
+  medicalHistory: IMedicalHistoryItem[] | null
   allergy: IAllergy
-  familyHistory: IFamilyHistoryItem[]
+  familyHistory: IFamilyHistoryItem[] | null
   height: number
   heightUnit: HeightUnitType
-  medicinceUsage: IMedicinceUsageItem[]
+  medicinceUsage: IMedicinceUsageItem[] | null
+  createdAt: Date
+  updatedAt: Date
 }
 
 export enum HeightUnitType {
@@ -91,7 +93,7 @@ export class Patient {
     return this.props.id
   }
 
-  public get avatar(): string {
+  public get avatar(): string | null {
     return this.props.avatar
   }
 
@@ -111,7 +113,7 @@ export class Patient {
     return this.props.gender
   }
 
-  public get medicalHistory(): IMedicalHistoryItem[] {
+  public get medicalHistory(): IMedicalHistoryItem[] | null {
     return this.props.medicalHistory
   }
 
@@ -119,7 +121,7 @@ export class Patient {
     return this.props.allergy
   }
 
-  public get familyHistory(): IFamilyHistoryItem[] {
+  public get familyHistory(): IFamilyHistoryItem[] | null {
     return this.props.familyHistory
   }
 
@@ -131,7 +133,15 @@ export class Patient {
     return this.props.heightUnit
   }
 
-  public get medicinceUsage(): IMedicinceUsageItem[] {
+  public get medicinceUsage(): IMedicinceUsageItem[] | null {
     return this.props.medicinceUsage
+  }
+
+  public get createdAt(): Date {
+    return this.props.createdAt
+  }
+
+  public get updatedAt(): Date {
+    return this.props.updatedAt
   }
 }

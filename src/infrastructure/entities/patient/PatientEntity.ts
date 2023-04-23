@@ -22,8 +22,8 @@ export class PatientEntity {
   @PrimaryGeneratedColumn('uuid')
   public id!: string
 
-  @Column({ name: 'avatar', type: 'varchar', length: 255 })
-  public avatar!: string
+  @Column({ name: 'avatar', type: 'varchar', length: 255, nullable: true })
+  public avatar!: string | null
 
   @Column({ name: 'first_name', type: 'varchar', length: 50 })
   public firstName!: string
@@ -37,14 +37,14 @@ export class PatientEntity {
   @Column({ name: 'gender', type: 'varchar', length: 20 })
   public gender!: GenderType
 
-  @Column({ name: 'medical_history', type: 'jsonb' })
-  public medicalHistory!: IMedicalHistoryItem[]
+  @Column({ name: 'medical_history', type: 'jsonb', nullable: true })
+  public medicalHistory!: IMedicalHistoryItem[] | null
 
   @Column({ name: 'allergy', type: 'jsonb' })
   public allergy!: IAllergy
 
-  @Column({ name: 'family_history', type: 'jsonb' })
-  public familyHistory!: IFamilyHistoryItem[]
+  @Column({ name: 'family_history', type: 'jsonb', nullable: true })
+  public familyHistory!: IFamilyHistoryItem[] | null
 
   @Column({
     name: 'height',
@@ -58,8 +58,8 @@ export class PatientEntity {
   @Column({ name: 'height_unit', type: 'varchar', length: 20 })
   public heightUnit!: HeightUnitType
 
-  @Column({ name: 'medicince_usage', type: 'jsonb' })
-  public medicinceUsage!: IMedicinceUsageItem[]
+  @Column({ name: 'medicince_usage', type: 'jsonb', nullable: true })
+  public medicinceUsage!: IMedicinceUsageItem[] | null
 
   @CreateDateColumn({ name: 'created_at' })
   public createdAt!: Date
