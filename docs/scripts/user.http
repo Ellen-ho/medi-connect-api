@@ -22,12 +22,12 @@ Content-Type: application/json
 
 ### Register new user
 POST {{usersPath}}
-Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "displayName": "user1",
-  "email": "user1@mail.com",
-  "password": "user1"
+  "displayName":"",
+  "email": "",
+  "password": "user1",
+  "role": "PATIENT"
 }
 ###

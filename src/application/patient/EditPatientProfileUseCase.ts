@@ -32,7 +32,7 @@ interface EditPatientProfileResponse {
   medicinceUsage: IMedicinceUsageItem[] | null
 }
 
-export class EditPatientProfile {
+export class EditPatientProfileUseCase {
   constructor(
     private readonly patientRepository: IPatientRepository,
     private readonly uuidService: IUuidService

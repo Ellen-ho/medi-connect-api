@@ -30,7 +30,7 @@ interface CreatePatientProfileResponse {
   createdAt: Date
 }
 
-export class CreatePatientProfile {
+export class CreatePatientProfileUseCase {
   constructor(
     private readonly patientRepository: IPatientRepository,
     private readonly uuidService: IUuidService

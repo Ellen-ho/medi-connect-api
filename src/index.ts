@@ -4,8 +4,8 @@ import dotenv from 'dotenv'
 import { PostgresDatabase } from './infrastructure/database/PostgresDatabase'
 import { UuidService } from './infrastructure/utils/UuidService'
 import { UserRepository } from './infrastructure/entities/user/UserRepository'
-import { GetUser } from './application/user/GetUser'
-import { CreateUser } from './application/user/CreateUser'
+import { GetUserUseCase } from './application/user/GetUserUseCase'
+import { CreateUserUseCase } from './application/user/CreateUserUseCase'
 import { UserController } from './infrastructure/http/controllers/UserController'
 import { UserRoutes } from './infrastructure/http/routes/UserRoutes'
 import { MainRoutes } from './infrastructure/http/routes'
@@ -38,9 +38,13 @@ async function main(): Promise<void> {
    * User Domain
    */
   const userRepository = new UserRepository(dataSource)
-  const getUser = new GetUser(userRepository)
-  const createUser = new CreateUser(userRepository, uuidService, hashGenerator)
-  const userController = new UserController(getUser, createUser)
+  const getUserUseCase = new GetUserUseCase(userRepository)
+  const createUserUseCase = new CreateUserUseCase(
+    userRepository,
+    uuidService,
+    hashGenerator
+  )
+  const userController = new UserController(getUserUseCase, createUserUseCase)
 
   const app: Express = express()
   app.use(express.urlencoded({ extended: true }))
