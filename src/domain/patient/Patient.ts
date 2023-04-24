@@ -84,7 +84,7 @@ export enum MedicineTimeType {
   OTHER = 'OTHER',
 }
 
-interface IUpdateData {
+interface IPatirntProfileUpdateData {
   [key: string]: any
   avatar: string | null
   firstName: string
@@ -157,7 +157,7 @@ export class Patient {
     return this.props.user
   }
 
-  public updateData(data: IUpdateData): void {
+  public updateData(data: IPatirntProfileUpdateData): void {
     // TODO: improve this
     this.props.avatar = data.avatar
     this.props.firstName = data.firstName
