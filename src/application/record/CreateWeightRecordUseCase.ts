@@ -22,7 +22,7 @@ interface CreateWeightRecordResponse {
   updatedAt: Date
 }
 
-export class CreateWeightRecordRecordUseCase {
+export class CreateWeightRecordUseCase {
   constructor(
     private readonly weightRecordRepository: IWeightRecordRepository,
     private readonly patientRepository: IPatientRepository,
