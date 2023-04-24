@@ -9,9 +9,10 @@ import {
 } from '../../domain/patient/Patient'
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { IUuidService } from '../../domain/utils/IUuidService'
+import { User } from '../../domain/user/User'
 
 interface CreatePatientProfileRequest {
-  userId: string
+  user: User
   avatar: string | null
   firstName: string
   lastName: string
@@ -40,7 +41,7 @@ export class CreatePatientProfileUseCase {
     request: CreatePatientProfileRequest
   ): Promise<CreatePatientProfileResponse> {
     const {
-      userId,
+      user,
       avatar,
       firstName,
       lastName,
@@ -54,9 +55,11 @@ export class CreatePatientProfileUseCase {
       medicinceUsage,
     } = request
 
-    const patientProfileExists = await this.patientRepository.findById(userId)
+    const existingPatientProfile = await this.patientRepository.findByUserId(
+      user.id
+    )
 
-    if (patientProfileExists != null) {
+    if (existingPatientProfile != null) {
       throw new Error('Patient already exists.')
     }
 
@@ -75,6 +78,7 @@ export class CreatePatientProfileUseCase {
       medicinceUsage,
       createdAt: new Date(),
       updatedAt: new Date(),
+      user,
     })
 
     await this.patientRepository.save(patient)

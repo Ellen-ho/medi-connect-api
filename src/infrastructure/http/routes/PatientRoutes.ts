@@ -6,11 +6,17 @@ export class PatientRoutes {
   private readonly routes: Router
   constructor(private readonly patientController: IPatientController) {
     this.routes = Router()
-    this.routes.patch(
-      '/profile',
-      authenticated,
-      asyncHandler(this.patientController.editPatientProfile)
-    )
+    this.routes
+      .post(
+        '/profile',
+        authenticated,
+        asyncHandler(this.patientController.createPatientProfile)
+      )
+      .patch(
+        '/profile',
+        authenticated,
+        asyncHandler(this.patientController.editPatientProfile)
+      )
   }
 
   public createRouter(): Router {

@@ -12,6 +12,11 @@ import { MainRoutes } from './infrastructure/http/routes'
 import { errorHandler } from './infrastructure/http/middlewares/ErrorHandler'
 import { BcryptHashGenerator } from './infrastructure/utils/BcryptHashGenerator'
 import { PassportConfig } from './infrastructure/config/passportConfig'
+import { PatientRoutes } from './infrastructure/http/routes/PatientRoutes'
+import { PatientController } from './infrastructure/http/controllers/PatientController'
+import { CreatePatientProfileUseCase } from './application/patient/CreatePatientProfileUseCase'
+import { EditPatientProfileUseCase } from './application/patient/EditPatientProfileUseCase'
+import { PatientRepository } from './infrastructure/entities/patient/PatientRepository'
 
 void main()
 
@@ -44,7 +49,24 @@ async function main(): Promise<void> {
     uuidService,
     hashGenerator
   )
+
+  const patientRepository = new PatientRepository(dataSource)
+  const createPatientProfileUseCase = new CreatePatientProfileUseCase(
+    patientRepository,
+    uuidService
+  )
+  const editPatientProfileUseCase = new EditPatientProfileUseCase(
+    patientRepository
+  )
+
+  /**
+   * Controllers
+   */
   const userController = new UserController(getUserUseCase, createUserUseCase)
+  const patientController = new PatientController(
+    createPatientProfileUseCase,
+    editPatientProfileUseCase
+  )
 
   const app: Express = express()
   app.use(express.urlencoded({ extended: true }))
@@ -56,7 +78,9 @@ async function main(): Promise<void> {
    * Routes
    */
   const userRoutes = new UserRoutes(userController)
-  const mainRoutes = new MainRoutes(userRoutes)
+  const patientRoutes = new PatientRoutes(patientController)
+
+  const mainRoutes = new MainRoutes(userRoutes, patientRoutes)
   app.use('/api', mainRoutes.createRouter())
 
   app.use(errorHandler)

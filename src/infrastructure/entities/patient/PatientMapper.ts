@@ -1,5 +1,6 @@
 import { Patient } from '../../../domain/patient/Patient'
 import { IEntityMapper } from '../../../domain/shared/IEntityMapper'
+import { UserMapper } from '../user/UserMapper'
 import { PatientEntity } from './PatientEntity'
 
 export class PatientMapper implements IEntityMapper<PatientEntity, Patient> {
@@ -19,6 +20,7 @@ export class PatientMapper implements IEntityMapper<PatientEntity, Patient> {
       medicinceUsage: entity.medicinceUsage,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
+      user: new UserMapper().toDomainModel(entity.user),
     })
     return patient
   }
@@ -39,6 +41,7 @@ export class PatientMapper implements IEntityMapper<PatientEntity, Patient> {
     patientEntity.medicinceUsage = domainModel.medicinceUsage
     patientEntity.createdAt = domainModel.createdAt
     patientEntity.updatedAt = domainModel.updatedAt
+    patientEntity.user = new UserMapper().toPersistence(domainModel.user)
 
     return patientEntity
   }

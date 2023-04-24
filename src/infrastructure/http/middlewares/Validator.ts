@@ -1,11 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import Joi from 'joi'
 
-export enum ValidationTarget {
-  BODY = 'body',
-  PARAMS = 'params',
-  QUERY = 'query',
-}
+type ValidationTarget = 'body' | 'params' | 'query'
 
 type IValidatorSchema = Record<string, Joi.ObjectSchema>
 
