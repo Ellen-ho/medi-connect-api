@@ -1,9 +1,11 @@
-import { Patient } from '../../domain/patient/Patient'
+import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { SleepQualityType, SleepRecord } from '../../domain/record/SleepRecord'
 import { ISleepRecordRepository } from '../../domain/record/interfaces/repositories/ISleepRecordRepository'
+import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
 
 interface CreateSleepRecordRequest {
+  user: User
   sleepDate: Date
   sleepTime: Date
   wakeUpTime: Date
@@ -26,14 +28,21 @@ interface CreateSleepRecordResponse {
 export class CreateSleepRecord {
   constructor(
     private readonly sleepRecordRepository: ISleepRecordRepository,
+    private readonly patientRepository: IPatientRepository,
     private readonly uuidService: IUuidService
   ) {}
 
   public async execute(
     request: CreateSleepRecordRequest
   ): Promise<CreateSleepRecordResponse> {
-    const { sleepDate, sleepTime, wakeUpTime, sleepQuality, sleepNote } =
+    const { user, sleepDate, sleepTime, wakeUpTime, sleepQuality, sleepNote } =
       request
+
+    const existingPatient = await this.patientRepository.findByUserId(user.id)
+
+    if (existingPatient == null) {
+      throw new Error('Patient does not exist.')
+    }
 
     const sleepRecord = new SleepRecord({
       id: this.uuidService.generateUuid(),
@@ -45,7 +54,7 @@ export class CreateSleepRecord {
       sleepNote,
       createdAt: new Date(),
       updatedAt: new Date(),
-      patient: new Patient(),
+      patient: existingPatient,
     })
     await this.sleepRecordRepository.save(sleepRecord)
 

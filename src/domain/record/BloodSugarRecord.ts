@@ -3,19 +3,12 @@ import { Patient } from '../patient/Patient'
 export interface IBloodSugarRecordProps {
   id: string
   bloodSugarDate: Date
-  bloodSugarValue: number
+  bloodSugarValueMmo: number // mmol/L
   bloodSugarNote: string | null
-  bloodSugarUnit: BloodSugarUnitType
   createdAt: Date
   updatedAt: Date
   patient: Patient
 }
-
-export enum BloodSugarUnitType {
-  MG_PER_DL = 'mg/dl',
-  MMO_PER_L = 'mmol/L',
-}
-
 export class BloodSugarRecord {
   constructor(private readonly props: IBloodSugarRecordProps) {}
 
@@ -27,16 +20,12 @@ export class BloodSugarRecord {
     return this.props.bloodSugarDate
   }
 
-  public get bloodSugarValue(): number {
-    return this.props.bloodSugarValue
+  public get bloodSugarValueMmo(): number {
+    return this.props.bloodSugarValueMmo
   }
 
   public get bloodSugarNote(): string | null {
     return this.props.bloodSugarNote
-  }
-
-  public get bloodSugarUnit(): BloodSugarUnitType {
-    return this.props.bloodSugarUnit
   }
 
   public get createdAt(): Date {

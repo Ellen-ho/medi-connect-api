@@ -15,8 +15,7 @@ export class PatientMapper implements IEntityMapper<PatientEntity, Patient> {
       medicalHistory: entity.medicalHistory,
       allergy: entity.allergy,
       familyHistory: entity.familyHistory,
-      height: entity.height,
-      heightUnit: entity.heightUnit,
+      heightValueCm: entity.heightValueCm,
       medicinceUsage: entity.medicinceUsage,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
@@ -36,8 +35,7 @@ export class PatientMapper implements IEntityMapper<PatientEntity, Patient> {
     patientEntity.medicalHistory = domainModel.medicalHistory
     patientEntity.allergy = domainModel.allergy
     patientEntity.familyHistory = domainModel.familyHistory
-    patientEntity.height = domainModel.height
-    patientEntity.heightUnit = domainModel.heightUnit
+    patientEntity.heightValueCm = domainModel.heightValueCm
     patientEntity.medicinceUsage = domainModel.medicinceUsage
     patientEntity.createdAt = domainModel.createdAt
     patientEntity.updatedAt = domainModel.updatedAt

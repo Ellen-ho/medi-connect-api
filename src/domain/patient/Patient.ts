@@ -10,16 +10,11 @@ export interface IPatientProps {
   medicalHistory: IMedicalHistoryItem[] | null
   allergy: IAllergy
   familyHistory: IFamilyHistoryItem[] | null
-  height: number
-  heightUnit: HeightUnitType
+  heightValueCm: number
   medicinceUsage: IMedicinceUsageItem[] | null
   createdAt: Date
   updatedAt: Date
   user: User
-}
-
-export enum HeightUnitType {
-  CENTIMETER = 'CENTIMETER',
 }
 
 export enum GenderType {
@@ -99,8 +94,7 @@ interface IUpdateData {
   medicalHistory: IMedicalHistoryItem[] | null
   allergy: IAllergy
   familyHistory: IFamilyHistoryItem[] | null
-  height: number
-  heightUnit: HeightUnitType
+  heightValueCm: number
   medicinceUsage: IMedicinceUsageItem[] | null
 }
 
@@ -143,12 +137,8 @@ export class Patient {
     return this.props.familyHistory
   }
 
-  public get height(): number {
-    return this.props.height
-  }
-
-  public get heightUnit(): HeightUnitType {
-    return this.props.heightUnit
+  public get heightValueCm(): number {
+    return this.props.heightValueCm
   }
 
   public get medicinceUsage(): IMedicinceUsageItem[] | null {
@@ -177,8 +167,7 @@ export class Patient {
     this.props.medicalHistory = data.medicalHistory
     this.props.allergy = data.allergy
     this.props.familyHistory = data.familyHistory
-    this.props.height = data.height
-    this.props.heightUnit = data.heightUnit
+    this.props.heightValueCm = data.heightValueCm
     this.props.medicinceUsage = data.medicinceUsage
   }
 }

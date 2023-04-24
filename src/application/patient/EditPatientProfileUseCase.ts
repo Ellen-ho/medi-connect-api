@@ -1,6 +1,5 @@
 import {
   GenderType,
-  HeightUnitType,
   IAllergy,
   IFamilyHistoryItem,
   IMedicalHistoryItem,
@@ -18,8 +17,7 @@ interface EditPatientProfileRequest {
   medicalHistory: IMedicalHistoryItem[] | null
   allergy: IAllergy
   familyHistory: IFamilyHistoryItem[] | null
-  height: number
-  heightUnit: HeightUnitType
+  heightValueCm: number
   medicinceUsage: IMedicinceUsageItem[] | null
   user: User
 }
@@ -34,8 +32,7 @@ interface EditPatientProfileResponse {
   medicalHistory: IMedicalHistoryItem[] | null
   allergy: IAllergy
   familyHistory: IFamilyHistoryItem[] | null
-  height: number
-  heightUnit: HeightUnitType
+  heightValueCm: number
   medicinceUsage: IMedicinceUsageItem[] | null
   createdAt: Date
   updatedAt: Date
@@ -57,8 +54,7 @@ export class EditPatientProfileUseCase {
       medicalHistory,
       allergy,
       familyHistory,
-      height,
-      heightUnit,
+      heightValueCm,
       medicinceUsage,
     } = request
 
@@ -79,8 +75,7 @@ export class EditPatientProfileUseCase {
       medicalHistory,
       allergy,
       familyHistory,
-      height,
-      heightUnit,
+      heightValueCm,
       medicinceUsage,
     })
 
@@ -96,8 +91,7 @@ export class EditPatientProfileUseCase {
       medicalHistory: existingPatientProfile.medicalHistory,
       allergy: existingPatientProfile.allergy,
       familyHistory: existingPatientProfile.familyHistory,
-      height: existingPatientProfile.height,
-      heightUnit: existingPatientProfile.heightUnit,
+      heightValueCm: existingPatientProfile.heightValueCm,
       medicinceUsage: existingPatientProfile.medicinceUsage,
       createdAt: existingPatientProfile.createdAt,
       updatedAt: existingPatientProfile.updatedAt,

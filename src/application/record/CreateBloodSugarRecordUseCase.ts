@@ -1,24 +1,21 @@
-import { Patient } from '../../domain/patient/Patient'
-import {
-  BloodSugarRecord,
-  BloodSugarUnitType,
-} from '../../domain/record/BloodSugarRecord'
+import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
+import { BloodSugarRecord } from '../../domain/record/BloodSugarRecord'
 import { IBloodSugarRecordRepository } from '../../domain/record/interfaces/repositories/IBloodSugarRecordRepository'
+import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
 
 interface CreateBloodSugarRecordRequest {
+  user: User
   bloodSugarDate: Date
-  bloodSugarValue: number
+  bloodSugarValueMmol: number
   bloodSugarNote: string | null
-  bloodSugarUnit: BloodSugarUnitType
 }
 
 interface CreateBloodSugarRecordResponse {
   id: string
   bloodSugarDate: Date
-  bloodSugarValue: number
+  bloodSugarValueMmol: number
   bloodSugarNote: string | null
-  bloodSugarUnit: BloodSugarUnitType
   createdAt: Date
   updatedAt: Date
 }
@@ -26,33 +23,38 @@ interface CreateBloodSugarRecordResponse {
 export class CreateBloodSugarRecord {
   constructor(
     private readonly bloodSugarRecordRepository: IBloodSugarRecordRepository,
+    private readonly patientRepository: IPatientRepository,
     private readonly uuidService: IUuidService
   ) {}
 
   public async execute(
     request: CreateBloodSugarRecordRequest
   ): Promise<CreateBloodSugarRecordResponse> {
-    const { bloodSugarDate, bloodSugarValue, bloodSugarNote, bloodSugarUnit } =
+    const { user, bloodSugarDate, bloodSugarValueMmol, bloodSugarNote } =
       request
+
+    const existingPatient = await this.patientRepository.findByUserId(user.id)
+
+    if (existingPatient == null) {
+      throw new Error('Patient does not exist.')
+    }
 
     const bloodSugarRecord = new BloodSugarRecord({
       id: this.uuidService.generateUuid(),
       bloodSugarDate,
-      bloodSugarValue,
+      bloodSugarValueMmol,
       bloodSugarNote,
-      bloodSugarUnit,
       createdAt: new Date(),
       updatedAt: new Date(),
-      patient: new Patient(),
+      patient: existingPatient,
     })
     await this.bloodSugarRecordRepository.save(bloodSugarRecord)
 
     return {
       id: bloodSugarRecord.id,
       bloodSugarDate: bloodSugarRecord.bloodSugarDate,
-      bloodSugarValue: bloodSugarRecord.bloodSugarValue,
+      bloodSugarValueMmol: bloodSugarRecord.bloodSugarValueMmol,
       bloodSugarNote: bloodSugarRecord.bloodSugarNote,
-      bloodSugarUnit: bloodSugarRecord.bloodSugarUnit,
       createdAt: bloodSugarRecord.createdAt,
       updatedAt: bloodSugarRecord.updatedAt,
     }

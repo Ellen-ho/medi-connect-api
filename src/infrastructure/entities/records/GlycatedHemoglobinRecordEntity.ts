@@ -7,7 +7,6 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm'
-import { GlycatedHemoglobinUnitType } from '../../../domain/record/GlycatedHemoglobinRecord'
 import { PatientEntity } from '../patient/PatientEntity'
 
 @Entity('glycated_hemoglobin_records')
@@ -19,15 +18,12 @@ export class GlycatedHemoglobinRecordEntity {
   public glycatedHemoglobinDate!: Date
 
   @Column({
-    name: 'glycated_hemoglobin_value',
+    name: 'glycated_hemoglobin_value_percent',
     type: 'numeric',
     precision: 3,
     scale: 2,
   })
-  public glycatedHemoglobinValue!: number
-
-  @Column({ name: 'glycated_hemoglobin_unit', type: 'varchar', length: 20 })
-  public glycatedHemoglobinUnit!: GlycatedHemoglobinUnitType
+  public glycatedHemoglobinValuePercent!: number
 
   @CreateDateColumn({ name: 'created_at' })
   public createdAt!: Date

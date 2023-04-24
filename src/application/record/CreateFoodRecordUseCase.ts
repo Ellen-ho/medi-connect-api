@@ -1,9 +1,11 @@
-import { Patient } from '../../domain/patient/Patient'
+import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { FoodCategoryType, FoodRecord } from '../../domain/record/FoodRecord'
 import { IFoodRecordRepository } from '../../domain/record/interfaces/repositories/IFoodRecordRepository'
+import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
 
 interface CreateFoodRecordRequest {
+  user: User
   foodTime: Date
   foodCategory: FoodCategoryType
   foodAmount: number
@@ -24,13 +26,20 @@ interface CreateFoodRecordResponse {
 export class CreateFoodRecord {
   constructor(
     private readonly foodRecordRepository: IFoodRecordRepository,
+    private readonly patientRepository: IPatientRepository,
     private readonly uuidService: IUuidService
   ) {}
 
   public async execute(
     request: CreateFoodRecordRequest
   ): Promise<CreateFoodRecordResponse> {
-    const { foodTime, foodCategory, foodAmount, foodNote } = request
+    const { user, foodTime, foodCategory, foodAmount, foodNote } = request
+
+    const existingPatient = await this.patientRepository.findByUserId(user.id)
+
+    if (existingPatient == null) {
+      throw new Error('Patient does not exist.')
+    }
 
     // kc,foodTime,foodImage
     const foodRecord = new FoodRecord({
@@ -44,7 +53,7 @@ export class CreateFoodRecord {
       foodNote,
       createdAt: new Date(),
       updatedAt: new Date(),
-      patient: new Patient(),
+      patient: existingPatient,
     })
     await this.foodRecordRepository.save(foodRecord)
 

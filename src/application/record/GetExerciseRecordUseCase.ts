@@ -1,7 +1,9 @@
 import { ExerciseRecord } from '../../domain/record/ExerciseRecord'
 import { IExerciseRecordRepository } from '../../domain/record/interfaces/repositories/IExerciseRepository'
+import { User } from '../../domain/user/User'
 
 interface GetExerciseRecordRequest {
+  user: User
   id: string
 }
 

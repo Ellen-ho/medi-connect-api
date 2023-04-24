@@ -1,10 +1,12 @@
-import { Patient } from '../../domain/patient/Patient'
+import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { BloodPressureRecord } from '../../domain/record/BloodPressureRecord'
 import { IBloodPressureRecordRepository } from '../../domain/record/interfaces/repositories/IBloodPressureRecordRepository'
+import { User } from '../../domain/user/User'
 
 import { IUuidService } from '../../domain/utils/IUuidService'
 
 interface CreateBloodPressureRecordRequest {
+  user: User
   bloodPressureDate: Date
   systolicBloodPressure: number
   diastolicBloodPressure: number
@@ -26,6 +28,7 @@ interface CreateBloodPressureRecordResponse {
 export class CreateBloodPressureRecord {
   constructor(
     private readonly bloodPressureRecordRepository: IBloodPressureRecordRepository,
+    private readonly patientRepository: IPatientRepository,
     private readonly uuidService: IUuidService
   ) {}
 
@@ -33,12 +36,19 @@ export class CreateBloodPressureRecord {
     request: CreateBloodPressureRecordRequest
   ): Promise<CreateBloodPressureRecordResponse> {
     const {
+      user,
       bloodPressureDate,
       systolicBloodPressure,
       diastolicBloodPressure,
       heartBeat,
       bloodPressureNote,
     } = request
+
+    const existingPatient = await this.patientRepository.findByUserId(user.id)
+
+    if (existingPatient == null) {
+      throw new Error('Patient does not exist.')
+    }
 
     const bloodPressureRecord = new BloodPressureRecord({
       id: this.uuidService.generateUuid(),
@@ -49,7 +59,7 @@ export class CreateBloodPressureRecord {
       heartBeat,
       createdAt: new Date(),
       updatedAt: new Date(),
-      patient: new Patient(),
+      patient: existingPatient,
     })
     await this.bloodPressureRecordRepository.save(bloodPressureRecord)
 
