@@ -10,7 +10,7 @@ import {
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { IUuidService } from '../../domain/utils/IUuidService'
 
-interface CreatePatientRequest {
+interface CreatePatientProfileRequest {
   userId: string
   avatar: string | null
   firstName: string
@@ -25,20 +25,20 @@ interface CreatePatientRequest {
   medicinceUsage: IMedicinceUsageItem[] | null
 }
 
-interface CreatePatientResponse {
+interface CreatePatientProfileResponse {
   id: string
   createdAt: Date
 }
 
-export class CreatePatient {
+export class CreatePatientProfile {
   constructor(
     private readonly patientRepository: IPatientRepository,
     private readonly uuidService: IUuidService
   ) {}
 
   public async execute(
-    request: CreatePatientRequest
-  ): Promise<CreatePatientResponse> {
+    request: CreatePatientProfileRequest
+  ): Promise<CreatePatientProfileResponse> {
     const {
       userId,
       avatar,
@@ -54,9 +54,9 @@ export class CreatePatient {
       medicinceUsage,
     } = request
 
-    const patientExists = await this.patientRepository.findById(userId)
+    const patientProfileExists = await this.patientRepository.findById(userId)
 
-    if (patientExists != null) {
+    if (patientProfileExists != null) {
       throw new Error('Patient already exists.')
     }
 
