@@ -14,10 +14,10 @@ export interface ISleepRecordProps {
 }
 
 export enum SleepQualityType {
-  'EXCELLENT' = 'EXCELLENT',
-  'GOOD' = 'GOOD',
-  'FAIR' = 'FAIR',
-  'POOR' = 'POOR',
+  EXCELLENT = 'EXCELLENT',
+  GOOD = 'GOOD',
+  FAIR = 'FAIR',
+  POOR = 'POOR',
 }
 
 export class SleepRecord {
