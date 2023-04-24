@@ -1,9 +1,12 @@
-import { Patient } from '../../domain/patient/Patient'
+import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { WeightRecord } from '../../domain/record/WeightRecord'
-import { IWeightRecordRepository } from '../../domain/record/interfaces/IWeightRecordRepository'
+import { IWeightRecordRepository } from '../../domain/record/interfaces/repositories/IWeightRecordRepository'
+
+import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
 
 interface CreateWeightRecordRequest {
+  user: User
   weightDate: Date
   weightValueKg: number
   weightNote: string | null
@@ -19,35 +22,40 @@ interface CreateWeightRecordResponse {
   updatedAt: Date
 }
 
-export class CreateWeightRecordRecord {
+export class CreateWeightRecordRecordUseCase {
   constructor(
     private readonly weightRecordRepository: IWeightRecordRepository,
+    private readonly patientRepository: IPatientRepository,
     private readonly uuidService: IUuidService
   ) {}
 
   public async execute(
     request: CreateWeightRecordRequest
   ): Promise<CreateWeightRecordResponse> {
-    const { weightDate, weightValue, weightUnit, weightNote } = request
+    const { user, weightDate, weightValueKg, weightNote } = request
+
+    const existingPatient = await this.patientRepository.findByUserId(user.id)
+
+    if (existingPatient == null) {
+      throw new Error('Patient does not exist.')
+    }
 
     const weightRecord = new WeightRecord({
       id: this.uuidService.generateUuid(),
       weightDate,
-      weightValue,
-      weightUnit,
+      weightValueKg,
       bodyMassIndex: 20,
       weightNote,
       createdAt: new Date(),
       updatedAt: new Date(),
-      patient: new Patient(),
+      patient: existingPatient,
     })
     await this.weightRecordRepository.save(weightRecord)
 
     return {
       id: weightRecord.id,
       weightDate: weightRecord.weightDate,
-      weightValue: weightRecord.weightValue,
-      weightUnit: weightRecord.weightUnit,
+      weightValueKg: weightRecord.weightValueKg,
       bodyMassIndex: weightRecord.bodyMassIndex,
       weightNote: weightRecord.weightNote,
       createdAt: weightRecord.createdAt,
