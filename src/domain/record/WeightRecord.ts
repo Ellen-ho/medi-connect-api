@@ -3,20 +3,13 @@ import { Patient } from '../patient/Patient'
 export interface IWeightRecordProps {
   id: string
   weightDate: Date
-  weightValue: number
-  weightUnit: WeightUnitType
+  weightValueKg: number
   bodyMassIndex: number
   weightNote: string | null
   createdAt: Date
   updatedAt: Date
   patient: Patient
 }
-
-export enum WeightUnitType {
-  KILOGRAM = 'KILOGRAM',
-  POUND = 'POUND',
-}
-
 export class WeightRecord {
   constructor(private readonly props: IWeightRecordProps) {}
 
@@ -28,12 +21,8 @@ export class WeightRecord {
     return this.props.weightDate
   }
 
-  public get weightValue(): number {
-    return this.props.weightValue
-  }
-
-  public get weightUnit(): WeightUnitType {
-    return this.props.weightUnit
+  public get weightValueKg(): number {
+    return this.props.weightValueKg
   }
 
   public get bodyMassIndex(): number {

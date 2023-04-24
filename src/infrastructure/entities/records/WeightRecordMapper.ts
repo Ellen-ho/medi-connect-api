@@ -10,8 +10,7 @@ export class WeightRecordMapper
     const weightRecord = new WeightRecord({
       id: entity.id,
       weightDate: entity.weightDate,
-      weightValue: entity.weightValue,
-      weightUnit: entity.weightUnit,
+      weightValueKg: entity.weightValueKg,
       bodyMassIndex: entity.bodyMassIndex,
       weightNote: entity.weightNote,
       createdAt: entity.createdAt,
@@ -25,8 +24,7 @@ export class WeightRecordMapper
     const weightRecordEntity = new WeightRecordEntity()
     weightRecordEntity.id = domainModel.id
     weightRecordEntity.weightDate = domainModel.weightDate
-    weightRecordEntity.weightValue = domainModel.weightValue
-    weightRecordEntity.weightUnit = domainModel.weightUnit
+    weightRecordEntity.weightValueKg = domainModel.weightValueKg
     weightRecordEntity.bodyMassIndex = domainModel.bodyMassIndex
     weightRecordEntity.weightNote = domainModel.weightNote
     weightRecordEntity.createdAt = domainModel.createdAt

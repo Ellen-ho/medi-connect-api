@@ -1,20 +1,18 @@
 import { Patient } from '../../domain/patient/Patient'
-import { WeightRecord, WeightUnitType } from '../../domain/record/WeightRecord'
+import { WeightRecord } from '../../domain/record/WeightRecord'
 import { IWeightRecordRepository } from '../../domain/record/interfaces/IWeightRecordRepository'
 import { IUuidService } from '../../domain/utils/IUuidService'
 
 interface CreateWeightRecordRequest {
   weightDate: Date
-  weightValue: number
-  weightUnit: WeightUnitType
+  weightValueKg: number
   weightNote: string | null
 }
 
 interface CreateWeightRecordResponse {
   id: string
   weightDate: Date
-  weightValue: number
-  weightUnit: WeightUnitType
+  weightValueKg: number
   bodyMassIndex: number
   weightNote: string | null
   createdAt: Date

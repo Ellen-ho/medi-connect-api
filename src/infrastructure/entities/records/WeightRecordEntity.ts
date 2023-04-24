@@ -9,7 +9,6 @@ import {
 } from 'typeorm'
 
 import { PatientEntity } from '../patient/PatientEntity'
-import { WeightUnitType } from '../../../domain/record/WeightRecord'
 
 @Entity('weight_records')
 export class WeightRecordEntity {
@@ -19,11 +18,8 @@ export class WeightRecordEntity {
   @Column({ name: 'weight_date' })
   public weightDate!: Date
 
-  @Column({ name: 'weight_value', type: 'numeric', precision: 5, scale: 2 })
-  public weightValue!: number
-
-  @Column({ name: 'weight_unit', type: 'varchar', length: 20 })
-  public weightUnit!: WeightUnitType
+  @Column({ name: 'weight_value_kg', type: 'numeric', precision: 5, scale: 2 })
+  public weightValueKg!: number
 
   @Column({ name: 'body_mass_index', type: 'numeric', precision: 5, scale: 2 })
   public bodyMassIndex!: number

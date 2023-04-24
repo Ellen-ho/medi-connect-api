@@ -1,4 +1,4 @@
-import { WeightRecord } from '../WeightRecord'
+import { WeightRecord } from '../../WeightRecord'
 
 export interface IWeightRecordRepository {
   findById: (id: string) => Promise<WeightRecord | null>
