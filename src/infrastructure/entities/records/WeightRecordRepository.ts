@@ -13,14 +13,22 @@ export class WeightRecordRepository
     super(WeightRecordEntity, new WeightRecordMapper(), dataSource)
   }
 
-  public async findById(id: string): Promise<WeightRecord | null> {
+  public async findByIdAndPatientId(
+    recordId: string,
+    patientId: string
+  ): Promise<WeightRecord | null> {
     try {
-      const entity = await this.getRepo().findOne({
-        where: { id },
-      })
+      const entity = await this.getRepo()
+        .createQueryBuilder('weight_records')
+        .leftJoinAndSelect('weight_records.patient', 'patient')
+        .where('weight_records.id = :recordId', {
+          recordId,
+        })
+        .andWhere('patients.id = :patientId', { patientId })
+        .getOne()
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
-      throw new Error('repository findById error')
+      throw new Error('repository findByIdAndPatientId error')
     }
   }
 }

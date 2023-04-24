@@ -1,6 +1,7 @@
-import { Patient } from '../patient/Patient'
+import { User } from '../user/User'
 
 export interface IWeightRecordProps {
+  user: User
   id: string
   weightDate: Date
   weightValueKg: number
@@ -8,8 +9,16 @@ export interface IWeightRecordProps {
   weightNote: string | null
   createdAt: Date
   updatedAt: Date
-  patient: Patient
 }
+
+interface IWeightRecordUpdateData {
+  [key: string]: any
+  weightDate: Date
+  weightValueKg: number
+  bodyMassIndex: number
+  weightNote: string | null
+}
+
 export class WeightRecord {
   constructor(private readonly props: IWeightRecordProps) {}
 
@@ -41,7 +50,14 @@ export class WeightRecord {
     return this.props.updatedAt
   }
 
-  public get patient(): Patient {
-    return this.props.patient
+  public get user(): User {
+    return this.props.user
+  }
+
+  public updateData(data: IWeightRecordUpdateData): void {
+    this.props.weightDate = data.weightDate
+    this.props.weightValueKg = data.weightValueKg
+    this.props.bodyMassIndex = data.bodyMassIndex
+    this.props.weightNote = data.weightNote
   }
 }
