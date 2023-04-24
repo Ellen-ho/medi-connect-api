@@ -7,7 +7,7 @@ interface GetUserRequest {
 
 interface GetUserResponse extends User {}
 
-export class GetUser {
+export class GetUserUseCase {
   constructor(private readonly userRepository: IUserRepository) {}
 
   public async execute(request: GetUserRequest): Promise<GetUserResponse> {

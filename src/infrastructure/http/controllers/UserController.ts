@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
-import { CreateUser } from '../../../application/user/CreateUser'
-import { GetUser } from '../../../application/user/GetUser'
+import { CreateUserUseCase } from '../../../application/user/CreateUserUseCase'
+import { GetUserUseCase } from '../../../application/user/GetUserUseCase'
 import { User } from '../../../domain/user/User'
 import jwt from 'jsonwebtoken'
 
@@ -12,8 +12,8 @@ export interface IUserController {
 
 export class UserController implements IUserController {
   constructor(
-    private readonly getUser: GetUser,
-    private readonly createUser: CreateUser
+    private readonly getUserUseCase: GetUserUseCase,
+    private readonly createUserUseCase: CreateUserUseCase
   ) {}
 
   public login = async (req: Request, res: Response): Promise<Response> => {
@@ -39,7 +39,7 @@ export class UserController implements IUserController {
   ): Promise<Response> => {
     try {
       const { id } = req.user as User
-      const user = await this.getUser.execute({ id })
+      const user = await this.getUserUseCase.execute({ id })
 
       return res.status(200).json(user)
     } catch (error) {
@@ -55,7 +55,7 @@ export class UserController implements IUserController {
     try {
       const { displayName, email, password, role } = req.body
 
-      const newUser = await this.createUser.execute({
+      const newUser = await this.createUserUseCase.execute({
         displayName,
         email,
         password,

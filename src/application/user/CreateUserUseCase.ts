@@ -17,7 +17,7 @@ interface CreateUserResponse {
   role: UserRoleType
 }
 
-export class CreateUser {
+export class CreateUserUseCase {
   constructor(
     private readonly userRepository: IUserRepository,
     private readonly uuidService: IUuidService,
