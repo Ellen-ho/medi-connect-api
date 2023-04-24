@@ -53,7 +53,7 @@ export class EditWeightRecordUseCase {
 
     const bodyMassIndex = calculateBodyMassIndex({
       weightValueKg,
-      heightValueCm: existingPatient.height,
+      heightValueCm: existingPatient.heightValueCm,
     })
 
     existingWeightRecord.updateData({
