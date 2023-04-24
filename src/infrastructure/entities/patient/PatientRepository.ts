@@ -24,4 +24,20 @@ export class PatientRepository
       throw new Error('repository findById error')
     }
   }
+
+  public async findByUserId(userId: string): Promise<Patient | null> {
+    try {
+      const entity = await this.getRepo().findOne({
+        where: {
+          user: {
+            id: userId,
+          },
+        },
+        relations: ['user'],
+      })
+      return entity != null ? this.getMapper().toDomainModel(entity) : null
+    } catch (e) {
+      throw new Error((e as Error).message)
+    }
+  }
 }

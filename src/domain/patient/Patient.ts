@@ -1,3 +1,5 @@
+import { User } from '../user/User'
+
 export interface IPatientProps {
   id: string
   avatar: string | null
@@ -13,6 +15,7 @@ export interface IPatientProps {
   medicinceUsage: IMedicinceUsageItem[] | null
   createdAt: Date
   updatedAt: Date
+  user: User
 }
 
 export enum HeightUnitType {
@@ -86,6 +89,21 @@ export enum MedicineTimeType {
   OTHER = 'OTHER',
 }
 
+interface IUpdateData {
+  [key: string]: any
+  avatar: string | null
+  firstName: string
+  lastName: string
+  birthDate: Date
+  gender: GenderType
+  medicalHistory: IMedicalHistoryItem[] | null
+  allergy: IAllergy
+  familyHistory: IFamilyHistoryItem[] | null
+  height: number
+  heightUnit: HeightUnitType
+  medicinceUsage: IMedicinceUsageItem[] | null
+}
+
 export class Patient {
   constructor(private readonly props: IPatientProps) {}
 
@@ -143,5 +161,24 @@ export class Patient {
 
   public get updatedAt(): Date {
     return this.props.updatedAt
+  }
+
+  public get user(): User {
+    return this.props.user
+  }
+
+  public updateData(data: IUpdateData): void {
+    // TODO: improve this
+    this.props.avatar = data.avatar
+    this.props.firstName = data.firstName
+    this.props.lastName = data.lastName
+    this.props.birthDate = data.birthDate
+    this.props.gender = data.gender
+    this.props.medicalHistory = data.medicalHistory
+    this.props.allergy = data.allergy
+    this.props.familyHistory = data.familyHistory
+    this.props.height = data.height
+    this.props.heightUnit = data.heightUnit
+    this.props.medicinceUsage = data.medicinceUsage
   }
 }

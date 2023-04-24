@@ -22,12 +22,135 @@ Content-Type: application/json
 
 ### Register new user
 POST {{usersPath}}
+Content-Type: application/json
+
+{
+  "displayName":"",
+  "email": "",
+  "password": "user1",
+  "role": "PATIENT"
+}
+###
+
+@patientPath = {{hostname}}/api/patients
+
+POST {{patientPath}}/profile
 Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "displayName": "user1",
-  "email": "user1@mail.com",
-  "password": "user1"
+  "avatar": null,
+  "firstName": "John",
+  "lastName": "Doe",
+  "birthDate": "1990-01-01T00:00:00.000Z",
+  "gender": "MALE",
+  "medicalHistory": [
+    {
+      "diagnosis": "HYPERTENSION",
+      "diagnosisDetails": "High blood pressure"
+    },
+    {
+      "diagnosis": "DIABETES",
+      "diagnosisDetails": "Type 2 diabetes"
+    }
+  ],
+  "allergy": {
+    "medicine": "Penicillin",
+    "food": null,
+    "other": null
+  },
+  "familyHistory": [
+    {
+      "relationship": "Father",
+      "diagnosis": "HYPERTENSION",
+      "diagnosisDetails": "High blood pressure"
+    },
+    {
+      "relationship": "Mother",
+      "diagnosis": "DIABETES",
+      "diagnosisDetails": "Type 2 diabetes"
+    }
+  ],
+  "height": 180,
+  "heightUnit": "CENTIMETER",
+  "medicinceUsage": [
+    {
+      "medicineName": "Aspirin",
+      "medicineDosage": 100,
+      "medicineUnit": "MILLIGRAM",
+      "medicineFrequency": "ONCE_DAILY",
+      "medicineTime": "BEFORE_MEAL"
+    },
+    {
+      "medicineName": "Insulin",
+      "medicineDosage": 20,
+      "medicineUnit": "MILLILITER",
+      "medicineFrequency": "THREE_TIMES_A_DAY",
+      "medicineTime": "AFTER_MEAL"
+    }
+  ]
 }
+
+###
+
+
+@patientPath = {{hostname}}/api/patients
+
+PATCH {{patientPath}}/profile
+Authorization: {{accessToken}}
+Content-Type: application/json
+
+{
+  "avatar": "http://mockup.com/avatar.png",
+  "firstName": "John",
+  "lastName": "Doe",
+  "birthDate": "1990-01-01T00:00:00.000Z",
+  "gender": "MALE",
+  "medicalHistory": [
+    {
+      "diagnosis": "HYPERTENSION",
+      "diagnosisDetails": "High blood pressure"
+    },
+    {
+      "diagnosis": "DIABETES",
+      "diagnosisDetails": "Type 2 diabetes"
+    }
+  ],
+  "allergy": {
+    "medicine": "Penicillin",
+    "food": null,
+    "other": null
+  },
+  "familyHistory": [
+    {
+      "relationship": "Father",
+      "diagnosis": "HYPERTENSION",
+      "diagnosisDetails": "High blood pressure"
+    },
+    {
+      "relationship": "Mother",
+      "diagnosis": "DIABETES",
+      "diagnosisDetails": "Type 2 diabetes"
+    }
+  ],
+  "height": 180,
+  "heightUnit": "CENTIMETER",
+  "medicinceUsage": [
+    {
+      "medicineName": "Aspirin",
+      "medicineDosage": 100,
+      "medicineUnit": "MILLIGRAM",
+      "medicineFrequency": "ONCE_DAILY",
+      "medicineTime": "BEFORE_MEAL"
+    },
+    {
+      "medicineName": "Insulin",
+      "medicineDosage": 20,
+      "medicineUnit": "MILLILITER",
+      "medicineFrequency": "THREE_TIMES_A_DAY",
+      "medicineTime": "AFTER_MEAL"
+    }
+  ]
+}
+
 ###
