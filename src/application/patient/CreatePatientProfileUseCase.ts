@@ -1,6 +1,5 @@
 import {
   GenderType,
-  HeightUnitType,
   IAllergy,
   IFamilyHistoryItem,
   IMedicalHistoryItem,
@@ -21,8 +20,7 @@ interface CreatePatientProfileRequest {
   medicalHistory: IMedicalHistoryItem[] | null
   allergy: IAllergy
   familyHistory: IFamilyHistoryItem[] | null
-  height: number
-  heightUnit: HeightUnitType
+  heightValueCm: number
   medicinceUsage: IMedicinceUsageItem[] | null
 }
 
@@ -50,8 +48,7 @@ export class CreatePatientProfileUseCase {
       medicalHistory,
       allergy,
       familyHistory,
-      height,
-      heightUnit,
+      heightValueCm,
       medicinceUsage,
     } = request
 
@@ -73,8 +70,7 @@ export class CreatePatientProfileUseCase {
       medicalHistory,
       allergy,
       familyHistory,
-      height,
-      heightUnit,
+      heightValueCm,
       medicinceUsage,
       createdAt: new Date(),
       updatedAt: new Date(),

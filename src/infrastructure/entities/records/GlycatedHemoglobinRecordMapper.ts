@@ -13,8 +13,7 @@ export class GlycatedHemoglobinRecordMapper
     const glycatedHemoglobinRecord = new GlycatedHemoglobinRecord({
       id: entity.id,
       glycatedHemoglobinDate: entity.glycatedHemoglobinDate,
-      glycatedHemoglobinValue: entity.glycatedHemoglobinValue,
-      glycatedHemoglobinUnit: entity.glycatedHemoglobinUnit,
+      glycatedHemoglobinValuePercent: entity.glycatedHemoglobinValuePercent,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
       patient: new PatientMapper().toDomainModel(entity.patient),
@@ -29,10 +28,8 @@ export class GlycatedHemoglobinRecordMapper
     glycatedHemoglobinRecordEntity.id = domainModel.id
     glycatedHemoglobinRecordEntity.glycatedHemoglobinDate =
       domainModel.glycatedHemoglobinDate
-    glycatedHemoglobinRecordEntity.glycatedHemoglobinValue =
-      domainModel.glycatedHemoglobinValue
-    glycatedHemoglobinRecordEntity.glycatedHemoglobinUnit =
-      domainModel.glycatedHemoglobinUnit
+    glycatedHemoglobinRecordEntity.glycatedHemoglobinValuePercent =
+      domainModel.glycatedHemoglobinValuePercent
     glycatedHemoglobinRecordEntity.createdAt = domainModel.createdAt
     glycatedHemoglobinRecordEntity.updatedAt = domainModel.updatedAt
     glycatedHemoglobinRecordEntity.patient = new PatientMapper().toPersistence(

@@ -1,12 +1,14 @@
-import { Patient } from '../../domain/patient/Patient'
+import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import {
   GlycatedHemoglobinRecord,
   GlycatedHemoglobinUnitType,
 } from '../../domain/record/GlycatedHemoglobinRecord'
 import { IGlycatedHemoglobinRecordRepository } from '../../domain/record/interfaces/repositories/IGlycatedHemoglobinRecordRepository'
+import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
 
 interface CreateGlycatedHemoglobinRecordRequest {
+  user: User
   glycatedHemoglobinDate: Date
   glycatedHemoglobinValue: number
   glycatedHemoglobinUnit: GlycatedHemoglobinUnitType
@@ -24,6 +26,7 @@ interface CreateGlycatedHemoglobinRecordResponse {
 export class CreateGlycatedHemoglobinRecord {
   constructor(
     private readonly glycatedHemoglobinRecordRepository: IGlycatedHemoglobinRecordRepository,
+    private readonly patientRepository: IPatientRepository,
     private readonly uuidService: IUuidService
   ) {}
 
@@ -31,10 +34,17 @@ export class CreateGlycatedHemoglobinRecord {
     request: CreateGlycatedHemoglobinRecordRequest
   ): Promise<CreateGlycatedHemoglobinRecordResponse> {
     const {
+      user,
       glycatedHemoglobinDate,
       glycatedHemoglobinValue,
       glycatedHemoglobinUnit,
     } = request
+
+    const existingPatient = await this.patientRepository.findByUserId(user.id)
+
+    if (existingPatient == null) {
+      throw new Error('Patient does not exist.')
+    }
 
     const glycatedHemoglobinRecord = new GlycatedHemoglobinRecord({
       id: this.uuidService.generateUuid(),
@@ -43,7 +53,7 @@ export class CreateGlycatedHemoglobinRecord {
       glycatedHemoglobinUnit,
       createdAt: new Date(),
       updatedAt: new Date(),
-      patient: new Patient(),
+      patient: existingPatient,
     })
     await this.glycatedHemoglobinRecordRepository.save(glycatedHemoglobinRecord)
 

@@ -9,7 +9,6 @@ import {
 } from 'typeorm'
 import {
   GenderType,
-  HeightUnitType,
   IAllergy,
   IFamilyHistoryItem,
   IMedicalHistoryItem,
@@ -47,16 +46,13 @@ export class PatientEntity {
   public familyHistory!: IFamilyHistoryItem[] | null
 
   @Column({
-    name: 'height',
+    name: 'height_value_cm',
     type: 'numeric',
     precision: 5,
     scale: 2,
     default: 0,
   })
-  public height!: number
-
-  @Column({ name: 'height_unit', type: 'varchar', length: 20 })
-  public heightUnit!: HeightUnitType
+  public heightValueCm!: number
 
   @Column({ name: 'medicince_usage', type: 'jsonb', nullable: true })
   public medicinceUsage!: IMedicinceUsageItem[] | null

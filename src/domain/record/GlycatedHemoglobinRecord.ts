@@ -3,17 +3,11 @@ import { Patient } from '../patient/Patient'
 export interface IGlycatedHemoglobinRecordProps {
   id: string
   glycatedHemoglobinDate: Date
-  glycatedHemoglobinValue: number
-  glycatedHemoglobinUnit: GlycatedHemoglobinUnitType
+  glycatedHemoglobinValuePercent: number
   createdAt: Date
   updatedAt: Date
   patient: Patient
 }
-
-export enum GlycatedHemoglobinUnitType {
-  PERCENT = '%',
-}
-
 export class GlycatedHemoglobinRecord {
   constructor(private readonly props: IGlycatedHemoglobinRecordProps) {}
 
@@ -25,12 +19,8 @@ export class GlycatedHemoglobinRecord {
     return this.props.glycatedHemoglobinDate
   }
 
-  public get glycatedHemoglobinValue(): number {
-    return this.props.glycatedHemoglobinValue
-  }
-
-  public get glycatedHemoglobinUnit(): GlycatedHemoglobinUnitType {
-    return this.props.glycatedHemoglobinUnit
+  public get glycatedHemoglobinValuePercent(): number {
+    return this.props.glycatedHemoglobinValuePercent
   }
 
   public get createdAt(): Date {
