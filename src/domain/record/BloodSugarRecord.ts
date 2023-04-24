@@ -3,7 +3,7 @@ import { Patient } from '../patient/Patient'
 export interface IBloodSugarRecordProps {
   id: string
   bloodSugarDate: Date
-  bloodSugarValueMmo: number
+  bloodSugarValueMmo: number // mmol/L
   bloodSugarNote: string | null
   createdAt: Date
   updatedAt: Date
