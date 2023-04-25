@@ -5,5 +5,5 @@ export interface IWeightRecordRepository {
     recordId: string,
     patientId: string
   ) => Promise<WeightRecord | null>
-  save: (user: WeightRecord) => Promise<void>
+  save: (weightRecord: WeightRecord) => Promise<void>
 }

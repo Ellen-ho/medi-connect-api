@@ -1,7 +1,6 @@
-import { User } from '../user/User'
+import { Patient } from '../patient/Patient'
 
 export interface IWeightRecordProps {
-  user: User
   id: string
   weightDate: Date
   weightValueKg: number
@@ -9,6 +8,7 @@ export interface IWeightRecordProps {
   weightNote: string | null
   createdAt: Date
   updatedAt: Date
+  patient: Patient
 }
 
 interface IWeightRecordUpdateData {
@@ -50,8 +50,8 @@ export class WeightRecord {
     return this.props.updatedAt
   }
 
-  public get user(): User {
-    return this.props.user
+  public get patient(): Patient {
+    return this.props.patient
   }
 
   public updateData(data: IWeightRecordUpdateData): void {

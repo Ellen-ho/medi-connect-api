@@ -1,7 +1,6 @@
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { WeightRecord } from '../../domain/record/WeightRecord'
 import { IWeightRecordRepository } from '../../domain/record/interfaces/repositories/IWeightRecordRepository'
-
 import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
 
@@ -34,6 +33,7 @@ export class CreateWeightRecordUseCase {
   ): Promise<CreateWeightRecordResponse> {
     const { user, weightDate, weightValueKg, weightNote } = request
 
+    // get patient by userId
     const existingPatient = await this.patientRepository.findByUserId(user.id)
 
     if (existingPatient == null) {
