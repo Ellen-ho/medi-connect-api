@@ -71,8 +71,7 @@ Content-Type: application/json
       "diagnosisDetails": "Type 2 diabetes"
     }
   ],
-  "height": 180,
-  "heightUnit": "CENTIMETER",
+  "heightValueCm": 180,
   "medicinceUsage": [
     {
       "medicineName": "Aspirin",
@@ -133,8 +132,7 @@ Content-Type: application/json
       "diagnosisDetails": "Type 2 diabetes"
     }
   ],
-  "height": 180,
-  "heightUnit": "CENTIMETER",
+  "heightValueCm": 180,
   "medicinceUsage": [
     {
       "medicineName": "Aspirin",
@@ -153,4 +151,36 @@ Content-Type: application/json
   ]
 }
 
+###
+
+@recordPath = {{hostname}}/api/records
+
+### create food record
+POST {{recordPath}}/food
+Authorization: {{accessToken}}
+Content-Type: application/json
+
+{
+  "foodImage": "https://example.com/food-image.jpg",
+  "foodTime": "2023-04-25T10:00:00.000Z",
+  "foodItem": "Apple",
+  "foodCategory": "FRUIT",
+  "foodAmount": 150,
+  "foodNote": "A delicious red apple"
+}
+###
+
+### edit food record
+
+@foodRecordId="bf00a253-8d32-4d3f-86f9-2144c96faeff"
+PATCH {{recordPath}}/food/{{foodRecordId}}
+Authorization: {{accessToken}}
+Content-Type: application/json
+
+{
+  "foodImage": "https://example.com/food-image.jpg",
+  "foodCategory": "FRUIT",
+  "foodAmount": 150,
+  "foodNote": "A delicious red apple"
+}
 ###
