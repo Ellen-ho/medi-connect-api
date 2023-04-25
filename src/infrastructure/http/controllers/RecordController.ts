@@ -33,7 +33,11 @@ export class RecordController implements IRecordController {
     res: Response
   ): Promise<Response> => {
     try {
-      const request = { ...req.body, user: req.user }
+      const request = {
+        ...req.body,
+        user: req.user,
+        weightRecordId: req.params.id,
+      }
       const user = await this.editWeightRecordUseCase.execute(request)
 
       return res.status(200).json(user)

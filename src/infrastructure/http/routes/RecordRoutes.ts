@@ -1,6 +1,5 @@
 import { Router } from 'express'
 import { asyncHandler } from '../middlewares/AsyncHandler'
-import { authenticated } from '../middlewares/Auth'
 import { IRecordController } from '../controllers/RecordController'
 export class RecordRoutes {
   private readonly routes: Router
@@ -9,12 +8,10 @@ export class RecordRoutes {
     this.routes
       .post(
         '/weightRecord',
-        authenticated,
         asyncHandler(this.recordController.createWeightRecord)
       )
       .patch(
         '/weightRecord/:id',
-        authenticated,
         asyncHandler(this.recordController.editWeightRecord)
       )
   }
