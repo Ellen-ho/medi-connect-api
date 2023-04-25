@@ -29,7 +29,7 @@ interface CreateExerciseRecordResponse {
   updatedAt: Date
 }
 
-export class CreateExerciseRecord {
+export class CreateExerciseRecordUseCase {
   constructor(
     private readonly exerciseRecordRepository: IExerciseRecordRepository,
     private readonly patientRepository: IPatientRepository,

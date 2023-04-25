@@ -40,6 +40,15 @@ export enum IntensityType {
   HIGH = 'HIGH',
 }
 
+interface IExerciseRecordUpdateData {
+  [key: string]: any
+  exerciseDate: Date
+  exerciseType: ExerciseType
+  exerciseDurationMinute: number
+  exerciseIntensity: IntensityType
+  kcaloriesBurned: number
+  exerciseNote: string | null
+}
 export class ExerciseRecord {
   constructor(private readonly props: IExerciseRecordProps) {}
 
@@ -81,5 +90,14 @@ export class ExerciseRecord {
 
   public get patient(): Patient {
     return this.props.patient
+  }
+
+  public updateData(data: IExerciseRecordUpdateData): void {
+    this.props.exerciseDate = data.exerciseDate
+    this.props.exerciseType = data.exerciseType
+    this.props.exerciseDurationMinute = data.exerciseDurationMinute
+    this.props.exerciseIntensity = data.exerciseIntensity
+    this.props.kcaloriesBurned = data.kcaloriesBurned
+    this.props.exerciseNote = data.exerciseNote
   }
 }

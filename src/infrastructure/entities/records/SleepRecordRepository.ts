@@ -1,4 +1,4 @@
-import { DataSource, Repository } from 'typeorm'
+import { DataSource } from 'typeorm'
 import { BaseRepository } from '../BaseRepository'
 import { SleepRecordEntity } from './SleepRecordEntity'
 import { SleepRecordMapper } from './SleepRecordMapper'
@@ -9,20 +9,26 @@ export class SleepRecordRepository
   extends BaseRepository<SleepRecordEntity, SleepRecord>
   implements ISleepRecordRepository
 {
-  private readonly repo: Repository<SleepRecordEntity>
   constructor(dataSource: DataSource) {
     super(SleepRecordEntity, new SleepRecordMapper(), dataSource)
-    this.repo = this.getRepo()
   }
 
-  public async findById(id: string): Promise<SleepRecord | null> {
+  public async findByIdAndPatientId(
+    recordId: string,
+    patientId: string
+  ): Promise<SleepRecord | null> {
     try {
-      const entity = await this.getRepo().findOne({
-        where: { id },
-      })
+      const entity = await this.getRepo()
+        .createQueryBuilder('sleep_records')
+        .leftJoinAndSelect('sleep_records.patient', 'patient')
+        .where('sleep_records.id = :recordId', {
+          recordId,
+        })
+        .andWhere('patients.id = :patientId', { patientId })
+        .getOne()
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
-      throw new Error('repository findById error')
+      throw new Error('repository findByIdAndPatientId error')
     }
   }
 }

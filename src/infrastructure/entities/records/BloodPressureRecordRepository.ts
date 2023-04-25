@@ -17,14 +17,22 @@ export class BloodPressureRecordRepository
     )
   }
 
-  public async findById(id: string): Promise<BloodPressureRecord | null> {
+  public async findByIdAndPatientId(
+    recordId: string,
+    patientId: string
+  ): Promise<BloodPressureRecord | null> {
     try {
-      const entity = await this.getRepo().findOne({
-        where: { id },
-      })
+      const entity = await this.getRepo()
+        .createQueryBuilder('blood_pressure_records')
+        .leftJoinAndSelect('blood_pressure_records.patient', 'patient')
+        .where('blood_pressure_records.id = :recordId', {
+          recordId,
+        })
+        .andWhere('patients.id = :patientId', { patientId })
+        .getOne()
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
-      throw new Error('repository findById error')
+      throw new Error('repository findByIdAndPatientId error')
     }
   }
 }

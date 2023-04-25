@@ -7,20 +7,20 @@ import { IUuidService } from '../../domain/utils/IUuidService'
 interface CreateBloodSugarRecordRequest {
   user: User
   bloodSugarDate: Date
-  bloodSugarValueMmol: number
+  bloodSugarValueMmo: number
   bloodSugarNote: string | null
 }
 
 interface CreateBloodSugarRecordResponse {
   id: string
   bloodSugarDate: Date
-  bloodSugarValueMmol: number
+  bloodSugarValueMmo: number
   bloodSugarNote: string | null
   createdAt: Date
   updatedAt: Date
 }
 
-export class CreateBloodSugarRecord {
+export class CreateBloodSugarRecordUseCase {
   constructor(
     private readonly bloodSugarRecordRepository: IBloodSugarRecordRepository,
     private readonly patientRepository: IPatientRepository,
@@ -30,8 +30,7 @@ export class CreateBloodSugarRecord {
   public async execute(
     request: CreateBloodSugarRecordRequest
   ): Promise<CreateBloodSugarRecordResponse> {
-    const { user, bloodSugarDate, bloodSugarValueMmol, bloodSugarNote } =
-      request
+    const { user, bloodSugarDate, bloodSugarValueMmo, bloodSugarNote } = request
 
     const existingPatient = await this.patientRepository.findByUserId(user.id)
 
@@ -42,7 +41,7 @@ export class CreateBloodSugarRecord {
     const bloodSugarRecord = new BloodSugarRecord({
       id: this.uuidService.generateUuid(),
       bloodSugarDate,
-      bloodSugarValueMmol,
+      bloodSugarValueMmo,
       bloodSugarNote,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -53,7 +52,7 @@ export class CreateBloodSugarRecord {
     return {
       id: bloodSugarRecord.id,
       bloodSugarDate: bloodSugarRecord.bloodSugarDate,
-      bloodSugarValueMmol: bloodSugarRecord.bloodSugarValueMmol,
+      bloodSugarValueMmo: bloodSugarRecord.bloodSugarValueMmo,
       bloodSugarNote: bloodSugarRecord.bloodSugarNote,
       createdAt: bloodSugarRecord.createdAt,
       updatedAt: bloodSugarRecord.updatedAt,

@@ -8,6 +8,12 @@ export interface IGlycatedHemoglobinRecordProps {
   updatedAt: Date
   patient: Patient
 }
+
+interface IGlycatedHemoglobinRecordUpdateData {
+  [key: string]: any
+  glycatedHemoglobinDate: Date
+  glycatedHemoglobinValuePercent: number
+}
 export class GlycatedHemoglobinRecord {
   constructor(private readonly props: IGlycatedHemoglobinRecordProps) {}
 
@@ -33,5 +39,11 @@ export class GlycatedHemoglobinRecord {
 
   public get patient(): Patient {
     return this.props.patient
+  }
+
+  public updateData(data: IGlycatedHemoglobinRecordUpdateData): void {
+    this.props.glycatedHemoglobinDate = data.glycatedHemoglobinDate
+    this.props.glycatedHemoglobinValuePercent =
+      data.glycatedHemoglobinValuePercent
   }
 }
