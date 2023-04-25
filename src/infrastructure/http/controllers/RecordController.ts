@@ -10,6 +10,8 @@ import { CreateExerciseRecordUseCase } from '../../../application/record/CreateE
 import { EditExerciseRecordUseCase } from '../../../application/record/EditExerciseRecordUseCase'
 import { CreateFoodRecordUseCase } from '../../../application/record/CreateFoodRecordUseCase'
 import { EditFoodRecordUseCase } from '../../../application/record/EditFoodRecordUseCase'
+import { CreateGlycatedHemoglobinRecordUseCase } from '../../../application/record/CreateGlycatedHemoglobinRecordUseCase'
+import { EditGlycatedHemoglobinRecordUseCase } from '../../../application/record/EditGlycatedHemoglobinRecordUseCase'
 export interface IRecordController {
   createWeightRecord: (req: Request, res: Response) => Promise<Response>
   editWeightRecord: (req: Request, res: Response) => Promise<Response>
@@ -21,6 +23,14 @@ export interface IRecordController {
   editExerciseRecord: (req: Request, res: Response) => Promise<Response>
   createFoodRecord: (req: Request, res: Response) => Promise<Response>
   editFoodRecord: (req: Request, res: Response) => Promise<Response>
+  createGlycatedHemoglobinRecord: (
+    req: Request,
+    res: Response
+  ) => Promise<Response>
+  editGlycatedHemoglobinRecord: (
+    req: Request,
+    res: Response
+  ) => Promise<Response>
 }
 
 export class RecordController implements IRecordController {
@@ -34,7 +44,9 @@ export class RecordController implements IRecordController {
     private readonly createExerciseRecordUseCase: CreateExerciseRecordUseCase,
     private readonly editExerciseRecordUseCase: EditExerciseRecordUseCase,
     private readonly createFoodRecordUseCase: CreateFoodRecordUseCase,
-    private readonly editFoodRecordUseCase: EditFoodRecordUseCase
+    private readonly editFoodRecordUseCase: EditFoodRecordUseCase,
+    private readonly createGlycatedHemoglobinRecordUseCase: CreateGlycatedHemoglobinRecordUseCase,
+    private readonly editGlycatedHemoglobinRecordUseCase: EditGlycatedHemoglobinRecordUseCase
   ) {}
 
   public createWeightRecord = async (
@@ -208,6 +220,45 @@ export class RecordController implements IRecordController {
     } catch (error) {
       // TODO: move this to a middleware
       return res.status(400).json({ message: 'edit food record error' })
+    }
+  }
+
+  public createGlycatedHemoglobinRecord = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    try {
+      const request = { ...req.body, user: req.user }
+      const record = await this.createGlycatedHemoglobinRecordUseCase.execute(
+        request
+      )
+      return res.status(200).json(record)
+    } catch (error) {
+      // TODO: move this to a middleware
+      return res.status(400).json({ message: (error as Error).message })
+    }
+  }
+
+  public editGlycatedHemoglobinRecord = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    try {
+      const request = {
+        ...req.body,
+        user: req.user,
+        glycatedHemoglobinRecordId: req.params.id,
+      }
+      const record = await this.editGlycatedHemoglobinRecordUseCase.execute(
+        request
+      )
+
+      return res.status(200).json(record)
+    } catch (error) {
+      // TODO: move this to a middleware
+      return res
+        .status(400)
+        .json({ message: 'edit glycated hemoglobin record error' })
     }
   }
 }

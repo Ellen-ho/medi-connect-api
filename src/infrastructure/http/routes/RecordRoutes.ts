@@ -45,6 +45,15 @@ export class RecordRoutes {
         '/foodRecord/:id',
         asyncHandler(this.recordController.editFoodRecord)
       )
+
+      .post(
+        '/glycatedHemoglobinRecord',
+        asyncHandler(this.recordController.createGlycatedHemoglobinRecord)
+      )
+      .patch(
+        '/glycatedHemoglobinRecord/:id',
+        asyncHandler(this.recordController.editGlycatedHemoglobinRecord)
+      )
   }
 
   public createRouter(): Router {

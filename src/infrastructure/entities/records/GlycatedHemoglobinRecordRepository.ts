@@ -1,9 +1,10 @@
 import { DataSource } from 'typeorm'
 import { BaseRepository } from '../BaseRepository'
 import { GlycatedHemoglobinRecordEntity } from './GlycatedHemoglobinRecordEntity'
-import { IGlycatedHemoglobinRecordRepository } from '../../../domain/record/interfaces/repositories/IGlycatedHemoglobinRecordRepository'
+
 import { GlycatedHemoglobinRecord } from '../../../domain/record/GlycatedHemoglobinRecord'
 import { GlycatedHemoglobinRecordMapper } from './GlycatedHemoglobinRecordMapper'
+import { IGlycatedHemoglobinRecordRepository } from '../../../domain/record/interfaces/repositories/IGlycatedHemoglobinRecordRepository'
 
 export class GlycatedHemoglobinRecordRepository
   extends BaseRepository<
@@ -20,14 +21,22 @@ export class GlycatedHemoglobinRecordRepository
     )
   }
 
-  public async findById(id: string): Promise<GlycatedHemoglobinRecord | null> {
+  public async findByIdAndPatientId(
+    recordId: string,
+    patientId: string
+  ): Promise<GlycatedHemoglobinRecord | null> {
     try {
-      const entity = await this.getRepo().findOne({
-        where: { id },
-      })
+      const entity = await this.getRepo()
+        .createQueryBuilder('glycated_hemoglobin_records')
+        .leftJoinAndSelect('glycated_hemoglobin_records.patient', 'patient')
+        .where('glycated_hemoglobin_records.id = :recordId', {
+          recordId,
+        })
+        .andWhere('patients.id = :patientId', { patientId })
+        .getOne()
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
-      throw new Error('repository findById error')
+      throw new Error('repository findByIdAndPatientId error')
     }
   }
 }
