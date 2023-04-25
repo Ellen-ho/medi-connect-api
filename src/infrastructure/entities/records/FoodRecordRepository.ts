@@ -14,14 +14,22 @@ export class FoodRecordRepository
     super(FoodRecordEntity, new FoodRecordMapper(), dataSource)
   }
 
-  public async findById(id: string): Promise<FoodRecord | null> {
+  public async findByIdAndPatientId(
+    recordId: string,
+    patientId: string
+  ): Promise<FoodRecord | null> {
     try {
-      const entity = await this.getRepo().findOne({
-        where: { id },
-      })
+      const entity = await this.getRepo()
+        .createQueryBuilder('food_records')
+        .leftJoinAndSelect('food_records.patient', 'patient')
+        .where('food_records.id = :recordId', {
+          recordId,
+        })
+        .andWhere('patients.id = :patientId', { patientId })
+        .getOne()
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
-      throw new Error('repository findById error')
+      throw new Error('repository findByIdAndPatientId error')
     }
   }
 }

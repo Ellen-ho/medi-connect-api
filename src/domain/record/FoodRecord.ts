@@ -36,6 +36,14 @@ export enum FoodCategoryType {
   SNACK = 'SNACK',
 }
 
+interface IFoodRecordUpdateData {
+  [key: string]: any
+  foodTime: Date
+  foodCategory: FoodCategoryType
+  foodAmount: number
+  kcalories: number
+  foodNote: string | null
+}
 export class FoodRecord {
   constructor(private readonly props: IFoodRecordProps) {}
 
@@ -81,5 +89,13 @@ export class FoodRecord {
 
   public get patient(): Patient {
     return this.props.patient
+  }
+
+  public updateData(data: IFoodRecordUpdateData): void {
+    this.props.foodTime = data.foodTime
+    this.props.foodCategory = data.foodCategory
+    this.props.foodAmount = data.foodAmount
+    this.props.kcalories = data.kcalories
+    this.props.foodNote = data.foodNote
   }
 }

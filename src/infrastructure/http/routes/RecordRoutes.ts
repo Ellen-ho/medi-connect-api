@@ -39,6 +39,12 @@ export class RecordRoutes {
         '/exerciseRecord/:id',
         asyncHandler(this.recordController.editExerciseRecord)
       )
+
+      .post('/foodRecord', asyncHandler(this.recordController.createFoodRecord))
+      .patch(
+        '/foodRecord/:id',
+        asyncHandler(this.recordController.editFoodRecord)
+      )
   }
 
   public createRouter(): Router {
