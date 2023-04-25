@@ -12,6 +12,15 @@ export interface IBloodPressureRecordProps {
   patient: Patient
 }
 
+interface IBloodPressureRecordUpdateData {
+  [key: string]: any
+  bloodPressureDate: Date
+  systolicBloodPressure: number
+  diastolicBloodPressure: number
+  heartBeat: number
+  bloodPressureNote: string | null
+}
+
 export class BloodPressureRecord {
   constructor(private readonly props: IBloodPressureRecordProps) {}
 
@@ -49,5 +58,13 @@ export class BloodPressureRecord {
 
   public get patient(): Patient {
     return this.props.patient
+  }
+
+  public updateData(data: IBloodPressureRecordUpdateData): void {
+    this.props.bloodPressureDate = data.bloodPressureDate
+    this.props.systolicBloodPressure = data.systolicBloodPressure
+    this.props.diastolicBloodPressure = data.diastolicBloodPressure
+    this.props.heartBeat = data.heartBeat
+    this.props.bloodPressureNote = data.bloodPressureNote
   }
 }
