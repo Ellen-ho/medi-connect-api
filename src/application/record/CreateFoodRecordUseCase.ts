@@ -23,7 +23,7 @@ interface CreateFoodRecordResponse {
   updatedAt: Date
 }
 
-export class CreateFoodRecord {
+export class CreateFoodRecordUseCase {
   constructor(
     private readonly foodRecordRepository: IFoodRecordRepository,
     private readonly patientRepository: IPatientRepository,

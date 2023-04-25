@@ -25,7 +25,7 @@ interface CreateSleepRecordResponse {
   updatedAt: Date
 }
 
-export class CreateSleepRecord {
+export class CreateSleepRecordUseCase {
   constructor(
     private readonly sleepRecordRepository: ISleepRecordRepository,
     private readonly patientRepository: IPatientRepository,

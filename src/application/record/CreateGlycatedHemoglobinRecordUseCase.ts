@@ -1,8 +1,5 @@
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
-import {
-  GlycatedHemoglobinRecord,
-  GlycatedHemoglobinUnitType,
-} from '../../domain/record/GlycatedHemoglobinRecord'
+import { GlycatedHemoglobinRecord } from '../../domain/record/GlycatedHemoglobinRecord'
 import { IGlycatedHemoglobinRecordRepository } from '../../domain/record/interfaces/repositories/IGlycatedHemoglobinRecordRepository'
 import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
@@ -10,20 +7,18 @@ import { IUuidService } from '../../domain/utils/IUuidService'
 interface CreateGlycatedHemoglobinRecordRequest {
   user: User
   glycatedHemoglobinDate: Date
-  glycatedHemoglobinValue: number
-  glycatedHemoglobinUnit: GlycatedHemoglobinUnitType
+  glycatedHemoglobinValuePercent: number
 }
 
 interface CreateGlycatedHemoglobinRecordResponse {
   id: string
   glycatedHemoglobinDate: Date
-  glycatedHemoglobinValue: number
-  glycatedHemoglobinUnit: GlycatedHemoglobinUnitType
+  glycatedHemoglobinValuePercent: number
   createdAt: Date
   updatedAt: Date
 }
 
-export class CreateGlycatedHemoglobinRecord {
+export class CreateGlycatedHemoglobinRecordUseCase {
   constructor(
     private readonly glycatedHemoglobinRecordRepository: IGlycatedHemoglobinRecordRepository,
     private readonly patientRepository: IPatientRepository,
@@ -33,12 +28,8 @@ export class CreateGlycatedHemoglobinRecord {
   public async execute(
     request: CreateGlycatedHemoglobinRecordRequest
   ): Promise<CreateGlycatedHemoglobinRecordResponse> {
-    const {
-      user,
-      glycatedHemoglobinDate,
-      glycatedHemoglobinValue,
-      glycatedHemoglobinUnit,
-    } = request
+    const { user, glycatedHemoglobinDate, glycatedHemoglobinValuePercent } =
+      request
 
     const existingPatient = await this.patientRepository.findByUserId(user.id)
 
@@ -49,8 +40,7 @@ export class CreateGlycatedHemoglobinRecord {
     const glycatedHemoglobinRecord = new GlycatedHemoglobinRecord({
       id: this.uuidService.generateUuid(),
       glycatedHemoglobinDate,
-      glycatedHemoglobinValue,
-      glycatedHemoglobinUnit,
+      glycatedHemoglobinValuePercent,
       createdAt: new Date(),
       updatedAt: new Date(),
       patient: existingPatient,
@@ -60,8 +50,8 @@ export class CreateGlycatedHemoglobinRecord {
     return {
       id: glycatedHemoglobinRecord.id,
       glycatedHemoglobinDate: glycatedHemoglobinRecord.glycatedHemoglobinDate,
-      glycatedHemoglobinValue: glycatedHemoglobinRecord.glycatedHemoglobinValue,
-      glycatedHemoglobinUnit: glycatedHemoglobinRecord.glycatedHemoglobinUnit,
+      glycatedHemoglobinValuePercent:
+        glycatedHemoglobinRecord.glycatedHemoglobinValuePercent,
       createdAt: glycatedHemoglobinRecord.createdAt,
       updatedAt: glycatedHemoglobinRecord.updatedAt,
     }
