@@ -19,8 +19,16 @@ export class RecordRoutes {
         asyncHandler(this.recordController.createBloodPressureRecord)
       )
       .patch(
-        '/bloodPressure/:id',
+        '/bloodPressureRecord/:id',
         asyncHandler(this.recordController.editBloodPressureRecord)
+      )
+      .post(
+        '/bloodSugarRecord',
+        asyncHandler(this.recordController.createBloodSugarRecord)
+      )
+      .patch(
+        '/bloodSugarRecord/:id',
+        asyncHandler(this.recordController.editBloodSugarRecord)
       )
   }
 
