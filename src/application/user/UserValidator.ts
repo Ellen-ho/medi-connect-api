@@ -11,3 +11,9 @@ export const registerUserSchema = {
       .required(),
   }),
 }
+
+export const logInUserSchema = {
+  body: Joi.object({
+    id: Joi.string().required(),
+  }),
+}

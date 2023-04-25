@@ -1,16 +1,46 @@
 import Joi from 'joi'
+import { GenderType } from '../../domain/patient/Patient'
 
-export const registerUserSchema = {
+export const creatPatientProfileSchema = {
   body: Joi.object({
-    //   displayName: Joi.string().required(),
-    //   email: Joi.string().email().required(),
-    //   password: Joi.string().required(),
-    //   role: Joi.string()
-    //     .valid(...Object.values(UserRoleType))
-    //     .required(),
-    other: Joi.alternatives().try(
-      Joi.string(), // allows non-empty string
-      Joi.valid(null) // allows null
+    avatar: Joi.alternatives().try(Joi.string(), Joi.valid(null)),
+    firstName: Joi.string().required(),
+    lastName: Joi.string().required(),
+    birthDate: Joi.date().required(),
+    gender: Joi.string()
+      .valid(...Object.values(GenderType))
+      .required(),
+    medicalHistory: Joi.alternatives().try(
+      Joi.array().items(Joi.object()),
+      Joi.valid(null)
     ),
+    allergy: Joi.string().required(),
+    familyHistory: Joi.alternatives().try(
+      Joi.array().items(Joi.object()),
+      Joi.valid(null)
+    ),
+    heightValueCm: Joi.number().required(),
+  }),
+}
+
+export const editPatientProfileSchema = {
+  body: Joi.object({
+    avatar: Joi.alternatives().try(Joi.string(), Joi.valid(null)),
+    firstName: Joi.string().required(),
+    lastName: Joi.string().required(),
+    birthDate: Joi.date().required(),
+    gender: Joi.string()
+      .valid(...Object.values(GenderType))
+      .required(),
+    medicalHistory: Joi.alternatives().try(
+      Joi.array().items(Joi.object()),
+      Joi.valid(null)
+    ),
+    allergy: Joi.string().required(),
+    familyHistory: Joi.alternatives().try(
+      Joi.array().items(Joi.object()),
+      Joi.valid(null)
+    ),
+    heightValueCm: Joi.number().required(),
   }),
 }
