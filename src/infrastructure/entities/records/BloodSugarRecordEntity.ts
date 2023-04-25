@@ -17,8 +17,14 @@ export class BloodSugarRecordEntity {
   @Column({ name: 'blood_sugar_date' })
   public bloodSugarDate!: Date
 
-  @Column({ name: 'blood_sugar_value_mmol', type: 'int' })
-  public bloodSugarValueMmol!: number
+  @Column({
+    name: 'blood_sugar_value_mmol',
+    type: 'numeric',
+    precision: 5,
+    scale: 2,
+    default: 0,
+  })
+  public bloodSugarValueMmo!: number
 
   @Column({ name: 'blood_sugar_note', type: 'varchar', length: 150 })
   public bloodSugarNote!: string | null

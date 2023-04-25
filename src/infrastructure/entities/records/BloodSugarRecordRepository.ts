@@ -13,14 +13,22 @@ export class BloodSugarRecordRepository
     super(BloodSugarRecordEntity, new BloodSugarRecordMapper(), dataSource)
   }
 
-  public async findById(id: string): Promise<BloodSugarRecord | null> {
+  public async findByIdAndPatientId(
+    recordId: string,
+    patientId: string
+  ): Promise<BloodSugarRecord | null> {
     try {
-      const entity = await this.getRepo().findOne({
-        where: { id },
-      })
+      const entity = await this.getRepo()
+        .createQueryBuilder('blood_sugar_records')
+        .leftJoinAndSelect('blood_sugar_records.patient', 'patient')
+        .where('blood_sugar_records.id = :recordId', {
+          recordId,
+        })
+        .andWhere('patients.id = :patientId', { patientId })
+        .getOne()
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
-      throw new Error('repository findById error')
+      throw new Error('repository findByIdAndPatientId error')
     }
   }
 }

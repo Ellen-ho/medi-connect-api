@@ -10,8 +10,7 @@ export class BloodSugarRecordMapper
     const bloodSugarRecord = new BloodSugarRecord({
       id: entity.id,
       bloodSugarDate: entity.bloodSugarDate,
-      bloodSugarValue: entity.bloodSugarValue,
-      bloodSugarUnit: entity.bloodSugarUnit,
+      bloodSugarValueMmo: entity.bloodSugarValueMmo,
       bloodSugarNote: entity.bloodSugarNote,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
@@ -24,8 +23,7 @@ export class BloodSugarRecordMapper
     const bloodSugarRecordEntity = new BloodSugarRecordEntity()
     bloodSugarRecordEntity.id = domainModel.id
     bloodSugarRecordEntity.bloodSugarDate = domainModel.bloodSugarDate
-    bloodSugarRecordEntity.bloodSugarValue = domainModel.bloodSugarValue
-    bloodSugarRecordEntity.bloodSugarUnit = domainModel.bloodSugarUnit
+    bloodSugarRecordEntity.bloodSugarValueMmo = domainModel.bloodSugarValueMmo
     bloodSugarRecordEntity.bloodSugarNote = domainModel.bloodSugarNote
     bloodSugarRecordEntity.createdAt = domainModel.createdAt
     bloodSugarRecordEntity.updatedAt = domainModel.updatedAt
