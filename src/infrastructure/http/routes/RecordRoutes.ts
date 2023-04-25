@@ -14,6 +14,14 @@ export class RecordRoutes {
         '/weightRecord/:id',
         asyncHandler(this.recordController.editWeightRecord)
       )
+      .post(
+        '/bloodPressureRecord',
+        asyncHandler(this.recordController.createBloodPressureRecord)
+      )
+      .patch(
+        '/bloodPressure/:id',
+        asyncHandler(this.recordController.editBloodPressureRecord)
+      )
   }
 
   public createRouter(): Router {

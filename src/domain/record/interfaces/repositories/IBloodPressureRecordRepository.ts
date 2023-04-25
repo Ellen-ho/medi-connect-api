@@ -5,5 +5,5 @@ export interface IBloodPressureRecordRepository {
     recordId: string,
     patientId: string
   ) => Promise<BloodPressureRecord | null>
-  save: (user: BloodPressureRecord) => Promise<void>
+  save: (bloodPressureRecord: BloodPressureRecord) => Promise<void>
 }

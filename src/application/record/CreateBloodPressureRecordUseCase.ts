@@ -2,7 +2,6 @@ import { IPatientRepository } from '../../domain/patient/interfaces/repositories
 import { BloodPressureRecord } from '../../domain/record/BloodPressureRecord'
 import { IBloodPressureRecordRepository } from '../../domain/record/interfaces/repositories/IBloodPressureRecordRepository'
 import { User } from '../../domain/user/User'
-
 import { IUuidService } from '../../domain/utils/IUuidService'
 
 interface CreateBloodPressureRecordRequest {
@@ -25,7 +24,7 @@ interface CreateBloodPressureRecordResponse {
   updatedAt: Date
 }
 
-export class CreateBloodPressureRecord {
+export class CreateBloodPressureRecordUseCase {
   constructor(
     private readonly bloodPressureRecordRepository: IBloodPressureRecordRepository,
     private readonly patientRepository: IPatientRepository,
