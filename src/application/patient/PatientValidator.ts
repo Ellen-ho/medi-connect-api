@@ -1,5 +1,9 @@
 import Joi from 'joi'
-import { GenderType } from '../../domain/patient/Patient'
+import {
+  FamilyDiagnosisType,
+  GenderType,
+  PersonalDiagnosisType,
+} from '../../domain/patient/Patient'
 
 export const creatPatientProfileSchema = {
   body: Joi.object({
@@ -11,12 +15,27 @@ export const creatPatientProfileSchema = {
       .valid(...Object.values(GenderType))
       .required(),
     medicalHistory: Joi.alternatives().try(
-      Joi.array().items(Joi.object()),
+      Joi.object({
+        diagnosis: Joi.string()
+          .valid(...Object.values(PersonalDiagnosisType))
+          .required(),
+        diagnosisDetails: Joi.string().optional(),
+      }),
       Joi.valid(null)
     ),
-    allergy: Joi.string().required(),
+    allergy: Joi.object({
+      medicine: Joi.string().allow(null),
+      food: Joi.string().allow(null),
+      other: Joi.string().allow(null),
+    }),
     familyHistory: Joi.alternatives().try(
-      Joi.array().items(Joi.object()),
+      Joi.object({
+        relationship: Joi.string().required(),
+        diagnosis: Joi.string()
+          .valid(...Object.values(FamilyDiagnosisType))
+          .required(),
+        diagnosisDetails: Joi.string().optional(),
+      }),
       Joi.valid(null)
     ),
     heightValueCm: Joi.number().required(),
@@ -33,12 +52,27 @@ export const editPatientProfileSchema = {
       .valid(...Object.values(GenderType))
       .required(),
     medicalHistory: Joi.alternatives().try(
-      Joi.array().items(Joi.object()),
+      Joi.object({
+        diagnosis: Joi.string()
+          .valid(...Object.values(PersonalDiagnosisType))
+          .required(),
+        diagnosisDetails: Joi.string().optional(),
+      }),
       Joi.valid(null)
     ),
-    allergy: Joi.string().required(),
+    allergy: Joi.object({
+      medicine: Joi.string().allow(null),
+      food: Joi.string().allow(null),
+      other: Joi.string().allow(null),
+    }),
     familyHistory: Joi.alternatives().try(
-      Joi.array().items(Joi.object()),
+      Joi.object({
+        relationship: Joi.string().required(),
+        diagnosis: Joi.string()
+          .valid(...Object.values(FamilyDiagnosisType))
+          .required(),
+        diagnosisDetails: Joi.string().optional(),
+      }),
       Joi.valid(null)
     ),
     heightValueCm: Joi.number().required(),
