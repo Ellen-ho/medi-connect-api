@@ -9,6 +9,13 @@ export interface IBloodSugarRecordProps {
   updatedAt: Date
   patient: Patient
 }
+
+interface IBloodSugarRecordUpdateData {
+  [key: string]: any
+  bloodSugarDate: Date
+  bloodSugarValueMmo: number // mmol/L
+  bloodSugarNote: string | null
+}
 export class BloodSugarRecord {
   constructor(private readonly props: IBloodSugarRecordProps) {}
 
@@ -38,5 +45,11 @@ export class BloodSugarRecord {
 
   public get patient(): Patient {
     return this.props.patient
+  }
+
+  public updateData(data: IBloodSugarRecordUpdateData): void {
+    this.props.bloodSugarDate = data.bloodSugarDate
+    this.props.bloodSugarValueMmo = data.bloodSugarValueMmo
+    this.props.bloodSugarNote = data.bloodSugarNote
   }
 }
