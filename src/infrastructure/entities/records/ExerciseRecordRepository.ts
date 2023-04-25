@@ -14,14 +14,22 @@ export class ExerciseRecordRepository
     super(ExerciseRecordEntity, new ExerciseRecordMapper(), dataSource)
   }
 
-  public async findById(id: string): Promise<ExerciseRecord | null> {
+  public async findByIdAndPatientId(
+    recordId: string,
+    patientId: string
+  ): Promise<ExerciseRecord | null> {
     try {
-      const entity = await this.getRepo().findOne({
-        where: { id },
-      })
+      const entity = await this.getRepo()
+        .createQueryBuilder('exercise_records')
+        .leftJoinAndSelect('exercise_records.patient', 'patient')
+        .where('exercise_records.id = :recordId', {
+          recordId,
+        })
+        .andWhere('patients.id = :patientId', { patientId })
+        .getOne()
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
-      throw new Error('repository findById error')
+      throw new Error('repository findByIdAndPatientId error')
     }
   }
 }
