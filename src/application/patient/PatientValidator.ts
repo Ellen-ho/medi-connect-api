@@ -1,15 +1,16 @@
-// export default {
-//   createPatientProfileValidator: () =>
-//     checkSchema({
-//       username: {
-//         errorMessage: 'Invalid username',
-//         isEmail: true,
-//       },
-//       password: {
-//         isLength: {
-//           options: { min: 8 },
-//           errorMessage: 'Password should be at least 8 chars',
-//         },
-//       },
-//     }),
-// }
+import Joi from 'joi'
+
+export const registerUserSchema = {
+  body: Joi.object({
+    //   displayName: Joi.string().required(),
+    //   email: Joi.string().email().required(),
+    //   password: Joi.string().required(),
+    //   role: Joi.string()
+    //     .valid(...Object.values(UserRoleType))
+    //     .required(),
+    other: Joi.alternatives().try(
+      Joi.string(), // allows non-empty string
+      Joi.valid(null) // allows null
+    ),
+  }),
+}

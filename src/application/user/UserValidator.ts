@@ -1,7 +1,7 @@
 import Joi from 'joi'
 import { UserRoleType } from '../../domain/user/User'
 
-export const loginUserSchema = {
+export const registerUserSchema = {
   body: Joi.object({
     displayName: Joi.string().required(),
     email: Joi.string().email().required(),
