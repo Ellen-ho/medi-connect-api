@@ -28,7 +28,7 @@ export interface IMedicalHistoryItem {
   diagnosisDetails?: string
 }
 
-enum PersonalDiagnosisType {
+export enum PersonalDiagnosisType {
   HYPERTENSION = 'HYPERTENSION',
   DIABETES = 'DIABETES',
   HYPERLIPIDEMIA = 'HYPERLIPIDEMIA',
@@ -43,7 +43,7 @@ export interface IFamilyHistoryItem {
   diagnosisDetails?: string
 }
 
-enum FamilyDiagnosisType {
+export enum FamilyDiagnosisType {
   HYPERTENSION = 'HYPERTENSION',
   DIABETES = 'DIABETES',
   HYPERLIPIDEMIA = 'HYPERLIPIDEMIA',

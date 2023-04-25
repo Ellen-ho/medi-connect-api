@@ -11,3 +11,10 @@ export const registerUserSchema = {
       .required(),
   }),
 }
+
+export const logInUserSchema = {
+  body: Joi.object({
+    email: Joi.string().email().required(),
+    password: Joi.string().required(),
+  }),
+}
