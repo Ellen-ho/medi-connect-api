@@ -6,63 +6,51 @@ export class RecordRoutes {
   constructor(private readonly recordController: IRecordController) {
     this.routes = Router()
     this.routes
-      .post(
-        '/weightRecord',
-        asyncHandler(this.recordController.createWeightRecord)
-      )
+      .post('/weight', asyncHandler(this.recordController.createWeightRecord))
       .patch(
-        '/weightRecord/:id',
+        '/weight/:id',
         asyncHandler(this.recordController.editWeightRecord)
       )
       .post(
-        '/bloodPressureRecord',
+        '/blood-pressure',
         asyncHandler(this.recordController.createBloodPressureRecord)
       )
       .patch(
-        '/bloodPressureRecord/:id',
+        '/blood-pressure/:id',
         asyncHandler(this.recordController.editBloodPressureRecord)
       )
       .post(
-        '/bloodSugarRecord',
+        '/blood-sugar',
         asyncHandler(this.recordController.createBloodSugarRecord)
       )
       .patch(
-        '/bloodSugarRecord/:id',
+        '/blood-sugar/:id',
         asyncHandler(this.recordController.editBloodSugarRecord)
       )
 
       .post(
-        '/exerciseRecord',
+        '/exercise',
         asyncHandler(this.recordController.createExerciseRecord)
       )
       .patch(
-        '/exerciseRecord/:id',
+        '/exercise/:id',
         asyncHandler(this.recordController.editExerciseRecord)
       )
 
-      .post('/foodRecord', asyncHandler(this.recordController.createFoodRecord))
-      .patch(
-        '/foodRecord/:id',
-        asyncHandler(this.recordController.editFoodRecord)
-      )
+      .post('/food', asyncHandler(this.recordController.createFoodRecord))
+      .patch('/food/:id', asyncHandler(this.recordController.editFoodRecord))
 
       .post(
-        '/glycatedHemoglobinRecord',
+        '/glycated-hemoglobin',
         asyncHandler(this.recordController.createGlycatedHemoglobinRecord)
       )
       .patch(
-        '/glycatedHemoglobinRecord/:id',
+        '/glycated-hemoglobin/:id',
         asyncHandler(this.recordController.editGlycatedHemoglobinRecord)
       )
 
-      .post(
-        '/sleepRecord',
-        asyncHandler(this.recordController.createSleepRecord)
-      )
-      .patch(
-        '/sleepRecord/:id',
-        asyncHandler(this.recordController.editSleepRecord)
-      )
+      .post('/sleep', asyncHandler(this.recordController.createSleepRecord))
+      .patch('/sleep/:id', asyncHandler(this.recordController.editSleepRecord))
   }
 
   public createRouter(): Router {
