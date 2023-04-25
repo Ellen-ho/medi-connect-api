@@ -1,6 +1,9 @@
 import { SleepRecord } from '../../SleepRecord'
 
 export interface ISleepRecordRepository {
-  findById: (id: string) => Promise<SleepRecord | null>
-  save: (user: SleepRecord) => Promise<void>
+  findByIdAndPatientId: (
+    recordId: string,
+    patientId: string
+  ) => Promise<SleepRecord | null>
+  save: (sleepRecord: SleepRecord) => Promise<void>
 }

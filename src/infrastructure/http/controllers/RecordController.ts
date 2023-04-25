@@ -12,6 +12,8 @@ import { CreateFoodRecordUseCase } from '../../../application/record/CreateFoodR
 import { EditFoodRecordUseCase } from '../../../application/record/EditFoodRecordUseCase'
 import { CreateGlycatedHemoglobinRecordUseCase } from '../../../application/record/CreateGlycatedHemoglobinRecordUseCase'
 import { EditGlycatedHemoglobinRecordUseCase } from '../../../application/record/EditGlycatedHemoglobinRecordUseCase'
+import { CreateSleepRecordUseCase } from '../../../application/record/CreateSleepRecordUseCase'
+import { EditSleepRecordUseCase } from '../../../application/record/EditSleepRecordUseCase'
 export interface IRecordController {
   createWeightRecord: (req: Request, res: Response) => Promise<Response>
   editWeightRecord: (req: Request, res: Response) => Promise<Response>
@@ -31,6 +33,8 @@ export interface IRecordController {
     req: Request,
     res: Response
   ) => Promise<Response>
+  createSleepRecord: (req: Request, res: Response) => Promise<Response>
+  editSleepRecord: (req: Request, res: Response) => Promise<Response>
 }
 
 export class RecordController implements IRecordController {
@@ -46,7 +50,9 @@ export class RecordController implements IRecordController {
     private readonly createFoodRecordUseCase: CreateFoodRecordUseCase,
     private readonly editFoodRecordUseCase: EditFoodRecordUseCase,
     private readonly createGlycatedHemoglobinRecordUseCase: CreateGlycatedHemoglobinRecordUseCase,
-    private readonly editGlycatedHemoglobinRecordUseCase: EditGlycatedHemoglobinRecordUseCase
+    private readonly editGlycatedHemoglobinRecordUseCase: EditGlycatedHemoglobinRecordUseCase,
+    private readonly createSleepRecordUseCase: CreateSleepRecordUseCase,
+    private readonly editSleepRecordUseCase: EditSleepRecordUseCase
   ) {}
 
   public createWeightRecord = async (
@@ -259,6 +265,40 @@ export class RecordController implements IRecordController {
       return res
         .status(400)
         .json({ message: 'edit glycated hemoglobin record error' })
+    }
+  }
+
+  public createSleepRecord = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    try {
+      const request = { ...req.body, user: req.user }
+      const record = await this.createSleepRecordUseCase.execute(request)
+
+      return res.status(200).json(record)
+    } catch (error) {
+      // TODO: move this to a middleware
+      return res.status(400).json({ message: (error as Error).message })
+    }
+  }
+
+  public editSleepRecord = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    try {
+      const request = {
+        ...req.body,
+        user: req.user,
+        sleepRecordId: req.params.id,
+      }
+      const record = await this.editSleepRecordUseCase.execute(request)
+
+      return res.status(200).json(record)
+    } catch (error) {
+      // TODO: move this to a middleware
+      return res.status(400).json({ message: 'edit sleep record error' })
     }
   }
 }

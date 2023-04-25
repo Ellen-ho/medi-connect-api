@@ -20,6 +20,15 @@ export enum SleepQualityType {
   POOR = 'POOR',
 }
 
+interface ISleepRecordUpdateData {
+  [key: string]: any
+  sleepDate: Date
+  sleepTime: Date
+  wakeUpTime: Date
+  sleepQuality: SleepQualityType
+  sleepDurationHour: number
+  sleepNote: string | null
+}
 export class SleepRecord {
   constructor(private readonly props: ISleepRecordProps) {}
 
@@ -61,5 +70,14 @@ export class SleepRecord {
 
   public get patient(): Patient {
     return this.props.patient
+  }
+
+  public updateData(data: ISleepRecordUpdateData): void {
+    this.props.sleepDate = data.sleepDate
+    this.props.sleepTime = data.sleepTime
+    this.props.wakeUpTime = data.wakeUpTime
+    this.props.sleepQuality = data.sleepQuality
+    this.props.sleepDurationHour = data.sleepDurationHour
+    this.props.sleepNote = data.sleepNote
   }
 }
