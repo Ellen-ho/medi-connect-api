@@ -46,7 +46,7 @@ export class DoctorEntity {
   @Column({ name: 'career_start_date' })
   public careerStartDate!: Date
 
-  @Column({ name: 'office_practical_location', type: 'varchar', length: 255 })
+  @Column({ name: 'office_practical_location', type: 'jsonb' })
   public officePracticalLocation!: IAddress
 
   @Column({ name: 'education', type: 'jsonb' })
