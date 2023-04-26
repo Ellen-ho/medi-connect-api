@@ -16,14 +16,67 @@ Content-Type: application/json
 
 @questionsPath = {{hostname}}/api/questions
 
-### get my questions
-GET {{questionsPath}}/me
+### get questions
+GET {{questionsPath}}
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###
 
-### Register new user
-POST {{usersPath}}
+### get a single question
+@questionId = uuid
+GET {{questionsPath}}/{{questionId}}
+Authorization: {{accessToken}}
+Content-Type: application/json
+###
+
+### patient create a question
+POST {{questionsPath}}
+Authorization: {{accessToken}}
+Content-Type: application/json
+
+{
+  "content": "question content"
+}
+###
+
+### patient edit a single question (only the owner can edit)
+@questionId = uuid
+PATCH {{questionsPath}}/{questionId}
+Authorization: {{accessToken}}
+Content-Type: application/json
+
+{
+  "content": "question content"
+}
+###
+
+### patient thank a doctor's answer
+@questionId = uuid
+@answerId = uuid
+POST {{questionsPath}}/{{questionId}}/answers/{{answerId}}/thanks
+Authorization: {{accessToken}}
+Content-Type: application/json
+
+{
+  "content": "thank content"
+}
+###
+
+### doctor answer a question
+@questionId = uuid
+@answerId = uuid
+POST {{questionsPath}}/{{questionId}}/answers
+Authorization: {{accessToken}}
+Content-Type: application/json
+
+{
+  "content": "thank content"
+}
+###
+
+### doctor agree with a answer of another doctor
+POST {{questionsPath}}/answers/{{answerId}}/agrees
+Authorization: {{accessToken}}
 Content-Type: application/json
 
 ###
