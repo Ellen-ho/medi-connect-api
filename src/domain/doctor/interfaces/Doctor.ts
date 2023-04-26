@@ -1,6 +1,6 @@
 import { User } from '../../user/User'
 
-interface IAddress {
+export interface IAddress {
   line1: string // Street address, P.O. Box, company name, c/o
   line2?: string // Apartment, suite, unit, building, floor, etc.
   city: string // City, town, village, etc.

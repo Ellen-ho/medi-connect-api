@@ -12,10 +12,9 @@ export class DoctorMapper implements IEntityMapper<DoctorEntity, Doctor> {
       lastName: entity.lastName,
       gender: entity.gender,
       aboutMe: entity.aboutMe,
-      basedIn: entity.basedIn,
       languagesSpoken: entity.languagesSpoken,
       specialties: entity.specialties,
-      yearsOfExperience: entity.yearsOfExperience,
+      careerStartDate: entity.careerStartDate,
       officePracticalLocation: entity.officePracticalLocation,
       education: entity.education,
       awards: entity.awards,
@@ -35,10 +34,9 @@ export class DoctorMapper implements IEntityMapper<DoctorEntity, Doctor> {
     doctorEntity.lastName = domainModel.lastName
     doctorEntity.gender = domainModel.gender
     doctorEntity.aboutMe = domainModel.aboutMe
-    doctorEntity.basedIn = domainModel.basedIn
     doctorEntity.languagesSpoken = domainModel.languagesSpoken
     doctorEntity.specialties = domainModel.specialties
-    doctorEntity.yearsOfExperience = domainModel.yearsOfExperience
+    doctorEntity.careerStartDate = domainModel.careerStartDate
     doctorEntity.officePracticalLocation = domainModel.officePracticalLocation
     doctorEntity.education = domainModel.education
     doctorEntity.awards = domainModel.awards

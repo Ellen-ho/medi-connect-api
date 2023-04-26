@@ -10,13 +10,19 @@ import {
 
 import { UserEntity } from '../user/UserEntity'
 import { GenderType } from '../../../domain/patient/Patient'
+import { IAddress } from '../../../domain/doctor/interfaces/Doctor'
 
 @Entity('doctors')
 export class DoctorEntity {
   @PrimaryGeneratedColumn('uuid')
   public id!: string
 
-  @Column({ name: 'avatar', type: 'varchar', length: 255, nullable: true })
+  @Column({
+    name: 'avatar',
+    type: 'varchar',
+    length: 255,
+    nullable: true,
+  })
   public avatar!: string | null
 
   @Column({ name: 'first_name', type: 'varchar', length: 50 })
@@ -31,29 +37,26 @@ export class DoctorEntity {
   @Column({ name: 'about_me', type: 'varchar', length: 400 })
   public aboutMe!: string
 
-  @Column({ name: 'based_in', type: 'varchar', length: 100 })
-  public basedIn!: string
+  @Column({ name: 'languages_spoken', type: 'jsonb' })
+  public languagesSpoken!: string[]
 
-  @Column({ name: 'languages_spoken', type: 'varchar', length: 100 })
-  public languagesSpoken!: string
+  @Column({ name: 'specialties', type: 'jsonb' })
+  public specialties!: string[]
 
-  @Column({ name: 'specialties', type: 'varchar', length: 255 })
-  public specialties!: string
-
-  @Column({ name: 'years_of_experience', type: 'number', length: 20 })
-  public yearsOfExperience!: number
+  @Column({ name: 'career_start_date' })
+  public careerStartDate!: Date
 
   @Column({ name: 'office_practical_location', type: 'varchar', length: 255 })
-  public officePracticalLocation!: string
+  public officePracticalLocation!: IAddress
 
-  @Column({ name: 'education', type: 'varchar', length: 255 })
-  public education!: string
+  @Column({ name: 'education', type: 'jsonb' })
+  public education!: string[]
 
-  @Column({ name: 'awards', type: 'varchar', length: 255 })
-  public awards!: string | null
+  @Column({ name: 'awards', type: 'jsonb', nullable: true })
+  public awards!: string[] | null
 
-  @Column({ name: 'affiliations', type: 'varchar', length: 255 })
-  public affiliations!: string | null
+  @Column({ name: 'affiliations', type: 'jsonb', nullable: true })
+  public affiliations!: string[] | null
 
   @CreateDateColumn({ name: 'created_at' })
   public createdAt!: Date
