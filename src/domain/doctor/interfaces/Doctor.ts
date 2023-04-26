@@ -11,15 +11,15 @@ export interface IDoctorProps {
   languagesSpoken: string
   specialties: string
   yearsOfexperience: number
-  OfficePracticalLocation: string
+  officePracticalLocation: string
   education: string
   awards: string
   affiliations: string
-  answersProvided: number
-  agreesGiven: number
-  thankYouNotes: number
-  recommendationsCount: number
-  recommendationsContent: string // TODO:modify
+  //answersProvided: number
+  //agreesGiven: number
+  //thankYouNotes: number
+  //recommendationsCount: number
+  //recommendationsContent: string // TODO:modify
   createdAt: Date
   updatedAt: Date
   user: User
@@ -74,9 +74,9 @@ export class Doctor {
     return this.props.yearsOfexperience
   }
 
-  public get OfficePracticalLocation(): string {
+  public get officePracticalLocation(): string {
     // TODO:modify
-    return this.props.OfficePracticalLocation
+    return this.props.officePracticalLocation
   }
 
   public get education(): string {
@@ -91,25 +91,25 @@ export class Doctor {
     return this.props.affiliations
   }
 
-  public get answersProvided(): number {
-    return this.props.answersProvided
-  }
+  //public get answersProvided(): number {
+  //return this.props.answersProvided
+  //}
 
-  public get agreesGiven(): number {
-    return this.props.agreesGiven
-  }
+  //public get agreesGiven(): number {
+  //return this.props.agreesGiven
+  //}
 
-  public get thankYouNotes(): number {
-    return this.props.thankYouNotes
-  }
+  //public get thankYouNotes(): number {
+  //return this.props.thankYouNotes
+  //}
 
-  public get recommendationsCount(): number {
-    return this.props.recommendationsCount
-  }
+  //public get recommendationsCount(): number {
+  //return this.props.recommendationsCount
+  //}
 
-  public get recommendationsContent(): string {
-    return this.props.recommendationsContent
-  }
+  //public get recommendationsContent(): string {
+  //return this.props.recommendationsContent
+  //}
 
   public get createdAt(): Date {
     return this.props.createdAt
