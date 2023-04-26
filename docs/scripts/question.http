@@ -1,0 +1,29 @@
+@hostname = http://localhost:8080
+
+@usersPath = {{hostname}}/api/users
+
+### user login
+# @name login
+POST {{usersPath}}/login
+Content-Type: application/json
+
+{
+  "email": "user1@mail.com",
+  "password": "user1"
+}
+###
+@accessToken = Bearer {{login.response.body.token}}
+
+@questionsPath = {{hostname}}/api/questions
+
+### get my questions
+GET {{questionsPath}}/me
+Authorization: {{accessToken}}
+Content-Type: application/json
+###
+
+### Register new user
+POST {{usersPath}}
+Content-Type: application/json
+
+###
