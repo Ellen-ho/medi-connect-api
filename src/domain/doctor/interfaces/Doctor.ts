@@ -2,19 +2,19 @@ import { User } from '../../user/User'
 
 export interface IDoctorProps {
   id: string
-  avatar: string
-  firstname: string
+  avatar: string | null
+  firstName: string
   lastName: string
   gender: GenderType
   aboutMe: string
   basedIn: string
   languagesSpoken: string
   specialties: string
-  yearsOfexperience: number
+  yearsOfExperience: number
   officePracticalLocation: string
   education: string
-  awards: string
-  affiliations: string
+  awards: string | null
+  affiliations: string | null
   //answersProvided: number
   //agreesGiven: number
   //thankYouNotes: number
@@ -43,7 +43,7 @@ export class Doctor {
   }
 
   public get firstName(): string {
-    return this.props.firstname
+    return this.props.firstName
   }
 
   public get lastName(): string {
@@ -70,8 +70,8 @@ export class Doctor {
     return this.props.specialties
   }
 
-  public get yearsOfexperience(): number {
-    return this.props.yearsOfexperience
+  public get yearsOfExperience(): number {
+    return this.props.yearsOfExperience
   }
 
   public get officePracticalLocation(): string {
