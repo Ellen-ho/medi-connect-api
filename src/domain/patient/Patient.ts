@@ -60,12 +60,12 @@ export interface IAllergy {
 export interface IMedicinceUsageItem {
   medicineName: string
   medicineDosage: number
-  medicineUnit: medicineUnitType
+  medicineUnit: MedicineUnitType
   medicineFrequency: MedicineFrequencyType
   medicineTime: MedicineTimeType
 }
 
-export enum medicineUnitType {
+export enum MedicineUnitType {
   MILLIGRAM = 'MILLIGRAM',
   MILLILITER = 'MILLILITER',
 }
@@ -84,7 +84,7 @@ export enum MedicineTimeType {
   OTHER = 'OTHER',
 }
 
-interface IPatirntProfileUpdateData {
+interface IPatientProfileUpdateData {
   [key: string]: any
   avatar: string | null
   firstName: string
@@ -157,7 +157,7 @@ export class Patient {
     return this.props.user
   }
 
-  public updateData(data: IPatirntProfileUpdateData): void {
+  public updateData(data: IPatientProfileUpdateData): void {
     // TODO: improve this
     this.props.avatar = data.avatar
     this.props.firstName = data.firstName
