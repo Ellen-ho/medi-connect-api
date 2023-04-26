@@ -1,5 +1,15 @@
 import { User } from '../../user/User'
 
+interface IAddress {
+  line1: string // Street address, P.O. Box, company name, c/o
+  line2?: string // Apartment, suite, unit, building, floor, etc.
+  city: string // City, town, village, etc.
+  stateProvince?: string // State, province, region, etc.
+  postalCode?: string // Postal code, ZIP code, etc.
+  country: string // Country name or ISO country code
+  countryCode: string // ISO country code (2 or 3 characters), optional if using the full country name
+}
+
 export interface IDoctorProps {
   id: string
   avatar: string | null
@@ -7,19 +17,13 @@ export interface IDoctorProps {
   lastName: string
   gender: GenderType
   aboutMe: string
-  basedIn: string
-  languagesSpoken: string
-  specialties: string
-  yearsOfExperience: number
-  officePracticalLocation: string
-  education: string
-  awards: string | null
-  affiliations: string | null
-  //answersProvided: number
-  //agreesGiven: number
-  //thankYouNotes: number
-  //recommendationsCount: number
-  //recommendationsContent: string // TODO:modify
+  languagesSpoken: string[]
+  specialties: string[]
+  careerStartDate: Date
+  officePracticalLocation: IAddress
+  education: string[]
+  awards: string[] | null
+  affiliations: string[] | null
   createdAt: Date
   updatedAt: Date
   user: User
@@ -38,7 +42,7 @@ export class Doctor {
     return this.props.id
   }
 
-  public get avatar(): string {
+  public get avatar(): string | null {
     return this.props.avatar
   }
 
@@ -58,58 +62,33 @@ export class Doctor {
     return this.props.aboutMe
   }
 
-  public get basedIn(): string {
-    return this.props.basedIn
-  }
-
-  public get languagesSpoken(): string {
+  public get languagesSpoken(): string[] {
     return this.props.languagesSpoken
   }
 
-  public get specialties(): string {
+  public get specialties(): string[] {
     return this.props.specialties
   }
 
-  public get yearsOfExperience(): number {
-    return this.props.yearsOfExperience
+  public get careerStartDate(): Date {
+    return this.props.careerStartDate
   }
 
-  public get officePracticalLocation(): string {
-    // TODO:modify
+  public get officePracticalLocation(): IAddress {
     return this.props.officePracticalLocation
   }
 
-  public get education(): string {
+  public get education(): string[] {
     return this.props.education
   }
 
-  public get awards(): string {
+  public get awards(): string[] | null {
     return this.props.awards
   }
 
-  public get affiliations(): string {
+  public get affiliations(): string[] | null {
     return this.props.affiliations
   }
-
-  //public get answersProvided(): number {
-  //return this.props.answersProvided
-  //}
-
-  //public get agreesGiven(): number {
-  //return this.props.agreesGiven
-  //}
-
-  //public get thankYouNotes(): number {
-  //return this.props.thankYouNotes
-  //}
-
-  //public get recommendationsCount(): number {
-  //return this.props.recommendationsCount
-  //}
-
-  //public get recommendationsContent(): string {
-  //return this.props.recommendationsContent
-  //}
 
   public get createdAt(): Date {
     return this.props.createdAt
