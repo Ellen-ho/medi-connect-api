@@ -77,8 +77,8 @@ $ npm run typeorm migration:generate ./migrations/{MigrationName}
 
 Run migrations:
 
-```npm run typeorm migration:run
-$
+```
+$ npm run typeorm migration:run
 ```
 
 Reverts last executed migration:
