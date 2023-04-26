@@ -42,6 +42,9 @@ import { EditGlycatedHemoglobinRecordUseCase } from './application/record/EditGl
 import { RecordController } from './infrastructure/http/controllers/RecordController'
 import { DoctorRoutes } from './infrastructure/http/routes/DoctorRoutes'
 import { DoctorController } from './infrastructure/http/controllers/DoctorController'
+import { CreateDoctorProfileUseCase } from './application/doctor/CreateDoctorProfileUseCase'
+import { EditDoctorProfileUseCase } from './application/doctor/EditDoctorProfileUseCase'
+import { DoctorRepository } from './infrastructure/entities/doctor/DoctorRepository'
 
 void main()
 
@@ -84,6 +87,18 @@ async function main(): Promise<void> {
   )
   const editPatientProfileUseCase = new EditPatientProfileUseCase(
     patientRepository
+  )
+
+  /**
+   * Doctor Domain
+   */
+  const doctorRepository = new DoctorRepository(dataSource)
+  const createDoctorProfileUseCase = new CreateDoctorProfileUseCase(
+    doctorRepository,
+    uuidService
+  )
+  const editDoctorProfileUseCase = new EditDoctorProfileUseCase(
+    doctorRepository
   )
 
   /**
@@ -166,9 +181,6 @@ async function main(): Promise<void> {
       patientRepository
     )
 
-  const createPatientProfileUseCase = new CreatePatientProfileUseCase()
-  const editPatientProfileUseCase = new EditPatientProfileUseCase()
-
   /**
    * Controllers
    */
@@ -176,6 +188,10 @@ async function main(): Promise<void> {
   const patientController = new PatientController(
     createPatientProfileUseCase,
     editPatientProfileUseCase
+  )
+  const doctorController = new DoctorController(
+    createDoctorProfileUseCase,
+    editDoctorProfileUseCase
   )
   const recordController = new RecordController(
     createWeightRecordUseCase,
@@ -193,10 +209,6 @@ async function main(): Promise<void> {
     createSleepRecordUseCase,
     editSleepRecordUseCase
   )
-  const doctorController = new DoctorController(
-    createPatientProfileUseCase,
-    editPatientProfileUseCase
-  )
 
   const app: Express = express()
   app.use(express.urlencoded({ extended: true }))
@@ -212,7 +224,12 @@ async function main(): Promise<void> {
   const recordRoutes = new RecordRoutes(recordController)
   const doctorRoutes = new DoctorRoutes(doctorController)
 
-  const mainRoutes = new MainRoutes(userRoutes, patientRoutes, recordRoutes)
+  const mainRoutes = new MainRoutes(
+    userRoutes,
+    patientRoutes,
+    recordRoutes,
+    doctorRoutes
+  )
   app.use('/api', mainRoutes.createRouter())
 
   app.use(errorHandler)
