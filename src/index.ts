@@ -40,6 +40,8 @@ import { GlycatedHemoglobinRecordRepository } from './infrastructure/entities/re
 import { CreateGlycatedHemoglobinRecordUseCase } from './application/record/CreateGlycatedHemoglobinRecordUseCase'
 import { EditGlycatedHemoglobinRecordUseCase } from './application/record/EditGlycatedHemoglobinRecordUseCase'
 import { RecordController } from './infrastructure/http/controllers/RecordController'
+import { DoctorRoutes } from './infrastructure/http/routes/DoctorRoutes'
+import { DoctorController } from './infrastructure/http/controllers/DoctorController'
 
 void main()
 
@@ -164,6 +166,9 @@ async function main(): Promise<void> {
       patientRepository
     )
 
+  const createPatientProfileUseCase = new CreatePatientProfileUseCase()
+  const editPatientProfileUseCase = new EditPatientProfileUseCase()
+
   /**
    * Controllers
    */
@@ -188,6 +193,10 @@ async function main(): Promise<void> {
     createSleepRecordUseCase,
     editSleepRecordUseCase
   )
+  const doctorController = new DoctorController(
+    createPatientProfileUseCase,
+    editPatientProfileUseCase
+  )
 
   const app: Express = express()
   app.use(express.urlencoded({ extended: true }))
@@ -201,6 +210,7 @@ async function main(): Promise<void> {
   const userRoutes = new UserRoutes(userController)
   const patientRoutes = new PatientRoutes(patientController)
   const recordRoutes = new RecordRoutes(recordController)
+  const doctorRoutes = new DoctorRoutes(doctorController)
 
   const mainRoutes = new MainRoutes(userRoutes, patientRoutes, recordRoutes)
   app.use('/api', mainRoutes.createRouter())

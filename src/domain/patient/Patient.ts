@@ -60,12 +60,12 @@ export interface IAllergy {
 export interface IMedicinceUsageItem {
   medicineName: string
   medicineDosage: number
-  medicineUnit: medicineUnitType
+  medicineUnit: MedicineUnitType
   medicineFrequency: MedicineFrequencyType
   medicineTime: MedicineTimeType
 }
 
-export enum medicineUnitType {
+export enum MedicineUnitType {
   MILLIGRAM = 'MILLIGRAM',
   MILLILITER = 'MILLILITER',
 }

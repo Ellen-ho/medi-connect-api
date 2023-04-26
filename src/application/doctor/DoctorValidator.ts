@@ -10,13 +10,19 @@ export const creatDoctorProfileSchema = {
       .valid(...Object.values(GenderType))
       .required(),
     aboutMe: Joi.string().required(),
-    languagesSpoken: Joi.string().required(),
-    specialties: Joi.string().required(),
+    languagesSpoken: Joi.array().items(Joi.string().required()),
+    specialties: Joi.array().items(Joi.string().required()),
     careerStartDate: Joi.date().required(),
-    officePracticalLocation: Joi.string()
-      .valid(...Object.values(IAddress))
-      .required(),
-    education: Joi.string().required(),
+    officePracticalLocation: Joi.object({
+      line1: Joi.string().required(),
+      line2: Joi.string().optional(),
+      city: Joi.string().required(),
+      stateProvince: Joi.string().optional(),
+      postalCode: Joi.string().optional(),
+      country: Joi.string().required(),
+      countryCode: Joi.string().required(),
+    }).required(),
+    education: Joi.array().items(Joi.string().required()),
     awards: Joi.string().optional(),
     affiliations: Joi.string().optional(),
   }),
