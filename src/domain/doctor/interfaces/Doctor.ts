@@ -35,6 +35,22 @@ export enum GenderType {
   NON_BINARY = 'NON_BINARY',
 }
 
+interface IDoctorProfileUpdateData {
+  [key: string]: any
+  avatar: string | null
+  firstName: string
+  lastName: string
+  gender: GenderType
+  aboutMe: string
+  languagesSpoken: string[]
+  specialties: string[]
+  careerStartDate: Date
+  officePracticalLocation: IAddress
+  education: string[]
+  awards: string[] | null
+  affiliations: string[] | null
+}
+
 export class Doctor {
   constructor(private readonly props: IDoctorProps) {}
 
@@ -100,5 +116,21 @@ export class Doctor {
 
   public get user(): User {
     return this.props.user
+  }
+
+  public updateData(data: IDoctorProfileUpdateData): void {
+    // TODO: improve this
+    this.props.avatar = data.avatar
+    this.props.firstName = data.firstName
+    this.props.lastName = data.lastName
+    this.props.gender = data.gender
+    this.props.aboutMe = data.aboutMe
+    this.props.languagesSpoken = data.languagesSpoken
+    this.props.specialties = data.specialties
+    this.props.careerStartDate = data.careerStartDate
+    this.props.officePracticalLocation = data.officePracticalLocation
+    this.props.education = data.education
+    this.props.awards = data.awards
+    this.props.affiliations = data.affiliations
   }
 }
