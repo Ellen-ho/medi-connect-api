@@ -5,7 +5,7 @@ import { SleepQualityType } from '../../domain/record/SleepRecord'
 
 export const creatBloodPressureRecordSchema = {
   body: Joi.object({
-    bloodPressureDate: Joi.date().required(),
+    bloodPressureDate: Joi.date().timestamp('unix').required(),
     systolicBloodPressure: Joi.number().required(),
     diastolicBloodPressure: Joi.number().required(),
     heartBeat: Joi.number().required(),
@@ -19,7 +19,7 @@ export const editBloodPressureRecordSchema = {
 
 export const creatBloodSugarRecordSchema = {
   body: Joi.object({
-    bloodSugarDate: Joi.date().required(),
+    bloodSugarDate: Joi.date().timestamp('unix').required(),
     bloodSugarValueMmo: Joi.number().required(),
     bloodSugarNote: Joi.string().optional(),
   }),
@@ -31,7 +31,7 @@ export const editBloodSugarRecordSchema = {
 
 export const creatExerciseRecordSchema = {
   body: Joi.object({
-    exerciseDate: Joi.date().required(),
+    exerciseDate: Joi.date().timestamp('unix').required(),
     exerciseType: Joi.string()
       .valid(...Object.values(ExerciseType))
       .required(),
@@ -49,7 +49,7 @@ export const editExerciseRecordSchema = {
 
 export const creatFoodRecordSchema = {
   body: Joi.object({
-    foodTime: Joi.date().required(),
+    foodTime: Joi.date().timestamp('unix').required(),
     foodCategory: Joi.string()
       .valid(...Object.values(FoodCategoryType))
       .required(),
@@ -64,7 +64,7 @@ export const editFoodRecordSchema = {
 
 export const creatGlycatedHemoglobinRecordSchema = {
   body: Joi.object({
-    glycatedHemoglobinDate: Joi.date().required(),
+    glycatedHemoglobinDate: Joi.date().timestamp('unix').required(),
     glycatedHemoglobinValuePercent: Joi.number().required(),
   }),
 }
@@ -75,9 +75,9 @@ export const editGlycatedHemoglobinRecordSchema = {
 
 export const creatSleepRecordSchema = {
   body: Joi.object({
-    sleepDate: Joi.date().required(),
-    sleepTime: Joi.date().required(),
-    wakeUpTime: Joi.date().required(),
+    sleepDate: Joi.date().timestamp('unix').required(),
+    sleepTime: Joi.date().timestamp('unix').required(),
+    wakeUpTime: Joi.date().timestamp('unix').required(),
     sleepQuality: Joi.string()
       .valid(...Object.values(SleepQualityType))
       .required(),
@@ -92,7 +92,7 @@ export const editSleepRecordSchema = {
 
 export const creatWeightRecordSchema = {
   body: Joi.object({
-    weightDate: Joi.date().required(),
+    weightDate: Joi.date().timestamp('unix').required(),
     weightValueKg: Joi.number().required(),
     weightNote: Joi.string().optional(),
   }),
