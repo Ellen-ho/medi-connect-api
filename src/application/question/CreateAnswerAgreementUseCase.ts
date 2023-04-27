@@ -8,7 +8,7 @@ import { IAnswerAgreementRepository } from '../../domain/question/interfaces/rep
 interface CreateAnswerAgreementRequest {
   user: User
   answerId: string
-  comment: string
+  comment: string | null
 }
 
 interface CreateAnswerAgreementResponse {
