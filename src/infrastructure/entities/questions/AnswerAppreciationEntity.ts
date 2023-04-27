@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -24,8 +25,10 @@ export class AnswerAppreciationEntity {
   public updatedAt!: Date
 
   @ManyToOne(() => PatientEntity, (patient) => patient.id)
+  @JoinColumn({ name: 'patient_id' })
   public patient!: PatientEntity
 
   @ManyToOne(() => PatientQuestionAnswerEntity, (answer) => answer.id)
+  @JoinColumn({ name: 'answer_id' })
   public answer!: PatientQuestionAnswerEntity
 }

@@ -21,6 +21,10 @@ export class AnswerAppreciation {
     return this.props.content
   }
 
+  public get patient(): Patient {
+    return this.props.patient
+  }
+
   public get answer(): PatientQuestionAnswer {
     return this.props.answer
   }
