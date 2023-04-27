@@ -10,6 +10,7 @@ export class AnswerAgreementMapper
   public toDomainModel(entity: AnswerAgreementEntity): AnswerAgreement {
     const answerAgreement = new AnswerAgreement({
       id: entity.id,
+      comment: entity.comment,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
       answer: new PatientQuestionAnswerMapper().toDomainModel(entity.answer),
@@ -21,6 +22,7 @@ export class AnswerAgreementMapper
   public toPersistence(domainModel: AnswerAgreement): AnswerAgreementEntity {
     const answerAgreementEntity = new AnswerAgreementEntity()
     answerAgreementEntity.id = domainModel.id
+    answerAgreementEntity.comment = domainModel.comment
     answerAgreementEntity.createdAt = domainModel.createdAt
     answerAgreementEntity.updatedAt = domainModel.updatedAt
     answerAgreementEntity.answer =
