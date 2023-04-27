@@ -39,4 +39,23 @@ export class AnswerAppreciationRepository
       throw new Error('repository countByAnswerId error')
     }
   }
+
+  public async findByIdAndPatientId(
+    answerAppreciationId: string,
+    patientId: string
+  ): Promise<AnswerAppreciation | null> {
+    try {
+      const entity = await this.getRepo()
+        .createQueryBuilder('answer_apprieciations')
+        .leftJoinAndSelect('answer_apprieciations.patient', 'patient')
+        .where('answer_apprieciations.id = :recordId', {
+          answerAppreciationId,
+        })
+        .andWhere('patients.id = :patientId', { patientId })
+        .getOne()
+      return entity != null ? this.getMapper().toDomainModel(entity) : null
+    } catch (e) {
+      throw new Error('repository findByIdAndPatientId error')
+    }
+  }
 }

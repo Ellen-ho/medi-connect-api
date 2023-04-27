@@ -17,7 +17,7 @@ export class AnswerAppreciationEntity {
   public id!: string
 
   @Column({ name: 'content', type: 'varchar', length: 300, nullable: true })
-  public content!: string
+  public content!: string | null
 
   @CreateDateColumn({ name: 'created_at' })
   public createdAt!: Date

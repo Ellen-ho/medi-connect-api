@@ -3,7 +3,7 @@ import { PatientQuestionAnswer } from './PatientQuestionAnswer'
 
 export interface IAnswerAppreciationProps {
   id: string
-  content: string
+  content: string | null
   patient: Patient
   answer: PatientQuestionAnswer
   createdAt: Date
@@ -17,7 +17,7 @@ export class AnswerAppreciation {
     return this.props.id
   }
 
-  public get content(): string {
+  public get content(): string | null {
     return this.props.content
   }
 
@@ -35,5 +35,9 @@ export class AnswerAppreciation {
 
   public get updatedAt(): Date {
     return this.props.updatedAt
+  }
+
+  public updateContent(content: string): void {
+    this.props.content = content
   }
 }
