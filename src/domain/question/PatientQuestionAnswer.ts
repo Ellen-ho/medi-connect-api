@@ -1,5 +1,4 @@
 import { Doctor } from '../doctor/interfaces/Doctor'
-import { Patient } from '../patient/Patient'
 import { PatientQuestion } from './PatientQuestion'
 
 export interface IPatientQuestionAnswerProps {
@@ -9,7 +8,6 @@ export interface IPatientQuestionAnswerProps {
   doctor: Doctor
   createdAt: Date
   updatedAt: Date
-  asker: Patient
 }
 
 export class PatientQuestionAnswer {
