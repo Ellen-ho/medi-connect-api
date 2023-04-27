@@ -86,7 +86,7 @@ export class AnswerAgreementRepository
         .where('answer_agreements.id = :answerAgreementId', {
           answerAgreementId,
         })
-        .andWhere('agreedDoctor.id = :agreedDoctorId', {
+        .andWhere('agreedDoctors.id = :agreedDoctorId', {
           agreedDoctorId,
         })
         .getOne()

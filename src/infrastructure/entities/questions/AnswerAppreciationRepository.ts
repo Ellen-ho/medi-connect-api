@@ -48,7 +48,7 @@ export class AnswerAppreciationRepository
       const entity = await this.getRepo()
         .createQueryBuilder('answer_apprieciations')
         .leftJoinAndSelect('answer_apprieciations.patient', 'patient')
-        .where('answer_apprieciations.id = :recordId', {
+        .where('answer_apprieciations.id = :answerAppreciationId', {
           answerAppreciationId,
         })
         .andWhere('patients.id = :patientId', { patientId })

@@ -1,31 +1,33 @@
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
-import { IAnswerAgreementRepository } from '../../domain/question/interfaces/repositories/IAnswerAgreementRepository'
+import { IPatientQuestionAnswerRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionAnswerRepository'
 import { User } from '../../domain/user/User'
 
-interface EditAnswerAgreementRequest {
+interface EditPatientQuestionAnswerRequest {
   user: User
-  answerAgreementId: string
-  comment: string | null
+  content: string
+  patientQuestionId: string
+  patientQuestionAnswerId: string
 }
 
-interface EditAnswerAgreementResponse {
+interface EditPatientQuestionAnswerResponse {
   id: string
+  content: string
   updatedAt: Date
 }
 
-export class EditAnswerAgreementUseCase {
+export class EditPatientQuestionAnswerUseCase {
   constructor(
-    private readonly answerAgreementRepository: IAnswerAgreementRepository,
+    private readonly patientQuestionAnswerRepository: IPatientQuestionAnswerRepository,
     private readonly doctorRepository: IDoctorRepository
   ) {}
 
   public async execute(
-    request: EditAnswerAgreementRequest
-  ): Promise<EditAnswerAgreementResponse> {
-    const { user, answerAgreementId, comment } = request
+    request: EditPatientQuestionAnswerRequest
+  ): Promise<EditPatientQuestionAnswerResponse> {
+    const { user, content, patientQuestionAnswerId } = request
 
-    if (comment == null) {
-      throw new Error('Comment cannot be empty after editing')
+    if (content == null) {
+      throw new Error('Content cannot be empty')
     }
 
     const existingDoctor = await this.doctorRepository.findByUserId(user.id)
@@ -34,23 +36,26 @@ export class EditAnswerAgreementUseCase {
       throw new Error('Doctor does not exist.')
     }
 
-    const existingAnswerAgreement =
-      await this.answerAgreementRepository.findByIdAndAgreedDoctorId(
-        answerAgreementId,
+    const existingPatientQuestionAnswer =
+      await this.patientQuestionAnswerRepository.findByIdAndDoctorId(
+        patientQuestionAnswerId,
         existingDoctor.id
       )
 
-    if (existingAnswerAgreement == null) {
-      throw new Error('Answer agreement does not exist.')
+    if (existingPatientQuestionAnswer == null) {
+      throw new Error('Answer does not exist.')
     }
 
-    existingAnswerAgreement.updateComment(comment)
+    existingPatientQuestionAnswer.updateContent(content)
 
-    await this.answerAgreementRepository.save(existingAnswerAgreement)
+    await this.patientQuestionAnswerRepository.save(
+      existingPatientQuestionAnswer
+    )
 
     return {
-      id: existingAnswerAgreement.id,
-      updatedAt: existingAnswerAgreement.updatedAt,
+      id: existingPatientQuestionAnswer.id,
+      content,
+      updatedAt: existingPatientQuestionAnswer.updatedAt,
     }
   }
 }
