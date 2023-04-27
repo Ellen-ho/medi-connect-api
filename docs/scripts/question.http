@@ -51,9 +51,8 @@ Content-Type: application/json
 ###
 
 ### patient thank a doctor's answer
-@questionId = uuid
 @answerId = uuid
-POST {{questionsPath}}/{{questionId}}/answers/{{answerId}}/thanks
+POST {{questionsPath}}/answers/{{answerId}}/thanks
 Authorization: {{accessToken}}
 Content-Type: application/json
 
