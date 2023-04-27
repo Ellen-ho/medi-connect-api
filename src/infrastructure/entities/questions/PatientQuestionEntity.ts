@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -20,12 +21,13 @@ export class PatientQuestionEntity {
   @Column({ name: 'medical_specialty', type: 'varchar', length: 50 })
   public medicalSpecialty!: MedicalSpecialtyType
 
-  @CreateDateColumn({ name: 'updated_at' })
+  @CreateDateColumn({ name: 'created_at' })
   public createdAt!: Date
 
   @UpdateDateColumn({ name: 'updated_at' })
   public updatedAt!: Date
 
   @ManyToOne(() => PatientEntity, (patient) => patient.id)
+  @JoinColumn({ name: 'asker_id' })
   public asker!: PatientEntity
 }
