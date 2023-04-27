@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -15,14 +16,17 @@ export class AnswerAgreementEntity {
   @PrimaryGeneratedColumn('uuid')
   public id!: string
 
-  @Column({ name: 'comment', type: 'varchar', length: 400 })
-  public comment!: string
+  @Column({ name: 'comment', type: 'varchar', length: 400, nullable: true })
+  public comment!: string | null
 
   @CreateDateColumn({ name: 'created_at' })
   public createdAt!: Date
 
   @UpdateDateColumn({ name: 'updated_at' })
   public updatedAt!: Date
+
+  @DeleteDateColumn({ name: 'deleted_at' })
+  public deletedAt?: Date
 
   @ManyToOne(() => PatientQuestionAnswerEntity, (answer) => answer.id)
   @JoinColumn({ name: 'patient_question_answer_id' })
