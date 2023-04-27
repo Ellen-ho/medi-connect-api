@@ -62,4 +62,37 @@ export class AnswerAgreementRepository
       throw new Error('repository countsByAnswerId error')
     }
   }
+
+  public async deleteById(id: string): Promise<void> {
+    try {
+      await this.getRepo()
+        .createQueryBuilder('answer_agreements')
+        .softDelete()
+        .where('id = :id', { id })
+        .execute()
+    } catch (e) {
+      throw new Error('repository countsByAnswerId error')
+    }
+  }
+
+  public async findByIdAndAgreedDoctorId(
+    answerAgreementId: string,
+    agreedDoctorId: string
+  ): Promise<AnswerAgreement | null> {
+    try {
+      const entity = await this.getRepo()
+        .createQueryBuilder('answer_agreements')
+        .leftJoinAndSelect('answer_agreements.agreedDoctor', 'agreedDoctor')
+        .where('answer_agreements.id = :answerAgreementId', {
+          answerAgreementId,
+        })
+        .andWhere('agreedDoctor.id = :agreedDoctorId', {
+          agreedDoctorId,
+        })
+        .getOne()
+      return entity != null ? this.getMapper().toDomainModel(entity) : null
+    } catch (e) {
+      throw new Error('repository findByIdAndAgreedDoctorId error')
+    }
+  }
 }
