@@ -1,4 +1,5 @@
 import {
+  Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
@@ -13,6 +14,9 @@ import { PatientQuestionAnswerEntity } from './PatientQuestionAnswerEntity'
 export class AnswerAgreementEntity {
   @PrimaryGeneratedColumn('uuid')
   public id!: string
+
+  @Column({ name: 'comment', type: 'varchar', length: 400 })
+  public comment!: string
 
   @CreateDateColumn({ name: 'created_at' })
   public createdAt!: Date

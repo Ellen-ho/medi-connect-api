@@ -23,4 +23,43 @@ export class AnswerAgreementRepository
       throw new Error('repository findById error')
     }
   }
+
+  public async countsByAnswerId(answerId: string): Promise<number> {
+    try {
+      const counts = await this.getRepo().count({
+        where: {
+          answer: {
+            id: answerId,
+          },
+        },
+        relations: ['answer'],
+      })
+      return counts
+    } catch (e) {
+      throw new Error('repository countsByAnswerId error')
+    }
+  }
+
+  public async findAllByAnswerId(
+    answerId: string,
+    take?: number
+  ): Promise<AnswerAgreement[]> {
+    try {
+      const entities = await this.getRepo().find({
+        where: {
+          answer: {
+            id: answerId,
+          },
+        },
+        take,
+        order: {
+          createdAt: 'DESC',
+        },
+        relations: ['answer'],
+      })
+      return entities.map((entity) => this.getMapper().toDomainModel(entity))
+    } catch (e) {
+      throw new Error('repository countsByAnswerId error')
+    }
+  }
 }

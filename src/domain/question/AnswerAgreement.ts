@@ -5,6 +5,7 @@ export interface IAnswerAgreementProps {
   id: string
   answer: PatientQuestionAnswer
   agreedDoctor: Doctor
+  comment: string
   createdAt: Date
   updatedAt: Date
 }
@@ -22,6 +23,10 @@ export class AnswerAgreement {
 
   public get agreedDoctor(): Doctor {
     return this.props.agreedDoctor
+  }
+
+  public get comment(): string {
+    return this.props.comment
   }
 
   public get createdAt(): Date {
