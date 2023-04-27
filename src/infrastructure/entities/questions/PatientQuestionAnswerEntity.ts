@@ -18,7 +18,7 @@ export class PatientQuestionAnswerEntity {
   @Column({ name: 'content', type: 'varchar', length: 300 })
   public content!: string
 
-  @CreateDateColumn({ name: 'updated_at' })
+  @CreateDateColumn({ name: 'created_at' })
   public createdAt!: Date
 
   @UpdateDateColumn({ name: 'updated_at' })

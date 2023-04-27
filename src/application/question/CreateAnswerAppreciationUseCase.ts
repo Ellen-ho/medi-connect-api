@@ -1,7 +1,5 @@
-import { Patient } from '../../domain/patient/Patient'
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { AnswerAppreciation } from '../../domain/question/AnswerAppreciation'
-import { PatientQuestionAnswer } from '../../domain/question/PatientQuestionAnswer'
 import { IAnswerAppreciationRepository } from '../../domain/question/interfaces/repositories/IAnswerAppreciationtRepository'
 import { IPatientQuestionAnswerRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionAnswerRepository'
 import { User } from '../../domain/user/User'
@@ -16,7 +14,6 @@ interface CreateAnswerAppreciationRequest {
 interface CreateAnswerAppreciationResponse {
   id: string
   answerId: string
-  isThanked: boolean
   totalThankCounts: number
   createdAt: Date
   updatedAt: Date
@@ -58,11 +55,12 @@ export class CreateAnswerAppreciationUseCase {
     })
     await this.answerAppreciationRepository.save(answerAppreciation)
 
+    const totalThankCounts =
+      await this.answerAppreciationRepository.countByAnswerId(answerId)
+
     return {
       id: answerAppreciation.id,
       answerId: existingAnswer.id,
-      patient: existingPatient,
-      isThanked,
       totalThankCounts,
       createdAt: answerAppreciation.createdAt,
       updatedAt: answerAppreciation.updatedAt,

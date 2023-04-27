@@ -1,4 +1,5 @@
 import {
+  Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
@@ -14,8 +15,8 @@ export class AnswerAgreementEntity {
   @PrimaryGeneratedColumn('uuid')
   public id!: string
 
-  @CreateDateColumn({ name: 'comment', type: 'varchar', length: 400 })
-  public createdAt!: string
+  @Column({ name: 'comment', type: 'varchar', length: 400 })
+  public comment!: string
 
   @CreateDateColumn({ name: 'created_at' })
   public createdAt!: Date

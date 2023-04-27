@@ -23,4 +23,20 @@ export class AnswerAppreciationRepository
       throw new Error('repository findById error')
     }
   }
+
+  public async countByAnswerId(answerId: string): Promise<number> {
+    try {
+      const counts = await this.getRepo().count({
+        where: {
+          answer: {
+            id: answerId,
+          },
+        },
+        relations: ['answer'],
+      })
+      return counts
+    } catch (e) {
+      throw new Error('repository countByAnswerId error')
+    }
+  }
 }

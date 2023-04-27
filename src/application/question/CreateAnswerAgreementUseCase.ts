@@ -1,10 +1,9 @@
-import { Doctor } from '../../domain/doctor/interfaces/Doctor'
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 import { AnswerAgreement } from '../../domain/question/AnswerAgreement'
-import { PatientQuestionAnswer } from '../../domain/question/PatientQuestionAnswer'
 import { IPatientQuestionAnswerRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionAnswerRepository'
 import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
+import { IAnswerAgreementRepository } from '../../domain/question/interfaces/repositories/IAnswerAgreementRepository'
 
 interface CreateAnswerAgreementRequest {
   user: User
@@ -16,7 +15,7 @@ interface CreateAnswerAgreementResponse {
   id: string
   answerId: string
   totalAgreedDoctorCounts: number
-  agreedDoctorAvatars: string[]
+  agreedDoctorAvatars: Array<string | null>
   createdAt: Date
   updatedAt: Date
 }
@@ -24,6 +23,7 @@ interface CreateAnswerAgreementResponse {
 export class CreateAnswerAgreementUseCase {
   constructor(
     private readonly patientQuestionAnswerRepository: IPatientQuestionAnswerRepository,
+    private readonly answerAgreementRepository: IAnswerAgreementRepository,
     private readonly doctorRepository: IDoctorRepository,
     private readonly uuidService: IUuidService
   ) {}
@@ -55,7 +55,17 @@ export class CreateAnswerAgreementUseCase {
       createdAt: new Date(),
       updatedAt: new Date(),
     })
-    await this.answerAgreementRepository.save(AnswerAgreement)
+    await this.answerAgreementRepository.save(answerAgreement)
+
+    const totalAgreedDoctorCounts =
+      await this.answerAgreementRepository.countsByAnswerId(answerId)
+
+    const lastAnswerAgreements =
+      await this.answerAgreementRepository.findAllByAnswerId(answerId, 3)
+
+    const agreedDoctorAvatars = lastAnswerAgreements.map(
+      (answerAgreement) => answerAgreement.agreedDoctor.avatar
+    )
 
     return {
       id: answerAgreement.id,
