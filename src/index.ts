@@ -40,6 +40,11 @@ import { GlycatedHemoglobinRecordRepository } from './infrastructure/entities/re
 import { CreateGlycatedHemoglobinRecordUseCase } from './application/record/CreateGlycatedHemoglobinRecordUseCase'
 import { EditGlycatedHemoglobinRecordUseCase } from './application/record/EditGlycatedHemoglobinRecordUseCase'
 import { RecordController } from './infrastructure/http/controllers/RecordController'
+import { DoctorRoutes } from './infrastructure/http/routes/DoctorRoutes'
+import { DoctorController } from './infrastructure/http/controllers/DoctorController'
+import { CreateDoctorProfileUseCase } from './application/doctor/CreateDoctorProfileUseCase'
+import { EditDoctorProfileUseCase } from './application/doctor/EditDoctorProfileUseCase'
+import { DoctorRepository } from './infrastructure/entities/doctor/DoctorRepository'
 
 void main()
 
@@ -82,6 +87,18 @@ async function main(): Promise<void> {
   )
   const editPatientProfileUseCase = new EditPatientProfileUseCase(
     patientRepository
+  )
+
+  /**
+   * Doctor Domain
+   */
+  const doctorRepository = new DoctorRepository(dataSource)
+  const createDoctorProfileUseCase = new CreateDoctorProfileUseCase(
+    doctorRepository,
+    uuidService
+  )
+  const editDoctorProfileUseCase = new EditDoctorProfileUseCase(
+    doctorRepository
   )
 
   /**
@@ -172,6 +189,10 @@ async function main(): Promise<void> {
     createPatientProfileUseCase,
     editPatientProfileUseCase
   )
+  const doctorController = new DoctorController(
+    createDoctorProfileUseCase,
+    editDoctorProfileUseCase
+  )
   const recordController = new RecordController(
     createWeightRecordUseCase,
     editWeightRecordUseCase,
@@ -201,8 +222,14 @@ async function main(): Promise<void> {
   const userRoutes = new UserRoutes(userController)
   const patientRoutes = new PatientRoutes(patientController)
   const recordRoutes = new RecordRoutes(recordController)
+  const doctorRoutes = new DoctorRoutes(doctorController)
 
-  const mainRoutes = new MainRoutes(userRoutes, patientRoutes, recordRoutes)
+  const mainRoutes = new MainRoutes(
+    userRoutes,
+    patientRoutes,
+    recordRoutes,
+    doctorRoutes
+  )
   app.use('/api', mainRoutes.createRouter())
 
   app.use(errorHandler)
