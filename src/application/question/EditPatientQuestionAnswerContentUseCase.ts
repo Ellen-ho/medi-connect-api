@@ -2,27 +2,27 @@ import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/I
 import { IPatientQuestionAnswerRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionAnswerRepository'
 import { User } from '../../domain/user/User'
 
-interface EditPatientQuestionAnswerRequest {
+interface EditPatientQuestionAnswerContentRequest {
   user: User
   content: string
   patientQuestionAnswerId: string
 }
 
-interface EditPatientQuestionAnswerResponse {
+interface EditPatientQuestionAnswerContentResponse {
   id: string
   content: string
   updatedAt: Date
 }
 
-export class EditPatientQuestionAnswerUseCase {
+export class EditPatientQuestionAnswerContentUseCase {
   constructor(
     private readonly patientQuestionAnswerRepository: IPatientQuestionAnswerRepository,
     private readonly doctorRepository: IDoctorRepository
   ) {}
 
   public async execute(
-    request: EditPatientQuestionAnswerRequest
-  ): Promise<EditPatientQuestionAnswerResponse> {
+    request: EditPatientQuestionAnswerContentRequest
+  ): Promise<EditPatientQuestionAnswerContentResponse> {
     const { user, content, patientQuestionAnswerId } = request
 
     if (content == null) {
