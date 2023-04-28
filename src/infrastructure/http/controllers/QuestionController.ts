@@ -1,9 +1,17 @@
 import { Request, Response } from 'express'
-import { ParamsDictionary } from 'express-serve-static-core'
 import { CreateAnswerAgreementUseCase } from '../../../application/question/CreateAnswerAgreementUseCase'
 import { CreateAnswerAppreciationUseCase } from '../../../application/question/CreateAnswerAppreciationUseCase'
 import { CreatePatientQuestionAnswerUseCase } from '../../../application/question/CreatePatientQuestionAnswerUseCase'
 import { CreatePatientQuestionUseCase } from '../../../application/question/CreatePatientQuestionUseCase'
+import { EditAnswerAppreciationContentUseCase } from '../../../application/question/EditAnswerAppreciationContentUseCase'
+import { EditAnswerAgreementCommentUseCase } from '../../../application/question/EditAnswerAgreementCommentUseCase'
+import { EditPatientQuestionAnswerContentUseCase } from '../../../application/question/EditPatientQuestionAnswerContentUseCase'
+import { EditPatientQuestionUseCase } from '../../../application/question/EditPatientQuestionUseCase'
+import { CancelAnswerAppreciationUseCase } from '../../../application/question/CancelAnswerAppreciationUseCase'
+import { CancelAnswerAgreementUseCase } from '../../../application/question/CancelAnswerAgreementUseCase'
+import { CancelPatientQuestionAnswerUseCase } from '../../../application/question/CancelPatientQuestionAnswerUseCase'
+import { CancelPatientQuestionUseCase } from '../../../application/question/CancelPatientQuestionUsecase'
+import { User } from '../../../domain/user/User'
 
 export interface IQuestionController {
   createAnswerAgreement: (req: Request, res: Response) => Promise<Response>
@@ -35,7 +43,7 @@ export interface IQuestionController {
 export class QuestionController implements IQuestionController {
   constructor(
     private readonly createAnswerAgreementUseCase: CreateAnswerAgreementUseCase,
-    private readonly editAnswerAgreementComment: EditAnswerAgreementCommentUseCase,
+    private readonly editAnswerAgreementCommentUseCase: EditAnswerAgreementCommentUseCase,
     private readonly createAnswerAppreciationUseCase: CreateAnswerAppreciationUseCase,
     private readonly editAnswerAppreciationContentUseCase: EditAnswerAppreciationContentUseCase,
     private readonly createPatientQuestionAnswerUseCase: CreatePatientQuestionAnswerUseCase,
@@ -47,28 +55,6 @@ export class QuestionController implements IQuestionController {
     private readonly cancelPatientQuestionAnswerUseCase: CancelPatientQuestionAnswerUseCase,
     private readonly cancelPatientQuestionUseCase: CancelPatientQuestionUseCase
   ) {}
-  createAnswerAppreciation: (req: Request, res: Response) => Promise<Response>
-  editAnswerAppreciationContent: (
-    req: Request,
-    res: Response
-  ) => Promise<Response>
-  createPatientQuestionAnswer: (
-    req: Request,
-    res: Response
-  ) => Promise<Response>
-  editPatientQuestionAnswerContent: (
-    req: Request,
-    res: Response
-  ) => Promise<Response>
-  createPatientQuestion: (req: Request, res: Response) => Promise<Response>
-  editPatientQuestion: (req: Request, res: Response) => Promise<Response>
-  cancelAnswerAgreement: (req: Request, res: Response) => Promise<Response>
-  cancelAnswerAppreciation: (req: Request, res: Response) => Promise<Response>
-  cancelPatientQuestionAnswer: (
-    req: Request,
-    res: Response
-  ) => Promise<Response>
-  cancelPatientQuestion: (req: Request, res: Response) => Promise<Response>
 
   public createAnswerAgreement = async (
     req: Request,
@@ -91,11 +77,13 @@ export class QuestionController implements IQuestionController {
   ): Promise<Response> => {
     try {
       const request = {
-        ...req.body,
-        user: req.user,
-        AnswerAgreementId: req.params.id,
+        comment: req.body.comment,
+        user: req.user as User,
+        answerAgreementId: req.params.id,
       }
-      const result = await this.editAnswerAgreementComment.execute(request)
+      const result = await this.editAnswerAgreementCommentUseCase.execute(
+        request
+      )
 
       return res.status(200).json(result)
     } catch (error) {
@@ -106,7 +94,7 @@ export class QuestionController implements IQuestionController {
     }
   }
 
-  public createAnswerAppreciationUseCase = async (
+  public createAnswerAppreciation = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
@@ -121,14 +109,14 @@ export class QuestionController implements IQuestionController {
     }
   }
 
-  public editAnswerAppreciationContentUseCase = async (
+  public editAnswerAppreciationContent = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
     try {
       const request = {
-        ...req.body,
-        user: req.user,
+        content: req.body.content,
+        user: req.user as User,
         answerAppreciationId: req.params.id,
       }
       const result = await this.editAnswerAppreciationContentUseCase.execute(
@@ -144,7 +132,7 @@ export class QuestionController implements IQuestionController {
     }
   }
 
-  public createPatientQuestionAnswerUseCase = async (
+  public createPatientQuestionAnswer = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
@@ -161,14 +149,14 @@ export class QuestionController implements IQuestionController {
     }
   }
 
-  public editPatientQuestionAnswerContentUseCase = async (
+  public editPatientQuestionAnswerContent = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
     try {
       const request = {
-        ...req.body,
-        user: req.user,
+        content: req.body.content,
+        user: req.user as User,
         patientQuestionAnswerId: req.params.id,
       }
       const result = await this.editPatientQuestionAnswerContentUseCase.execute(
@@ -184,7 +172,7 @@ export class QuestionController implements IQuestionController {
     }
   }
 
-  public createPatientQuestionUseCase = async (
+  public createPatientQuestion = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
@@ -199,14 +187,15 @@ export class QuestionController implements IQuestionController {
     }
   }
 
-  public editPatientQuestionUseCase = async (
+  public editPatientQuestion = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
     try {
       const request = {
-        ...req.body,
-        user: req.user,
+        content: req.body.content,
+        medicalSpecialty: req.body.medicalSpecialty,
+        user: req.user as User,
         patientQuestionId: req.params.id,
       }
       const result = await this.editPatientQuestionUseCase.execute(request)
@@ -218,12 +207,15 @@ export class QuestionController implements IQuestionController {
     }
   }
 
-  public cancelAnswerAppreciationUseCase = async (
+  public cancelAnswerAppreciation = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
     try {
-      const request = { ...req.body, user: req.user }
+      const request = {
+        answerAppreciationId: req.params.id,
+        user: req.user as User,
+      }
       const result = await this.cancelAnswerAppreciationUseCase.execute(request)
 
       return res.status(200).json(result)
@@ -233,12 +225,15 @@ export class QuestionController implements IQuestionController {
     }
   }
 
-  public cancelAnswerAgreementUseCase = async (
+  public cancelAnswerAgreement = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
     try {
-      const request = { ...req.body, user: req.user }
+      const request = {
+        answerAgreementId: req.params.id,
+        user: req.user as User,
+      }
       const result = await this.cancelAnswerAgreementUseCase.execute(request)
 
       return res.status(200).json(result)
@@ -248,12 +243,15 @@ export class QuestionController implements IQuestionController {
     }
   }
 
-  public cancelPatientQuestionAnswerUseCase = async (
+  public cancelPatientQuestionAnswer = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
     try {
-      const request = { ...req.body, user: req.user }
+      const request = {
+        patientQuestionAnswerId: req.params.id,
+        user: req.user as User,
+      }
       const result = await this.cancelPatientQuestionAnswerUseCase.execute(
         request
       )
@@ -265,12 +263,15 @@ export class QuestionController implements IQuestionController {
     }
   }
 
-  public cancelPatientQuestionUseCase = async (
+  public cancelPatientQuestion = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
     try {
-      const request = { ...req.body, user: req.user }
+      const request = {
+        patientQuestionId: req.params.id,
+        user: req.user as User,
+      }
       const result = await this.cancelPatientQuestionUseCase.execute(request)
 
       return res.status(200).json(result)
