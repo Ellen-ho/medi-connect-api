@@ -6,5 +6,6 @@ export interface IPatientQuestionRepository {
     patientQuestionAnswerId: string,
     askerId: string
   ) => Promise<PatientQuestion | null>
+  deleteById: (id: string) => Promise<void>
   save: (patientQuestion: PatientQuestion) => Promise<void>
 }
