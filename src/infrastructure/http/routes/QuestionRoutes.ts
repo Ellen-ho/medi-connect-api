@@ -7,29 +7,37 @@ export class QuestionRoutes {
   constructor(private readonly questionController: IQuestionController) {
     this.routes = Router()
     this.routes
-      .post(
-        '/patientQuestion',
-        asyncHandler(this.questionController.createPatientQuestion)
+      .post('/', asyncHandler(this.questionController.createPatientQuestion))
+      .patch('/:id', asyncHandler(this.questionController.editPatientQuestion))
+      .delete(
+        '/:id',
+        asyncHandler(this.questionController.cancelPatientQuestion)
       )
-      .patch(
-        '/patientQuestion/:id',
-        asyncHandler(this.questionController.editPatientQuestion)
-      )
+
       .post(
-        '/patientQuestionAnswer',
+        '/:id/anwsers',
         asyncHandler(this.questionController.createPatientQuestionAnswer)
       )
       .patch(
-        '/patientQuestionAnswer/:id',
-        asyncHandler(this.questionController.editPatientQuestionAnswer)
+        '/answers/:id',
+        asyncHandler(this.questionController.editPatientQuestionAnswerContent)
       )
+      .delete(
+        '/answers/:id',
+        asyncHandler(this.questionController.cancelPatientQuestionAnswer)
+      )
+
       .post(
-        '/answerAgreement',
+        '/answers/:id/agreements',
         asyncHandler(this.questionController.createAnswerAgreement)
       )
       .patch(
-        '/answerAgreement/:id',
+        '/answers/agreements/:id',
         asyncHandler(this.questionController.editAnswerAgreementComment)
+      )
+      .delete(
+        '/answers/agreements/:id',
+        asyncHandler(this.questionController.cancelAnswerAgreement)
       )
 
       .post(
@@ -37,26 +45,12 @@ export class QuestionRoutes {
         asyncHandler(this.questionController.createAnswerAppreciation)
       )
       .patch(
-        '/exercise/:id',
-        asyncHandler(this.questionController.editExerciseRecord)
+        '/answers/appreciations/:id',
+        asyncHandler(this.questionController.editAnswerAppreciationContent)
       )
-
-      .post('/food', asyncHandler(this.questionController.createFoodRecord))
-      .patch('/food/:id', asyncHandler(this.questionController.editFoodRecord))
-
-      .post(
-        '/glycated-hemoglobin',
-        asyncHandler(this.questionController.createGlycatedHemoglobinRecord)
-      )
-      .patch(
-        '/glycated-hemoglobin/:id',
-        asyncHandler(this.questionController.editGlycatedHemoglobinRecord)
-      )
-
-      .post('/sleep', asyncHandler(this.questionController.createSleepRecord))
-      .patch(
-        '/sleep/:id',
-        asyncHandler(this.questionController.editSleepRecord)
+      .delete(
+        '/answers/appreciations/:id',
+        asyncHandler(this.questionController.cancelAnswerAppreciation)
       )
   }
 
