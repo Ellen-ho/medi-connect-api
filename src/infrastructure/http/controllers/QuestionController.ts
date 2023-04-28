@@ -48,11 +48,11 @@ export class QuestionController implements IQuestionController {
     private readonly editAnswerAppreciationContentUseCase: EditAnswerAppreciationContentUseCase,
     private readonly createPatientQuestionAnswerUseCase: CreatePatientQuestionAnswerUseCase,
     private readonly editPatientQuestionAnswerContentUseCase: EditPatientQuestionAnswerContentUseCase,
+    private readonly cancelPatientQuestionAnswerUseCase: CancelPatientQuestionAnswerUseCase,
     private readonly createPatientQuestionUseCase: CreatePatientQuestionUseCase,
     private readonly editPatientQuestionUseCase: EditPatientQuestionUseCase,
     private readonly cancelAnswerAppreciationUseCase: CancelAnswerAppreciationUseCase,
     private readonly cancelAnswerAgreementUseCase: CancelAnswerAgreementUseCase,
-    private readonly cancelPatientQuestionAnswerUseCase: CancelPatientQuestionAnswerUseCase,
     private readonly cancelPatientQuestionUseCase: CancelPatientQuestionUseCase
   ) {}
 
