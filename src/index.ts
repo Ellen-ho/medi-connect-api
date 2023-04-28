@@ -45,6 +45,24 @@ import { DoctorController } from './infrastructure/http/controllers/DoctorContro
 import { CreateDoctorProfileUseCase } from './application/doctor/CreateDoctorProfileUseCase'
 import { EditDoctorProfileUseCase } from './application/doctor/EditDoctorProfileUseCase'
 import { DoctorRepository } from './infrastructure/entities/doctor/DoctorRepository'
+import { QuestionRoutes } from './infrastructure/http/routes/QuestionRoutes'
+import { QuestionController } from './infrastructure/http/controllers/QuestionController'
+import { CreateAnswerAgreementUseCase } from './application/question/CreateAnswerAgreementUseCase'
+import { EditAnswerAgreementCommentUseCase } from './application/question/EditAnswerAgreementCommentUseCase'
+import { AnswerAgreementRepository } from './infrastructure/entities/questions/AnswerAgreementRepository'
+import { CancelAnswerAgreementUseCase } from './application/question/CancelAnswerAgreementUseCase'
+import { AnswerAppreciationRepository } from './infrastructure/entities/questions/AnswerAppreciationRepository'
+import { CreateAnswerAppreciationUseCase } from './application/question/CreateAnswerAppreciationUseCase'
+import { EditAnswerAppreciationContentUseCase } from './application/question/EditAnswerAppreciationContentUseCase'
+import { CancelAnswerAppreciationUseCase } from './application/question/CancelAnswerAppreciationUseCase'
+import { PatientQuestionAnswerRepository } from './infrastructure/entities/questions/PatientQuestionAnswerRepository'
+import { CreatePatientQuestionAnswerUseCase } from './application/question/CreatePatientQuestionAnswerUseCase'
+import { EditPatientQuestionAnswerContentUseCase } from './application/question/EditPatientQuestionAnswerContentUseCase'
+import { CancelPatientQuestionAnswerUseCase } from './application/question/CancelPatientQuestionAnswerUseCase'
+import { EditPatientQuestionUseCase } from './application/question/EditPatientQuestionUseCase'
+import { CreatePatientQuestionUseCase } from './application/question/CreatePatientQuestionUseCase'
+import { PatientQuestionRepository } from './infrastructure/entities/questions/PatientQuestionRepository'
+import { CancelPatientQuestionUseCase } from './application/question/CancelPatientQuestionUsecase'
 
 void main()
 
@@ -182,6 +200,85 @@ async function main(): Promise<void> {
     )
 
   /**
+   * Question Domain
+   */
+  const patientQuestionAnswerRepository = new PatientQuestionAnswerRepository(
+    dataSource
+  )
+  const answerAgreementRepository = new AnswerAgreementRepository(dataSource)
+  const patientQuestionRepository = new PatientQuestionRepository(dataSource)
+  const answerAppreciationRepository = new AnswerAppreciationRepository(
+    dataSource
+  )
+  const createAnswerAgreementUseCase = new CreateAnswerAgreementUseCase(
+    patientQuestionAnswerRepository,
+    answerAgreementRepository,
+    doctorRepository,
+    uuidService
+  )
+  const editAnswerAgreementCommentUseCase =
+    new EditAnswerAgreementCommentUseCase(
+      answerAgreementRepository,
+      doctorRepository
+    )
+  const cancelAnswerAgreementUseCase = new CancelAnswerAgreementUseCase(
+    answerAgreementRepository,
+    doctorRepository
+  )
+
+  const createAnswerAppreciationUseCase = new CreateAnswerAppreciationUseCase(
+    patientQuestionAnswerRepository,
+    patientRepository,
+    answerAppreciationRepository,
+    uuidService
+  )
+  const editAnswerAppreciationContentUseCase =
+    new EditAnswerAppreciationContentUseCase(
+      answerAppreciationRepository,
+      patientRepository
+    )
+  const cancelAnswerAppreciationUseCase = new CancelAnswerAppreciationUseCase(
+    answerAppreciationRepository,
+    patientRepository
+  )
+  const createPatientQuestionAnswerUseCase =
+    new CreatePatientQuestionAnswerUseCase(
+      patientQuestionAnswerRepository,
+      patientQuestionRepository,
+      doctorRepository,
+      uuidService
+    )
+  const editPatientQuestionAnswerContentUseCase =
+    new EditPatientQuestionAnswerContentUseCase(
+      patientQuestionAnswerRepository,
+      doctorRepository
+    )
+  const cancelPatientQuestionAnswerUseCase =
+    new CancelPatientQuestionAnswerUseCase(
+      patientQuestionAnswerRepository,
+      answerAppreciationRepository,
+      answerAgreementRepository,
+      doctorRepository
+    )
+
+  const createPatientQuestionUseCase = new CreatePatientQuestionUseCase(
+    patientQuestionRepository,
+    patientRepository,
+    uuidService
+  )
+  const editPatientQuestionUseCase = new EditPatientQuestionUseCase(
+    patientQuestionRepository,
+    patientRepository
+  )
+  const cancelPatientQuestionUseCase = new CancelPatientQuestionUseCase(
+    patientQuestionRepository,
+    patientRepository,
+    answerAppreciationRepository,
+    answerAgreementRepository,
+    patientQuestionAnswerRepository
+  )
+
+  /**
    * Controllers
    */
   const userController = new UserController(getUserUseCase, createUserUseCase)
@@ -209,6 +306,20 @@ async function main(): Promise<void> {
     createSleepRecordUseCase,
     editSleepRecordUseCase
   )
+  const questionController = new QuestionController(
+    createAnswerAgreementUseCase,
+    editAnswerAgreementCommentUseCase,
+    createAnswerAppreciationUseCase,
+    editAnswerAppreciationContentUseCase,
+    createPatientQuestionAnswerUseCase,
+    editPatientQuestionAnswerContentUseCase,
+    cancelPatientQuestionAnswerUseCase,
+    createPatientQuestionUseCase,
+    editPatientQuestionUseCase,
+    cancelAnswerAppreciationUseCase,
+    cancelAnswerAgreementUseCase,
+    cancelPatientQuestionUseCase
+  )
 
   const app: Express = express()
   app.use(express.urlencoded({ extended: true }))
@@ -223,12 +334,14 @@ async function main(): Promise<void> {
   const patientRoutes = new PatientRoutes(patientController)
   const recordRoutes = new RecordRoutes(recordController)
   const doctorRoutes = new DoctorRoutes(doctorController)
+  const questionRoutes = new QuestionRoutes(questionController)
 
   const mainRoutes = new MainRoutes(
     userRoutes,
     patientRoutes,
     recordRoutes,
-    doctorRoutes
+    doctorRoutes,
+    questionRoutes
   )
   app.use('/api', mainRoutes.createRouter())
 
