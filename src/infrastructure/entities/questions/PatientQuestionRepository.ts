@@ -23,4 +23,23 @@ export class PatientQuestionRepository
       throw new Error('repository findById error')
     }
   }
+
+  public async findByIdAndAskerId(
+    patientQuestionId: string,
+    askerId: string
+  ): Promise<PatientQuestion | null> {
+    try {
+      const entity = await this.getRepo()
+        .createQueryBuilder('patient_questions')
+        .leftJoinAndSelect('patient_questions.asker', 'asker')
+        .where('patient_questions.id = :patientQuestionId', {
+          patientQuestionId,
+        })
+        .andWhere('askers.id = :askerId', { askerId })
+        .getOne()
+      return entity != null ? this.getMapper().toDomainModel(entity) : null
+    } catch (e) {
+      throw new Error('repository findByIdAndPatientId error')
+    }
+  }
 }
