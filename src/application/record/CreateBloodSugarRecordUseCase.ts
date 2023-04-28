@@ -45,7 +45,7 @@ export class CreateBloodSugarRecordUseCase {
       bloodSugarNote,
       createdAt: new Date(),
       updatedAt: new Date(),
-      patient: existingPatient,
+      patientId: existingPatient.id,
     })
     await this.bloodSugarRecordRepository.save(bloodSugarRecord)
 

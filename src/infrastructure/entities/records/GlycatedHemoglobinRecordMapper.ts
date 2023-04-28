@@ -1,6 +1,5 @@
 import { GlycatedHemoglobinRecord } from '../../../domain/record/GlycatedHemoglobinRecord'
 import { IEntityMapper } from '../../../domain/shared/IEntityMapper'
-import { PatientMapper } from '../patient/PatientMapper'
 import { GlycatedHemoglobinRecordEntity } from './GlycatedHemoglobinRecordEntity'
 
 export class GlycatedHemoglobinRecordMapper
@@ -16,7 +15,7 @@ export class GlycatedHemoglobinRecordMapper
       glycatedHemoglobinValuePercent: entity.glycatedHemoglobinValuePercent,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
-      patient: new PatientMapper().toDomainModel(entity.patient),
+      patientId: entity.patientId,
     })
     return glycatedHemoglobinRecord
   }
@@ -32,9 +31,7 @@ export class GlycatedHemoglobinRecordMapper
       domainModel.glycatedHemoglobinValuePercent
     glycatedHemoglobinRecordEntity.createdAt = domainModel.createdAt
     glycatedHemoglobinRecordEntity.updatedAt = domainModel.updatedAt
-    glycatedHemoglobinRecordEntity.patient = new PatientMapper().toPersistence(
-      domainModel.patient
-    )
+    glycatedHemoglobinRecordEntity.patientId = domainModel.patientId
 
     return glycatedHemoglobinRecordEntity
   }

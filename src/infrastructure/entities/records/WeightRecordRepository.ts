@@ -4,6 +4,7 @@ import { WeightRecord } from '../../../domain/record/WeightRecord'
 import { IWeightRecordRepository } from '../../../domain/record/interfaces/repositories/IWeightRecordRepository'
 import { WeightRecordEntity } from './WeightRecordEntity'
 import { WeightRecordMapper } from './WeightRecordMapper'
+import { RepositoryError } from '../../error/RepositoryError'
 
 export class WeightRecordRepository
   extends BaseRepository<WeightRecordEntity, WeightRecord>
@@ -18,17 +19,18 @@ export class WeightRecordRepository
     patientId: string
   ): Promise<WeightRecord | null> {
     try {
-      const entity = await this.getRepo()
-        .createQueryBuilder('weight_records')
-        .leftJoinAndSelect('weight_records.patient', 'patient')
-        .where('weight_records.id = :recordId', {
-          recordId,
-        })
-        .andWhere('patients.id = :patientId', { patientId })
-        .getOne()
+      const entity = await this.getRepo().findOne({
+        where: {
+          id: recordId,
+          patient: { id: patientId }, // need to set @RelationId
+        },
+      })
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
-      throw new Error('repository findByIdAndPatientId error')
+      throw new RepositoryError(
+        'WeightRecordRepository findByIdAndPatientId error',
+        e as Error
+      )
     }
   }
 }

@@ -5,6 +5,7 @@ import { IExerciseRecordRepository } from '../../../domain/record/interfaces/rep
 import { ExerciseRecord } from '../../../domain/record/ExerciseRecord'
 import { ExerciseRecordEntity } from './ExerciseRecordEntity'
 import { ExerciseRecordMapper } from './ExerciseRecordMapper'
+import { RepositoryError } from '../../error/RepositoryError'
 
 export class ExerciseRecordRepository
   extends BaseRepository<ExerciseRecordEntity, ExerciseRecord>
@@ -19,17 +20,18 @@ export class ExerciseRecordRepository
     patientId: string
   ): Promise<ExerciseRecord | null> {
     try {
-      const entity = await this.getRepo()
-        .createQueryBuilder('exercise_records')
-        .leftJoinAndSelect('exercise_records.patient', 'patient')
-        .where('exercise_records.id = :recordId', {
-          recordId,
-        })
-        .andWhere('patients.id = :patientId', { patientId })
-        .getOne()
+      const entity = await this.getRepo().findOne({
+        where: {
+          id: recordId,
+          patient: { id: patientId }, // need to set @RelationId
+        },
+      })
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
-      throw new Error('repository findByIdAndPatientId error')
+      throw new RepositoryError(
+        'ExerciseRecordRepository findByIdAndPatientId error',
+        e as Error
+      )
     }
   }
 }

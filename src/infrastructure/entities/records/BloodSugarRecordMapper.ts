@@ -1,6 +1,5 @@
 import { BloodSugarRecord } from '../../../domain/record/BloodSugarRecord'
 import { IEntityMapper } from '../../../domain/shared/IEntityMapper'
-import { PatientMapper } from '../patient/PatientMapper'
 import { BloodSugarRecordEntity } from './BloodSugarRecordEntity'
 
 export class BloodSugarRecordMapper
@@ -14,7 +13,7 @@ export class BloodSugarRecordMapper
       bloodSugarNote: entity.bloodSugarNote,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
-      patient: new PatientMapper().toDomainModel(entity.patient),
+      patientId: entity.patientId,
     })
     return bloodSugarRecord
   }
@@ -27,9 +26,7 @@ export class BloodSugarRecordMapper
     bloodSugarRecordEntity.bloodSugarNote = domainModel.bloodSugarNote
     bloodSugarRecordEntity.createdAt = domainModel.createdAt
     bloodSugarRecordEntity.updatedAt = domainModel.updatedAt
-    bloodSugarRecordEntity.patient = new PatientMapper().toPersistence(
-      domainModel.patient
-    )
+    bloodSugarRecordEntity.patientId = domainModel.patientId
 
     return bloodSugarRecordEntity
   }
