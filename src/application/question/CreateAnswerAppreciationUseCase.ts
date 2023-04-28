@@ -7,7 +7,7 @@ import { IUuidService } from '../../domain/utils/IUuidService'
 
 interface CreateAnswerAppreciationRequest {
   user: User
-  content: string
+  content: string | null
   answerId: string
 }
 

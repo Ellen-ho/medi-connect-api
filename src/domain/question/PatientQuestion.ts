@@ -32,6 +32,11 @@ export enum MedicalSpecialtyType {
   PULMONARY_MEDICINE = 'PULMONARY_MEDICINE', // 胸腔內科
 }
 
+interface IPatientQuestionUpdateData {
+  [key: string]: any
+  content: string
+  medicalSpecialty: MedicalSpecialtyType
+}
 export class PatientQuestion {
   constructor(private readonly props: IPatientQuestionProps) {}
 
@@ -57,5 +62,10 @@ export class PatientQuestion {
 
   public get asker(): Patient {
     return this.props.asker
+  }
+
+  public updateData(data: IPatientQuestionUpdateData): void {
+    this.props.content = data.content
+    this.props.medicalSpecialty = data.medicalSpecialty
   }
 }
