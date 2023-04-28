@@ -67,7 +67,19 @@ export class AnswerAppreciationRepository
         .where('id = :id', { id })
         .execute()
     } catch (e) {
-      throw new Error('repository countsByAnswerId error')
+      throw new Error('repository deleteById error')
+    }
+  }
+
+  public async deleteAllByAnswerId(answerId: string): Promise<void> {
+    try {
+      await this.getRepo()
+        .createQueryBuilder('answer_apprieciations')
+        .softDelete()
+        .where('answer_id = :answerId', { answerId })
+        .execute()
+    } catch (e) {
+      throw new Error('repository deleteByAnswerId error')
     }
   }
 }

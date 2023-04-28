@@ -1,33 +1,32 @@
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
-import { MedicalSpecialtyType } from '../../domain/question/PatientQuestion'
 import { IAnswerAppreciationRepository } from '../../domain/question/interfaces/repositories/IAnswerAppreciationtRepository'
 import { IPatientQuestionRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionRepository'
 import { User } from '../../domain/user/User'
+import { IAnswerAgreementRepository } from '../../domain/question/interfaces/repositories/IAnswerAgreementRepository'
+import { IPatientQuestionAnswerRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionAnswerRepository'
 
 interface CancelPatientQuestionRequest {
   user: User
-  content: string
-  medicalSpecialty: MedicalSpecialtyType
   patientQuestionId: string
 }
 
 interface CancelPatientQuestionResponse {
-  totalThankCounts: number
-  totalAgreedDoctorCounts: number
-  agreedDoctorAvatars: Array<string | null>
+  patientQuestionId: string
 }
 
 export class CancelPatientQuestionUseCase {
   constructor(
     private readonly patientQuestionRepository: IPatientQuestionRepository,
     private readonly patientRepository: IPatientRepository,
-    private readonly answerAppreciationRepository: IAnswerAppreciationRepository
+    private readonly answerAppreciationRepository: IAnswerAppreciationRepository,
+    private readonly answerAgreementRepository: IAnswerAgreementRepository,
+    private readonly patientQuestionAnswerRepository: IPatientQuestionAnswerRepository
   ) {}
 
   public async execute(
     request: CancelPatientQuestionRequest
   ): Promise<CancelPatientQuestionResponse> {
-    const { user, content, medicalSpecialty, patientQuestionId } = request
+    const { user, patientQuestionId } = request
 
     const existingAsker = await this.patientRepository.findByUserId(user.id)
 
@@ -40,19 +39,29 @@ export class CancelPatientQuestionUseCase {
         patientQuestionId,
         existingAsker.id
       )
+
     if (existingPatientQuestion == null) {
       throw new Error('Question does not exist.')
     }
 
+    const answers =
+      await this.patientQuestionAnswerRepository.findAllByQuestionId(
+        patientQuestionId
+      )
+    // TODO: add transaction here
+    for (const answer of answers) {
+      await this.answerAppreciationRepository.deleteAllByAnswerId(answer.id)
+      await this.answerAgreementRepository.deleteAllByAnswerId(answer.id)
+    }
+
+    await this.patientQuestionAnswerRepository.deleteAllByQuestionId(
+      patientQuestionId
+    )
+
     await this.patientQuestionRepository.deleteById(existingPatientQuestion.id)
 
-    const totalThankCounts =
-      await this.answerAppreciationRepository.countByAnswerId(answerId)
-
     return {
-      totalThankCounts,
-      totalAgreedDoctorCounts,
-      agreedDoctorAvatars,
+      patientQuestionId,
     }
   }
 }

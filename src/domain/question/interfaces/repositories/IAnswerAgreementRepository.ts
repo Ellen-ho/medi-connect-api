@@ -9,5 +9,6 @@ export interface IAnswerAgreementRepository {
     agreedDoctorId: string
   ) => Promise<AnswerAgreement | null>
   deleteById: (id: string) => Promise<void>
+  deleteAllByAnswerId: (answerId: string) => Promise<void>
   save: (answerAgreement: AnswerAgreement) => Promise<void>
 }

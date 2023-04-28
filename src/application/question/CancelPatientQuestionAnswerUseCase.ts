@@ -1,24 +1,23 @@
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
+import { IAnswerAgreementRepository } from '../../domain/question/interfaces/repositories/IAnswerAgreementRepository'
 import { IAnswerAppreciationRepository } from '../../domain/question/interfaces/repositories/IAnswerAppreciationtRepository'
 import { IPatientQuestionAnswerRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionAnswerRepository'
 import { User } from '../../domain/user/User'
 
 interface CancelPatientQuestionAnswerRequest {
   user: User
-  content: string
   patientQuestionAnswerId: string
 }
 
 interface CancelPatientQuestionAnswerResponse {
-  totalThankCounts: number
-  totalAgreedDoctorCounts: number
-  agreedDoctorAvatars: Array<string | null>
+  patientQuestionAnswerId: string
 }
 
 export class CancelPatientQuestionAnswerUseCase {
   constructor(
     private readonly patientQuestionAnswerRepository: IPatientQuestionAnswerRepository,
     private readonly answerAppreciationRepository: IAnswerAppreciationRepository,
+    private readonly answerAgreementRepository: IAnswerAgreementRepository,
     private readonly doctorRepository: IDoctorRepository
   ) {}
 
@@ -42,17 +41,19 @@ export class CancelPatientQuestionAnswerUseCase {
       throw new Error('Answer does not exist.')
     }
 
+    // TODO: add transaction here
     await this.patientQuestionAnswerRepository.deleteById(
       existingPatientQuestionAnswer.id
     )
-
-    const totalThankCounts =
-      await this.answerAppreciationRepository.countByAnswerId(answerId)
+    await this.answerAgreementRepository.deleteAllByAnswerId(
+      patientQuestionAnswerId
+    )
+    await this.answerAppreciationRepository.deleteAllByAnswerId(
+      patientQuestionAnswerId
+    )
 
     return {
-      totalThankCounts,
-      totalAgreedDoctorCounts,
-      agreedDoctorAvatars,
+      patientQuestionAnswerId,
     }
   }
 }

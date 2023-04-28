@@ -75,6 +75,18 @@ export class AnswerAgreementRepository
     }
   }
 
+  public async deleteAllByAnswerId(answerId: string): Promise<void> {
+    try {
+      await this.getRepo()
+        .createQueryBuilder('answer_agreements')
+        .softDelete()
+        .where('patient_question_answer_id = :answerId', { answerId })
+        .execute()
+    } catch (e) {
+      throw new Error('repository deleteByAnswerId error')
+    }
+  }
+
   public async findByIdAndAgreedDoctorId(
     answerAgreementId: string,
     agreedDoctorId: string
