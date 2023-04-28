@@ -7,5 +7,6 @@ export interface IAnswerAppreciationRepository {
     patientId: string
   ) => Promise<AnswerAppreciation | null>
   countByAnswerId: (answerId: string) => Promise<number>
+  deleteById: (id: string) => Promise<void>
   save: (answerAppreciation: AnswerAppreciation) => Promise<void>
 }

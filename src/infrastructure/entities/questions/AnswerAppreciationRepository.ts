@@ -58,4 +58,16 @@ export class AnswerAppreciationRepository
       throw new Error('repository findByIdAndPatientId error')
     }
   }
+
+  public async deleteById(id: string): Promise<void> {
+    try {
+      await this.getRepo()
+        .createQueryBuilder('answer_apprieciations')
+        .softDelete()
+        .where('id = :id', { id })
+        .execute()
+    } catch (e) {
+      throw new Error('repository countsByAnswerId error')
+    }
+  }
 }
