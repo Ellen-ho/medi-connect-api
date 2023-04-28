@@ -2,26 +2,26 @@ import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/I
 import { IAnswerAgreementRepository } from '../../domain/question/interfaces/repositories/IAnswerAgreementRepository'
 import { User } from '../../domain/user/User'
 
-interface EditAnswerAgreementRequest {
+interface EditAnswerAgreementCommentRequest {
   user: User
   answerAgreementId: string
   comment: string | null
 }
 
-interface EditAnswerAgreementResponse {
+interface EditAnswerAgreementCommentResponse {
   id: string
   updatedAt: Date
 }
 
-export class EditAnswerAgreementUseCase {
+export class EditAnswerAgreementCommentUseCase {
   constructor(
     private readonly answerAgreementRepository: IAnswerAgreementRepository,
     private readonly doctorRepository: IDoctorRepository
   ) {}
 
   public async execute(
-    request: EditAnswerAgreementRequest
-  ): Promise<EditAnswerAgreementResponse> {
+    request: EditAnswerAgreementCommentRequest
+  ): Promise<EditAnswerAgreementCommentResponse> {
     const { user, answerAgreementId, comment } = request
 
     if (comment == null) {

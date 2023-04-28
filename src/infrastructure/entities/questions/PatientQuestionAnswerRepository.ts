@@ -47,6 +47,22 @@ export class PatientQuestionAnswerRepository
     }
   }
 
+  public async findAllByQuestionId(
+    questionId: string
+  ): Promise<PatientQuestionAnswer[]> {
+    try {
+      const entities = await this.getRepo()
+        .createQueryBuilder('patient_question_answers')
+        .where('patient_question_id = :questionId', {
+          questionId,
+        })
+        .getMany()
+      return entities.map((entity) => this.getMapper().toDomainModel(entity))
+    } catch (e) {
+      throw new Error('repository findByIdAndPatientId error')
+    }
+  }
+
   public async deleteById(id: string): Promise<void> {
     try {
       await this.getRepo()

@@ -3,26 +3,26 @@ import { IAnswerAppreciationRepository } from '../../domain/question/interfaces/
 
 import { User } from '../../domain/user/User'
 
-interface EditAnswerAppreciationRequest {
+interface EditAnswerAppreciationContentRequest {
   user: User
   content: string | null
   answerAppreciationId: string
 }
 
-interface EditAnswerAppreciationResponse {
+interface EditAnswerAppreciationContentResponse {
   id: string
   updatedAt: Date
 }
 
-export class EditAnswerAppreciationUseCase {
+export class EditAnswerAppreciationContentUseCase {
   constructor(
     private readonly answerAgreementRepository: IAnswerAppreciationRepository,
     private readonly patientRepository: IPatientRepository
   ) {}
 
   public async execute(
-    request: EditAnswerAppreciationRequest
-  ): Promise<EditAnswerAppreciationResponse> {
+    request: EditAnswerAppreciationContentRequest
+  ): Promise<EditAnswerAppreciationContentResponse> {
     const { user, answerAppreciationId, content } = request
 
     if (content == null) {
