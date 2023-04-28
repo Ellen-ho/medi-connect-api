@@ -5,7 +5,7 @@ export interface IAnswerAgreementProps {
   id: string
   answer: PatientQuestionAnswer
   agreedDoctor: Doctor
-  comment: string
+  comment: string | null
   createdAt: Date
   updatedAt: Date
 }
@@ -25,7 +25,7 @@ export class AnswerAgreement {
     return this.props.agreedDoctor
   }
 
-  public get comment(): string {
+  public get comment(): string | null {
     return this.props.comment
   }
 
@@ -35,5 +35,9 @@ export class AnswerAgreement {
 
   public get updatedAt(): Date {
     return this.props.updatedAt
+  }
+
+  public updateComment(comment: string): void {
+    this.props.comment = comment
   }
 }

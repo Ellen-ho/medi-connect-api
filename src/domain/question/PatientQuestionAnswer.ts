@@ -36,4 +36,8 @@ export class PatientQuestionAnswer {
   public get doctor(): Doctor {
     return this.props.doctor
   }
+
+  public updateContent(content: string): void {
+    this.props.content = content
+  }
 }
