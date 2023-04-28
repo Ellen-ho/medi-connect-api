@@ -46,4 +46,16 @@ export class PatientQuestionAnswerRepository
       throw new Error('repository findByIdAndPatientId error')
     }
   }
+
+  public async deleteById(id: string): Promise<void> {
+    try {
+      await this.getRepo()
+        .createQueryBuilder('patient_question_answers')
+        .softDelete()
+        .where('id = :id', { id })
+        .execute()
+    } catch (e) {
+      throw new Error('repository countsByAnswerId error')
+    }
+  }
 }
