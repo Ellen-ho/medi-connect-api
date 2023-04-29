@@ -7,11 +7,11 @@ import { User } from '../../domain/user/User'
 
 interface CancelPatientQuestionAnswerRequest {
   user: User
-  patientQuestionAnswerId: string
+  answerId: string
 }
 
 interface CancelPatientQuestionAnswerResponse {
-  patientQuestionAnswerId: string
+  answerId: string
 }
 
 export class CancelPatientQuestionAnswerUseCase {
@@ -26,7 +26,7 @@ export class CancelPatientQuestionAnswerUseCase {
   public async execute(
     request: CancelPatientQuestionAnswerRequest
   ): Promise<CancelPatientQuestionAnswerResponse> {
-    const { user, patientQuestionAnswerId } = request
+    const { user, answerId } = request
 
     const existingDoctor = await this.doctorRepository.findByUserId(user.id)
 
@@ -36,7 +36,7 @@ export class CancelPatientQuestionAnswerUseCase {
 
     const existingPatientQuestionAnswer =
       await this.patientQuestionAnswerRepository.findByIdAndDoctorId(
-        patientQuestionAnswerId,
+        answerId,
         existingDoctor.id
       )
     if (existingPatientQuestionAnswer == null) {
@@ -48,15 +48,11 @@ export class CancelPatientQuestionAnswerUseCase {
       await this.patientQuestionAnswerRepository.deleteById(
         existingPatientQuestionAnswer.id
       )
-      await this.answerAgreementRepository.deleteAllByAnswerId(
-        patientQuestionAnswerId
-      )
-      await this.answerAppreciationRepository.deleteAllByAnswerId(
-        patientQuestionAnswerId
-      )
+      await this.answerAgreementRepository.deleteAllByAnswerId(answerId)
+      await this.answerAppreciationRepository.deleteAllByAnswerId(answerId)
       await this.tx.end()
       return {
-        patientQuestionAnswerId,
+        answerId,
       }
     } catch (error) {
       await this.tx.rollback()

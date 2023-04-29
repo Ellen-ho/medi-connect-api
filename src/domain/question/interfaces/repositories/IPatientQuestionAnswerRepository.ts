@@ -8,6 +8,10 @@ export interface IPatientQuestionAnswerRepository
     patientQuestionAnswerId: string,
     doctorId: string
   ) => Promise<PatientQuestionAnswer | null>
+  findByQuestionIdAndDoctorId: (
+    patientQuestionId: string,
+    doctorId: string
+  ) => Promise<PatientQuestionAnswer | null>
   findAllByQuestionId: (questionId: string) => Promise<PatientQuestionAnswer[]>
   deleteAllByQuestionId: (questionId: string) => Promise<void>
   deleteById: (id: string) => Promise<void>

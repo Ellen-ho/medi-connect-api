@@ -1,4 +1,3 @@
-import { Doctor } from '../../domain/doctor/interfaces/Doctor'
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 import { PatientQuestionAnswer } from '../../domain/question/PatientQuestionAnswer'
 import { IPatientQuestionAnswerRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionAnswerRepository'
@@ -16,7 +15,6 @@ interface CreatePatientQuestionAnswerResponse {
   id: string
   content: string
   patientQuestionId: string
-  doctor: Doctor
   createdAt: Date
   updatedAt: Date
 }
@@ -47,11 +45,21 @@ export class CreatePatientQuestionAnswerUseCase {
       throw new Error('Doctor does not exist.')
     }
 
+    const existingPatientQuestionAnswer =
+      await this.patientQuestionAnswerRepository.findByQuestionIdAndDoctorId(
+        patientQuestionId,
+        existingDoctor.id
+      )
+
+    if (existingPatientQuestionAnswer !== null) {
+      throw new Error('You have already ansered this question.')
+    }
+
     const patientQuestionAnswer = new PatientQuestionAnswer({
       id: this.uuidService.generateUuid(),
       content,
-      patientQuestion: existingPatientQuestion,
-      doctor: existingDoctor,
+      patientQuestionId: existingPatientQuestion.id,
+      doctorId: existingDoctor.id,
       createdAt: new Date(),
       updatedAt: new Date(),
     })
@@ -61,7 +69,6 @@ export class CreatePatientQuestionAnswerUseCase {
       id: patientQuestionAnswer.id,
       content: patientQuestionAnswer.content,
       patientQuestionId: existingPatientQuestion.id,
-      doctor: existingDoctor,
       createdAt: patientQuestionAnswer.createdAt,
       updatedAt: patientQuestionAnswer.updatedAt,
     }

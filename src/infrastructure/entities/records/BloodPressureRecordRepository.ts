@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm'
-import { BaseRepository } from '../BaseRepository'
+import { BaseRepository } from '../../database/BaseRepository'
 import { BloodPressureRecordEntity } from './BloodPressureRecordEntity'
 import { IBloodPressureRecordRepository } from '../../../domain/record/interfaces/repositories/IBloodPressureRecordRepository'
 import { BloodPressureRecord } from '../../../domain/record/BloodPressureRecord'

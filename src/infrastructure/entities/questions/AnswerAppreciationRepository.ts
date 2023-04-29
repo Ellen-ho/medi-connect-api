@@ -1,9 +1,10 @@
 import { DataSource } from 'typeorm'
 import { AnswerAppreciation } from '../../../domain/question/AnswerAppreciation'
-import { BaseRepository } from '../BaseRepository'
+import { BaseRepository } from '../../database/BaseRepository'
 import { AnswerAppreciationEntity } from './AnswerAppreciationEntity'
 import { AnswerAppreciationMapper } from './AnswerAppreciationMapper'
 import { IAnswerAppreciationRepository } from '../../../domain/question/interfaces/repositories/IAnswerAppreciationtRepository'
+import { RepositoryError } from '../../error/RepositoryError'
 
 export class AnswerAppreciationRepository
   extends BaseRepository<AnswerAppreciationEntity, AnswerAppreciation>
@@ -20,7 +21,10 @@ export class AnswerAppreciationRepository
       })
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
-      throw new Error('repository findById error')
+      throw new RepositoryError(
+        'AnswerAppreciationRepository findById error',
+        e as Error
+      )
     }
   }
 
@@ -36,7 +40,10 @@ export class AnswerAppreciationRepository
       })
       return counts
     } catch (e) {
-      throw new Error('repository countByAnswerId error')
+      throw new RepositoryError(
+        'AnswerAppreciationRepository countByAnswerId error',
+        e as Error
+      )
     }
   }
 
@@ -55,7 +62,10 @@ export class AnswerAppreciationRepository
         .getOne()
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
-      throw new Error('repository findByIdAndPatientId error')
+      throw new RepositoryError(
+        'AnswerAppreciationRepository findByIdAndPatientId error',
+        e as Error
+      )
     }
   }
 
@@ -67,7 +77,10 @@ export class AnswerAppreciationRepository
         .where('id = :id', { id })
         .execute()
     } catch (e) {
-      throw new Error('repository deleteById error')
+      throw new RepositoryError(
+        'AnswerAppreciationRepository deleteById error',
+        e as Error
+      )
     }
   }
 
@@ -79,7 +92,10 @@ export class AnswerAppreciationRepository
         .where('answer_id = :answerId', { answerId })
         .execute()
     } catch (e) {
-      throw new Error('repository deleteByAnswerId error')
+      throw new RepositoryError(
+        'AnswerAppreciationRepository deleteAllByAnswerId error',
+        e as Error
+      )
     }
   }
 }

@@ -1,4 +1,4 @@
-import { IAddress } from '../../domain/doctor/interfaces/Doctor'
+import { IAddress } from '../../domain/doctor/Doctor'
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 import { GenderType } from '../../domain/patient/Patient'
 import { User } from '../../domain/user/User'

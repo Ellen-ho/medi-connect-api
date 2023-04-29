@@ -1,12 +1,10 @@
-import { Patient } from '../patient/Patient'
-
 export interface IPatientQuestionProps {
   id: string
   content: string
   medicalSpecialty: MedicalSpecialtyType
   createdAt: Date
   updatedAt: Date
-  asker: Patient
+  askerId: string
 }
 
 export enum MedicalSpecialtyType {
@@ -60,8 +58,8 @@ export class PatientQuestion {
     return this.props.updatedAt
   }
 
-  public get asker(): Patient {
-    return this.props.asker
+  public get askerId(): string {
+    return this.props.askerId
   }
 
   public updateData(data: IPatientQuestionUpdateData): void {

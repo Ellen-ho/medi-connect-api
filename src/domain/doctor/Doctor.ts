@@ -1,4 +1,4 @@
-import { User } from '../../user/User'
+import { User } from '../user/User'
 
 export interface IAddress {
   line1: string // Street address, P.O. Box, company name, c/o
