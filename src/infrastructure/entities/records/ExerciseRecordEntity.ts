@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
+  RelationId,
 } from 'typeorm'
 import {
   ExerciseType,
@@ -50,4 +51,8 @@ export class ExerciseRecordEntity {
   @ManyToOne(() => PatientEntity)
   @JoinColumn({ name: 'patient_id' })
   patient!: PatientEntity
+
+  @Column({ name: 'patient_id' })
+  @RelationId((exerciseRecord: ExerciseRecordEntity) => exerciseRecord.patient)
+  public patientId!: string
 }

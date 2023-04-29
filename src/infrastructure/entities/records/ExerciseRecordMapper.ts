@@ -1,6 +1,5 @@
 import { ExerciseRecord } from '../../../domain/record/ExerciseRecord'
 import { IEntityMapper } from '../../../domain/shared/IEntityMapper'
-import { PatientMapper } from '../patient/PatientMapper'
 import { ExerciseRecordEntity } from './ExerciseRecordEntity'
 
 export class ExerciseRecordMapper
@@ -17,7 +16,7 @@ export class ExerciseRecordMapper
       exerciseNote: entity.exerciseNote,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
-      patient: new PatientMapper().toDomainModel(entity.patient),
+      patientId: entity.patientId,
     })
     return exerciseRecord
   }
@@ -34,9 +33,7 @@ export class ExerciseRecordMapper
     exerciseRecordEntity.exerciseNote = domainModel.exerciseNote
     exerciseRecordEntity.createdAt = domainModel.createdAt
     exerciseRecordEntity.updatedAt = domainModel.updatedAt
-    exerciseRecordEntity.patient = new PatientMapper().toPersistence(
-      domainModel.patient
-    )
+    exerciseRecordEntity.patientId = domainModel.patientId
 
     return exerciseRecordEntity
   }

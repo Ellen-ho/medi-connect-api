@@ -4,6 +4,7 @@ import { IPatientQuestionRepository } from '../../domain/question/interfaces/rep
 import { User } from '../../domain/user/User'
 import { IAnswerAgreementRepository } from '../../domain/question/interfaces/repositories/IAnswerAgreementRepository'
 import { IPatientQuestionAnswerRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionAnswerRepository'
+import { IRepositoryTx } from '../../domain/shared/IRepositoryTx'
 
 interface CancelPatientQuestionRequest {
   user: User
@@ -20,7 +21,8 @@ export class CancelPatientQuestionUseCase {
     private readonly patientRepository: IPatientRepository,
     private readonly answerAppreciationRepository: IAnswerAppreciationRepository,
     private readonly answerAgreementRepository: IAnswerAgreementRepository,
-    private readonly patientQuestionAnswerRepository: IPatientQuestionAnswerRepository
+    private readonly patientQuestionAnswerRepository: IPatientQuestionAnswerRepository,
+    private readonly tx: IRepositoryTx
   ) {}
 
   public async execute(
@@ -44,24 +46,32 @@ export class CancelPatientQuestionUseCase {
       throw new Error('Question does not exist.')
     }
 
-    const answers =
-      await this.patientQuestionAnswerRepository.findAllByQuestionId(
+    try {
+      await this.tx.start()
+      const answers =
+        await this.patientQuestionAnswerRepository.findAllByQuestionId(
+          patientQuestionId
+        )
+
+      for (const answer of answers) {
+        await this.answerAppreciationRepository.deleteAllByAnswerId(answer.id)
+        await this.answerAgreementRepository.deleteAllByAnswerId(answer.id)
+      }
+
+      await this.patientQuestionAnswerRepository.deleteAllByQuestionId(
         patientQuestionId
       )
-    // TODO: add transaction here
-    for (const answer of answers) {
-      await this.answerAppreciationRepository.deleteAllByAnswerId(answer.id)
-      await this.answerAgreementRepository.deleteAllByAnswerId(answer.id)
-    }
 
-    await this.patientQuestionAnswerRepository.deleteAllByQuestionId(
-      patientQuestionId
-    )
-
-    await this.patientQuestionRepository.deleteById(existingPatientQuestion.id)
-
-    return {
-      patientQuestionId,
+      await this.patientQuestionRepository.deleteById(
+        existingPatientQuestion.id
+      )
+      await this.tx.end()
+      return {
+        patientQuestionId,
+      }
+    } catch (error) {
+      await this.tx.rollback()
+      throw error
     }
   }
 }

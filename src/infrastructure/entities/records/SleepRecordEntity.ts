@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
+  RelationId,
 } from 'typeorm'
 import { SleepQualityType } from '../../../domain/record/SleepRecord'
 import { PatientEntity } from '../patient/PatientEntity'
@@ -47,4 +48,8 @@ export class SleepRecordEntity {
   @ManyToOne(() => PatientEntity)
   @JoinColumn({ name: 'patient_id' })
   patient!: PatientEntity
+
+  @Column({ name: 'patient_id' })
+  @RelationId((sleepRecord: SleepRecordEntity) => sleepRecord.patient)
+  public patientId!: string
 }

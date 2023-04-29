@@ -6,11 +6,12 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
+  RelationId,
 } from 'typeorm'
 import { FoodCategoryType } from '../../../domain/record/FoodRecord'
 import { PatientEntity } from '../patient/PatientEntity'
 
-@Entity('food_recods')
+@Entity('food_records')
 export class FoodRecordEntity {
   @PrimaryGeneratedColumn('uuid')
   public id!: string
@@ -44,5 +45,9 @@ export class FoodRecordEntity {
 
   @ManyToOne(() => PatientEntity)
   @JoinColumn({ name: 'patient_id' })
-  patient!: PatientEntity
+  public patient!: PatientEntity
+
+  @Column({ name: 'patient_id' })
+  @RelationId((foodRecord: FoodRecordEntity) => foodRecord.patient)
+  public patientId!: string
 }

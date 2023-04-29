@@ -54,7 +54,7 @@ export class CreateSleepRecordUseCase {
       sleepNote,
       createdAt: new Date(),
       updatedAt: new Date(),
-      patient: existingPatient,
+      patientId: existingPatient.id,
     })
     await this.sleepRecordRepository.save(sleepRecord)
 

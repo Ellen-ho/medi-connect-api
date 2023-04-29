@@ -1,5 +1,3 @@
-import { Patient } from '../patient/Patient'
-
 export interface ISleepRecordProps {
   id: string
   sleepDate: Date
@@ -10,7 +8,7 @@ export interface ISleepRecordProps {
   sleepNote: string | null
   createdAt: Date
   updatedAt: Date
-  patient: Patient
+  patientId: string
 }
 
 export enum SleepQualityType {
@@ -68,8 +66,8 @@ export class SleepRecord {
     return this.props.updatedAt
   }
 
-  public get patient(): Patient {
-    return this.props.patient
+  public get patientId(): string {
+    return this.props.patientId
   }
 
   public updateData(data: ISleepRecordUpdateData): void {

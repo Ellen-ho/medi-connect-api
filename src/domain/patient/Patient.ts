@@ -86,6 +86,7 @@ export enum MedicineTimeType {
 
 interface IPatientProfileUpdateData {
   [key: string]: any
+
   avatar: string | null
   firstName: string
   lastName: string

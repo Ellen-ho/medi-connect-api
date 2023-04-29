@@ -5,6 +5,7 @@ import { FoodRecordEntity } from './FoodRecordEntity'
 import { IFoodRecordRepository } from '../../../domain/record/interfaces/repositories/IFoodRecordRepository'
 import { FoodRecord } from '../../../domain/record/FoodRecord'
 import { FoodRecordMapper } from './FoodRecordMapper'
+import { RepositoryError } from '../../error/RepositoryError'
 
 export class FoodRecordRepository
   extends BaseRepository<FoodRecordEntity, FoodRecord>
@@ -19,17 +20,19 @@ export class FoodRecordRepository
     patientId: string
   ): Promise<FoodRecord | null> {
     try {
-      const entity = await this.getRepo()
-        .createQueryBuilder('food_records')
-        .leftJoinAndSelect('food_records.patient', 'patient')
-        .where('food_records.id = :recordId', {
-          recordId,
-        })
-        .andWhere('patients.id = :patientId', { patientId })
-        .getOne()
+      const entity = await this.getRepo().findOne({
+        where: {
+          id: recordId,
+          patient: { id: patientId }, // need to set @RelationId
+        },
+      })
+
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
-      throw new Error('repository findByIdAndPatientId error')
+      throw new RepositoryError(
+        'FoodRecordRepository findByIdAndPatientId error',
+        e as Error
+      )
     }
   }
 }

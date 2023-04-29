@@ -43,7 +43,7 @@ export class CreateGlycatedHemoglobinRecordUseCase {
       glycatedHemoglobinValuePercent,
       createdAt: new Date(),
       updatedAt: new Date(),
-      patient: existingPatient,
+      patientId: existingPatient.id,
     })
     await this.glycatedHemoglobinRecordRepository.save(glycatedHemoglobinRecord)
 

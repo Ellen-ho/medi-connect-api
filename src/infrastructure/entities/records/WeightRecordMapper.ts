@@ -1,6 +1,5 @@
 import { WeightRecord } from '../../../domain/record/WeightRecord'
 import { IEntityMapper } from '../../../domain/shared/IEntityMapper'
-import { PatientMapper } from '../patient/PatientMapper'
 import { WeightRecordEntity } from './WeightRecordEntity'
 
 export class WeightRecordMapper
@@ -15,7 +14,7 @@ export class WeightRecordMapper
       weightNote: entity.weightNote,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
-      patient: new PatientMapper().toDomainModel(entity.patient),
+      patientId: entity.patientId,
     })
     return weightRecord
   }
@@ -29,9 +28,7 @@ export class WeightRecordMapper
     weightRecordEntity.weightNote = domainModel.weightNote
     weightRecordEntity.createdAt = domainModel.createdAt
     weightRecordEntity.updatedAt = domainModel.updatedAt
-    weightRecordEntity.patient = new PatientMapper().toPersistence(
-      domainModel.patient
-    )
+    weightRecordEntity.patientId = domainModel.patientId
 
     return weightRecordEntity
   }

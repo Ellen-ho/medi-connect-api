@@ -58,7 +58,7 @@ export class CreateBloodPressureRecordUseCase {
       heartBeat,
       createdAt: new Date(),
       updatedAt: new Date(),
-      patient: existingPatient,
+      patientId: existingPatient.id,
     })
     await this.bloodPressureRecordRepository.save(bloodPressureRecord)
 

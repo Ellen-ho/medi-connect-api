@@ -220,12 +220,13 @@ export class RecordController implements IRecordController {
         user: req.user,
         foodRecordId: req.params.id,
       }
+
       const record = await this.editFoodRecordUseCase.execute(request)
 
       return res.status(200).json(record)
     } catch (error) {
       // TODO: move this to a middleware
-      return res.status(400).json({ message: 'edit food record error' })
+      return res.status(400).json({ message: (error as Error).message })
     }
   }
 

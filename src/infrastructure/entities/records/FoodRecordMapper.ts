@@ -1,6 +1,5 @@
 import { FoodRecord } from '../../../domain/record/FoodRecord'
 import { IEntityMapper } from '../../../domain/shared/IEntityMapper'
-import { PatientMapper } from '../patient/PatientMapper'
 import { FoodRecordEntity } from './FoodRecordEntity'
 
 export class FoodRecordMapper
@@ -18,7 +17,7 @@ export class FoodRecordMapper
       foodNote: entity.foodNote,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
-      patient: new PatientMapper().toDomainModel(entity.patient),
+      patientId: entity.patientId,
     })
     return foodRecord
   }
@@ -35,9 +34,7 @@ export class FoodRecordMapper
     foodRecordEntity.foodNote = domainModel.foodNote
     foodRecordEntity.createdAt = domainModel.createdAt
     foodRecordEntity.updatedAt = domainModel.updatedAt
-    foodRecordEntity.patient = new PatientMapper().toPersistence(
-      domainModel.patient
-    )
+    foodRecordEntity.patientId = domainModel.patientId
 
     return foodRecordEntity
   }

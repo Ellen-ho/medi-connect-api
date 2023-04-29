@@ -1,5 +1,3 @@
-import { Patient } from '../patient/Patient'
-
 export interface IBloodPressureRecordProps {
   id: string
   bloodPressureDate: Date
@@ -9,7 +7,7 @@ export interface IBloodPressureRecordProps {
   bloodPressureNote: string | null
   createdAt: Date
   updatedAt: Date
-  patient: Patient
+  patientId: string
 }
 
 interface IBloodPressureRecordUpdateData {
@@ -56,8 +54,8 @@ export class BloodPressureRecord {
     return this.props.updatedAt
   }
 
-  public get patient(): Patient {
-    return this.props.patient
+  public get patientId(): string {
+    return this.props.patientId
   }
 
   public updateData(data: IBloodPressureRecordUpdateData): void {

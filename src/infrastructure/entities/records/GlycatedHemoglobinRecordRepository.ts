@@ -5,6 +5,7 @@ import { GlycatedHemoglobinRecordEntity } from './GlycatedHemoglobinRecordEntity
 import { GlycatedHemoglobinRecord } from '../../../domain/record/GlycatedHemoglobinRecord'
 import { GlycatedHemoglobinRecordMapper } from './GlycatedHemoglobinRecordMapper'
 import { IGlycatedHemoglobinRecordRepository } from '../../../domain/record/interfaces/repositories/IGlycatedHemoglobinRecordRepository'
+import { RepositoryError } from '../../error/RepositoryError'
 
 export class GlycatedHemoglobinRecordRepository
   extends BaseRepository<
@@ -26,17 +27,18 @@ export class GlycatedHemoglobinRecordRepository
     patientId: string
   ): Promise<GlycatedHemoglobinRecord | null> {
     try {
-      const entity = await this.getRepo()
-        .createQueryBuilder('glycated_hemoglobin_records')
-        .leftJoinAndSelect('glycated_hemoglobin_records.patient', 'patient')
-        .where('glycated_hemoglobin_records.id = :recordId', {
-          recordId,
-        })
-        .andWhere('patients.id = :patientId', { patientId })
-        .getOne()
+      const entity = await this.getRepo().findOne({
+        where: {
+          id: recordId,
+          patient: { id: patientId }, // need to set @RelationId
+        },
+      })
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
-      throw new Error('repository findByIdAndPatientId error')
+      throw new RepositoryError(
+        'GlycatedHemoglobinRecordRepository findByIdAndPatientId error',
+        e as Error
+      )
     }
   }
 }

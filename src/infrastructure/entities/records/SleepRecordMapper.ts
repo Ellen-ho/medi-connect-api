@@ -1,6 +1,5 @@
 import { SleepRecord } from '../../../domain/record/SleepRecord'
 import { IEntityMapper } from '../../../domain/shared/IEntityMapper'
-import { PatientMapper } from '../patient/PatientMapper'
 import { SleepRecordEntity } from './SleepRecordEntity'
 
 export class SleepRecordMapper
@@ -17,7 +16,7 @@ export class SleepRecordMapper
       sleepNote: entity.sleepNote,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
-      patient: new PatientMapper().toDomainModel(entity.patient),
+      patientId: entity.patientId,
     })
     return sleepRecord
   }
@@ -33,9 +32,7 @@ export class SleepRecordMapper
     sleepRecordEntity.sleepNote = domainModel.sleepNote
     sleepRecordEntity.createdAt = domainModel.createdAt
     sleepRecordEntity.updatedAt = domainModel.updatedAt
-    sleepRecordEntity.patient = new PatientMapper().toPersistence(
-      domainModel.patient
-    )
+    sleepRecordEntity.patientId = domainModel.patientId
 
     return sleepRecordEntity
   }

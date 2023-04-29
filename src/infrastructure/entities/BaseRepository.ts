@@ -1,6 +1,7 @@
 import { DataSource, EntityTarget, ObjectLiteral, Repository } from 'typeorm'
 import { IBaseRepository } from '../../domain/shared/IBaseRepository'
 import { IEntityMapper } from '../../domain/shared/IEntityMapper'
+import { IExecutor } from '../../domain/shared/IRepositoryTx'
 
 export class BaseRepository<E extends ObjectLiteral, DM>
   implements IBaseRepository<DM>
@@ -23,10 +24,13 @@ export class BaseRepository<E extends ObjectLiteral, DM>
     return this.mapper
   }
 
-  public async save(doaminModel: DM): Promise<void> {
+  public async save(
+    doaminModel: DM,
+    executor: IExecutor = this.getRepo()
+  ): Promise<void> {
     try {
       const entity = this.mapper.toPersistence(doaminModel)
-      await this.repository.save(entity)
+      await executor.save(entity)
     } catch (e) {
       throw new Error('repository save error')
     }

@@ -1,9 +1,10 @@
+import { IBaseRepository } from '../../../shared/IBaseRepository'
 import { BloodPressureRecord } from '../../BloodPressureRecord'
 
-export interface IBloodPressureRecordRepository {
+export interface IBloodPressureRecordRepository
+  extends IBaseRepository<BloodPressureRecord> {
   findByIdAndPatientId: (
     recordId: string,
     patientId: string
   ) => Promise<BloodPressureRecord | null>
-  save: (bloodPressureRecord: BloodPressureRecord) => Promise<void>
 }
