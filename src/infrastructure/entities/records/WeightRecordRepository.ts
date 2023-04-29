@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm'
-import { BaseRepository } from '../BaseRepository'
+import { BaseRepository } from '../../database/BaseRepository'
 import { WeightRecord } from '../../../domain/record/WeightRecord'
 import { IWeightRecordRepository } from '../../../domain/record/interfaces/repositories/IWeightRecordRepository'
 import { WeightRecordEntity } from './WeightRecordEntity'

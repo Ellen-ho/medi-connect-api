@@ -1,10 +1,7 @@
-import { Doctor } from '../doctor/Doctor'
-import { PatientQuestionAnswer } from './PatientQuestionAnswer'
-
 export interface IAnswerAgreementProps {
   id: string
-  answer: PatientQuestionAnswer
-  agreedDoctor: Doctor
+  answerId: string
+  agreedDoctorId: string
   comment: string | null
   createdAt: Date
   updatedAt: Date
@@ -17,12 +14,12 @@ export class AnswerAgreement {
     return this.props.id
   }
 
-  public get answer(): PatientQuestionAnswer {
-    return this.props.answer
+  public get answerId(): string {
+    return this.props.answerId
   }
 
-  public get agreedDoctor(): Doctor {
-    return this.props.agreedDoctor
+  public get agreedDoctorId(): string {
+    return this.props.agreedDoctorId
   }
 
   public get comment(): string | null {

@@ -1,9 +1,10 @@
 import { DataSource } from 'typeorm'
 import { PatientQuestion } from '../../../domain/question/PatientQuestion'
-import { BaseRepository } from '../BaseRepository'
+import { BaseRepository } from '../../database/BaseRepository'
 import { PatientQuestionEntity } from './PatientQuestionEntity'
 import { PatientQuestionMapper } from './PatientQuestionMapper'
 import { IPatientQuestionRepository } from '../../../domain/question/interfaces/repositories/IPatientQuestionRepository'
+import { RepositoryError } from '../../error/RepositoryError'
 
 export class PatientQuestionRepository
   extends BaseRepository<PatientQuestionEntity, PatientQuestion>
@@ -20,7 +21,10 @@ export class PatientQuestionRepository
       })
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
-      throw new Error('repository findById error')
+      throw new RepositoryError(
+        'PatientQuestionRepository findById error',
+        e as Error
+      )
     }
   }
 
@@ -38,7 +42,10 @@ export class PatientQuestionRepository
 
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
-      throw new Error('repository findByIdAndPatientId error')
+      throw new RepositoryError(
+        'PatientQuestionRepository findByIdAndAskerId error',
+        e as Error
+      )
     }
   }
 
@@ -50,7 +57,10 @@ export class PatientQuestionRepository
         .where('id = :id', { id })
         .execute()
     } catch (e) {
-      throw new Error('repository countsById error')
+      throw new RepositoryError(
+        'PatientQuestionRepository deleteById error',
+        e as Error
+      )
     }
   }
 }

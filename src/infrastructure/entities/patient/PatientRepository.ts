@@ -1,10 +1,11 @@
 import { DataSource } from 'typeorm'
 import { IPatientRepository } from '../../../domain/patient/interfaces/repositories/IPatientRepository'
-import { BaseRepository } from '../BaseRepository'
+import { BaseRepository } from '../../database/BaseRepository'
 
 import { Patient } from '../../../domain/patient/Patient'
 import { PatientEntity } from './PatientEntity'
 import { PatientMapper } from './PatientMapper'
+import { RepositoryError } from '../../error/RepositoryError'
 
 export class PatientRepository
   extends BaseRepository<PatientEntity, Patient>
@@ -21,7 +22,7 @@ export class PatientRepository
       })
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
-      throw new Error('repository findById error')
+      throw new RepositoryError('PatientRepository findById error', e as Error)
     }
   }
 
@@ -37,7 +38,10 @@ export class PatientRepository
       })
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
-      throw new Error((e as Error).message)
+      throw new RepositoryError(
+        'PatientRepository findByUserId error',
+        e as Error
+      )
     }
   }
 }

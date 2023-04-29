@@ -11,22 +11,28 @@ export const createAnswerAgreementSchema = {
 }
 
 export const editAnswerAgreementCommentSchema = {
+  params: Joi.object({
+    id: Joi.string().uuid().required(),
+  }),
   body: Joi.object({
-    answerAgreementId: Joi.string().uuid().required(),
     comment: Joi.string().optional(),
   }),
 }
 
 export const creatAnswerAppreciationSchema = {
+  params: Joi.object({
+    id: Joi.string().uuid().required(),
+  }),
   body: Joi.object({
-    answerId: Joi.string().uuid().required(),
-    cobrent: Joi.string().optional(),
+    content: Joi.string().optional(),
   }),
 }
 
 export const editAnswerAppreciationContentSchema = {
+  params: Joi.object({
+    id: Joi.string().uuid().required(),
+  }),
   body: Joi.object({
-    answerAppreciationId: Joi.string().uuid().required(),
     content: Joi.string().optional(),
   }),
 }
@@ -41,8 +47,10 @@ export const creatPatientQuestionAnswerSchema = {
 }
 
 export const editPatientQuestionAnswerSchema = {
+  params: Joi.object({
+    id: Joi.string().uuid().required(),
+  }),
   body: Joi.object({
-    patientQuestionAnswerId: Joi.string().uuid().required(),
     content: Joi.string().required(),
   }),
 }

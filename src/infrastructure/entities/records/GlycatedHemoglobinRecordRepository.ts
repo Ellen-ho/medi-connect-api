@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm'
-import { BaseRepository } from '../BaseRepository'
+import { BaseRepository } from '../../database/BaseRepository'
 import { GlycatedHemoglobinRecordEntity } from './GlycatedHemoglobinRecordEntity'
 
 import { GlycatedHemoglobinRecord } from '../../../domain/record/GlycatedHemoglobinRecord'

@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm'
-import { BaseRepository } from '../BaseRepository'
+import { BaseRepository } from '../../database/BaseRepository'
 
 import { IExerciseRecordRepository } from '../../../domain/record/interfaces/repositories/IExerciseRepository'
 import { ExerciseRecord } from '../../../domain/record/ExerciseRecord'

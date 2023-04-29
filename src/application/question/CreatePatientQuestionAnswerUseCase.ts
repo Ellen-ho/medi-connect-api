@@ -58,7 +58,7 @@ export class CreatePatientQuestionAnswerUseCase {
     const patientQuestionAnswer = new PatientQuestionAnswer({
       id: this.uuidService.generateUuid(),
       content,
-      patientQuestion: existingPatientQuestion,
+      patientQuestionId: existingPatientQuestion.id,
       doctorId: existingDoctor.id,
       createdAt: new Date(),
       updatedAt: new Date(),

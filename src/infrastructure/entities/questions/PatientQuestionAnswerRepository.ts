@@ -2,8 +2,9 @@ import { DataSource } from 'typeorm'
 import { PatientQuestionAnswer } from '../../../domain/question/PatientQuestionAnswer'
 import { PatientQuestionAnswerEntity } from './PatientQuestionAnswerEntity'
 import { PatientQuestionAnswerMapper } from './PatientQuestionAnswerMapper'
-import { BaseRepository } from '../BaseRepository'
+import { BaseRepository } from '../../database/BaseRepository'
 import { IPatientQuestionAnswerRepository } from '../../../domain/question/interfaces/repositories/IPatientQuestionAnswerRepository'
+import { RepositoryError } from '../../error/RepositoryError'
 
 export class PatientQuestionAnswerRepository
   extends BaseRepository<PatientQuestionAnswerEntity, PatientQuestionAnswer>
@@ -26,7 +27,10 @@ export class PatientQuestionAnswerRepository
       console.table({ entity })
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
-      throw new Error('repository findById error')
+      throw new RepositoryError(
+        'PatientQuestionAnswerRepository findById error',
+        e as Error
+      )
     }
   }
 
@@ -43,7 +47,10 @@ export class PatientQuestionAnswerRepository
       })
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
-      throw new Error('repository findByIdAndPatientId error')
+      throw new RepositoryError(
+        'PatientQuestionAnswerRepository findByIdAndDoctorId error',
+        e as Error
+      )
     }
   }
 
@@ -61,7 +68,10 @@ export class PatientQuestionAnswerRepository
       })
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
-      throw new Error('repository findByIdAndPatientId error')
+      throw new RepositoryError(
+        'PatientQuestionAnswerRepository findByQuestionIdAndDoctorId error',
+        e as Error
+      )
     }
   }
 
@@ -77,7 +87,10 @@ export class PatientQuestionAnswerRepository
         .getMany()
       return entities.map((entity) => this.getMapper().toDomainModel(entity))
     } catch (e) {
-      throw new Error('repository findByIdAndPatientId error')
+      throw new RepositoryError(
+        'PatientQuestionAnswerRepository findAllByQuestionId error',
+        e as Error
+      )
     }
   }
 
@@ -89,7 +102,10 @@ export class PatientQuestionAnswerRepository
         .where('id = :id', { id })
         .execute()
     } catch (e) {
-      throw new Error('repository countsByAnswerId error')
+      throw new RepositoryError(
+        'PatientQuestionAnswerRepository deleteById error',
+        e as Error
+      )
     }
   }
 
@@ -101,7 +117,10 @@ export class PatientQuestionAnswerRepository
         .where('patient_question_id = :questionId', { questionId })
         .execute()
     } catch (e) {
-      throw new Error('repository deleteAllByQuestionId error')
+      throw new RepositoryError(
+        'PatientQuestionAnswerRepository deleteAllByQuestionId error',
+        e as Error
+      )
     }
   }
 }

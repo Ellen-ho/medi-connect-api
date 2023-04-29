@@ -7,9 +7,9 @@ POST {{usersPath}}
 Content-Type: application/json
 
 {
-  "displayName":"doctor1",
-  "email": "doctor1@mail.com",
-  "password": "doctor1",
+  "displayName":"doctor2",
+  "email": "doctor2@mail.com",
+  "password": "doctor2",
   "role": "DOCTOR"
 }
 ###

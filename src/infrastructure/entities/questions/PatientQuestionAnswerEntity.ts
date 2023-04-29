@@ -33,6 +33,13 @@ export class PatientQuestionAnswerEntity {
   @JoinColumn({ name: 'patient_question_id' })
   public patientQuestion!: PatientQuestionEntity
 
+  @Column({ name: 'patient_question_id' })
+  @RelationId(
+    (PatientQuestionAnswer: PatientQuestionAnswerEntity) =>
+      PatientQuestionAnswer.patientQuestion
+  )
+  public patientQuestionId!: string
+
   @ManyToOne(() => DoctorEntity)
   @JoinColumn({ name: 'doctor_id' })
   public doctor!: DoctorEntity

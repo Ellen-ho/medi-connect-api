@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm'
 
-import { BaseRepository } from '../BaseRepository'
+import { BaseRepository } from '../../database/BaseRepository'
 import { FoodRecordEntity } from './FoodRecordEntity'
 import { IFoodRecordRepository } from '../../../domain/record/interfaces/repositories/IFoodRecordRepository'
 import { FoodRecord } from '../../../domain/record/FoodRecord'

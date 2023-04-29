@@ -257,7 +257,7 @@ export class QuestionController implements IQuestionController {
   ): Promise<Response> => {
     try {
       const request = {
-        patientQuestionAnswerId: req.params.id,
+        answerId: req.params.id,
         user: req.user as User,
       }
       const result = await this.cancelPatientQuestionAnswerUseCase.execute(

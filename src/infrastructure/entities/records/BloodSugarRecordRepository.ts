@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm'
-import { BaseRepository } from '../BaseRepository'
+import { BaseRepository } from '../../database/BaseRepository'
 import { BloodSugarRecordEntity } from './BloodSugarRecordEntity'
 import { IBloodSugarRecordRepository } from '../../../domain/record/interfaces/repositories/IBloodSugarRecordRepository'
 import { BloodSugarRecord } from '../../../domain/record/BloodSugarRecord'
