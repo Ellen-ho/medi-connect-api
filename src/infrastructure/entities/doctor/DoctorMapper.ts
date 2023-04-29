@@ -1,4 +1,4 @@
-import { Doctor } from '../../../domain/doctor/interfaces/Doctor'
+import { Doctor } from '../../../domain/doctor/Doctor'
 import { IEntityMapper } from '../../../domain/shared/IEntityMapper'
 import { UserMapper } from '../user/UserMapper'
 import { DoctorEntity } from './DoctorEntity'

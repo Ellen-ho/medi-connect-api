@@ -1,4 +1,4 @@
-import { Doctor } from '../doctor/interfaces/Doctor'
+import { Doctor } from '../doctor/Doctor'
 import { PatientQuestionAnswer } from './PatientQuestionAnswer'
 
 export interface IAnswerAgreementProps {

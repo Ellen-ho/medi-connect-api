@@ -23,8 +23,14 @@ export const creatDoctorProfileSchema = {
       countryCode: Joi.string().required(),
     }).required(),
     education: Joi.array().items(Joi.string().required()),
-    awards: Joi.string().optional(),
-    affiliations: Joi.string().optional(),
+    awards: Joi.alternatives().try(
+      Joi.array().items(Joi.string().required()),
+      Joi.valid(null)
+    ),
+    affiliations: Joi.alternatives().try(
+      Joi.array().items(Joi.string().required()),
+      Joi.valid(null)
+    ),
   }),
 }
 

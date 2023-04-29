@@ -3,7 +3,7 @@ import { DataSource } from 'typeorm'
 import { BaseRepository } from '../BaseRepository'
 import { DoctorEntity } from './DoctorEntity'
 import { IDoctorRepository } from '../../../domain/doctor/interfaces/repositories/IDoctorRepository'
-import { Doctor } from '../../../domain/doctor/interfaces/Doctor'
+import { Doctor } from '../../../domain/doctor/Doctor'
 import { DoctorMapper } from './DoctorMapper'
 
 export class DoctorRepository
