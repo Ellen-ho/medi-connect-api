@@ -2,8 +2,10 @@ import Joi from 'joi'
 import { MedicalSpecialtyType } from '../../domain/question/PatientQuestion'
 
 export const createAnswerAgreementSchema = {
+  params: Joi.object({
+    id: Joi.string().uuid().required(),
+  }),
   body: Joi.object({
-    answerId: Joi.string().uuid().required(),
     comment: Joi.string().optional(),
   }),
 }
@@ -30,8 +32,10 @@ export const editAnswerAppreciationContentSchema = {
 }
 
 export const creatPatientQuestionAnswerSchema = {
+  params: Joi.object({
+    id: Joi.string().uuid().required(),
+  }),
   body: Joi.object({
-    patientQuestionId: Joi.string().uuid().required(),
     content: Joi.string().required(),
   }),
 }
@@ -53,8 +57,10 @@ export const creatPatientQuestionSchema = {
 }
 
 export const editPatientQuestionSchema = {
+  params: Joi.object({
+    id: Joi.string().uuid().required(),
+  }),
   body: Joi.object({
-    patientQuestionId: Joi.string().uuid().required(),
     content: Joi.string().required(),
     medicalSpecialty: Joi.string()
       .valid(...Object.values(MedicalSpecialtyType))

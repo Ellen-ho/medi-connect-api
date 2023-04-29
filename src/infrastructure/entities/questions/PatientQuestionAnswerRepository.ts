@@ -21,7 +21,9 @@ export class PatientQuestionAnswerRepository
     try {
       const entity = await this.getRepo().findOne({
         where: { id },
+        relations: ['patientQuestion'], // if no @RalationId set, you need to add relations here
       })
+      console.table({ entity })
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
       throw new Error('repository findById error')
@@ -33,14 +35,30 @@ export class PatientQuestionAnswerRepository
     doctorId: string
   ): Promise<PatientQuestionAnswer | null> {
     try {
-      const entity = await this.getRepo()
-        .createQueryBuilder('patient_question_answers')
-        .leftJoinAndSelect('patient_question_answers.doctor', 'doctor')
-        .where('patient_question_answers.id = :patientQuestionAnswerId', {
-          patientQuestionAnswerId,
-        })
-        .andWhere('doctors.id = :doctorId', { doctorId })
-        .getOne()
+      const entity = await this.getRepo().findOne({
+        where: {
+          id: patientQuestionAnswerId,
+          doctor: { id: doctorId }, // need to set @RelationId
+        },
+      })
+      return entity != null ? this.getMapper().toDomainModel(entity) : null
+    } catch (e) {
+      throw new Error('repository findByIdAndPatientId error')
+    }
+  }
+
+  public async findByQuestionIdAndDoctorId(
+    patientQuestionId: string,
+    doctorId: string
+  ): Promise<PatientQuestionAnswer | null> {
+    try {
+      const entity = await this.getRepo().findOne({
+        where: {
+          patientQuestion: { id: patientQuestionId },
+          doctor: { id: doctorId }, // need to set @RelationId
+        },
+        relations: ['patientQuestion'], // if no @RalationId set, you need to add relations here
+      })
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
       throw new Error('repository findByIdAndPatientId error')

@@ -1,11 +1,10 @@
-import { Doctor } from '../doctor/Doctor'
 import { PatientQuestion } from './PatientQuestion'
 
 export interface IPatientQuestionAnswerProps {
   id: string
   content: string
   patientQuestion: PatientQuestion
-  doctor: Doctor
+  doctorId: string
   createdAt: Date
   updatedAt: Date
 }
@@ -33,8 +32,8 @@ export class PatientQuestionAnswer {
     return this.props.updatedAt
   }
 
-  public get doctor(): Doctor {
-    return this.props.doctor
+  public get doctorId(): string {
+    return this.props.doctorId
   }
 
   public updateContent(content: string): void {

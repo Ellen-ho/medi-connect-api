@@ -29,14 +29,13 @@ export class PatientQuestionRepository
     askerId: string
   ): Promise<PatientQuestion | null> {
     try {
-      const entity = await this.getRepo()
-        .createQueryBuilder('patient_questions')
-        .leftJoinAndSelect('patient_questions.asker', 'asker')
-        .where('patient_questions.id = :patientQuestionId', {
-          patientQuestionId,
-        })
-        .andWhere('askers.id = :askerId', { askerId })
-        .getOne()
+      const entity = await this.getRepo().findOne({
+        where: {
+          id: patientQuestionId,
+          asker: { id: askerId }, // need to set @RelationId
+        },
+      })
+
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
       throw new Error('repository findByIdAndPatientId error')

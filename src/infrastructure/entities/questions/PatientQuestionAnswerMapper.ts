@@ -1,6 +1,5 @@
 import { PatientQuestionAnswer } from '../../../domain/question/PatientQuestionAnswer'
 import { IEntityMapper } from '../../../domain/shared/IEntityMapper'
-import { DoctorMapper } from '../doctor/DoctorMapper'
 import { PatientQuestionAnswerEntity } from './PatientQuestionAnswerEntity'
 import { PatientQuestionMapper } from './PatientQuestionMapper'
 
@@ -18,7 +17,7 @@ export class PatientQuestionAnswerMapper
       patientQuestion: new PatientQuestionMapper().toDomainModel(
         entity.patientQuestion
       ),
-      doctor: new DoctorMapper().toDomainModel(entity.doctor),
+      doctorId: entity.doctorId,
     })
     return patientQuestionAnswer
   }
@@ -33,9 +32,7 @@ export class PatientQuestionAnswerMapper
     patientQuestionAnswerEntity.updatedAt = domainModel.updatedAt
     patientQuestionAnswerEntity.patientQuestion =
       new PatientQuestionMapper().toPersistence(domainModel.patientQuestion)
-    patientQuestionAnswerEntity.doctor = new DoctorMapper().toPersistence(
-      domainModel.doctor
-    )
+    patientQuestionAnswerEntity.doctorId = domainModel.doctorId
 
     return patientQuestionAnswerEntity
   }

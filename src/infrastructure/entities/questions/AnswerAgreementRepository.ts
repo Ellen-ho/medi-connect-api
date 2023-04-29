@@ -17,6 +17,7 @@ export class AnswerAgreementRepository
     try {
       const entity = await this.getRepo().findOne({
         where: { id },
+        relations: ['answer', 'agreedDoctor'], // if no @RalationId set, you need to add relations here
       })
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
@@ -32,8 +33,9 @@ export class AnswerAgreementRepository
             id: answerId,
           },
         },
-        relations: ['answer'],
+        relations: ['answer', 'agreedDoctor'],
       })
+      console.table({ counts })
       return counts
     } catch (e) {
       throw new Error('repository countsByAnswerId error')

@@ -6,6 +6,7 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  RelationId,
   UpdateDateColumn,
 } from 'typeorm'
 import { DoctorEntity } from '../doctor/DoctorEntity'
@@ -35,4 +36,11 @@ export class PatientQuestionAnswerEntity {
   @ManyToOne(() => DoctorEntity)
   @JoinColumn({ name: 'doctor_id' })
   public doctor!: DoctorEntity
+
+  @Column({ name: 'doctor_id' })
+  @RelationId(
+    (PatientQuestionAnswer: PatientQuestionAnswerEntity) =>
+      PatientQuestionAnswer.doctor
+  )
+  public doctorId!: string
 }

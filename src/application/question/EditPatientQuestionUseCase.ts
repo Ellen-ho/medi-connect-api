@@ -28,12 +28,6 @@ export class EditPatientQuestionUseCase {
   ): Promise<EditPatientQuestionResponse> {
     const { user, patientQuestionId, content, medicalSpecialty } = request
 
-    if (content == null || medicalSpecialty == null) {
-      throw new Error(
-        'Content and  medicalSpecialty cannot be empty after editing'
-      )
-    }
-
     const existingAsker = await this.patientRepository.findByUserId(user.id)
 
     if (existingAsker == null) {

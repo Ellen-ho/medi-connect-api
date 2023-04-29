@@ -1,4 +1,3 @@
-import { Patient } from '../../domain/patient/Patient'
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import {
   MedicalSpecialtyType,
@@ -18,7 +17,6 @@ interface CreatePatientQuestionResponse {
   id: string
   content: string
   medicalSpecialty: MedicalSpecialtyType
-  asker: Patient
   createdAt: Date
   updatedAt: Date
 }
@@ -47,7 +45,7 @@ export class CreatePatientQuestionUseCase {
       medicalSpecialty,
       createdAt: new Date(),
       updatedAt: new Date(),
-      asker: existingPatient,
+      askerId: existingPatient.id,
     })
     await this.patientQuestionRepository.save(patientQuestion)
 
@@ -55,7 +53,6 @@ export class CreatePatientQuestionUseCase {
       id: patientQuestion.id,
       content: patientQuestion.content,
       medicalSpecialty: patientQuestion.medicalSpecialty,
-      asker: patientQuestion.asker,
       createdAt: patientQuestion.createdAt,
       updatedAt: patientQuestion.updatedAt,
     }

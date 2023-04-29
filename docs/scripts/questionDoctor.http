@@ -1,0 +1,83 @@
+@hostname = http://localhost:8080
+
+@usersPath = {{hostname}}/api/users
+
+### user login
+# @name login
+POST {{usersPath}}/login
+Content-Type: application/json
+
+{
+  "email": "doctor1@mail.com",
+  "password": "doctor1"
+}
+###
+@accessToken = Bearer {{login.response.body.token}}
+@questionsPath = {{hostname}}/api/questions
+
+### get questions
+GET {{questionsPath}}
+Authorization: {{accessToken}}
+Content-Type: application/json
+###
+
+### doctor answer a question
+@questionId=de8bee0b-78c6-4e29-bbff-6e7891668ba4
+
+POST {{questionsPath}}/{{questionId}}/answers
+Authorization: {{accessToken}}
+Content-Type: application/json
+
+{
+  "content": "this is a good question"
+}
+###
+
+# ### doctor edit a answer
+# @answerId = uuid
+# PATCH {{questionsPath}}/answers/{{answerId}}
+# Authorization: {{accessToken}}
+# Content-Type: application/json
+
+# {
+#   "comment" : "new comments"
+# }
+###
+
+### doctor agree with a answer of another doctor
+@doctorAgreedAnswerId=2d64e58f-a6fc-4f3a-8fdb-dc1873ed3c4b
+POST {{questionsPath}}/answers/{{doctorAgreedAnswerId}}/agreements
+Authorization: {{accessToken}}
+Content-Type: application/json
+
+{
+  "comment" : "comments"
+}
+###
+
+### doctor edit comment in a agreement
+@agreementId = uuid
+PATCH {{questionsPath}}/answers/agreements/{{agreementId}}
+Authorization: {{accessToken}}
+Content-Type: application/json
+
+{
+  "comment" : "new comments"
+}
+###
+
+### doctor cancel a answer to a question
+@answerId = uuid
+DELETE {{questionsPath}}/answers/{{answerId}}
+Authorization: {{accessToken}}
+Content-Type: application/json
+###
+
+### doctor cancel a agreement to an answer
+@answerId = uuid
+DELETE {{questionsPath}}/answers/agreements/{{answerId}}
+Authorization: {{accessToken}}
+Content-Type: application/json
+###
+
+

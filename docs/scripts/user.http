@@ -152,7 +152,7 @@ Content-Type: application/json
 
 @doctorPath={{hostname}}/api/doctors
 
-### Register new patient
+### Register new doctor
 POST {{doctorPath}}/profile
 Authorization: {{accessToken}}
 Content-Type: application/json
@@ -182,7 +182,7 @@ Content-Type: application/json
 
 ###
 
-### Register new patient
+### edit new doctor
 PATCH {{doctorPath}}/profile
 Authorization: {{accessToken}}
 Content-Type: application/json
