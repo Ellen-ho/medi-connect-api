@@ -1,0 +1,25 @@
+@hostname = http://localhost:8080
+
+### user login
+# @name login
+POST {{usersPath}}/login
+Content-Type: application/json
+
+{
+  "email": "user1@mail.com",
+  "password": "user1"
+}
+###
+@accessToken = Bearer {{login.response.body.token}}
+
+@questionsPath = {{hostname}}/api/questions
+
+### patient create a consult appointment
+
+
+
+### Doctor create a doctor time slot
+
+
+
+###
