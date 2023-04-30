@@ -21,7 +21,7 @@ export class DoctorTimeSlotEntity {
   @Column({ name: 'end_at', type: 'timestamp' })
   public endAt!: Date
 
-  @Column({ name: 'availability', type: 'boolean', default: false })
+  @Column({ name: 'availability', type: 'boolean', default: true })
   public availability!: boolean
 
   @CreateDateColumn({ name: 'created_at' })
