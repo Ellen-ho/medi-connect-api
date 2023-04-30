@@ -1,6 +1,5 @@
 import { BloodPressureRecord } from '../../../domain/record/BloodPressureRecord'
 import { IEntityMapper } from '../../../domain/shared/IEntityMapper'
-import { PatientMapper } from '../patient/PatientMapper'
 import { BloodPressureRecordEntity } from './BloodPressureRecordEntity'
 
 export class BloodPressureRecordMapper
@@ -16,7 +15,7 @@ export class BloodPressureRecordMapper
       bloodPressureNote: entity.bloodPressureNote,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
-      patient: new PatientMapper().toDomainModel(entity.patient),
+      patientId: entity.patientId,
     })
     return bloodPressureRecord
   }
@@ -35,9 +34,7 @@ export class BloodPressureRecordMapper
     bloodPressureRecordEntity.bloodPressureNote = domainModel.bloodPressureNote
     bloodPressureRecordEntity.createdAt = domainModel.createdAt
     bloodPressureRecordEntity.updatedAt = domainModel.updatedAt
-    bloodPressureRecordEntity.patient = new PatientMapper().toPersistence(
-      domainModel.patient
-    )
+    bloodPressureRecordEntity.patientId = domainModel.patientId
 
     return bloodPressureRecordEntity
   }

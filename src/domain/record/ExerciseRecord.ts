@@ -1,5 +1,3 @@
-import { Patient } from '../patient/Patient'
-
 export interface IExerciseRecordProps {
   id: string
   exerciseDate: Date
@@ -10,7 +8,7 @@ export interface IExerciseRecordProps {
   exerciseNote: string | null
   createdAt: Date
   updatedAt: Date
-  patient: Patient
+  patientId: string
 }
 
 export enum ExerciseType {
@@ -88,8 +86,8 @@ export class ExerciseRecord {
     return this.props.updatedAt
   }
 
-  public get patient(): Patient {
-    return this.props.patient
+  public get patientId(): string {
+    return this.props.patientId
   }
 
   public updateData(data: IExerciseRecordUpdateData): void {

@@ -48,7 +48,7 @@ export class CreateWeightRecordUseCase {
       weightNote,
       createdAt: new Date(),
       updatedAt: new Date(),
-      patient: existingPatient,
+      patientId: existingPatient.id,
     })
     await this.weightRecordRepository.save(weightRecord)
 

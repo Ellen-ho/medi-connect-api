@@ -2,6 +2,18 @@
 
 @usersPath = {{hostname}}/api/users
 
+### Register new user
+POST {{usersPath}}
+Content-Type: application/json
+
+{
+  "displayName":"doctor2",
+  "email": "doctor2@mail.com",
+  "password": "doctor2",
+  "role": "DOCTOR"
+}
+###
+
 ### user login
 # @name login
 POST {{usersPath}}/login
@@ -20,20 +32,9 @@ Authorization: {{accessToken}}
 Content-Type: application/json
 ###
 
-### Register new user
-POST {{usersPath}}
-Content-Type: application/json
-
-{
-  "displayName":"",
-  "email": "",
-  "password": "user1",
-  "role": "PATIENT"
-}
-###
-
 @patientPath = {{hostname}}/api/patients
 
+### Register new patient
 POST {{patientPath}}/profile
 Authorization: {{accessToken}}
 Content-Type: application/json
@@ -89,12 +90,9 @@ Content-Type: application/json
     }
   ]
 }
-
 ###
 
-
-@patientPath = {{hostname}}/api/patients
-
+### Edit patient
 PATCH {{patientPath}}/profile
 Authorization: {{accessToken}}
 Content-Type: application/json
@@ -150,37 +148,65 @@ Content-Type: application/json
     }
   ]
 }
-
 ###
 
-@recordPath = {{hostname}}/api/records
+@doctorPath={{hostname}}/api/doctors
 
-### create food record
-POST {{recordPath}}/food
+### Register new doctor
+POST {{doctorPath}}/profile
 Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "foodImage": "https://example.com/food-image.jpg",
-  "foodTime": "2023-04-25T10:00:00.000Z",
-  "foodItem": "Apple",
-  "foodCategory": "FRUIT",
-  "foodAmount": 150,
-  "foodNote": "A delicious red apple"
+  "avatar": "https://example.com/avatar.png",
+  "firstName": "John",
+  "lastName": "Doe",
+  "gender": "MALE",
+  "aboutMe": "I am a highly skilled doctor with over 10 years of experience in treating various illnesses.",
+  "languagesSpoken": ["English", "Spanish", "French"],
+  "specialties": ["Cardiology", "Oncology", "Neurology"],
+  "careerStartDate": "2010-01-01T00:00:00.000Z",
+  "officePracticalLocation": {
+    "line1": "123 Main St.",
+    "line2": "Suite 200",
+    "city": "Los Angeles",
+    "stateProvince": "California",
+    "postalCode": "90001",
+    "country": "United States",
+    "countryCode": "US"
+  },
+  "education": ["Doctor of Medicine, University of California, Los Angeles"],
+  "awards": ["Best Doctor Award 2015"],
+  "affiliations": ["American Medical Association"]
 }
+
 ###
 
-### edit food record
-
-@foodRecordId="bf00a253-8d32-4d3f-86f9-2144c96faeff"
-PATCH {{recordPath}}/food/{{foodRecordId}}
+### edit new doctor
+PATCH {{doctorPath}}/profile
 Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "foodImage": "https://example.com/food-image.jpg",
-  "foodCategory": "FRUIT",
-  "foodAmount": 150,
-  "foodNote": "A delicious red apple"
+  "avatar": "https://example.com/avatar.png",
+  "firstName": "John",
+  "lastName": "Doe",
+  "gender": "FEMALE",
+  "aboutMe": "I am a highly skilled doctor with over 10 years of experience in treating various illnesses.",
+  "languagesSpoken": ["English", "Spanish", "French"],
+  "specialties": ["Cardiology", "Oncology", "Neurology"],
+  "careerStartDate": "2010-01-01T00:00:00.000Z",
+  "officePracticalLocation": {
+    "line1": "123 Main St.",
+    "line2": "Suite 200",
+    "city": "Los Angeles",
+    "stateProvince": "California",
+    "postalCode": "90001",
+    "country": "United States",
+    "countryCode": "US"
+  },
+  "education": ["Doctor of Medicine, University of California, Los Angeles"],
+  "awards": ["Best Doctor Award 2015"],
+  "affiliations": ["American Medical Association"]
 }
 ###

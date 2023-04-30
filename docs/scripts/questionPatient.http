@@ -13,7 +13,6 @@ Content-Type: application/json
 }
 ###
 @accessToken = Bearer {{login.response.body.token}}
-
 @questionsPath = {{hostname}}/api/questions
 
 ### get questions
@@ -35,18 +34,20 @@ Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "content": "question content"
+  "content": "question content",
+  "medicalSpecialty": "INTERNAL_MEDICINE"
 }
 ###
 
 ### patient edit a single question (only the owner can edit)
-@questionId = uuid
-PATCH {{questionsPath}}/{questionId}
+@questionEditId=28bffb86-d02f-4478-9df1-daeb74e49337
+PATCH {{questionsPath}}/{{questionEditId}}
 Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "content": "question content"
+  "content": "new content",
+  "medicalSpecialty": "INTERNAL_MEDICINE"
 }
 ###
 
@@ -61,21 +62,38 @@ Content-Type: application/json
 }
 ###
 
-### doctor answer a question
-@questionId = uuid
-@answerId = uuid
-POST {{questionsPath}}/{{questionId}}/answers
+### patient cancel question of their own
+@questionCancelId = uuid
+DELETE {{questionsPath}}/{{questionCancelId}}
+Authorization: {{accessToken}}
+Content-Type: application/json
+###
+
+### patient create appreciation to an answer
+@answerCreateId = uuid
+POST {{questionsPath}}/answers/{{answerCreateId}}/appreciations
 Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "content": "thank content"
+  "content": "Like your reply"
 }
 ###
 
-### doctor agree with a answer of another doctor
-POST {{questionsPath}}/answers/{{answerId}}/agrees
+### patient edit appreciation content to an answer
+@appreciationId = uuid
+POST {{questionsPath}}/answers/appreciations/{{appreciationId}}
 Authorization: {{accessToken}}
 Content-Type: application/json
 
+{
+  "content": "Like your reply"
+}
+###
+
+### patient cancel appreciation content to an answer
+@appreciationId = uuid
+DELETE {{questionsPath}}/answers/appreciations/{{appreciationId}}
+Authorization: {{accessToken}}
+Content-Type: application/json
 ###

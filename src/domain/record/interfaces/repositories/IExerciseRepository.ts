@@ -1,9 +1,10 @@
+import { IBaseRepository } from '../../../shared/IBaseRepository'
 import { ExerciseRecord } from '../../ExerciseRecord'
 
-export interface IExerciseRecordRepository {
+export interface IExerciseRecordRepository
+  extends IBaseRepository<ExerciseRecord> {
   findByIdAndPatientId: (
     recordId: string,
     patientId: string
   ) => Promise<ExerciseRecord | null>
-  save: (exerciseRecord: ExerciseRecord) => Promise<void>
 }

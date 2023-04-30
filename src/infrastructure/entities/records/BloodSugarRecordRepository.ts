@@ -1,9 +1,10 @@
 import { DataSource } from 'typeorm'
-import { BaseRepository } from '../BaseRepository'
+import { BaseRepository } from '../../database/BaseRepository'
 import { BloodSugarRecordEntity } from './BloodSugarRecordEntity'
 import { IBloodSugarRecordRepository } from '../../../domain/record/interfaces/repositories/IBloodSugarRecordRepository'
 import { BloodSugarRecord } from '../../../domain/record/BloodSugarRecord'
 import { BloodSugarRecordMapper } from './BloodSugarRecordMapper'
+import { RepositoryError } from '../../error/RepositoryError'
 
 export class BloodSugarRecordRepository
   extends BaseRepository<BloodSugarRecordEntity, BloodSugarRecord>
@@ -18,17 +19,18 @@ export class BloodSugarRecordRepository
     patientId: string
   ): Promise<BloodSugarRecord | null> {
     try {
-      const entity = await this.getRepo()
-        .createQueryBuilder('blood_sugar_records')
-        .leftJoinAndSelect('blood_sugar_records.patient', 'patient')
-        .where('blood_sugar_records.id = :recordId', {
-          recordId,
-        })
-        .andWhere('patients.id = :patientId', { patientId })
-        .getOne()
+      const entity = await this.getRepo().findOne({
+        where: {
+          id: recordId,
+          patient: { id: patientId }, // need to set @RelationId
+        },
+      })
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
-      throw new Error('repository findByIdAndPatientId error')
+      throw new RepositoryError(
+        'BloodSugarRecordRepository findByIdAndPatientId error',
+        e as Error
+      )
     }
   }
 }

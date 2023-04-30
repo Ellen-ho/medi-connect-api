@@ -65,7 +65,7 @@ export class CreateExerciseRecordUseCase {
       exerciseNote,
       createdAt: new Date(),
       updatedAt: new Date(),
-      patient: existingPatient,
+      patientId: existingPatient.id,
     })
     await this.exerciseRecordRepository.save(exerciseRecord)
 

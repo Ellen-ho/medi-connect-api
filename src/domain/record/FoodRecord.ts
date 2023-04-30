@@ -1,5 +1,3 @@
-import { Patient } from '../patient/Patient'
-
 export interface IFoodRecordProps {
   id: string
   foodImage: string | null
@@ -11,7 +9,7 @@ export interface IFoodRecordProps {
   foodNote: string | null
   createdAt: Date
   updatedAt: Date
-  patient: Patient
+  patientId: string
 }
 
 export enum FoodCategoryType {
@@ -87,8 +85,8 @@ export class FoodRecord {
     return this.props.updatedAt
   }
 
-  public get patient(): Patient {
-    return this.props.patient
+  public get patientId(): string {
+    return this.props.patientId
   }
 
   public updateData(data: IFoodRecordUpdateData): void {

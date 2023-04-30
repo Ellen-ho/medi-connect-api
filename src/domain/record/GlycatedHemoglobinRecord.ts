@@ -1,12 +1,10 @@
-import { Patient } from '../patient/Patient'
-
 export interface IGlycatedHemoglobinRecordProps {
   id: string
   glycatedHemoglobinDate: Date
   glycatedHemoglobinValuePercent: number
   createdAt: Date
   updatedAt: Date
-  patient: Patient
+  patientId: string
 }
 
 interface IGlycatedHemoglobinRecordUpdateData {
@@ -37,8 +35,8 @@ export class GlycatedHemoglobinRecord {
     return this.props.updatedAt
   }
 
-  public get patient(): Patient {
-    return this.props.patient
+  public get patientId(): string {
+    return this.props.patientId
   }
 
   public updateData(data: IGlycatedHemoglobinRecordUpdateData): void {

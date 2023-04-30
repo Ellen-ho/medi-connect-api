@@ -1,5 +1,3 @@
-import { Patient } from '../patient/Patient'
-
 export interface IWeightRecordProps {
   id: string
   weightDate: Date
@@ -8,7 +6,7 @@ export interface IWeightRecordProps {
   weightNote: string | null
   createdAt: Date
   updatedAt: Date
-  patient: Patient
+  patientId: string
 }
 
 interface IWeightRecordUpdateData {
@@ -50,8 +48,8 @@ export class WeightRecord {
     return this.props.updatedAt
   }
 
-  public get patient(): Patient {
-    return this.props.patient
+  public get patientId(): string {
+    return this.props.patientId
   }
 
   public updateData(data: IWeightRecordUpdateData): void {

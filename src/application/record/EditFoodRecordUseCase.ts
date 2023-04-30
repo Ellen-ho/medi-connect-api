@@ -36,14 +36,12 @@ export class EditFoodRecordUseCase {
     const { user, foodRecordId, foodTime, foodCategory, foodAmount, foodNote } =
       request
 
-    // get patient by userId
     const existingPatient = await this.patientRepository.findByUserId(user.id)
 
     if (existingPatient == null) {
       throw new Error('Patient does not exist.')
     }
 
-    // get record by recordId and patientId
     const existingFoodRecord =
       await this.foodRecordRepository.findByIdAndPatientId(
         foodRecordId,
@@ -60,6 +58,10 @@ export class EditFoodRecordUseCase {
       foodAmount,
       kcalories: 500,
       foodNote,
+    })
+
+    console.table({
+      existingFoodRecord: JSON.stringify(existingFoodRecord),
     })
 
     await this.foodRecordRepository.save(existingFoodRecord)

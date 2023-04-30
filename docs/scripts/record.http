@@ -1,0 +1,76 @@
+@hostname = http://localhost:8080
+
+@usersPath = {{hostname}}/api/users
+
+### user login
+# @name login
+POST {{usersPath}}/login
+Content-Type: application/json
+
+{
+  "email": "user1@mail.com",
+  "password": "user1"
+}
+###
+@accessToken = Bearer {{login.response.body.token}}
+
+@recordPath = {{hostname}}/api/records
+
+### create food record
+POST {{recordPath}}/food
+Authorization: {{accessToken}}
+Content-Type: application/json
+
+{
+  "foodImage": "https://example.com/food-image.jpg",
+  "foodTime": "2023-04-25T10:00:00.000Z",
+  "foodItem": "Apple",
+  "foodCategory": "FRUIT",
+  "foodAmount": 150,
+  "foodNote": "A delicious red apple"
+}
+###
+
+### edit food record
+
+@foodRecordId=bf00a253-8d32-4d3f-86f9-2144c96faeff
+PATCH {{recordPath}}/food/{{foodRecordId}}
+Authorization: {{accessToken}}
+Content-Type: application/json
+
+{
+  "foodTime":"2023-04-25T10:00:00.000Z",
+  "foodCategory": "FRUIT",
+  "foodAmount": 110,
+  "foodNote": "A delicious red apple"
+}
+###
+
+### create blood pressure record
+POST {{recordPath}}/blood-pressure
+Authorization: {{accessToken}}
+Content-Type: application/json
+
+{
+  "bloodPressureDate": "2023-04-25T10:00:00.000Z",
+  "systolicBloodPressure": 150,
+  "diastolicBloodPressure": 80,
+  "heartBeat": 70,
+  "bloodPressureNote": 150
+}
+###
+
+### edit food record
+@bloodPressureRecordId=7ee5ef35-91ec-4b7d-810e-d2c45df7c745
+PATCH {{recordPath}}/blood-pressure/{{bloodPressureRecordId}}
+Authorization: {{accessToken}}
+Content-Type: application/json
+
+{
+  "bloodPressureDate": "2023-04-25T10:00:00.000Z",
+  "systolicBloodPressure": 100,
+  "diastolicBloodPressure": 80,
+  "heartBeat": 70,
+  "bloodPressureNote": 150
+}
+###

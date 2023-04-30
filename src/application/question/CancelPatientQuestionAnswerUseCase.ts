@@ -2,15 +2,16 @@ import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/I
 import { IAnswerAgreementRepository } from '../../domain/question/interfaces/repositories/IAnswerAgreementRepository'
 import { IAnswerAppreciationRepository } from '../../domain/question/interfaces/repositories/IAnswerAppreciationtRepository'
 import { IPatientQuestionAnswerRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionAnswerRepository'
+import { IRepositoryTx } from '../../domain/shared/IRepositoryTx'
 import { User } from '../../domain/user/User'
 
 interface CancelPatientQuestionAnswerRequest {
   user: User
-  patientQuestionAnswerId: string
+  answerId: string
 }
 
 interface CancelPatientQuestionAnswerResponse {
-  patientQuestionAnswerId: string
+  answerId: string
 }
 
 export class CancelPatientQuestionAnswerUseCase {
@@ -18,13 +19,14 @@ export class CancelPatientQuestionAnswerUseCase {
     private readonly patientQuestionAnswerRepository: IPatientQuestionAnswerRepository,
     private readonly answerAppreciationRepository: IAnswerAppreciationRepository,
     private readonly answerAgreementRepository: IAnswerAgreementRepository,
-    private readonly doctorRepository: IDoctorRepository
+    private readonly doctorRepository: IDoctorRepository,
+    private readonly tx: IRepositoryTx
   ) {}
 
   public async execute(
     request: CancelPatientQuestionAnswerRequest
   ): Promise<CancelPatientQuestionAnswerResponse> {
-    const { user, patientQuestionAnswerId } = request
+    const { user, answerId } = request
 
     const existingDoctor = await this.doctorRepository.findByUserId(user.id)
 
@@ -34,26 +36,27 @@ export class CancelPatientQuestionAnswerUseCase {
 
     const existingPatientQuestionAnswer =
       await this.patientQuestionAnswerRepository.findByIdAndDoctorId(
-        patientQuestionAnswerId,
+        answerId,
         existingDoctor.id
       )
     if (existingPatientQuestionAnswer == null) {
       throw new Error('Answer does not exist.')
     }
+    try {
+      await this.tx.start()
 
-    // TODO: add transaction here
-    await this.patientQuestionAnswerRepository.deleteById(
-      existingPatientQuestionAnswer.id
-    )
-    await this.answerAgreementRepository.deleteAllByAnswerId(
-      patientQuestionAnswerId
-    )
-    await this.answerAppreciationRepository.deleteAllByAnswerId(
-      patientQuestionAnswerId
-    )
-
-    return {
-      patientQuestionAnswerId,
+      await this.patientQuestionAnswerRepository.deleteById(
+        existingPatientQuestionAnswer.id
+      )
+      await this.answerAgreementRepository.deleteAllByAnswerId(answerId)
+      await this.answerAppreciationRepository.deleteAllByAnswerId(answerId)
+      await this.tx.end()
+      return {
+        answerId,
+      }
+    } catch (error) {
+      await this.tx.rollback()
+      throw error
     }
   }
 }

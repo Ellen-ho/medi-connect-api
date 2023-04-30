@@ -53,7 +53,7 @@ export class CreateFoodRecordUseCase {
       foodNote,
       createdAt: new Date(),
       updatedAt: new Date(),
-      patient: existingPatient,
+      patientId: existingPatient.id,
     })
     await this.foodRecordRepository.save(foodRecord)
 

@@ -1,9 +1,10 @@
 import { DataSource } from 'typeorm'
-import { BaseRepository } from '../BaseRepository'
+import { BaseRepository } from '../../database/BaseRepository'
 import { SleepRecordEntity } from './SleepRecordEntity'
 import { SleepRecordMapper } from './SleepRecordMapper'
 import { SleepRecord } from '../../../domain/record/SleepRecord'
 import { ISleepRecordRepository } from '../../../domain/record/interfaces/repositories/ISleepRecordRepository'
+import { RepositoryError } from '../../error/RepositoryError'
 
 export class SleepRecordRepository
   extends BaseRepository<SleepRecordEntity, SleepRecord>
@@ -18,17 +19,18 @@ export class SleepRecordRepository
     patientId: string
   ): Promise<SleepRecord | null> {
     try {
-      const entity = await this.getRepo()
-        .createQueryBuilder('sleep_records')
-        .leftJoinAndSelect('sleep_records.patient', 'patient')
-        .where('sleep_records.id = :recordId', {
-          recordId,
-        })
-        .andWhere('patients.id = :patientId', { patientId })
-        .getOne()
+      const entity = await this.getRepo().findOne({
+        where: {
+          id: recordId,
+          patient: { id: patientId }, // need to set @RelationId
+        },
+      })
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
-      throw new Error('repository findByIdAndPatientId error')
+      throw new RepositoryError(
+        'SleepRecordRepository findByIdAndPatientId error',
+        e as Error
+      )
     }
   }
 }

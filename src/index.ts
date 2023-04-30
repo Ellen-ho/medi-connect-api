@@ -63,6 +63,8 @@ import { EditPatientQuestionUseCase } from './application/question/EditPatientQu
 import { CreatePatientQuestionUseCase } from './application/question/CreatePatientQuestionUseCase'
 import { PatientQuestionRepository } from './infrastructure/entities/questions/PatientQuestionRepository'
 import { CancelPatientQuestionUseCase } from './application/question/CancelPatientQuestionUsecase'
+import { RepositoryTx } from './infrastructure/database/RepositoryTx'
+import { RawQueryRepository } from './infrastructure/database/RawRepository'
 
 void main()
 
@@ -82,6 +84,7 @@ async function main(): Promise<void> {
   /**
    * Shared Services
    */
+  const rawQueryRepository = new RawQueryRepository(dataSource)
   const uuidService = new UuidService()
   const hashGenerator = new BcryptHashGenerator()
 
@@ -258,7 +261,8 @@ async function main(): Promise<void> {
       patientQuestionAnswerRepository,
       answerAppreciationRepository,
       answerAgreementRepository,
-      doctorRepository
+      doctorRepository,
+      new RepositoryTx(dataSource)
     )
 
   const createPatientQuestionUseCase = new CreatePatientQuestionUseCase(
@@ -275,7 +279,8 @@ async function main(): Promise<void> {
     patientRepository,
     answerAppreciationRepository,
     answerAgreementRepository,
-    patientQuestionAnswerRepository
+    patientQuestionAnswerRepository,
+    new RepositoryTx(dataSource)
   )
 
   /**
