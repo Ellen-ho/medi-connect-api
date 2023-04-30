@@ -1,7 +1,8 @@
 import { DataSource } from 'typeorm'
 import { ConsultAppointment } from '../../../domain/consultation/ConsultAppointment'
 import { IConsultAppointmentRepository } from '../../../domain/consultation/interfaces/repositories/IConsultAppointmentRepository'
-import { BaseRepository } from '../BaseRepository'
+import { BaseRepository } from '../../database/BaseRepository'
+import { RepositoryError } from '../../error/RepositoryError'
 import { ConsultAppointmentEntity } from './ConsultAppointmentEntity'
 import { ConsultAppointmentMapper } from './ConsultAppointmentMapper'
 
@@ -20,7 +21,10 @@ export class ConsultAppointmentRepository
       })
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
-      throw new Error('repository findById error')
+      throw new RepositoryError(
+        'ConsultAppointmentEntity findById error',
+        e as Error
+      )
     }
   }
 }

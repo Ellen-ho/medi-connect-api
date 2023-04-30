@@ -1,6 +1,5 @@
 import { DoctorTimeSlot } from '../../../domain/consultation/DoctorTimeSlot'
 import { IEntityMapper } from '../../../domain/shared/IEntityMapper'
-import { DoctorMapper } from '../doctor/DoctorMapper'
 import { DoctorTimeSlotEntity } from './DoctorTimeSlotEntity'
 
 export class DoctorTimeSlotMapper
@@ -13,7 +12,8 @@ export class DoctorTimeSlotMapper
       endAt: entity.endAt,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
-      doctor: new DoctorMapper().toDomainModel(entity.doctor),
+      doctorId: entity.doctorId,
+      availability: entity.availability,
     })
     return doctorTimeSlot
   }
@@ -25,9 +25,8 @@ export class DoctorTimeSlotMapper
     doctorTimeSlotEntity.endAt = domainModel.endAt
     doctorTimeSlotEntity.createdAt = domainModel.createdAt
     doctorTimeSlotEntity.updatedAt = domainModel.updatedAt
-    doctorTimeSlotEntity.doctor = new DoctorMapper().toPersistence(
-      domainModel.doctor
-    )
+    doctorTimeSlotEntity.doctorId = domainModel.doctorId
+    doctorTimeSlotEntity.availability = domainModel.availability
 
     return doctorTimeSlotEntity
   }

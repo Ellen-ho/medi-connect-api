@@ -1,26 +1,19 @@
-import { Patient } from '../patient/Patient'
 import { DoctorTimeSlot } from './DoctorTimeSlot'
 
 export interface IConsultAppointmentProps {
   id: string
-  patient: Patient
+  patientId: string
   doctorTimeSlot: DoctorTimeSlot
-  doctorStatus: DoctorStatusType
-  patientStatus: PatientStatusType
+  status: ConsultAppointmentStatusType
   createdAt: Date
   updatedAt: Date
 }
 
-export enum DoctorStatusType {
-  CANCEL = 'CANCEL',
-  NO_SHOW = 'NO_SHOW',
-  BE_LATE = 'BE_LATE',
-}
-
-export enum PatientStatusType {
-  CANCEL = 'CANCEL',
-  NO_SHOW = 'NO_SHOW',
-  BE_LATE = 'BE_LATE',
+export enum ConsultAppointmentStatusType {
+  UPCOMING = 'UPCOMING',
+  COMPLETED = 'COMPLETED',
+  DOCTOR_CANCELED = 'DOCTOR_CANCELED',
+  PATIENT_CANCELED = 'PATIENT_CANCELED',
 }
 
 export class ConsultAppointment {
@@ -30,20 +23,16 @@ export class ConsultAppointment {
     return this.props.id
   }
 
-  public get patient(): Patient {
-    return this.props.patient
+  public get patientId(): string {
+    return this.props.patientId
   }
 
   public get doctorTimeSlot(): DoctorTimeSlot {
     return this.props.doctorTimeSlot
   }
 
-  public get doctorStatus(): DoctorStatusType {
-    return this.props.doctorStatus
-  }
-
-  public get patientStatus(): PatientStatusType {
-    return this.props.patientStatus
+  public get status(): ConsultAppointmentStatusType {
+    return this.props.status
   }
 
   public get createdAt(): Date {

@@ -1,12 +1,11 @@
-import { Doctor } from '../doctor/interfaces/Doctor'
-
 export interface IDoctorTimeSlotProps {
   id: string
-  doctor: Doctor
+  doctorId: string
   startAt: Date
   endAt: Date
   createdAt: Date
   updatedAt: Date
+  availability: boolean
 }
 
 export class DoctorTimeSlot {
@@ -16,12 +15,16 @@ export class DoctorTimeSlot {
     return this.props.id
   }
 
-  public get doctor(): Doctor {
-    return this.props.doctor
+  public get doctorId(): string {
+    return this.props.doctorId
   }
 
   public get startAt(): Date {
     return this.props.startAt
+  }
+
+  public get availability(): boolean {
+    return this.props.availability
   }
 
   public get endAt(): Date {

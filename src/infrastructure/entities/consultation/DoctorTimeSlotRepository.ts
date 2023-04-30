@@ -1,9 +1,10 @@
 import { DataSource } from 'typeorm'
 import { IDoctorTimeSlotRepository } from '../../../domain/consultation/interfaces/repositories/IDoctorTimeSlotRepository'
-import { BaseRepository } from '../BaseRepository'
 import { DoctorTimeSlotEntity } from './DoctorTimeSlotEntity'
 import { DoctorTimeSlotMapper } from './DoctorTimeSlotMapper'
 import { DoctorTimeSlot } from '../../../domain/consultation/DoctorTimeSlot'
+import { BaseRepository } from '../../database/BaseRepository'
+import { RepositoryError } from '../../error/RepositoryError'
 
 export class DoctorTimeSlotRepository
   extends BaseRepository<DoctorTimeSlotEntity, DoctorTimeSlot>
@@ -20,7 +21,10 @@ export class DoctorTimeSlotRepository
       })
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
-      throw new Error('repository findById error')
+      throw new RepositoryError(
+        'DoctorTimeSlotRepository findById error',
+        e as Error
+      )
     }
   }
 }

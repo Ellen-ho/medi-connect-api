@@ -5,12 +5,10 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  RelationId,
   UpdateDateColumn,
 } from 'typeorm'
-import {
-  DoctorStatusType,
-  PatientStatusType,
-} from '../../../domain/consultation/ConsultAppointment'
+import { ConsultAppointmentStatusType } from '../../../domain/consultation/ConsultAppointment'
 import { PatientEntity } from '../patient/PatientEntity'
 import { DoctorTimeSlotEntity } from './DoctorTimeSlotEntity'
 
@@ -20,18 +18,12 @@ export class ConsultAppointmentEntity {
   public id!: string
 
   @Column({
-    name: 'doctor_status',
+    name: 'status',
     type: 'varchar',
-    length: 150,
+    length: 100,
+    default: ConsultAppointmentStatusType.UPCOMING,
   })
-  public doctorStatus!: DoctorStatusType
-
-  @Column({
-    name: 'patient_status',
-    type: 'varchar',
-    length: 150,
-  })
-  public patientStatus!: PatientStatusType
+  public status!: ConsultAppointmentStatusType
 
   @CreateDateColumn({ name: 'created_at' })
   public createdAt!: Date
@@ -42,6 +34,12 @@ export class ConsultAppointmentEntity {
   @ManyToOne(() => PatientEntity)
   @JoinColumn({ name: 'patient_id' })
   patient!: PatientEntity
+
+  @Column({ name: 'patient_id' })
+  @RelationId(
+    (consultAppointment: ConsultAppointmentEntity) => consultAppointment.patient
+  )
+  public patientId!: string
 
   @ManyToOne(() => DoctorTimeSlotEntity, (doctorTimeSlot) => doctorTimeSlot.id)
   @JoinColumn({ name: 'doctor_time_slot_id' })

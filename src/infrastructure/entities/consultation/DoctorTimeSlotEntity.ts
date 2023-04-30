@@ -1,9 +1,11 @@
 import {
+  Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  RelationId,
   UpdateDateColumn,
 } from 'typeorm'
 import { DoctorEntity } from '../doctor/DoctorEntity'
@@ -13,11 +15,14 @@ export class DoctorTimeSlotEntity {
   @PrimaryGeneratedColumn('uuid')
   public id!: string
 
-  @CreateDateColumn({ name: 'start_at' })
+  @Column({ name: 'start_at', type: 'timestamp' })
   public startAt!: Date
 
-  @CreateDateColumn({ name: 'end_at' })
+  @Column({ name: 'end_at', type: 'timestamp' })
   public endAt!: Date
+
+  @Column({ name: 'availability', type: 'boolean', default: false })
+  public availability!: boolean
 
   @CreateDateColumn({ name: 'created_at' })
   public createdAt!: Date
@@ -27,5 +32,9 @@ export class DoctorTimeSlotEntity {
 
   @ManyToOne(() => DoctorEntity)
   @JoinColumn({ name: 'doctor_id' })
-  doctor!: DoctorEntity
+  public doctor!: DoctorEntity
+
+  @Column({ name: 'doctor_id' })
+  @RelationId((doctorTimeSlot: DoctorTimeSlotEntity) => doctorTimeSlot.doctor)
+  public doctorId!: string
 }
