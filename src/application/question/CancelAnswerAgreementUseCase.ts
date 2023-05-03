@@ -42,18 +42,13 @@ export class CancelAnswerAgreementUseCase {
 
     const totalAgreedDoctorCounts =
       await this.answerAgreementRepository.countsByAnswerId(
-        existingAnswerAgreement.answer.id
+        existingAnswerAgreement.answerId
       )
 
-    const lastAnswerAgreements =
-      await this.answerAgreementRepository.findAllByAnswerId(
-        existingAnswerAgreement.answer.id,
-        3
+    const agreedDoctorAvatars =
+      await this.answerAgreementRepository.findAgreedDoctorAvatarsByAnswerId(
+        existingAnswerAgreement.answerId
       )
-
-    const agreedDoctorAvatars = lastAnswerAgreements.map(
-      (answerAgreement) => answerAgreement.agreedDoctor.avatar
-    )
 
     return {
       totalAgreedDoctorCounts,

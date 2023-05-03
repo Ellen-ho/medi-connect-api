@@ -1,9 +1,10 @@
 import { DataSource } from 'typeorm'
 import { IUserRepository } from '../../../domain/user/interfaces/repositories/IUserRepository'
 import { User } from '../../../domain/user/User'
-import { BaseRepository } from '../BaseRepository'
+import { BaseRepository } from '../../database/BaseRepository'
 import { UserMapper } from './UserMapper'
 import { UserEntity } from './UserEntity'
+import { RepositoryError } from '../../error/RepositoryError'
 
 export class UserRepository
   extends BaseRepository<UserEntity, User>
@@ -20,7 +21,7 @@ export class UserRepository
       })
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
-      throw new Error('repository findById error')
+      throw new RepositoryError('UserRepository findById error', e as Error)
     }
   }
 
@@ -31,7 +32,7 @@ export class UserRepository
       })
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
-      throw new Error('repository findByEmail error')
+      throw new RepositoryError('UserRepository findByEmail error', e as Error)
     }
   }
 }

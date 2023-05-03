@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm'
-import { BaseRepository } from '../BaseRepository'
+import { BaseRepository } from '../../database/BaseRepository'
 import { SleepRecordEntity } from './SleepRecordEntity'
 import { SleepRecordMapper } from './SleepRecordMapper'
 import { SleepRecord } from '../../../domain/record/SleepRecord'

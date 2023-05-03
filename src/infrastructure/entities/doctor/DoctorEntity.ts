@@ -10,7 +10,7 @@ import {
 
 import { UserEntity } from '../user/UserEntity'
 import { GenderType } from '../../../domain/patient/Patient'
-import { IAddress } from '../../../domain/doctor/interfaces/Doctor'
+import { IAddress } from '../../../domain/doctor/Doctor'
 
 @Entity('doctors')
 export class DoctorEntity {

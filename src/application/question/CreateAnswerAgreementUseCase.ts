@@ -47,11 +47,21 @@ export class CreateAnswerAgreementUseCase {
       throw new Error('Doctor does not exist.')
     }
 
+    const existingAnswerAgreement =
+      await this.answerAgreementRepository.findByAnswerIdAndAgreedDoctorId(
+        answerId,
+        existingDoctor.id
+      )
+
+    if (existingAnswerAgreement !== null) {
+      throw new Error('Agreement to this answer by you already exists.')
+    }
+
     const answerAgreement = new AnswerAgreement({
       id: this.uuidService.generateUuid(),
       comment,
-      answer: existingAnswer,
-      agreedDoctor: existingDoctor,
+      answerId: existingAnswer.id,
+      agreedDoctorId: existingDoctor.id,
       createdAt: new Date(),
       updatedAt: new Date(),
     })
@@ -60,16 +70,14 @@ export class CreateAnswerAgreementUseCase {
     const totalAgreedDoctorCounts =
       await this.answerAgreementRepository.countsByAnswerId(answerId)
 
-    const lastAnswerAgreements =
-      await this.answerAgreementRepository.findAllByAnswerId(answerId, 3)
-
-    const agreedDoctorAvatars = lastAnswerAgreements.map(
-      (answerAgreement) => answerAgreement.agreedDoctor.avatar
-    )
+    const agreedDoctorAvatars =
+      await this.answerAgreementRepository.findAgreedDoctorAvatarsByAnswerId(
+        answerId
+      )
 
     return {
       id: answerAgreement.id,
-      answerId: answerAgreement.answer.id,
+      answerId: answerAgreement.answerId,
       totalAgreedDoctorCounts,
       agreedDoctorAvatars,
       createdAt: answerAgreement.createdAt,

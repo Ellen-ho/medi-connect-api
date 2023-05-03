@@ -1,10 +1,6 @@
 import { IUuidService } from '../../domain/utils/IUuidService'
 import { User } from '../../domain/user/User'
-import {
-  Doctor,
-  GenderType,
-  IAddress,
-} from '../../domain/doctor/interfaces/Doctor'
+import { Doctor, GenderType, IAddress } from '../../domain/doctor/Doctor'
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 
 interface CreateDoctorProfileRequest {

@@ -11,13 +11,20 @@ export class BaseRepository<E extends ObjectLiteral, DM>
   constructor(
     entity: EntityTarget<E>,
     private readonly mapper: IEntityMapper<E, DM>,
-    dataSource: DataSource
+    private readonly dataSource: DataSource
   ) {
-    this.repository = dataSource.getRepository(entity)
+    this.repository = this.dataSource.getRepository(entity)
   }
 
   protected getRepo(): Repository<E> {
     return this.repository
+  }
+
+  protected async getQuery<T>(
+    rawQuery: string,
+    rawQueryParams?: any[]
+  ): Promise<T> {
+    return await this.dataSource.query(rawQuery, rawQueryParams)
   }
 
   protected getMapper(): IEntityMapper<E, DM> {
