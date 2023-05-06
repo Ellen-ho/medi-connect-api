@@ -1,16 +1,22 @@
+import { ConsultAppointmentStatusType } from '../../domain/consultation/ConsultAppointment'
+import { IConsultAppointmentRepository } from '../../domain/consultation/interfaces/repositories/IConsultAppointmentRepository'
+import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { User } from '../../domain/user/User'
 
-interface ConsultAppointmentRequest {
+interface CancelConsultAppointmentRequest {
   user: User
   consultAppointmentId: string
 }
 
-interface ConsultAppointmentResponse {}
+interface CancelConsultAppointmentResponse {
+  consultAppointmentId: string
+  status: ConsultAppointmentStatusType
+}
 
 export class ConsultAppointmentUseCase {
   constructor(
     private readonly consultAppointmentRepository: IConsultAppointmentRepository,
-    private readonly doctorRepository: IDoctorRepository
+    private readonly patientRepository: IPatientRepository
   ) {}
 
   public async execute(
@@ -18,16 +24,16 @@ export class ConsultAppointmentUseCase {
   ): Promise<CancelConsultAppointmentResponse> {
     const { user, consultAppointmentId } = request
 
-    const existingDoctor = await this.doctorRepository.findByUserId(user.id)
+    const existingPatient = await this.patientRepository.findByUserId(user.id)
 
-    if (existingDoctor == null) {
-      throw new Error('Doctor does not exist.')
+    if (existingPatient == null) {
+      throw new Error('Patient does not exist.')
     }
 
     const existingConsultAppointment =
-      await this.consultAppointmentRepository.findByIdAndAgreedDoctorId(
+      await this.consultAppointmentRepository.findByIdAndPatientId(
         consultAppointmentId,
-        existingDoctor.id
+        existingPatient.id
       )
     if (existingConsultAppointment == null) {
       throw new Error('Consult appointment does not exist.')
@@ -37,6 +43,9 @@ export class ConsultAppointmentUseCase {
       existingConsultAppointment.id
     )
 
-    return {}
+    return {
+      consultAppointmentId,
+      status: ConsultAppointmentStatusType.PATIENT_CANCELED,
+    }
   }
 }

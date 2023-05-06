@@ -27,4 +27,41 @@ export class ConsultAppointmentRepository
       )
     }
   }
+
+  public async findByIdAndPatientId(
+    consultAppointmentId: string,
+    patientId: string
+  ): Promise<ConsultAppointment | null> {
+    try {
+      const entity = await this.getRepo()
+        .createQueryBuilder('consult_appointments')
+        .leftJoinAndSelect('consult_appointments.patient', 'patient')
+        .where('consult_appointmentss.id = :consultAppointmentId', {
+          consultAppointmentId,
+        })
+        .andWhere('patients.id = :patientId', { patientId })
+        .getOne()
+      return entity != null ? this.getMapper().toDomainModel(entity) : null
+    } catch (e) {
+      throw new RepositoryError(
+        'ConsultAppointmentRepository findByIdAndPatientId error',
+        e as Error
+      )
+    }
+  }
+
+  public async deleteById(id: string): Promise<void> {
+    try {
+      await this.getRepo()
+        .createQueryBuilder('consult_appointmens')
+        .softDelete()
+        .where('id = :id', { id })
+        .execute()
+    } catch (e) {
+      throw new RepositoryError(
+        'ConsultAppointmentRepository deleteById error',
+        e as Error
+      )
+    }
+  }
 }

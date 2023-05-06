@@ -1,25 +1,29 @@
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
+import { IDoctorTimeSlotRepository } from '../../domain/consultation/interfaces/repositories/IDoctorTimeSlotRepository'
+import {
+  ConsultAppointment,
+  ConsultAppointmentStatusType,
+} from '../../domain/consultation/ConsultAppointment'
+import { DoctorTimeSlot } from '../../domain/consultation/DoctorTimeSlot'
 
 interface CreateConsultAppointmentRequest {
   user: User
-  patientId: string
-  doctorStatus: DoctorStatusType
-  patientStatus: PatientStatusType
+  doctorTimeSlotId: string
 }
 
 interface CreateConsultAppointmentResponse {
   id: string
   patientId: string
-  doctorTimeSlotId: string
-  doctorStatus: DoctorStatusType
-  patientStatus: PatientStatusType
+  doctorTimeSlot: DoctorTimeSlot
+  status: ConsultAppointmentStatusType
   createdAt: Date
   updatedAt: Date
 }
 
 export class CreateConsultAppointmentUseCase {
+  consultAppointmentRepository: any
   constructor(
     private readonly doctorTimeSlotRepository: IDoctorTimeSlotRepository,
     private readonly patientRepository: IPatientRepository,
@@ -29,7 +33,7 @@ export class CreateConsultAppointmentUseCase {
   public async execute(
     request: CreateConsultAppointmentRequest
   ): Promise<CreateConsultAppointmentResponse> {
-    const { user, patientId, doctorStatus, patientStatus } = request
+    const { user, doctorTimeSlotId } = request
 
     const existingPatient = await this.patientRepository.findByUserId(user.id)
 
@@ -38,7 +42,7 @@ export class CreateConsultAppointmentUseCase {
     }
 
     const existingDoctorTimeSlot = await this.doctorTimeSlotRepository.findById(
-      doctorTimeSlot.id
+      doctorTimeSlotId
     )
 
     if (existingDoctorTimeSlot == null) {
@@ -47,10 +51,9 @@ export class CreateConsultAppointmentUseCase {
 
     const consultAppointment = new ConsultAppointment({
       id: this.uuidService.generateUuid(),
-      patientId,
-      doctorTimeSlotId,
-      doctorStatus,
-      patientStatus,
+      patientId: existingPatient.id,
+      doctorTimeSlot: existingDoctorTimeSlot,
+      status: ConsultAppointmentStatusType.UPCOMING,
       createdAt: new Date(),
       updatedAt: new Date(),
     })
@@ -58,10 +61,9 @@ export class CreateConsultAppointmentUseCase {
 
     return {
       id: consultAppointment.id,
-      patientId: consultAppointment.patient.id,
-      doctorTimeSlotId: consultAppointment.doctorTimeSlot.id,
-      doctorStatus,
-      patientStatus,
+      patientId: existingPatient.id,
+      doctorTimeSlot: existingDoctorTimeSlot,
+      status: consultAppointment.status,
       createdAt: consultAppointment.createdAt,
       updatedAt: consultAppointment.updatedAt,
     }
