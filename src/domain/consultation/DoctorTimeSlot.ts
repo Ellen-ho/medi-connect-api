@@ -8,6 +8,13 @@ export interface IDoctorTimeSlotProps {
   availability: boolean
 }
 
+interface IDoctorTimeSlotUpdateData {
+  [key: string]: any
+  startAt: Date
+  endAt: Date
+  availability: boolean
+}
+
 export class DoctorTimeSlot {
   constructor(private readonly props: IDoctorTimeSlotProps) {}
 
@@ -37,5 +44,12 @@ export class DoctorTimeSlot {
 
   public get updatedAt(): Date {
     return this.props.updatedAt
+  }
+
+  public updateData(data: IDoctorTimeSlotUpdateData): void {
+    // TODO: improve this
+    this.props.startAt = data.startAt
+    this.props.endAt = data.endAt
+    this.props.availability = data.availability
   }
 }

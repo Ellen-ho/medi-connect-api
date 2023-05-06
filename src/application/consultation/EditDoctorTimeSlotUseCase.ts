@@ -1,18 +1,21 @@
+import { IDoctorTimeSlotRepository } from '../../domain/consultation/interfaces/repositories/IDoctorTimeSlotRepository'
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 import { User } from '../../domain/user/User'
 
 interface EditDoctorTimeSlotRequest {
   user: User
   doctorTimeSlotId: string
-  starAt: Date
+  startAt: Date
   endAt: Date
+  availability: boolean
 }
 
 interface EditDoctorTimeSlotResponse {
   id: string
-  starAt: Date
+  startAt: Date
   endAt: Date
   updatedAt: Date
+  availability: boolean
 }
 
 export class EditDoctorTimeSlotUseCase {
@@ -24,9 +27,9 @@ export class EditDoctorTimeSlotUseCase {
   public async execute(
     request: EditDoctorTimeSlotRequest
   ): Promise<EditDoctorTimeSlotResponse> {
-    const { user, doctorTimeSlotId, starAt, endAt } = request
+    const { user, doctorTimeSlotId, startAt, endAt, availability } = request
 
-    if (starAt == null || endAt == null) {
+    if (startAt == null || endAt == null) {
       throw new Error('The start and end cannot be empty after editing')
     }
 
@@ -46,14 +49,15 @@ export class EditDoctorTimeSlotUseCase {
       throw new Error('Doctor time Slot does not exist.')
     }
 
-    existingDoctorTimeSlot.updateData({ starAt, endAt })
+    existingDoctorTimeSlot.updateData({ startAt, endAt, availability })
 
     await this.doctorTimeSlotRepository.save(existingDoctorTimeSlot)
 
     return {
       id: existingDoctorTimeSlot.id,
-      starAt: existingDoctorTimeSlot.starAt,
+      startAt: existingDoctorTimeSlot.startAt,
       endAt: existingDoctorTimeSlot.endAt,
+      availability: existingDoctorTimeSlot.availability,
       updatedAt: existingDoctorTimeSlot.updatedAt,
     }
   }
