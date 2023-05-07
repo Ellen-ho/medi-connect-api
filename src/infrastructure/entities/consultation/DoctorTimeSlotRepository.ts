@@ -47,4 +47,24 @@ export class DoctorTimeSlotRepository
       )
     }
   }
+
+  public async findByStartAtAndDoctorId(
+    startAt: Date,
+    doctorId: string
+  ): Promise<DoctorTimeSlot | null> {
+    try {
+      const entity = await this.getRepo().findOne({
+        where: {
+          startAt,
+          doctor: { id: doctorId },
+        },
+      })
+      return entity != null ? this.getMapper().toDomainModel(entity) : null
+    } catch (e) {
+      throw new RepositoryError(
+        'DoctorTimeSlotRepository findByStartAtAndDoctorId error',
+        e as Error
+      )
+    }
+  }
 }
