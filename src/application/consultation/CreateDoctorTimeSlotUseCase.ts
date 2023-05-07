@@ -6,7 +6,6 @@ import { IUuidService } from '../../domain/utils/IUuidService'
 
 interface CreateDoctorTimeSlotRequest {
   user: User
-  doctorId: string
   startAt: Date
   endAt: Date
   availability: boolean
@@ -38,6 +37,16 @@ export class CreateDoctorTimeSlotUseCase {
 
     if (existingDoctor == null) {
       throw new Error('Doctor does not exist.')
+    }
+
+    const existingDoctorTimeSlot =
+      await this.doctorTimeSlotRepository.findByStartAtAndDoctorId(
+        startAt,
+        existingDoctor.id
+      )
+
+    if (existingDoctorTimeSlot != null) {
+      throw new Error("This doctor's time slot has already exists.")
     }
 
     const doctorTimeSlot = new DoctorTimeSlot({
