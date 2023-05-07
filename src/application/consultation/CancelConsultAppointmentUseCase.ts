@@ -13,7 +13,7 @@ interface CancelConsultAppointmentResponse {
   status: ConsultAppointmentStatusType
 }
 
-export class ConsultAppointmentUseCase {
+export class CancelConsultAppointmentUseCase {
   constructor(
     private readonly consultAppointmentRepository: IConsultAppointmentRepository,
     private readonly patientRepository: IPatientRepository
