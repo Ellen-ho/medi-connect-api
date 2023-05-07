@@ -71,6 +71,7 @@ import { CreateDoctorTimeSlotUseCase } from './application/consultation/CreateDo
 import { EditDoctorTimeSlotUseCase } from './application/consultation/EditDoctorTimeSlotUseCase'
 import { ConsultationController } from './infrastructure/http/controllers/ConsultationController'
 import { CancelConsultAppointmentUseCase } from './application/consultation/CancelConsultAppointmentUseCase'
+import { ConsultationRoutes } from './infrastructure/http/routes/ConsultationRoutes'
 // import { RawQueryRepository } from './infrastructure/database/RawRepository'
 
 void main()
@@ -382,9 +383,7 @@ async function main(): Promise<void> {
   const recordRoutes = new RecordRoutes(recordController)
   const doctorRoutes = new DoctorRoutes(doctorController)
   const questionRoutes = new QuestionRoutes(questionController)
-  const consultationRoutes = new ConsultationRoutesRoutes(
-    consultationController
-  )
+  const consultationRoutes = new ConsultationRoutes(consultationController)
 
   const mainRoutes = new MainRoutes(
     userRoutes,
