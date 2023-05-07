@@ -8,7 +8,6 @@ interface EditDoctorTimeSlotRequest {
   doctorTimeSlotId: string
   startAt: Date
   endAt: Date
-  availability: boolean
 }
 
 interface EditDoctorTimeSlotResponse {
@@ -16,7 +15,6 @@ interface EditDoctorTimeSlotResponse {
   startAt: Date
   endAt: Date
   updatedAt: Date
-  availability: boolean
 }
 
 export class EditDoctorTimeSlotUseCase {
@@ -28,7 +26,7 @@ export class EditDoctorTimeSlotUseCase {
   public async execute(
     request: EditDoctorTimeSlotRequest
   ): Promise<EditDoctorTimeSlotResponse> {
-    const { user, doctorTimeSlotId, startAt, endAt, availability } = request
+    const { user, doctorTimeSlotId, startAt, endAt } = request
 
     if (startAt == null || endAt == null) {
       throw new Error('The start and end cannot be empty after editing.')
@@ -71,7 +69,7 @@ export class EditDoctorTimeSlotUseCase {
       throw new Error('Doctor cannot edit the time slot in the same month.')
     }
 
-    existingDoctorTimeSlot.updateData({ startAt, endAt, availability })
+    existingDoctorTimeSlot.updateData({ startAt, endAt })
 
     await this.doctorTimeSlotRepository.save(existingDoctorTimeSlot)
 
@@ -79,7 +77,6 @@ export class EditDoctorTimeSlotUseCase {
       id: existingDoctorTimeSlot.id,
       startAt: existingDoctorTimeSlot.startAt,
       endAt: existingDoctorTimeSlot.endAt,
-      availability: existingDoctorTimeSlot.availability,
       updatedAt: existingDoctorTimeSlot.updatedAt,
     }
   }
