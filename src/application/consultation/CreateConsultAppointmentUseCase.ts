@@ -7,6 +7,7 @@ import {
   ConsultAppointmentStatusType,
 } from '../../domain/consultation/ConsultAppointment'
 import { DoctorTimeSlot } from '../../domain/consultation/DoctorTimeSlot'
+import dayjs from 'dayjs'
 
 interface CreateConsultAppointmentRequest {
   user: User
@@ -47,6 +48,17 @@ export class CreateConsultAppointmentUseCase {
 
     if (existingDoctorTimeSlot == null) {
       throw new Error('Doctor time slot does not exist.')
+    }
+
+    const currentDate = new Date()
+    const wantedAppointmentTime = existingDoctorTimeSlot.startAt
+    const diffInHours = dayjs(currentDate).diff(
+      dayjs(wantedAppointmentTime),
+      'hour'
+    )
+
+    if (diffInHours <= 24) {
+      throw new Error('Appointment should be created before one day.')
     }
 
     const consultAppointment = new ConsultAppointment({

@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { ConsultAppointmentStatusType } from '../../domain/consultation/ConsultAppointment'
 import { IConsultAppointmentRepository } from '../../domain/consultation/interfaces/repositories/IConsultAppointmentRepository'
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
@@ -37,6 +38,18 @@ export class CancelConsultAppointmentUseCase {
       )
     if (existingConsultAppointment == null) {
       throw new Error('Consult appointment does not exist.')
+    }
+
+    const currentDate = new Date()
+    const wantedAppointmentTime =
+      existingConsultAppointment.doctorTimeSlot.startAt
+    const diffInHours = dayjs(currentDate).diff(
+      dayjs(wantedAppointmentTime),
+      'hour'
+    )
+
+    if (diffInHours <= 24) {
+      throw new Error('Appointment should be canceled before one day.')
     }
 
     await this.consultAppointmentRepository.deleteById(
