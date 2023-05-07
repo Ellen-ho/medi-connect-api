@@ -8,7 +8,6 @@ interface CreateDoctorTimeSlotRequest {
   user: User
   startAt: Date
   endAt: Date
-  availability: boolean
 }
 
 interface CreateDoctorTimeSlotResponse {
@@ -16,7 +15,6 @@ interface CreateDoctorTimeSlotResponse {
   doctorId: string
   startAt: Date
   endAt: Date
-  availability: boolean
   createdAt: Date
   updatedAt: Date
 }
@@ -31,7 +29,7 @@ export class CreateDoctorTimeSlotUseCase {
   public async execute(
     request: CreateDoctorTimeSlotRequest
   ): Promise<CreateDoctorTimeSlotResponse> {
-    const { user, startAt, endAt, availability } = request
+    const { user, startAt, endAt } = request
 
     const existingDoctor = await this.doctorRepository.findByUserId(user.id)
 
@@ -54,7 +52,7 @@ export class CreateDoctorTimeSlotUseCase {
       doctorId: existingDoctor.id,
       startAt,
       endAt,
-      availability,
+      availability: true,
       createdAt: new Date(),
       updatedAt: new Date(),
     })
@@ -65,7 +63,6 @@ export class CreateDoctorTimeSlotUseCase {
       doctorId: doctorTimeSlot.doctorId,
       startAt: doctorTimeSlot.startAt,
       endAt: doctorTimeSlot.endAt,
-      availability: doctorTimeSlot.availability,
       createdAt: doctorTimeSlot.createdAt,
       updatedAt: doctorTimeSlot.updatedAt,
     }

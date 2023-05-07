@@ -61,6 +61,8 @@ export class CreateConsultAppointmentUseCase {
       throw new Error('Appointment should be created before one day.')
     }
 
+    existingDoctorTimeSlot.updateAvailability(false)
+
     const consultAppointment = new ConsultAppointment({
       id: this.uuidService.generateUuid(),
       patientId: existingPatient.id,
