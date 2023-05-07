@@ -1,6 +1,7 @@
 import { IDoctorTimeSlotRepository } from '../../domain/consultation/interfaces/repositories/IDoctorTimeSlotRepository'
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 import { User } from '../../domain/user/User'
+import dayjs from 'dayjs'
 
 interface EditDoctorTimeSlotRequest {
   user: User
@@ -30,7 +31,11 @@ export class EditDoctorTimeSlotUseCase {
     const { user, doctorTimeSlotId, startAt, endAt, availability } = request
 
     if (startAt == null || endAt == null) {
-      throw new Error('The start and end cannot be empty after editing')
+      throw new Error('The start and end cannot be empty after editing.')
+    }
+
+    if (dayjs(startAt).isAfter(endAt)) {
+      throw new Error('The start time should before end time.')
     }
 
     const existingDoctor = await this.doctorRepository.findByUserId(user.id)
@@ -47,6 +52,23 @@ export class EditDoctorTimeSlotUseCase {
 
     if (existingDoctorTimeSlot == null) {
       throw new Error('Doctor time Slot does not exist.')
+    }
+
+    const depulicatedDoctorTimeSlot =
+      await this.doctorTimeSlotRepository.findByStartAtAndDoctorId(
+        startAt,
+        existingDoctor.id
+      )
+
+    if (depulicatedDoctorTimeSlot != null) {
+      throw new Error(
+        "This doctor's time slot has already exists and the time is duplicated."
+      )
+    }
+
+    const currentDate = new Date()
+    if (dayjs(currentDate).isSame(startAt, 'month')) {
+      throw new Error('Doctor cannot edit the time slot in the same month.')
     }
 
     existingDoctorTimeSlot.updateData({ startAt, endAt, availability })

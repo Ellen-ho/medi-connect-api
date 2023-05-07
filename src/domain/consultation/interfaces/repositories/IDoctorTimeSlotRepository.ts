@@ -6,5 +6,9 @@ export interface IDoctorTimeSlotRepository {
     doctorTimeSlotId: string,
     doctorId: string
   ) => Promise<DoctorTimeSlot | null>
+  findByStartAtAndDoctorId: (
+    startAt: Date,
+    doctorId: string
+  ) => Promise<DoctorTimeSlot | null>
   save: (doctorTimeSlot: DoctorTimeSlot) => Promise<void>
 }
