@@ -1,0 +1,56 @@
+@hostname = http://localhost:7000
+
+@usersPath = {{hostname}}/api/users
+
+### user login
+# @name login
+POST {{usersPath}}/login
+Content-Type: application/json
+
+{
+  "email": "doctor2@mail.com",
+  "password": "doctor2"
+}
+###
+@accessToken = Bearer {{login.response.body.token}}
+
+@consultationsPath = {{hostname}}/api/consultations
+
+### patient create a consult appointment
+POST {{consultationsPath}}
+Authorization: {{accessToken}}
+Content-Type: application/json
+
+{
+  "doctorTimeSlotId": "d86ca72e-be83-4e57-9f9e-48b9c8786b36"
+}
+###
+
+### patient cancel a consult appointment
+@patientCancelAppointmentId = 12f52cd3-33b7-40ca-8b09-5ec7ae954b34
+DELETE {{consultationsPath}}/{{patientCancelAppointmentId}}
+Authorization: {{accessToken}}
+Content-Type: application/json
+###
+
+### Doctor create a doctor time slot
+POST {{consultationsPath}}/time-slot
+Authorization: {{accessToken}}
+Content-Type: application/json
+
+{
+  "startAt": "1686393000",
+  "endAt": "1686394800"
+}
+### 
+
+### Doctor edit a doctor time slot
+@DoctorEditTimeSlotId = d86ca72e-be83-4e57-9f9e-48b9c8786b36
+PATCH {{consultationsPath}}/time-slot/{{DoctorEditTimeSlotId}}
+Authorization: {{accessToken}}
+Content-Type: application/json
+
+{
+  "startAt": "1686380400",
+  "endAt": "1686382200"
+}

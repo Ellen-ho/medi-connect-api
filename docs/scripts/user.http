@@ -1,4 +1,4 @@
-@hostname = http://localhost:8080
+@hostname = http://localhost:7000
 
 @usersPath = {{hostname}}/api/users
 
@@ -7,10 +7,10 @@ POST {{usersPath}}
 Content-Type: application/json
 
 {
-  "displayName":"doctor2",
-  "email": "doctor2@mail.com",
-  "password": "doctor2",
-  "role": "DOCTOR"
+  "displayName":"patient1",
+  "email": "patient1@mail.com",
+  "password": "patient1",
+  "role": "PATIENT"
 }
 ###
 
@@ -20,8 +20,8 @@ POST {{usersPath}}/login
 Content-Type: application/json
 
 {
-  "email": "user1@mail.com",
-  "password": "user1"
+  "email": "patient1@mail.com",
+  "password": "patient1"
 }
 ###
 @accessToken = Bearer {{login.response.body.token}}

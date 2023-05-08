@@ -52,7 +52,7 @@ export class CreatePatientQuestionAnswerUseCase {
       )
 
     if (existingPatientQuestionAnswer !== null) {
-      throw new Error('You have already ansered this question.')
+      throw new Error('You have already answered this question.')
     }
 
     const patientQuestionAnswer = new PatientQuestionAnswer({

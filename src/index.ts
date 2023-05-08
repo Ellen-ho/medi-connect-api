@@ -18,25 +18,25 @@ import { CreatePatientProfileUseCase } from './application/patient/CreatePatient
 import { EditPatientProfileUseCase } from './application/patient/EditPatientProfileUseCase'
 import { PatientRepository } from './infrastructure/entities/patient/PatientRepository'
 import { RecordRoutes } from './infrastructure/http/routes/RecordRoutes'
-import { BloodPressureRecordRepository } from './infrastructure/entities/records/BloodPressureRecordRepository'
+import { BloodPressureRecordRepository } from './infrastructure/entities/record/BloodPressureRecordRepository'
 import { CreateBloodPressureRecordUseCase } from './application/record/CreateBloodPressureRecordUseCase'
 import { EditBloodPressureRecordUseCase } from './application/record/EditBloodPressureRecordUseCase'
-import { BloodSugarRecordRepository } from './infrastructure/entities/records/BloodSugarRecordRepository'
+import { BloodSugarRecordRepository } from './infrastructure/entities/record/BloodSugarRecordRepository'
 import { CreateBloodSugarRecordUseCase } from './application/record/CreateBloodSugarRecordUseCase'
 import { EditBloodSugarRecordUseCase } from './application/record/EditBloodSugarRecordUseCase'
-import { FoodRecordRepository } from './infrastructure/entities/records/FoodRecordRepository'
+import { FoodRecordRepository } from './infrastructure/entities/record/FoodRecordRepository'
 import { CreateFoodRecordUseCase } from './application/record/CreateFoodRecordUseCase'
 import { EditFoodRecordUseCase } from './application/record/EditFoodRecordUseCase'
-import { ExerciseRecordRepository } from './infrastructure/entities/records/ExerciseRecordRepository'
+import { ExerciseRecordRepository } from './infrastructure/entities/record/ExerciseRecordRepository'
 import { CreateExerciseRecordUseCase } from './application/record/CreateExerciseRecordUseCase'
 import { EditExerciseRecordUseCase } from './application/record/EditExerciseRecordUseCase'
-import { SleepRecordRepository } from './infrastructure/entities/records/SleepRecordRepository'
+import { SleepRecordRepository } from './infrastructure/entities/record/SleepRecordRepository'
 import { CreateSleepRecordUseCase } from './application/record/CreateSleepRecordUseCase'
 import { EditSleepRecordUseCase } from './application/record/EditSleepRecordUseCase'
-import { WeightRecordRepository } from './infrastructure/entities/records/WeightRecordRepository'
+import { WeightRecordRepository } from './infrastructure/entities/record/WeightRecordRepository'
 import { CreateWeightRecordUseCase } from './application/record/CreateWeightRecordUseCase'
 import { EditWeightRecordUseCase } from './application/record/EditWeightRecordUseCase'
-import { GlycatedHemoglobinRecordRepository } from './infrastructure/entities/records/GlycatedHemoglobinRecordRepository'
+import { GlycatedHemoglobinRecordRepository } from './infrastructure/entities/record/GlycatedHemoglobinRecordRepository'
 import { CreateGlycatedHemoglobinRecordUseCase } from './application/record/CreateGlycatedHemoglobinRecordUseCase'
 import { EditGlycatedHemoglobinRecordUseCase } from './application/record/EditGlycatedHemoglobinRecordUseCase'
 import { RecordController } from './infrastructure/http/controllers/RecordController'
@@ -49,22 +49,30 @@ import { QuestionRoutes } from './infrastructure/http/routes/QuestionRoutes'
 import { QuestionController } from './infrastructure/http/controllers/QuestionController'
 import { CreateAnswerAgreementUseCase } from './application/question/CreateAnswerAgreementUseCase'
 import { EditAnswerAgreementCommentUseCase } from './application/question/EditAnswerAgreementCommentUseCase'
-import { AnswerAgreementRepository } from './infrastructure/entities/questions/AnswerAgreementRepository'
+import { AnswerAgreementRepository } from './infrastructure/entities/question/AnswerAgreementRepository'
 import { CancelAnswerAgreementUseCase } from './application/question/CancelAnswerAgreementUseCase'
-import { AnswerAppreciationRepository } from './infrastructure/entities/questions/AnswerAppreciationRepository'
+import { AnswerAppreciationRepository } from './infrastructure/entities/question/AnswerAppreciationRepository'
 import { CreateAnswerAppreciationUseCase } from './application/question/CreateAnswerAppreciationUseCase'
 import { EditAnswerAppreciationContentUseCase } from './application/question/EditAnswerAppreciationContentUseCase'
 import { CancelAnswerAppreciationUseCase } from './application/question/CancelAnswerAppreciationUseCase'
-import { PatientQuestionAnswerRepository } from './infrastructure/entities/questions/PatientQuestionAnswerRepository'
+import { PatientQuestionAnswerRepository } from './infrastructure/entities/question/PatientQuestionAnswerRepository'
 import { CreatePatientQuestionAnswerUseCase } from './application/question/CreatePatientQuestionAnswerUseCase'
 import { EditPatientQuestionAnswerContentUseCase } from './application/question/EditPatientQuestionAnswerContentUseCase'
 import { CancelPatientQuestionAnswerUseCase } from './application/question/CancelPatientQuestionAnswerUseCase'
 import { EditPatientQuestionUseCase } from './application/question/EditPatientQuestionUseCase'
 import { CreatePatientQuestionUseCase } from './application/question/CreatePatientQuestionUseCase'
-import { PatientQuestionRepository } from './infrastructure/entities/questions/PatientQuestionRepository'
+import { PatientQuestionRepository } from './infrastructure/entities/question/PatientQuestionRepository'
 import { CancelPatientQuestionUseCase } from './application/question/CancelPatientQuestionUsecase'
 import { RepositoryTx } from './infrastructure/database/RepositoryTx'
-import { RawQueryRepository } from './infrastructure/database/RawRepository'
+import { DoctorTimeSlotRepository } from './infrastructure/entities/consultation/DoctorTimeSlotRepository'
+import { ConsultAppointmentRepository } from './infrastructure/entities/consultation/ConsultAppointmentRepository'
+import { CreateConsultAppointmentUseCase } from './application/consultation/CreateConsultAppointmentUseCase'
+import { CreateDoctorTimeSlotUseCase } from './application/consultation/CreateDoctorTimeSlotUseCase'
+import { EditDoctorTimeSlotUseCase } from './application/consultation/EditDoctorTimeSlotUseCase'
+import { ConsultationController } from './infrastructure/http/controllers/ConsultationController'
+import { CancelConsultAppointmentUseCase } from './application/consultation/CancelConsultAppointmentUseCase'
+import { ConsultationRoutes } from './infrastructure/http/routes/ConsultationRoutes'
+// import { RawQueryRepository } from './infrastructure/database/RawRepository'
 
 void main()
 
@@ -84,7 +92,7 @@ async function main(): Promise<void> {
   /**
    * Shared Services
    */
-  const rawQueryRepository = new RawQueryRepository(dataSource)
+  // const rawQueryRepository = new RawQueryRepository(dataSource)
   const uuidService = new UuidService()
   const hashGenerator = new BcryptHashGenerator()
 
@@ -284,6 +292,35 @@ async function main(): Promise<void> {
   )
 
   /**
+   * Conultation Domain
+   */
+  const consultAppointmentRepository = new ConsultAppointmentRepository(
+    dataSource
+  )
+  const doctorTimeSlotRepository = new DoctorTimeSlotRepository(dataSource)
+
+  const createConsultAppointmentUseCase = new CreateConsultAppointmentUseCase(
+    consultAppointmentRepository,
+    doctorTimeSlotRepository,
+    patientRepository,
+    uuidService
+  )
+  const cancelConsultAppointmentUseCase = new CancelConsultAppointmentUseCase(
+    consultAppointmentRepository,
+    patientRepository
+  )
+
+  const createDoctorTimeSlotUseCase = new CreateDoctorTimeSlotUseCase(
+    doctorTimeSlotRepository,
+    doctorRepository,
+    uuidService
+  )
+  const editDoctorTimeSlotUseCase = new EditDoctorTimeSlotUseCase(
+    doctorTimeSlotRepository,
+    doctorRepository
+  )
+
+  /**
    * Controllers
    */
   const userController = new UserController(getUserUseCase, createUserUseCase)
@@ -326,6 +363,13 @@ async function main(): Promise<void> {
     cancelPatientQuestionUseCase
   )
 
+  const consultationController = new ConsultationController(
+    createConsultAppointmentUseCase,
+    cancelConsultAppointmentUseCase,
+    createDoctorTimeSlotUseCase,
+    editDoctorTimeSlotUseCase
+  )
+
   const app: Express = express()
   app.use(express.urlencoded({ extended: true }))
   app.use(express.json())
@@ -340,13 +384,15 @@ async function main(): Promise<void> {
   const recordRoutes = new RecordRoutes(recordController)
   const doctorRoutes = new DoctorRoutes(doctorController)
   const questionRoutes = new QuestionRoutes(questionController)
+  const consultationRoutes = new ConsultationRoutes(consultationController)
 
   const mainRoutes = new MainRoutes(
     userRoutes,
     patientRoutes,
     recordRoutes,
     doctorRoutes,
-    questionRoutes
+    questionRoutes,
+    consultationRoutes
   )
   app.use('/api', mainRoutes.createRouter())
 

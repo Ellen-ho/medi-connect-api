@@ -27,4 +27,40 @@ export class ConsultAppointmentRepository
       )
     }
   }
+
+  public async findByIdAndPatientId(
+    consultAppointmentId: string,
+    patientId: string
+  ): Promise<ConsultAppointment | null> {
+    try {
+      const entity = await this.getRepo().findOne({
+        where: {
+          id: consultAppointmentId,
+          patient: { id: patientId }, // need to set @RelationId
+        },
+        relations: ['doctorTimeSlot'],
+      })
+      return entity != null ? this.getMapper().toDomainModel(entity) : null
+    } catch (e) {
+      throw new RepositoryError(
+        'ConsultAppointmentRepository findByIdAndPatientId error',
+        e as Error
+      )
+    }
+  }
+
+  public async deleteById(id: string): Promise<void> {
+    try {
+      await this.getRepo()
+        .createQueryBuilder('consult_appointments')
+        .softDelete()
+        .where('id = :id', { id })
+        .execute()
+    } catch (e) {
+      throw new RepositoryError(
+        'ConsultAppointmentRepository deleteById error',
+        e as Error
+      )
+    }
+  }
 }

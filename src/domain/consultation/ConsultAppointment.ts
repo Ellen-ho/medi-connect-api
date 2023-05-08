@@ -12,7 +12,6 @@ export interface IConsultAppointmentProps {
 export enum ConsultAppointmentStatusType {
   UPCOMING = 'UPCOMING',
   COMPLETED = 'COMPLETED',
-  DOCTOR_CANCELED = 'DOCTOR_CANCELED',
   PATIENT_CANCELED = 'PATIENT_CANCELED',
 }
 
