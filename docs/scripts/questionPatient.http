@@ -1,4 +1,4 @@
-@hostname = http://localhost:8080
+@hostname = http://localhost:7000
 
 @usersPath = {{hostname}}/api/users
 
@@ -8,8 +8,8 @@ POST {{usersPath}}/login
 Content-Type: application/json
 
 {
-  "email": "user1@mail.com",
-  "password": "user1"
+  "email": "tim@gmail.com",
+  "password": "tim"
 }
 ###
 @accessToken = Bearer {{login.response.body.token}}
@@ -34,7 +34,7 @@ Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "content": "question content",
+  "content": "What can I do when I have headache?",
   "medicalSpecialty": "INTERNAL_MEDICINE"
 }
 ###
@@ -52,13 +52,13 @@ Content-Type: application/json
 ###
 
 ### patient thank a doctor's answer
-@answerId = uuid
-POST {{questionsPath}}/answers/{{answerId}}/thanks
+@answerId = 9878d031-cd8b-4aa7-9051-0ae5312e42da
+POST {{questionsPath}}/answers/{{answerId}}/appreciations
 Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "content": "thank content"
+  "comment": "thank content"
 }
 ###
 

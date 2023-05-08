@@ -35,7 +35,7 @@ export class QuestionRoutes {
         asyncHandler(this.questionController.cancelPatientQuestion)
       )
       .post(
-        '/answers/appreciations',
+        '/answers/:id/appreciations',
         validator(createAnswerAgreementSchema),
         asyncHandler(this.questionController.createAnswerAppreciation)
       )

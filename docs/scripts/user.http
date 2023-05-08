@@ -7,10 +7,10 @@ POST {{usersPath}}
 Content-Type: application/json
 
 {
-  "displayName":"patient1",
-  "email": "patient1@mail.com",
-  "password": "patient1",
-  "role": "PATIENT"
+  "displayName":"doctor2",
+  "email": "doctor2@gmail.com",
+  "password": "doctor2",
+  "role": "DOCTOR"
 }
 ###
 
@@ -20,8 +20,8 @@ POST {{usersPath}}/login
 Content-Type: application/json
 
 {
-  "email": "patient1@mail.com",
-  "password": "patient1"
+  "email": "doctor2@gmail.com",
+  "password": "doctor2"
 }
 ###
 @accessToken = Bearer {{login.response.body.token}}
@@ -41,9 +41,9 @@ Content-Type: application/json
 
 {
   "avatar": null,
-  "firstName": "John",
-  "lastName": "Doe",
-  "birthDate": "1990-01-01T00:00:00.000Z",
+  "firstName": "Tim",
+  "lastName": "Wang",
+  "birthDate": "1995-12-31T00:00:00.000Z",
   "gender": "MALE",
   "medicalHistory": [
     {
@@ -158,10 +158,10 @@ Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "avatar": "https://example.com/avatar.png",
-  "firstName": "John",
-  "lastName": "Doe",
-  "gender": "MALE",
+  "avatar": "",
+  "firstName": "doctor2",
+  "lastName": "doctor2",
+  "gender": "FEMALE",
   "aboutMe": "I am a highly skilled doctor with over 10 years of experience in treating various illnesses.",
   "languagesSpoken": ["English", "Spanish", "French"],
   "specialties": ["Cardiology", "Oncology", "Neurology"],
