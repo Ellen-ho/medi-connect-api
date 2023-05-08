@@ -33,14 +33,13 @@ export class ConsultAppointmentRepository
     patientId: string
   ): Promise<ConsultAppointment | null> {
     try {
-      const entity = await this.getRepo()
-        .createQueryBuilder('consult_appointments')
-        .leftJoinAndSelect('consult_appointments.patient', 'patient')
-        .where('consult_appointmentss.id = :consultAppointmentId', {
-          consultAppointmentId,
-        })
-        .andWhere('patients.id = :patientId', { patientId })
-        .getOne()
+      const entity = await this.getRepo().findOne({
+        where: {
+          id: consultAppointmentId,
+          patient: { id: patientId }, // need to set @RelationId
+        },
+        relations: ['doctorTimeSlot'],
+      })
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
       throw new RepositoryError(
@@ -53,7 +52,7 @@ export class ConsultAppointmentRepository
   public async deleteById(id: string): Promise<void> {
     try {
       await this.getRepo()
-        .createQueryBuilder('consult_appointmens')
+        .createQueryBuilder('consult_appointments')
         .softDelete()
         .where('id = :id', { id })
         .execute()

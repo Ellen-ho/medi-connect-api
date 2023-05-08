@@ -53,9 +53,7 @@ export class ConsultationController implements IConsultationController {
       return res.status(200).json(result)
     } catch (error) {
       // TODO: move this to a middleware
-      return res
-        .status(400)
-        .json({ message: 'cancel consult appointment error' })
+      return res.status(400).json({ message: (error as Error).message })
     }
   }
 

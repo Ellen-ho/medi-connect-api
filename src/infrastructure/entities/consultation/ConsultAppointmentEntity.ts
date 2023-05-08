@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -30,6 +31,9 @@ export class ConsultAppointmentEntity {
 
   @UpdateDateColumn({ name: 'updated_at' })
   public updatedAt!: Date
+
+  @DeleteDateColumn({ name: 'deleted_at' })
+  public deletedAt?: Date
 
   @ManyToOne(() => PatientEntity)
   @JoinColumn({ name: 'patient_id' })

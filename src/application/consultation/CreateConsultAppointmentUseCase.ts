@@ -6,8 +6,8 @@ import {
   ConsultAppointment,
   ConsultAppointmentStatusType,
 } from '../../domain/consultation/ConsultAppointment'
-import { DoctorTimeSlot } from '../../domain/consultation/DoctorTimeSlot'
 import dayjs from 'dayjs'
+import { IConsultAppointmentRepository } from '../../domain/consultation/interfaces/repositories/IConsultAppointmentRepository'
 
 interface CreateConsultAppointmentRequest {
   user: User
@@ -16,16 +16,11 @@ interface CreateConsultAppointmentRequest {
 
 interface CreateConsultAppointmentResponse {
   id: string
-  patientId: string
-  doctorTimeSlot: DoctorTimeSlot
-  status: ConsultAppointmentStatusType
-  createdAt: Date
-  updatedAt: Date
 }
 
 export class CreateConsultAppointmentUseCase {
-  consultAppointmentRepository: any
   constructor(
+    private readonly consultAppointmentRepository: IConsultAppointmentRepository,
     private readonly doctorTimeSlotRepository: IDoctorTimeSlotRepository,
     private readonly patientRepository: IPatientRepository,
     private readonly uuidService: IUuidService
@@ -50,12 +45,8 @@ export class CreateConsultAppointmentUseCase {
       throw new Error('Doctor time slot does not exist.')
     }
 
-    const currentDate = new Date()
     const wantedAppointmentTime = existingDoctorTimeSlot.startAt
-    const diffInHours = dayjs(currentDate).diff(
-      dayjs(wantedAppointmentTime),
-      'hour'
-    )
+    const diffInHours = dayjs(wantedAppointmentTime).diff(dayjs(), 'hour')
 
     if (diffInHours <= 24) {
       throw new Error('Appointment should be created before one day.')
@@ -71,15 +62,14 @@ export class CreateConsultAppointmentUseCase {
       createdAt: new Date(),
       updatedAt: new Date(),
     })
+    console.table({
+      consultAppointment: JSON.stringify(consultAppointment),
+    })
+
     await this.consultAppointmentRepository.save(consultAppointment)
 
     return {
       id: consultAppointment.id,
-      patientId: existingPatient.id,
-      doctorTimeSlot: existingDoctorTimeSlot,
-      status: consultAppointment.status,
-      createdAt: consultAppointment.createdAt,
-      updatedAt: consultAppointment.updatedAt,
     }
   }
 }
