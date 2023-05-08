@@ -300,6 +300,7 @@ async function main(): Promise<void> {
   const doctorTimeSlotRepository = new DoctorTimeSlotRepository(dataSource)
 
   const createConsultAppointmentUseCase = new CreateConsultAppointmentUseCase(
+    consultAppointmentRepository,
     doctorTimeSlotRepository,
     patientRepository,
     uuidService
