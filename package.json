@@ -8,7 +8,7 @@
     "lint": "eslint ./src --ext .ts",
     "prettier": "prettier --check .",
     "build": "rimraf ./build && tsc",
-    "start": "pnpm run build && node build/index.js",
+    "start": "npm run build && node build/index.js",
     "typeorm": "typeorm-ts-node-commonjs -d ./src/infrastructure/config/dataSource.ts"
   },
   "keywords": [],
