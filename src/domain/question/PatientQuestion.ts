@@ -35,6 +35,7 @@ interface IPatientQuestionUpdateData {
   content: string
   medicalSpecialty: MedicalSpecialtyType
 }
+
 export class PatientQuestion {
   constructor(private readonly props: IPatientQuestionProps) {}
 

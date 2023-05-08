@@ -11,7 +11,7 @@ import {
 import { PatientEntity } from '../patient/PatientEntity'
 import { PatientQuestionAnswerEntity } from './PatientQuestionAnswerEntity'
 
-@Entity('answer_apprieciations')
+@Entity('answer_appreciations')
 export class AnswerAppreciationEntity {
   @PrimaryGeneratedColumn('uuid')
   public id!: string

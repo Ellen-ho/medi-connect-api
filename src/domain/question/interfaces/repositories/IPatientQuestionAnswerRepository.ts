@@ -1,3 +1,4 @@
+import { IAnswer } from '../../../../application/question/GetSingleQuestionUseCase'
 import { IBaseRepository } from '../../../shared/IBaseRepository'
 import { PatientQuestionAnswer } from '../../PatientQuestionAnswer'
 
@@ -15,4 +16,8 @@ export interface IPatientQuestionAnswerRepository
   findAllByQuestionId: (questionId: string) => Promise<PatientQuestionAnswer[]>
   deleteAllByQuestionId: (questionId: string) => Promise<void>
   deleteById: (id: string) => Promise<void>
+  findAnswerDetailsByQuestionIdAndPatientId: (
+    questionId: string,
+    patientId: string
+  ) => Promise<IAnswer[]>
 }
