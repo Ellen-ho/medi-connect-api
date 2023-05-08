@@ -43,8 +43,8 @@ export class CancelConsultAppointmentUseCase {
     const currentDate = new Date()
     const wantedAppointmentTime =
       existingConsultAppointment.doctorTimeSlot.startAt
-    const diffInHours = dayjs(currentDate).diff(
-      dayjs(wantedAppointmentTime),
+    const diffInHours = dayjs(wantedAppointmentTime).diff(
+      dayjs(currentDate),
       'hour'
     )
 

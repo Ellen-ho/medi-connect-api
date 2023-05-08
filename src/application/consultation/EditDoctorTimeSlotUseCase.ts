@@ -6,8 +6,8 @@ import dayjs from 'dayjs'
 interface EditDoctorTimeSlotRequest {
   user: User
   doctorTimeSlotId: string
-  startAt: Date
-  endAt: Date
+  startAt: number
+  endAt: number
 }
 
 interface EditDoctorTimeSlotResponse {
@@ -54,7 +54,7 @@ export class EditDoctorTimeSlotUseCase {
 
     const depulicatedDoctorTimeSlot =
       await this.doctorTimeSlotRepository.findByStartAtAndDoctorId(
-        startAt,
+        new Date(startAt * 1000),
         existingDoctor.id
       )
 
@@ -69,13 +69,16 @@ export class EditDoctorTimeSlotUseCase {
       throw new Error('Doctor cannot edit the time slot in the same month.')
     }
 
-    existingDoctorTimeSlot.updateData({ startAt, endAt })
+    existingDoctorTimeSlot.updateData({
+      startAt: new Date(startAt * 1000),
+      endAt: new Date(endAt * 1000),
+    })
 
     await this.doctorTimeSlotRepository.save(existingDoctorTimeSlot)
 
     return {
       id: existingDoctorTimeSlot.id,
-      startAt: existingDoctorTimeSlot.startAt,
+      startAt: new Date(startAt * 1000),
       endAt: existingDoctorTimeSlot.endAt,
       updatedAt: existingDoctorTimeSlot.updatedAt,
     }
