@@ -298,10 +298,7 @@ async function main(): Promise<void> {
     patientQuestionAnswerRepository
   )
 
-  const getQuestionsUseCase = new GetQuestionsUseCase(
-    patientQuestionRepository,
-    patientRepository
-  )
+  const getQuestionsUseCase = new GetQuestionsUseCase(patientQuestionRepository)
 
   /**
    * Conultation Domain
