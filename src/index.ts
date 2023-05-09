@@ -72,6 +72,8 @@ import { EditDoctorTimeSlotUseCase } from './application/consultation/EditDoctor
 import { ConsultationController } from './infrastructure/http/controllers/ConsultationController'
 import { CancelConsultAppointmentUseCase } from './application/consultation/CancelConsultAppointmentUseCase'
 import { ConsultationRoutes } from './infrastructure/http/routes/ConsultationRoutes'
+import { GetSingleQuestionUseCase } from './application/question/GetSingleQuestionUseCase'
+import { GetQuestionsUseCase } from './application/question/GetQuestionsUsecase'
 // import { RawQueryRepository } from './infrastructure/database/RawRepository'
 
 void main()
@@ -290,6 +292,16 @@ async function main(): Promise<void> {
     patientQuestionAnswerRepository,
     new RepositoryTx(dataSource)
   )
+  const getSingleQuestionUseCase = new GetSingleQuestionUseCase(
+    patientQuestionRepository,
+    patientRepository,
+    patientQuestionAnswerRepository
+  )
+
+  const getQuestionsUseCase = new GetQuestionsUseCase(
+    patientQuestionRepository,
+    patientRepository
+  )
 
   /**
    * Conultation Domain
@@ -360,7 +372,9 @@ async function main(): Promise<void> {
     editPatientQuestionUseCase,
     cancelAnswerAppreciationUseCase,
     cancelAnswerAgreementUseCase,
-    cancelPatientQuestionUseCase
+    cancelPatientQuestionUseCase,
+    getSingleQuestionUseCase,
+    getQuestionsUseCase
   )
 
   const consultationController = new ConsultationController(
