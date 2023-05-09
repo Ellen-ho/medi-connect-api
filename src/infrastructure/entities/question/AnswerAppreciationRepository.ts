@@ -53,9 +53,9 @@ export class AnswerAppreciationRepository
   ): Promise<AnswerAppreciation | null> {
     try {
       const entity = await this.getRepo()
-        .createQueryBuilder('answer_apprieciations')
-        .leftJoinAndSelect('answer_apprieciations.patient', 'patient')
-        .where('answer_apprieciations.id = :answerAppreciationId', {
+        .createQueryBuilder('answer_appreciations')
+        .leftJoinAndSelect('answer_appreciations.patient', 'patient')
+        .where('answer_appreciations.id = :answerAppreciationId', {
           answerAppreciationId,
         })
         .andWhere('patients.id = :patientId', { patientId })
@@ -72,7 +72,7 @@ export class AnswerAppreciationRepository
   public async deleteById(id: string): Promise<void> {
     try {
       await this.getRepo()
-        .createQueryBuilder('answer_apprieciations')
+        .createQueryBuilder('answer_appreciations')
         .softDelete()
         .where('id = :id', { id })
         .execute()
@@ -87,7 +87,7 @@ export class AnswerAppreciationRepository
   public async deleteAllByAnswerId(answerId: string): Promise<void> {
     try {
       await this.getRepo()
-        .createQueryBuilder('answer_apprieciations')
+        .createQueryBuilder('answer_appreciations')
         .softDelete()
         .where('answer_id = :answerId', { answerId })
         .execute()

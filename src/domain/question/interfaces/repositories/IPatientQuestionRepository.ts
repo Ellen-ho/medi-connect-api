@@ -9,4 +9,9 @@ export interface IPatientQuestionRepository
     askerId: string
   ) => Promise<PatientQuestion | null>
   deleteById: (id: string) => Promise<void>
+  findAll: () => Promise<
+    Array<{
+      content: string
+    }>
+  >
 }

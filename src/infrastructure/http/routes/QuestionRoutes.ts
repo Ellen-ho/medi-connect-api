@@ -10,6 +10,7 @@ import {
   createAnswerAgreementSchema,
   editAnswerAgreementCommentSchema,
   editPatientQuestionSchema,
+  getSingleQuestionSchema,
 } from '../../../application/question/QuestionValidator'
 import { validator } from '../middlewares/Validator'
 
@@ -35,7 +36,7 @@ export class QuestionRoutes {
         asyncHandler(this.questionController.cancelPatientQuestion)
       )
       .post(
-        '/answers/appreciations',
+        '/answers/:id/appreciations',
         validator(createAnswerAgreementSchema),
         asyncHandler(this.questionController.createAnswerAppreciation)
       )
@@ -81,6 +82,12 @@ export class QuestionRoutes {
         validator(cancelAnswerAgreementSchema),
         asyncHandler(this.questionController.cancelAnswerAgreement)
       )
+      .get(
+        '/:id',
+        validator(getSingleQuestionSchema),
+        asyncHandler(this.questionController.getSingleQuestion)
+      )
+      .get('/', asyncHandler(this.questionController.getQuestions))
   }
 
   public createRouter(): Router {

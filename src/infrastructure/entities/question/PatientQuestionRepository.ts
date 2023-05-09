@@ -63,4 +63,30 @@ export class PatientQuestionRepository
       )
     }
   }
+
+  public async findAll(): Promise<
+    Array<{
+      content: string
+    }>
+  > {
+    try {
+      const rawQuestions = await this.getQuery<
+        Array<{
+          content: string
+        }>
+      >(
+        `
+          SELECT content
+          FROM patient_questions
+        `
+      )
+
+      return rawQuestions
+    } catch (e) {
+      throw new RepositoryError(
+        'PatientQuestionRepository findAll error',
+        e as Error
+      )
+    }
+  }
 }

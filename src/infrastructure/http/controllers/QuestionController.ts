@@ -12,6 +12,8 @@ import { CancelAnswerAgreementUseCase } from '../../../application/question/Canc
 import { CancelPatientQuestionAnswerUseCase } from '../../../application/question/CancelPatientQuestionAnswerUseCase'
 import { CancelPatientQuestionUseCase } from '../../../application/question/CancelPatientQuestionUsecase'
 import { User } from '../../../domain/user/User'
+import { GetSingleQuestionUseCase } from '../../../application/question/GetSingleQuestionUseCase'
+import { GetQuestionsUseCase } from '../../../application/question/GetQuestionsUsecase'
 
 export interface IQuestionController {
   createAnswerAgreement: (req: Request, res: Response) => Promise<Response>
@@ -38,6 +40,8 @@ export interface IQuestionController {
     res: Response
   ) => Promise<Response>
   cancelPatientQuestion: (req: Request, res: Response) => Promise<Response>
+  getSingleQuestion: (req: Request, res: Response) => Promise<Response>
+  getQuestions: (req: Request, res: Response) => Promise<Response>
 }
 
 export class QuestionController implements IQuestionController {
@@ -53,7 +57,9 @@ export class QuestionController implements IQuestionController {
     private readonly editPatientQuestionUseCase: EditPatientQuestionUseCase,
     private readonly cancelAnswerAppreciationUseCase: CancelAnswerAppreciationUseCase,
     private readonly cancelAnswerAgreementUseCase: CancelAnswerAgreementUseCase,
-    private readonly cancelPatientQuestionUseCase: CancelPatientQuestionUseCase
+    private readonly cancelPatientQuestionUseCase: CancelPatientQuestionUseCase,
+    private readonly getSingleQuestionUseCase: GetSingleQuestionUseCase,
+    private readonly getQuestionsUseCase: GetQuestionsUseCase
   ) {}
 
   public createAnswerAgreement = async (
@@ -281,6 +287,38 @@ export class QuestionController implements IQuestionController {
         user: req.user as User,
       }
       const result = await this.cancelPatientQuestionUseCase.execute(request)
+
+      return res.status(200).json(result)
+    } catch (error) {
+      // TODO: move this to a middleware
+      return res.status(400).json({ message: (error as Error).message })
+    }
+  }
+
+  public getSingleQuestion = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    try {
+      const request = {
+        patientQuestionId: req.params.id,
+        user: req.user as User,
+      }
+      const result = await this.getSingleQuestionUseCase.execute(request)
+
+      return res.status(200).json(result)
+    } catch (error) {
+      // TODO: move this to a middleware
+      return res.status(400).json({ message: (error as Error).message })
+    }
+  }
+
+  public getQuestions = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    try {
+      const result = await this.getQuestionsUseCase.execute()
 
       return res.status(200).json(result)
     } catch (error) {
