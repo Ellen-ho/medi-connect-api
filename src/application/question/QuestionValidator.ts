@@ -99,3 +99,9 @@ export const cancelPatientQuestionSchema = {
     id: Joi.string().uuid().required(),
   }),
 }
+
+export const getSingleQuestionSchema = {
+  params: Joi.object({
+    id: Joi.string().uuid().required(),
+  }),
+}
