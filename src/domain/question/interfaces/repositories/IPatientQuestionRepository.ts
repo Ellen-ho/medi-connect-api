@@ -9,9 +9,13 @@ export interface IPatientQuestionRepository
     askerId: string
   ) => Promise<PatientQuestion | null>
   deleteById: (id: string) => Promise<void>
-  findAll: () => Promise<
-    Array<{
+  findAndCountAll: (
+    limit: number,
+    offset: number
+  ) => Promise<{
+    total_counts: number
+    questions: Array<{
       content: string
     }>
-  >
+  }>
 }
