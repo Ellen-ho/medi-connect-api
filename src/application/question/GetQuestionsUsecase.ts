@@ -1,55 +1,47 @@
 import { IPatientQuestionRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionRepository'
-
+import { getOffset, getPagination } from '../../infrastructure/utils/Pagination'
+interface GetQuestionsRequest {
+  page?: number
+  limit?: number
+}
 interface GetQuestionsResponse {
-  questions: Array<{
+  data: Array<{
     content: string
   }>
+  pagination: {
+    pages: number[]
+    totalPage: number
+    currentPage: number
+    prev: number
+    next: number
+  }
 }
 export class GetQuestionsUseCase {
   constructor(
     private readonly patientQuestionRepository: IPatientQuestionRepository
   ) {}
 
-  public async execute(): Promise<GetQuestionsResponse> {
+  public async execute(
+    request: GetQuestionsRequest
+  ): Promise<GetQuestionsResponse> {
+    const page: number = request.page != null ? request.page : 1
+    const limit: number = request.limit != null ? request.limit : 10
+    const offset: number = getOffset(limit, page)
+
     const existingPatientQuestions =
-      await this.patientQuestionRepository.findAll()
+      await this.patientQuestionRepository.findAndCountAll(limit, offset)
 
     if (existingPatientQuestions == null) {
       throw new Error('Questions do not exist.')
     }
 
-    /**
-     * existingPatientQuestions = [
-     *  {
-     *     id: '111',
-     *     content: '222',
-     *     ....
-     *  }
-     *
-     * ]
-     *
-     * result => [
-     *  {
-     *    content: '123'
-     *  },
-     *  {},
-     *  ....
-     * ]
-     * const newArray = oldArray.map(item => {
-     *   return {
-     *     content: item.content
-     *   }
-     * })
-     *
-     *
-     *
-     */
     return {
-      questions: existingPatientQuestions.map((question) => {
-        return {
-          content: question.content,
-        }
-      }),
+      data: existingPatientQuestions.questions,
+      pagination: getPagination(
+        limit,
+        page,
+        existingPatientQuestions.total_counts
+      ),
     }
   }
 }

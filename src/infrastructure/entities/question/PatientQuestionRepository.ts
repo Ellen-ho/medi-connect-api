@@ -64,27 +64,43 @@ export class PatientQuestionRepository
     }
   }
 
-  public async findAll(): Promise<
-    Array<{
+  public async findAndCountAll(
+    limit: number,
+    offset: number
+  ): Promise<{
+    total_counts: number
+    questions: Array<{
       content: string
     }>
-  > {
+  }> {
     try {
       const rawQuestions = await this.getQuery<
         Array<{
+          total_counts: number
           content: string
         }>
       >(
         `
-          SELECT content
-          FROM patient_questions
-        `
+          SELECT
+            (SELECT COUNT(*) FROM patient_questions) as total_counts,
+            content
+          FROM
+            patient_questions
+          LIMIT $1
+          OFFSET $2
+        `,
+        [limit, offset]
       )
 
-      return rawQuestions
+      return {
+        total_counts: rawQuestions[0].total_counts,
+        questions: rawQuestions.map((question) => ({
+          content: question.content,
+        })),
+      }
     } catch (e) {
       throw new RepositoryError(
-        'PatientQuestionRepository findAll error',
+        'PatientQuestionRepository findAndCountAll error',
         e as Error
       )
     }

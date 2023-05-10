@@ -16,7 +16,7 @@ Content-Type: application/json
 @questionsPath = {{hostname}}/api/questions
 
 ### get questions
-GET {{questionsPath}}
+GET {{questionsPath}}?limit=3&page=1
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###
@@ -34,7 +34,7 @@ Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "content": "What can I do when I have headache?",
+  "content": "What can I do when I wake up with stuff nose?",
   "medicalSpecialty": "INTERNAL_MEDICINE"
 }
 ###
