@@ -19,6 +19,7 @@ import {
   editGlycatedHemoglobinRecordSchema,
   editSleepRecordSchema,
   editWeightRecordSchema,
+  getSingleExerciseRecordSchema,
 } from '../../../application/record/RecordValidator'
 export class RecordRoutes {
   private readonly routes: Router
@@ -74,7 +75,6 @@ export class RecordRoutes {
         validator(editExerciseRecordSchema),
         asyncHandler(this.recordController.editExerciseRecord)
       )
-
       .post(
         '/food',
         authenticated,
@@ -112,6 +112,12 @@ export class RecordRoutes {
         authenticated,
         validator(editSleepRecordSchema),
         asyncHandler(this.recordController.editSleepRecord)
+      )
+      .get(
+        '/exercise/:id',
+        authenticated,
+        validator(getSingleExerciseRecordSchema),
+        asyncHandler(this.recordController.getSingleExerciseRecord)
       )
   }
 

@@ -14,6 +14,8 @@ import { CreateGlycatedHemoglobinRecordUseCase } from '../../../application/reco
 import { EditGlycatedHemoglobinRecordUseCase } from '../../../application/record/EditGlycatedHemoglobinRecordUseCase'
 import { CreateSleepRecordUseCase } from '../../../application/record/CreateSleepRecordUseCase'
 import { EditSleepRecordUseCase } from '../../../application/record/EditSleepRecordUseCase'
+import { User } from '../../../domain/user/User'
+import { GetSingleExerciseRecordUseCase } from '../../../application/record/GetSingleExerciseRecordUseCase'
 export interface IRecordController {
   createWeightRecord: (req: Request, res: Response) => Promise<Response>
   editWeightRecord: (req: Request, res: Response) => Promise<Response>
@@ -35,6 +37,7 @@ export interface IRecordController {
   ) => Promise<Response>
   createSleepRecord: (req: Request, res: Response) => Promise<Response>
   editSleepRecord: (req: Request, res: Response) => Promise<Response>
+  getSingleExerciseRecord: (req: Request, res: Response) => Promise<Response>
 }
 
 export class RecordController implements IRecordController {
@@ -52,7 +55,8 @@ export class RecordController implements IRecordController {
     private readonly createGlycatedHemoglobinRecordUseCase: CreateGlycatedHemoglobinRecordUseCase,
     private readonly editGlycatedHemoglobinRecordUseCase: EditGlycatedHemoglobinRecordUseCase,
     private readonly createSleepRecordUseCase: CreateSleepRecordUseCase,
-    private readonly editSleepRecordUseCase: EditSleepRecordUseCase
+    private readonly editSleepRecordUseCase: EditSleepRecordUseCase,
+    private readonly getSingleExerciseRecordUseCase: GetSingleExerciseRecordUseCase
   ) {}
 
   public createWeightRecord = async (
@@ -85,7 +89,7 @@ export class RecordController implements IRecordController {
       return res.status(200).json(record)
     } catch (error) {
       // TODO: move this to a middleware
-      return res.status(400).json({ message: 'edit weight record error' })
+      return res.status(400).json({ message: (error as Error).message })
     }
   }
 
@@ -121,9 +125,7 @@ export class RecordController implements IRecordController {
       return res.status(200).json(record)
     } catch (error) {
       // TODO: move this to a middleware
-      return res
-        .status(400)
-        .json({ message: 'edit blood pressure record error' })
+      return res.status(400).json({ message: (error as Error).message })
     }
   }
 
@@ -157,7 +159,7 @@ export class RecordController implements IRecordController {
       return res.status(200).json(record)
     } catch (error) {
       // TODO: move this to a middleware
-      return res.status(400).json({ message: 'edit blood sugar record error' })
+      return res.status(400).json({ message: (error as Error).message })
     }
   }
 
@@ -191,7 +193,7 @@ export class RecordController implements IRecordController {
       return res.status(200).json(record)
     } catch (error) {
       // TODO: move this to a middleware
-      return res.status(400).json({ message: 'edit exercise record error' })
+      return res.status(400).json({ message: (error as Error).message })
     }
   }
 
@@ -263,9 +265,7 @@ export class RecordController implements IRecordController {
       return res.status(200).json(record)
     } catch (error) {
       // TODO: move this to a middleware
-      return res
-        .status(400)
-        .json({ message: 'edit glycated hemoglobin record error' })
+      return res.status(400).json({ message: (error as Error).message })
     }
   }
 
@@ -299,7 +299,25 @@ export class RecordController implements IRecordController {
       return res.status(200).json(record)
     } catch (error) {
       // TODO: move this to a middleware
-      return res.status(400).json({ message: 'edit sleep record error' })
+      return res.status(400).json({ message: (error as Error).message })
+    }
+  }
+
+  public getSingleExerciseRecord = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    try {
+      const request = {
+        user: req.user as User,
+        exerciseRecordId: req.params.id,
+      }
+      const record = await this.getSingleExerciseRecordUseCase.execute(request)
+      console.log(record)
+      return res.status(200).json(record)
+    } catch (error) {
+      // TODO: move this to a middleware
+      return res.status(400).json({ message: (error as Error).message })
     }
   }
 }

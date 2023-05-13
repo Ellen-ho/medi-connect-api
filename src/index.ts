@@ -74,6 +74,7 @@ import { CancelConsultAppointmentUseCase } from './application/consultation/Canc
 import { ConsultationRoutes } from './infrastructure/http/routes/ConsultationRoutes'
 import { GetSingleQuestionUseCase } from './application/question/GetSingleQuestionUseCase'
 import { GetQuestionsUseCase } from './application/question/GetQuestionsUsecase'
+import { GetSingleExerciseRecordUseCase } from './application/record/GetSingleExerciseRecordUseCase'
 // import { RawQueryRepository } from './infrastructure/database/RawRepository'
 
 void main()
@@ -211,6 +212,10 @@ async function main(): Promise<void> {
       glycatedHemoglobinRepository,
       patientRepository
     )
+  const getSingleExerciseRecordUseCase = new GetSingleExerciseRecordUseCase(
+    exerciseRecordRepository,
+    patientRepository
+  )
 
   /**
    * Question Domain
@@ -355,7 +360,8 @@ async function main(): Promise<void> {
     createGlycatedHemoglobinRecordUseCase,
     editGlycatedHemoglobinRecordUseCase,
     createSleepRecordUseCase,
-    editSleepRecordUseCase
+    editSleepRecordUseCase,
+    getSingleExerciseRecordUseCase
   )
   const questionController = new QuestionController(
     createAnswerAgreementUseCase,

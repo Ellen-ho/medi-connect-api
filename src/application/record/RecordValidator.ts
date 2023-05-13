@@ -31,7 +31,8 @@ export const editBloodSugarRecordSchema = {
 
 export const creatExerciseRecordSchema = {
   body: Joi.object({
-    exerciseDate: Joi.date().timestamp('unix').required(),
+    exerciseDate: Joi.date().required(),
+    // exerciseDate: Joi.date().timestamp('unix').required(),
     exerciseType: Joi.string()
       .valid(...Object.values(ExerciseType))
       .required(),
@@ -100,4 +101,10 @@ export const creatWeightRecordSchema = {
 
 export const editWeightRecordSchema = {
   ...creatWeightRecordSchema,
+}
+
+export const getSingleExerciseRecordSchema = {
+  params: Joi.object({
+    id: Joi.string().uuid().required(),
+  }),
 }

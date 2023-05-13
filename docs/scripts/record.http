@@ -1,4 +1,4 @@
-@hostname = http://localhost:8080
+@hostname = http://localhost:7000
 
 @usersPath = {{hostname}}/api/users
 
@@ -8,8 +8,8 @@ POST {{usersPath}}/login
 Content-Type: application/json
 
 {
-  "email": "user1@mail.com",
-  "password": "user1"
+  "email": "tim@gmail.com",
+  "password": "tim"
 }
 ###
 @accessToken = Bearer {{login.response.body.token}}
@@ -23,7 +23,7 @@ Content-Type: application/json
 
 {
   "foodImage": "https://example.com/food-image.jpg",
-  "foodTime": "2023-04-25T10:00:00.000Z",
+  "foodTime": "1686393000",
   "foodItem": "Apple",
   "foodCategory": "FRUIT",
   "foodAmount": 150,
@@ -39,7 +39,7 @@ Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "foodTime":"2023-04-25T10:00:00.000Z",
+  "foodTime":"1686393000",
   "foodCategory": "FRUIT",
   "foodAmount": 110,
   "foodNote": "A delicious red apple"
@@ -52,7 +52,7 @@ Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "bloodPressureDate": "2023-04-25T10:00:00.000Z",
+  "bloodPressureDate": "1686393000",
   "systolicBloodPressure": 150,
   "diastolicBloodPressure": 80,
   "heartBeat": 70,
@@ -67,10 +67,31 @@ Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "bloodPressureDate": "2023-04-25T10:00:00.000Z",
+  "bloodPressureDate": "1686393000",
   "systolicBloodPressure": 100,
   "diastolicBloodPressure": 80,
   "heartBeat": 70,
   "bloodPressureNote": 150
 }
+###
+
+### create exercise record
+POST {{recordPath}}/exercise
+Authorization: {{accessToken}}
+Content-Type: application/json
+
+{
+  "exerciseDate": "2023-05-09 00:34:38.091",
+  "exerciseType": "WALKING",
+  "exerciseDurationMinute": 30,
+  "exerciseIntensity": "LOW",
+  "exerciseNote": "tired"  
+}
+###
+
+### get a single exercise record
+@exerciseRecordId = 64b7896a-fe64-4b52-a84c-ddff1d44fb9b
+GET {{recordPath}}/exercise/{{exerciseRecordId}}
+Authorization: {{accessToken}}
+Content-Type: application/json
 ###
