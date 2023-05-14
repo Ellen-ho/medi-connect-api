@@ -34,6 +34,25 @@ export enum FoodCategoryType {
   SNACK = 'SNACK',
 }
 
+enum FoodUnitType {
+  EXAMPLE = 'EXAMPLE',
+}
+
+interface IFoodkcaloriesPerUnitItem {
+  unit: FoodUnitType
+  kcaloriesPerUnit: number
+}
+
+export const foodKcaloriesPerUnitList: Record<
+  FoodCategoryType,
+  IFoodkcaloriesPerUnitItem
+> = {
+  [FoodCategoryType.FRUIT]: {
+    unit: FoodUnitType.EXAMPLE,
+    kcaloriesPerUnit: 100,
+  },
+}
+
 interface IFoodRecordUpdateData {
   [key: string]: any
   foodTime: Date
@@ -42,6 +61,7 @@ interface IFoodRecordUpdateData {
   kcalories: number
   foodNote: string | null
 }
+
 export class FoodRecord {
   constructor(private readonly props: IFoodRecordProps) {}
 
@@ -95,5 +115,15 @@ export class FoodRecord {
     this.props.foodAmount = data.foodAmount
     this.props.kcalories = data.kcalories
     this.props.foodNote = data.foodNote
+  }
+
+  public calculateTotalKcalories(
+    foodCategory: FoodCategoryType,
+    foodAmount: number
+  ): number {
+    const targetFoodKcaloriesPerUnit =
+      foodKcaloriesPerUnitList[foodCategory].kcaloriesPerUnit
+
+    return targetFoodKcaloriesPerUnit * foodAmount
   }
 }
