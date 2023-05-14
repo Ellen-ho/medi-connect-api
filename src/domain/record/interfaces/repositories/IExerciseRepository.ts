@@ -1,6 +1,6 @@
 import { IExerciseRecordWithOwner } from '../../../../application/record/GetSingleExerciseRecordUseCase'
 import { IBaseRepository } from '../../../shared/IBaseRepository'
-import { ExerciseRecord } from '../../ExerciseRecord'
+import { ExerciseRecord, ExerciseType } from '../../ExerciseRecord'
 
 export interface IExerciseRecordRepository
   extends IBaseRepository<ExerciseRecord> {
@@ -13,4 +13,14 @@ export interface IExerciseRecordRepository
     recordId: string,
     patientId: string
   ) => Promise<IExerciseRecordWithOwner | null>
+  findAndCountAll: (
+    limit: number,
+    offset: number
+  ) => Promise<{
+    total_counts: number
+    records: Array<{
+      exerciseDate: Date
+      exerciseType: ExerciseType
+    }>
+  }>
 }
