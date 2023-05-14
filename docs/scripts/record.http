@@ -95,3 +95,45 @@ GET {{recordPath}}/exercise/{{exerciseRecordId}}
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###
+
+### get a single glycated hemoglobin record
+@glycatedHemoglobinRecordId = uuid
+GET {{recordPath}}/glycatedHemoglobin/{{glycatedHemoglobinRecordId}}
+Authorization: {{accessToken}}
+Content-Type: application/json
+###
+
+### get a single blood pressure record
+@bloodPressureRecordId = uuid
+GET {{recordPath}}/bloodPressure/{{bloodPressureRecordId}}
+Authorization: {{accessToken}}
+Content-Type: application/json
+###
+
+### get a single blood sugar record
+@bloodSugarRecordId = uuid
+GET {{recordPath}}/bloodSugar/{{bloodSugarRecordId}}
+Authorization: {{accessToken}}
+Content-Type: application/json
+###
+
+### get a single food record
+@foodRecordId = uuid
+GET {{recordPath}}/food/{{foodRecordId}}
+Authorization: {{accessToken}}
+Content-Type: application/json
+###
+
+### get a single sleep record
+@sleepRecordId = uuid
+GET {{recordPath}}/sleep/{{sleepRecordId}}
+Authorization: {{accessToken}}
+Content-Type: application/json
+###
+
+### get a single weight record
+@weightRecordId = uuid
+GET {{recordPath}}/weight/{{weightRecordId}}
+Authorization: {{accessToken}}
+Content-Type: application/json
+###
