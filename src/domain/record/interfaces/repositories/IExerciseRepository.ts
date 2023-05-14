@@ -1,4 +1,4 @@
-import { IRecordWithOwner } from '../../../../application/record/GetSingleExerciseRecordUseCase'
+import { IExerciseRecordWithOwner } from '../../../../application/record/GetSingleExerciseRecordUseCase'
 import { IBaseRepository } from '../../../shared/IBaseRepository'
 import { ExerciseRecord } from '../../ExerciseRecord'
 
@@ -12,5 +12,5 @@ export interface IExerciseRecordRepository
   findRecordWithOwnerByRecordIdAndPatientId: (
     recordId: string,
     patientId: string
-  ) => Promise<IRecordWithOwner | null>
+  ) => Promise<IExerciseRecordWithOwner | null>
 }

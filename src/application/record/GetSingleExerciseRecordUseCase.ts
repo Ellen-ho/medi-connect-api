@@ -30,7 +30,7 @@ export interface IRecordOwner {
   gender: GenderType
 }
 
-export interface IRecordWithOwner {
+export interface IExerciseRecordWithOwner {
   id: string
   exerciseDate: Date
   exerciseType: ExerciseType

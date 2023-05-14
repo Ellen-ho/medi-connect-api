@@ -11,7 +11,7 @@ import { ExerciseRecordEntity } from './ExerciseRecordEntity'
 import { ExerciseRecordMapper } from './ExerciseRecordMapper'
 import { RepositoryError } from '../../error/RepositoryError'
 import { GenderType } from '../../../domain/patient/Patient'
-import { IRecordWithOwner } from '../../../application/record/GetSingleExerciseRecordUseCase'
+import { IExerciseRecordWithOwner } from '../../../application/record/GetSingleExerciseRecordUseCase'
 
 export class ExerciseRecordRepository
   extends BaseRepository<ExerciseRecordEntity, ExerciseRecord>
@@ -58,7 +58,7 @@ export class ExerciseRecordRepository
   public async findRecordWithOwnerByRecordIdAndPatientId(
     recordId: string,
     patientId: string
-  ): Promise<IRecordWithOwner | null> {
+  ): Promise<IExerciseRecordWithOwner | null> {
     try {
       const rawRecordsWithOwner = await this.getQuery<
         Array<{
