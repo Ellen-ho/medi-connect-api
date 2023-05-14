@@ -12,4 +12,14 @@ export interface IBloodSugarRecordRepository
     recordId: string,
     patientId: string
   ) => Promise<IBloodSugarRecordWithOwner | null>
+  findAndCountAll: (
+    limit: number,
+    offset: number
+  ) => Promise<{
+    total_counts: number
+    records: Array<{
+      bloodSugarDate: Date
+      bloodSugarValueMmo: number
+    }>
+  }>
 }
