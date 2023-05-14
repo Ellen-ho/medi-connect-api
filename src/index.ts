@@ -80,6 +80,7 @@ import { GetSingleBloodSugarRecordUseCase } from './application/record/GetSingle
 import { GetSingleFoodRecordUseCase } from './application/record/GetSingleFoodRecordUseCase'
 import { GetSingleGlycatedHemoglobinRecordUseCase } from './application/record/GetGlycatedHemoglobinRecordUseCase'
 import { GetSingleSleepRecordUseCase } from './application/record/GetSingleSleepRecordUseCase'
+import { GetSingleWeightRecordUseCase } from './application/record/GetSingleWeightRecordUseCase'
 // import { RawQueryRepository } from './infrastructure/database/RawRepository'
 
 void main()
@@ -193,14 +194,14 @@ async function main(): Promise<void> {
     sleepRecordRepository,
     patientRepository
   )
-  const weightRepository = new WeightRecordRepository(dataSource)
+  const weightRecordRepository = new WeightRecordRepository(dataSource)
   const createWeightRecordUseCase = new CreateWeightRecordUseCase(
-    weightRepository,
+    weightRecordRepository,
     patientRepository,
     uuidService
   )
   const editWeightRecordUseCase = new EditWeightRecordUseCase(
-    weightRepository,
+    weightRecordRepository,
     patientRepository
   )
   const glycatedHemoglobinRepository = new GlycatedHemoglobinRecordRepository(
@@ -241,6 +242,10 @@ async function main(): Promise<void> {
     )
   const getSingleSleepRecordUseCase = new GetSingleSleepRecordUseCase(
     sleepRecordRepository,
+    patientRepository
+  )
+  const getSingleWeightRecordUseCase = new GetSingleWeightRecordUseCase(
+    weightRecordRepository,
     patientRepository
   )
 
@@ -393,7 +398,8 @@ async function main(): Promise<void> {
     getSingleBloodSugarRecordUseCase,
     getSingleFoodRecordUseCase,
     getSingleGlycatedHemoglobinRecordUseCase,
-    getSingleSleepRecordUseCase
+    getSingleSleepRecordUseCase,
+    getSingleWeightRecordUseCase
   )
   const questionController = new QuestionController(
     createAnswerAgreementUseCase,

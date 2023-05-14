@@ -138,3 +138,9 @@ export const getSingleSleepRecordSchema = {
     id: Joi.string().uuid().required(),
   }),
 }
+
+export const getSingleWeightRecordSchema = {
+  params: Joi.object({
+    id: Joi.string().uuid().required(),
+  }),
+}
