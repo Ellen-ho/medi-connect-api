@@ -103,4 +103,50 @@ export class SleepRecordRepository
       )
     }
   }
+
+  public async findAndCountAll(
+    limit: number,
+    offset: number
+  ): Promise<{
+    total_counts: number
+    records: Array<{
+      sleepDate: Date
+      sleepQuality: SleepQualityType
+    }>
+  }> {
+    try {
+      const rawRecords = await this.getQuery<
+        Array<{
+          total_counts: number
+          sleep_date: Date
+          sleep_quality: SleepQualityType
+        }>
+      >(
+        `
+          SELECT
+            (SELECT COUNT(*) FROM sleep_records) as total_counts,
+            sleep_date,
+            sleep_quality
+          FROM
+            sleep_records
+          LIMIT $1
+          OFFSET $2
+        `,
+        [limit, offset]
+      )
+
+      return {
+        total_counts: rawRecords[0].total_counts,
+        records: rawRecords.map((record) => ({
+          sleepDate: record.sleep_date,
+          sleepQuality: record.sleep_quality,
+        })),
+      }
+    } catch (e) {
+      throw new RepositoryError(
+        'SleepRecordRepository findAndCountAll error',
+        e as Error
+      )
+    }
+  }
 }
