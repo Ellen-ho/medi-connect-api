@@ -12,4 +12,15 @@ export interface IBloodPressureRecordRepository
     recordId: string,
     patientId: string
   ) => Promise<IBloodPressureRecordWithOwner | null>
+  findAndCountAll: (
+    limit: number,
+    offset: number
+  ) => Promise<{
+    total_counts: number
+    records: Array<{
+      bloodPressureDate: Date
+      systolicBloodPressure: number
+      diastolicBloodPressure: number
+    }>
+  }>
 }

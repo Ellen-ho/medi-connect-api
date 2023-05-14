@@ -161,6 +161,41 @@ export class RecordRoutes {
         validator(getSingleWeightRecordSchema),
         asyncHandler(this.recordController.getSingleWeightRecord)
       )
+      .get(
+        '/exercise-records',
+        authenticated,
+        asyncHandler(this.recordController.getExerciseRecords)
+      )
+      .get(
+        '/blood-pressure-records',
+        authenticated,
+        asyncHandler(this.recordController.getBloodPressureRecords)
+      )
+      .get(
+        '/blood-sugar-records',
+        authenticated,
+        asyncHandler(this.recordController.getBloodSugarRecords)
+      )
+      .get(
+        '/food-records',
+        authenticated,
+        asyncHandler(this.recordController.getFoodRecords)
+      )
+      .get(
+        '/glycated-hemoglobin-records',
+        authenticated,
+        asyncHandler(this.recordController.getGlycatedHemoglobinRecords)
+      )
+      .get(
+        '/sleep-records',
+        authenticated,
+        asyncHandler(this.recordController.getSleepRecords)
+      )
+      .get(
+        '/weight-records',
+        authenticated,
+        asyncHandler(this.recordController.getWeightRecords)
+      )
   }
 
   public createRouter(): Router {

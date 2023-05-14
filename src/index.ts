@@ -81,6 +81,13 @@ import { GetSingleFoodRecordUseCase } from './application/record/GetSingleFoodRe
 import { GetSingleGlycatedHemoglobinRecordUseCase } from './application/record/GetSingleGlycatedHemoglobinRecordUseCase'
 import { GetSingleSleepRecordUseCase } from './application/record/GetSingleSleepRecordUseCase'
 import { GetSingleWeightRecordUseCase } from './application/record/GetSingleWeightRecordUseCase'
+import { GetExerciseRecordsUseCase } from './application/record/GetExerciseRecordsUseCase'
+import { GetBloodPressureRecordsUseCase } from './application/record/GetBloodPressureRecordsUseCase'
+import { GetBloodSugarRecordsUseCase } from './application/record/GetBloodSugarRecords'
+import { GetFoodRecordsUseCase } from './application/record/GetFoodRecordsUseCase'
+import { GetGlycatedHemoglobinRecordsUseCase } from './application/record/GetGlycatedHemoglobinRecordsUseCase'
+import { GetSleepRecordsUseCase } from './application/record/GetSleepRecordsUseCase'
+import { GetWeightRecordsUseCase } from './application/record/GetWeightRecordsUseCase'
 // import { RawQueryRepository } from './infrastructure/database/RawRepository'
 
 void main()
@@ -248,6 +255,24 @@ async function main(): Promise<void> {
     weightRecordRepository,
     patientRepository
   )
+  const getExerciseRecordsUseCase = new GetExerciseRecordsUseCase(
+    exerciseRecordRepository
+  )
+  const getBloodPressureRecordsUseCase = new GetBloodPressureRecordsUseCase(
+    bloodPressureRecordRepository
+  )
+  const getBloodSugarRecordsUseCase = new GetBloodSugarRecordsUseCase(
+    bloodSugarRecordRepository
+  )
+  const getFoodRecordsUseCase = new GetFoodRecordsUseCase(foodRecordRepository)
+  const getGlycatedHemoglobinRecordsUseCase =
+    new GetGlycatedHemoglobinRecordsUseCase(glycatedHemoglobinRepository)
+  const getSleepRecordsUseCase = new GetSleepRecordsUseCase(
+    sleepRecordRepository
+  )
+  const getWeightRecordsUseCase = new GetWeightRecordsUseCase(
+    weightRecordRepository
+  )
 
   /**
    * Question Domain
@@ -399,7 +424,14 @@ async function main(): Promise<void> {
     getSingleFoodRecordUseCase,
     getSingleGlycatedHemoglobinRecordUseCase,
     getSingleSleepRecordUseCase,
-    getSingleWeightRecordUseCase
+    getSingleWeightRecordUseCase,
+    getExerciseRecordsUseCase,
+    getBloodPressureRecordsUseCase,
+    getBloodSugarRecordsUseCase,
+    getFoodRecordsUseCase,
+    getGlycatedHemoglobinRecordsUseCase,
+    getSleepRecordsUseCase,
+    getWeightRecordsUseCase
   )
   const questionController = new QuestionController(
     createAnswerAgreementUseCase,

@@ -120,4 +120,50 @@ export class ExerciseRecordRepository
       )
     }
   }
+
+  public async findAndCountAll(
+    limit: number,
+    offset: number
+  ): Promise<{
+    total_counts: number
+    records: Array<{
+      exerciseDate: Date
+      exerciseType: ExerciseType
+    }>
+  }> {
+    try {
+      const rawRecords = await this.getQuery<
+        Array<{
+          total_counts: number
+          exercise_date: Date
+          exercise_type: ExerciseType
+        }>
+      >(
+        `
+          SELECT
+            (SELECT COUNT(*) FROM exercise_records) as total_counts,
+            exercise_date,
+            exercise_type
+          FROM
+            exercise_records
+          LIMIT $1
+          OFFSET $2
+        `,
+        [limit, offset]
+      )
+
+      return {
+        total_counts: rawRecords[0].total_counts,
+        records: rawRecords.map((record) => ({
+          exerciseDate: record.exercise_date,
+          exerciseType: record.exercise_type,
+        })),
+      }
+    } catch (e) {
+      throw new RepositoryError(
+        'ExerciseRecordRepository findAndCountAll error',
+        e as Error
+      )
+    }
+  }
 }

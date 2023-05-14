@@ -1,6 +1,6 @@
 import { IFoodRecordWithOwner } from '../../../../application/record/GetSingleFoodRecordUseCase'
 import { IBaseRepository } from '../../../shared/IBaseRepository'
-import { FoodRecord } from '../../FoodRecord'
+import { FoodCategoryType, FoodRecord } from '../../FoodRecord'
 
 export interface IFoodRecordRepository extends IBaseRepository<FoodRecord> {
   findByIdAndPatientId: (
@@ -11,4 +11,14 @@ export interface IFoodRecordRepository extends IBaseRepository<FoodRecord> {
     recordId: string,
     patientId: string
   ) => Promise<IFoodRecordWithOwner | null>
+  findAndCountAll: (
+    limit: number,
+    offset: number
+  ) => Promise<{
+    total_counts: number
+    records: Array<{
+      foodTime: Date
+      foodCategory: FoodCategoryType
+    }>
+  }>
 }

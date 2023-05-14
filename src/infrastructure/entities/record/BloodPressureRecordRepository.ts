@@ -105,4 +105,54 @@ export class BloodPressureRecordRepository
       )
     }
   }
+
+  public async findAndCountAll(
+    limit: number,
+    offset: number
+  ): Promise<{
+    total_counts: number
+    records: Array<{
+      bloodPressureDate: Date
+      systolicBloodPressure: number
+      diastolicBloodPressure: number
+    }>
+  }> {
+    try {
+      const rawRecords = await this.getQuery<
+        Array<{
+          total_counts: number
+          blood_pressure_date: Date
+          systolic_blood_pressure: number
+          diastolic_blood_pressure: number
+        }>
+      >(
+        `
+          SELECT
+            (SELECT COUNT(*) FROM blood_pressure_records) as total_counts,
+            blood_pressure_date,
+            systolic_blood_pressure,
+            diastolic_blood_pressure
+          FROM
+            blood_pressure_records
+          LIMIT $1
+          OFFSET $2
+        `,
+        [limit, offset]
+      )
+
+      return {
+        total_counts: rawRecords[0].total_counts,
+        records: rawRecords.map((record) => ({
+          bloodPressureDate: record.blood_pressure_date,
+          systolicBloodPressure: record.systolic_blood_pressure,
+          diastolicBloodPressure: record.diastolic_blood_pressure,
+        })),
+      }
+    } catch (e) {
+      throw new RepositoryError(
+        'BloodPressureRecordRepository findAndCountAll error',
+        e as Error
+      )
+    }
+  }
 }

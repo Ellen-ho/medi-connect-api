@@ -94,4 +94,50 @@ export class BloodSugarRecordRepository
       )
     }
   }
+
+  public async findAndCountAll(
+    limit: number,
+    offset: number
+  ): Promise<{
+    total_counts: number
+    records: Array<{
+      bloodSugarDate: Date
+      bloodSugarValueMmo: number
+    }>
+  }> {
+    try {
+      const rawRecords = await this.getQuery<
+        Array<{
+          total_counts: number
+          blood_sugar_date: Date
+          blood_sugar_value_mmo: number
+        }>
+      >(
+        `
+          SELECT
+            (SELECT COUNT(*) FROM blood_sugar_records) as total_counts,
+            blood_sugar_date,
+            blood_sugar_value_mmo
+          FROM
+            blood_sugar_records
+          LIMIT $1
+          OFFSET $2
+        `,
+        [limit, offset]
+      )
+
+      return {
+        total_counts: rawRecords[0].total_counts,
+        records: rawRecords.map((record) => ({
+          bloodSugarDate: record.blood_sugar_date,
+          bloodSugarValueMmo: record.blood_sugar_value_mmo,
+        })),
+      }
+    } catch (e) {
+      throw new RepositoryError(
+        'BloodSugarRecordRepository findAndCountAll error',
+        e as Error
+      )
+    }
+  }
 }
