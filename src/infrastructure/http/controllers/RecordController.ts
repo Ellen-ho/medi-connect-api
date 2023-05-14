@@ -19,7 +19,7 @@ import { GetSingleExerciseRecordUseCase } from '../../../application/record/GetS
 import { GetSingleBloodPressureRecordUseCase } from '../../../application/record/GetSingleBloodPressureRecordUsecase'
 import { GetSingleBloodSugarRecordUseCase } from '../../../application/record/GetSingleBloodSugarRecordUseCase'
 import { GetSingleFoodRecordUseCase } from '../../../application/record/GetSingleFoodRecordUseCase'
-import { GetSingleGlycatedHemoglobinRecordUseCase } from '../../../application/record/GetGlycatedHemoglobinRecordUseCase'
+import { GetSingleGlycatedHemoglobinRecordUseCase } from '../../../application/record/GetSingleGlycatedHemoglobinRecordUseCase'
 import { GetSingleSleepRecordUseCase } from '../../../application/record/GetSingleSleepRecordUseCase'
 import { GetSingleWeightRecordUseCase } from '../../../application/record/GetSingleWeightRecordUseCase'
 export interface IRecordController {

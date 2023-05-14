@@ -1,4 +1,4 @@
-import { IGlycatedHemoglobinRecordWithOwner } from '../../../../application/record/GetGlycatedHemoglobinRecordUseCase'
+import { IGlycatedHemoglobinRecordWithOwner } from '../../../../application/record/GetSingleGlycatedHemoglobinRecordUseCase'
 import { IBaseRepository } from '../../../shared/IBaseRepository'
 import { GlycatedHemoglobinRecord } from '../../GlycatedHemoglobinRecord'
 

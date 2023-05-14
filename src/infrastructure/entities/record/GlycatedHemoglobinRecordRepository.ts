@@ -6,7 +6,7 @@ import { GlycatedHemoglobinRecord } from '../../../domain/record/GlycatedHemoglo
 import { GlycatedHemoglobinRecordMapper } from './GlycatedHemoglobinRecordMapper'
 import { IGlycatedHemoglobinRecordRepository } from '../../../domain/record/interfaces/repositories/IGlycatedHemoglobinRecordRepository'
 import { RepositoryError } from '../../error/RepositoryError'
-import { IGlycatedHemoglobinRecordWithOwner } from '../../../application/record/GetGlycatedHemoglobinRecordUseCase'
+import { IGlycatedHemoglobinRecordWithOwner } from '../../../application/record/GetSingleGlycatedHemoglobinRecordUseCase'
 import { GenderType } from '../../../domain/patient/Patient'
 
 export class GlycatedHemoglobinRecordRepository
