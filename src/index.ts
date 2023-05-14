@@ -75,6 +75,10 @@ import { ConsultationRoutes } from './infrastructure/http/routes/ConsultationRou
 import { GetSingleQuestionUseCase } from './application/question/GetSingleQuestionUseCase'
 import { GetQuestionsUseCase } from './application/question/GetQuestionsUsecase'
 import { GetSingleExerciseRecordUseCase } from './application/record/GetSingleExerciseRecordUseCase'
+import { GetSingleBloodPressureRecordUseCase } from './application/record/GetSingleBloodPressureRecordUsecase'
+import { GetSingleBloodSugarRecordUseCase } from './application/record/GetSingleBloodSugarRecordUseCase'
+import { GetSingleFoodRecordUseCase } from './application/record/GetSingleFoodRecordUseCase'
+import { GetSingleGlycatedHemoglobinRecordUseCase } from './application/record/GetGlycatedHemoglobinRecordUseCase'
 // import { RawQueryRepository } from './infrastructure/database/RawRepository'
 
 void main()
@@ -216,6 +220,24 @@ async function main(): Promise<void> {
     exerciseRecordRepository,
     patientRepository
   )
+  const getSingleBloodPressureRecordUseCase =
+    new GetSingleBloodPressureRecordUseCase(
+      bloodPressureRecordRepository,
+      patientRepository
+    )
+  const getSingleBloodSugarRecordUseCase = new GetSingleBloodSugarRecordUseCase(
+    bloodSugarRecordRepository,
+    patientRepository
+  )
+  const getSingleFoodRecordUseCase = new GetSingleFoodRecordUseCase(
+    foodRecordRepository,
+    patientRepository
+  )
+  const getSingleGlycatedHemoglobinRecordUseCase =
+    new GetSingleGlycatedHemoglobinRecordUseCase(
+      glycatedHemoglobinRepository,
+      patientRepository
+    )
 
   /**
    * Question Domain
@@ -361,7 +383,11 @@ async function main(): Promise<void> {
     editGlycatedHemoglobinRecordUseCase,
     createSleepRecordUseCase,
     editSleepRecordUseCase,
-    getSingleExerciseRecordUseCase
+    getSingleExerciseRecordUseCase,
+    getSingleBloodPressureRecordUseCase,
+    getSingleBloodSugarRecordUseCase,
+    getSingleFoodRecordUseCase,
+    getSingleGlycatedHemoglobinRecordUseCase
   )
   const questionController = new QuestionController(
     createAnswerAgreementUseCase,

@@ -19,7 +19,11 @@ import {
   editGlycatedHemoglobinRecordSchema,
   editSleepRecordSchema,
   editWeightRecordSchema,
+  getSingleBloodPressureRecordSchema,
+  getSingleBloodSugarRecordSchema,
   getSingleExerciseRecordSchema,
+  getSingleFoodRecordSchema,
+  getSingleGlycatedHemoglobinRecordSchema,
 } from '../../../application/record/RecordValidator'
 export class RecordRoutes {
   private readonly routes: Router
@@ -118,6 +122,30 @@ export class RecordRoutes {
         authenticated,
         validator(getSingleExerciseRecordSchema),
         asyncHandler(this.recordController.getSingleExerciseRecord)
+      )
+      .get(
+        '/blood_presure/:id',
+        authenticated,
+        validator(getSingleBloodPressureRecordSchema),
+        asyncHandler(this.recordController.getSingleBloodPressureRecord)
+      )
+      .get(
+        '/blood_sugar/:id',
+        authenticated,
+        validator(getSingleBloodSugarRecordSchema),
+        asyncHandler(this.recordController.getSingleBloodSugarRecord)
+      )
+      .get(
+        '/food/:id',
+        authenticated,
+        validator(getSingleFoodRecordSchema),
+        asyncHandler(this.recordController.getSingleFoodRecord)
+      )
+      .get(
+        '/glycatedHemoglobin/:id',
+        authenticated,
+        validator(getSingleGlycatedHemoglobinRecordSchema),
+        asyncHandler(this.recordController.getSingleGlycatedHemoglobinRecord)
       )
   }
 

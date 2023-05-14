@@ -16,6 +16,10 @@ import { CreateSleepRecordUseCase } from '../../../application/record/CreateSlee
 import { EditSleepRecordUseCase } from '../../../application/record/EditSleepRecordUseCase'
 import { User } from '../../../domain/user/User'
 import { GetSingleExerciseRecordUseCase } from '../../../application/record/GetSingleExerciseRecordUseCase'
+import { GetSingleBloodPressureRecordUseCase } from '../../../application/record/GetSingleBloodPressureRecordUsecase'
+import { GetSingleBloodSugarRecordUseCase } from '../../../application/record/GetSingleBloodSugarRecordUseCase'
+import { GetSingleFoodRecordUseCase } from '../../../application/record/GetSingleFoodRecordUseCase'
+import { GetSingleGlycatedHemoglobinRecordUseCase } from '../../../application/record/GetGlycatedHemoglobinRecordUseCase'
 export interface IRecordController {
   createWeightRecord: (req: Request, res: Response) => Promise<Response>
   editWeightRecord: (req: Request, res: Response) => Promise<Response>
@@ -38,6 +42,16 @@ export interface IRecordController {
   createSleepRecord: (req: Request, res: Response) => Promise<Response>
   editSleepRecord: (req: Request, res: Response) => Promise<Response>
   getSingleExerciseRecord: (req: Request, res: Response) => Promise<Response>
+  getSingleBloodPressureRecord: (
+    req: Request,
+    res: Response
+  ) => Promise<Response>
+  getSingleBloodSugarRecord: (req: Request, res: Response) => Promise<Response>
+  getSingleFoodRecord: (req: Request, res: Response) => Promise<Response>
+  getSingleGlycatedHemoglobinRecord: (
+    req: Request,
+    res: Response
+  ) => Promise<Response>
 }
 
 export class RecordController implements IRecordController {
@@ -56,7 +70,11 @@ export class RecordController implements IRecordController {
     private readonly editGlycatedHemoglobinRecordUseCase: EditGlycatedHemoglobinRecordUseCase,
     private readonly createSleepRecordUseCase: CreateSleepRecordUseCase,
     private readonly editSleepRecordUseCase: EditSleepRecordUseCase,
-    private readonly getSingleExerciseRecordUseCase: GetSingleExerciseRecordUseCase
+    private readonly getSingleExerciseRecordUseCase: GetSingleExerciseRecordUseCase,
+    private readonly getSingleBloodPressureRecordUseCase: GetSingleBloodPressureRecordUseCase,
+    private readonly getSingleBloodSugarRecordUseCase: GetSingleBloodSugarRecordUseCase,
+    private readonly getSingleFoodRecordUseCase: GetSingleFoodRecordUseCase,
+    private readonly getSingleGlycatedHemoglobinRecordUseCase: GetSingleGlycatedHemoglobinRecordUseCase
   ) {}
 
   public createWeightRecord = async (
@@ -313,7 +331,79 @@ export class RecordController implements IRecordController {
         exerciseRecordId: req.params.id,
       }
       const record = await this.getSingleExerciseRecordUseCase.execute(request)
-      console.log(record)
+      return res.status(200).json(record)
+    } catch (error) {
+      // TODO: move this to a middleware
+      return res.status(400).json({ message: (error as Error).message })
+    }
+  }
+
+  public getSingleBloodPressureRecord = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    try {
+      const request = {
+        user: req.user as User,
+        bloodPressureRecordId: req.params.id,
+      }
+      const record = await this.getSingleBloodPressureRecordUseCase.execute(
+        request
+      )
+      return res.status(200).json(record)
+    } catch (error) {
+      // TODO: move this to a middleware
+      return res.status(400).json({ message: (error as Error).message })
+    }
+  }
+
+  public getSingleBloodSugarRecord = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    try {
+      const request = {
+        user: req.user as User,
+        bloodSugarRecordId: req.params.id,
+      }
+      const record = await this.getSingleBloodSugarRecordUseCase.execute(
+        request
+      )
+      return res.status(200).json(record)
+    } catch (error) {
+      // TODO: move this to a middleware
+      return res.status(400).json({ message: (error as Error).message })
+    }
+  }
+
+  public getSingleFoodRecord = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    try {
+      const request = {
+        user: req.user as User,
+        foodRecordId: req.params.id,
+      }
+      const record = await this.getSingleFoodRecordUseCase.execute(request)
+      return res.status(200).json(record)
+    } catch (error) {
+      // TODO: move this to a middleware
+      return res.status(400).json({ message: (error as Error).message })
+    }
+  }
+
+  public getSingleGlycatedHemoglobinRecord = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    try {
+      const request = {
+        user: req.user as User,
+        glycatedHemoglobinRecordId: req.params.id,
+      }
+      const record =
+        await this.getSingleGlycatedHemoglobinRecordUseCase.execute(request)
       return res.status(200).json(record)
     } catch (error) {
       // TODO: move this to a middleware
