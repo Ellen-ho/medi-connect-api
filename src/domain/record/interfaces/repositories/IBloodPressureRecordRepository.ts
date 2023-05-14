@@ -1,3 +1,4 @@
+import { IBloodPressureRecordWithOwner } from '../../../../application/record/GetSingleBloodPressureRecordUsecase'
 import { IBaseRepository } from '../../../shared/IBaseRepository'
 import { BloodPressureRecord } from '../../BloodPressureRecord'
 
@@ -7,4 +8,8 @@ export interface IBloodPressureRecordRepository
     recordId: string,
     patientId: string
   ) => Promise<BloodPressureRecord | null>
+  findRecordWithOwnerByRecordIdAndPatientId: (
+    recordId: string,
+    patientId: string
+  ) => Promise<IBloodPressureRecordWithOwner | null>
 }

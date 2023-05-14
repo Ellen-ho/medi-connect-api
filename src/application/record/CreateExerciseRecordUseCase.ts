@@ -58,6 +58,7 @@ export class CreateExerciseRecordUseCase {
     const exerciseRecord = new ExerciseRecord({
       id: this.uuidService.generateUuid(),
       exerciseDate,
+      // exerciseDate: new Date(exerciseDate).getTime() / 1000,
       exerciseType,
       exerciseDurationMinute,
       exerciseIntensity,
