@@ -24,6 +24,7 @@ import {
   getSingleExerciseRecordSchema,
   getSingleFoodRecordSchema,
   getSingleGlycatedHemoglobinRecordSchema,
+  getSingleSleepRecordSchema,
 } from '../../../application/record/RecordValidator'
 export class RecordRoutes {
   private readonly routes: Router
@@ -146,6 +147,12 @@ export class RecordRoutes {
         authenticated,
         validator(getSingleGlycatedHemoglobinRecordSchema),
         asyncHandler(this.recordController.getSingleGlycatedHemoglobinRecord)
+      )
+      .get(
+        '/sleep/:id',
+        authenticated,
+        validator(getSingleSleepRecordSchema),
+        asyncHandler(this.recordController.getSingleSleepRecord)
       )
   }
 

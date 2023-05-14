@@ -52,7 +52,7 @@ export class GlycatedHemoglobinRecordRepository
       const rawRecordsWithOwner = await this.getQuery<
         Array<{
           id: string
-          glycated_hemoglobinDate: Date
+          glycated_hemoglobin_date: Date
           glycated_hemoglobin_value_percent: number
           created_at: Date
           updated_at: Date
@@ -85,7 +85,7 @@ export class GlycatedHemoglobinRecordRepository
         : {
             id: rawRecordsWithOwner[0].id,
             glycatedHemoglobinDate:
-              rawRecordsWithOwner[0].glycated_hemoglobinDate,
+              rawRecordsWithOwner[0].glycated_hemoglobin_date,
             glycatedHemoglobinValuePercent:
               rawRecordsWithOwner[0].glycated_hemoglobin_value_percent,
             createdAt: rawRecordsWithOwner[0].created_at,

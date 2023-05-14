@@ -79,6 +79,7 @@ import { GetSingleBloodPressureRecordUseCase } from './application/record/GetSin
 import { GetSingleBloodSugarRecordUseCase } from './application/record/GetSingleBloodSugarRecordUseCase'
 import { GetSingleFoodRecordUseCase } from './application/record/GetSingleFoodRecordUseCase'
 import { GetSingleGlycatedHemoglobinRecordUseCase } from './application/record/GetGlycatedHemoglobinRecordUseCase'
+import { GetSingleSleepRecordUseCase } from './application/record/GetSingleSleepRecordUseCase'
 // import { RawQueryRepository } from './infrastructure/database/RawRepository'
 
 void main()
@@ -238,6 +239,10 @@ async function main(): Promise<void> {
       glycatedHemoglobinRepository,
       patientRepository
     )
+  const getSingleSleepRecordUseCase = new GetSingleSleepRecordUseCase(
+    sleepRecordRepository,
+    patientRepository
+  )
 
   /**
    * Question Domain
@@ -387,7 +392,8 @@ async function main(): Promise<void> {
     getSingleBloodPressureRecordUseCase,
     getSingleBloodSugarRecordUseCase,
     getSingleFoodRecordUseCase,
-    getSingleGlycatedHemoglobinRecordUseCase
+    getSingleGlycatedHemoglobinRecordUseCase,
+    getSingleSleepRecordUseCase
   )
   const questionController = new QuestionController(
     createAnswerAgreementUseCase,

@@ -20,6 +20,7 @@ import { GetSingleBloodPressureRecordUseCase } from '../../../application/record
 import { GetSingleBloodSugarRecordUseCase } from '../../../application/record/GetSingleBloodSugarRecordUseCase'
 import { GetSingleFoodRecordUseCase } from '../../../application/record/GetSingleFoodRecordUseCase'
 import { GetSingleGlycatedHemoglobinRecordUseCase } from '../../../application/record/GetGlycatedHemoglobinRecordUseCase'
+import { GetSingleSleepRecordUseCase } from '../../../application/record/GetSingleSleepRecordUseCase'
 export interface IRecordController {
   createWeightRecord: (req: Request, res: Response) => Promise<Response>
   editWeightRecord: (req: Request, res: Response) => Promise<Response>
@@ -52,6 +53,7 @@ export interface IRecordController {
     req: Request,
     res: Response
   ) => Promise<Response>
+  getSingleSleepRecord: (req: Request, res: Response) => Promise<Response>
 }
 
 export class RecordController implements IRecordController {
@@ -74,7 +76,8 @@ export class RecordController implements IRecordController {
     private readonly getSingleBloodPressureRecordUseCase: GetSingleBloodPressureRecordUseCase,
     private readonly getSingleBloodSugarRecordUseCase: GetSingleBloodSugarRecordUseCase,
     private readonly getSingleFoodRecordUseCase: GetSingleFoodRecordUseCase,
-    private readonly getSingleGlycatedHemoglobinRecordUseCase: GetSingleGlycatedHemoglobinRecordUseCase
+    private readonly getSingleGlycatedHemoglobinRecordUseCase: GetSingleGlycatedHemoglobinRecordUseCase,
+    private readonly getSingleSleepRecordUseCase: GetSingleSleepRecordUseCase
   ) {}
 
   public createWeightRecord = async (
@@ -404,6 +407,23 @@ export class RecordController implements IRecordController {
       }
       const record =
         await this.getSingleGlycatedHemoglobinRecordUseCase.execute(request)
+      return res.status(200).json(record)
+    } catch (error) {
+      // TODO: move this to a middleware
+      return res.status(400).json({ message: (error as Error).message })
+    }
+  }
+
+  public getSingleSleepRecord = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    try {
+      const request = {
+        user: req.user as User,
+        sleepRecordId: req.params.id,
+      }
+      const record = await this.getSingleSleepRecordUseCase.execute(request)
       return res.status(200).json(record)
     } catch (error) {
       // TODO: move this to a middleware

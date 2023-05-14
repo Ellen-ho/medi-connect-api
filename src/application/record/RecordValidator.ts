@@ -132,3 +132,9 @@ export const getSingleGlycatedHemoglobinRecordSchema = {
     id: Joi.string().uuid().required(),
   }),
 }
+
+export const getSingleSleepRecordSchema = {
+  params: Joi.object({
+    id: Joi.string().uuid().required(),
+  }),
+}
