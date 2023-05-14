@@ -144,3 +144,9 @@ export const getSingleWeightRecordSchema = {
     id: Joi.string().uuid().required(),
   }),
 }
+
+export const getExerciseRecordsSchema = {
+  params: Joi.object({
+    id: Joi.string().uuid().required(),
+  }),
+}

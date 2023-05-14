@@ -22,6 +22,13 @@ import { GetSingleFoodRecordUseCase } from '../../../application/record/GetSingl
 import { GetSingleGlycatedHemoglobinRecordUseCase } from '../../../application/record/GetSingleGlycatedHemoglobinRecordUseCase'
 import { GetSingleSleepRecordUseCase } from '../../../application/record/GetSingleSleepRecordUseCase'
 import { GetSingleWeightRecordUseCase } from '../../../application/record/GetSingleWeightRecordUseCase'
+import { GetExerciseRecordsUseCase } from '../../../application/record/GetExerciseRecordsUseCase'
+import { GetBloodPressureRecordsUseCase } from '../../../application/record/GetBloodPressureRecordsUseCase'
+import { GetBloodSugarRecordsUseCase } from '../../../application/record/GetBloodSugarRecords'
+import { GetFoodRecordsUseCase } from '../../../application/record/GetFoodRecordsUseCase'
+import { GetGlycatedHemoglobinRecordsUseCase } from '../../../application/record/GetGlycatedHemoglobinRecordsUseCase'
+import { GetSleepRecordsUseCase } from '../../../application/record/GetSleepRecordsUseCase'
+import { GetWeightRecordsUseCase } from '../../../application/record/GetWeightRecordsUseCase'
 export interface IRecordController {
   createWeightRecord: (req: Request, res: Response) => Promise<Response>
   editWeightRecord: (req: Request, res: Response) => Promise<Response>
@@ -56,6 +63,16 @@ export interface IRecordController {
   ) => Promise<Response>
   getSingleSleepRecord: (req: Request, res: Response) => Promise<Response>
   getSingleWeightRecord: (req: Request, res: Response) => Promise<Response>
+  getExerciseRecords: (req: Request, res: Response) => Promise<Response>
+  getBloodPressureRecords: (req: Request, res: Response) => Promise<Response>
+  getBloodSugarRecords: (req: Request, res: Response) => Promise<Response>
+  getFoodRecords: (req: Request, res: Response) => Promise<Response>
+  getGlycatedHemoglobinRecords: (
+    req: Request,
+    res: Response
+  ) => Promise<Response>
+  getSleepRecords: (req: Request, res: Response) => Promise<Response>
+  getWeightRecords: (req: Request, res: Response) => Promise<Response>
 }
 
 export class RecordController implements IRecordController {
@@ -80,7 +97,14 @@ export class RecordController implements IRecordController {
     private readonly getSingleFoodRecordUseCase: GetSingleFoodRecordUseCase,
     private readonly getSingleGlycatedHemoglobinRecordUseCase: GetSingleGlycatedHemoglobinRecordUseCase,
     private readonly getSingleSleepRecordUseCase: GetSingleSleepRecordUseCase,
-    private readonly getSingleWeightRecordUseCase: GetSingleWeightRecordUseCase
+    private readonly getSingleWeightRecordUseCase: GetSingleWeightRecordUseCase,
+    private readonly getExerciseRecordsUseCase: GetExerciseRecordsUseCase,
+    private readonly getBloodPressureRecordsUseCase: GetBloodPressureRecordsUseCase,
+    private readonly getBloodSugarRecordsUseCase: GetBloodSugarRecordsUseCase,
+    private readonly getFoodRecordsUseCase: GetFoodRecordsUseCase,
+    private readonly getGlycatedHemoglobinRecordsUseCase: GetGlycatedHemoglobinRecordsUseCase,
+    private readonly getSleepRecordsUseCase: GetSleepRecordsUseCase,
+    private readonly getWeightRecordsUseCase: GetWeightRecordsUseCase
   ) {}
 
   public createWeightRecord = async (
@@ -445,6 +469,134 @@ export class RecordController implements IRecordController {
       }
       const record = await this.getSingleWeightRecordUseCase.execute(request)
       return res.status(200).json(record)
+    } catch (error) {
+      // TODO: move this to a middleware
+      return res.status(400).json({ message: (error as Error).message })
+    }
+  }
+
+  public getExerciseRecords = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    try {
+      const request = {
+        limit: Number(req.query.limit),
+        page: Number(req.query.page),
+      }
+      const result = await this.getExerciseRecordsUseCase.execute(request)
+
+      return res.status(200).json(result)
+    } catch (error) {
+      // TODO: move this to a middleware
+      return res.status(400).json({ message: (error as Error).message })
+    }
+  }
+
+  public getBloodPressureRecords = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    try {
+      const request = {
+        limit: Number(req.query.limit),
+        page: Number(req.query.page),
+      }
+      const result = await this.getBloodPressureRecordsUseCase.execute(request)
+
+      return res.status(200).json(result)
+    } catch (error) {
+      // TODO: move this to a middleware
+      return res.status(400).json({ message: (error as Error).message })
+    }
+  }
+
+  public getBloodSugarRecords = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    try {
+      const request = {
+        limit: Number(req.query.limit),
+        page: Number(req.query.page),
+      }
+      const result = await this.getBloodSugarRecordsUseCase.execute(request)
+
+      return res.status(200).json(result)
+    } catch (error) {
+      // TODO: move this to a middleware
+      return res.status(400).json({ message: (error as Error).message })
+    }
+  }
+
+  public getFoodRecords = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    try {
+      const request = {
+        limit: Number(req.query.limit),
+        page: Number(req.query.page),
+      }
+      const result = await this.getFoodRecordsUseCase.execute(request)
+
+      return res.status(200).json(result)
+    } catch (error) {
+      // TODO: move this to a middleware
+      return res.status(400).json({ message: (error as Error).message })
+    }
+  }
+
+  public getGlycatedHemoglobinRecords = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    try {
+      const request = {
+        limit: Number(req.query.limit),
+        page: Number(req.query.page),
+      }
+      const result = await this.getGlycatedHemoglobinRecordsUseCase.execute(
+        request
+      )
+
+      return res.status(200).json(result)
+    } catch (error) {
+      // TODO: move this to a middleware
+      return res.status(400).json({ message: (error as Error).message })
+    }
+  }
+
+  public getSleepRecords = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    try {
+      const request = {
+        limit: Number(req.query.limit),
+        page: Number(req.query.page),
+      }
+      const result = await this.getSleepRecordsUseCase.execute(request)
+
+      return res.status(200).json(result)
+    } catch (error) {
+      // TODO: move this to a middleware
+      return res.status(400).json({ message: (error as Error).message })
+    }
+  }
+
+  public getWeightRecords = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    try {
+      const request = {
+        limit: Number(req.query.limit),
+        page: Number(req.query.page),
+      }
+      const result = await this.getWeightRecordsUseCase.execute(request)
+
+      return res.status(200).json(result)
     } catch (error) {
       // TODO: move this to a middleware
       return res.status(400).json({ message: (error as Error).message })

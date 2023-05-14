@@ -81,10 +81,10 @@ Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "exerciseDate": "2023-05-09 00:34:38.091",
-  "exerciseType": "WALKING",
-  "exerciseDurationMinute": 30,
-  "exerciseIntensity": "LOW",
+  "exerciseDate": "2023-05-11 00:34:38.091",
+  "exerciseType": "AEROBIC_EXERCISE",
+  "exerciseDurationMinute": 130,
+  "exerciseIntensity": "HIGH",
   "exerciseNote": "tired"  
 }
 ###
@@ -134,6 +134,12 @@ Content-Type: application/json
 ### get a single weight record
 @weightRecordId = uuid
 GET {{recordPath}}/weight/{{weightRecordId}}
+Authorization: {{accessToken}}
+Content-Type: application/json
+###
+
+### get all exercise record lists
+GET {{recordPath}}/exercise-records?limit=3&page=1
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###
