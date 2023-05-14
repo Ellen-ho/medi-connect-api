@@ -5,7 +5,7 @@ import { SleepQualityType } from '../../domain/record/SleepRecord'
 
 export const creatBloodPressureRecordSchema = {
   body: Joi.object({
-    bloodPressureDate: Joi.date().timestamp('unix').required(),
+    bloodPressureDate: Joi.date().required(),
     systolicBloodPressure: Joi.number().required(),
     diastolicBloodPressure: Joi.number().required(),
     heartBeat: Joi.number().required(),
@@ -19,7 +19,7 @@ export const editBloodPressureRecordSchema = {
 
 export const creatBloodSugarRecordSchema = {
   body: Joi.object({
-    bloodSugarDate: Joi.date().timestamp('unix').required(),
+    bloodSugarDate: Joi.date().required(),
     bloodSugarValueMmo: Joi.number().required(),
     bloodSugarNote: Joi.string().optional(),
   }),
@@ -50,7 +50,7 @@ export const editExerciseRecordSchema = {
 
 export const creatFoodRecordSchema = {
   body: Joi.object({
-    foodTime: Joi.date().timestamp('unix').required(),
+    foodTime: Joi.date().required(),
     foodCategory: Joi.string()
       .valid(...Object.values(FoodCategoryType))
       .required(),
@@ -65,7 +65,7 @@ export const editFoodRecordSchema = {
 
 export const creatGlycatedHemoglobinRecordSchema = {
   body: Joi.object({
-    glycatedHemoglobinDate: Joi.date().timestamp('unix').required(),
+    glycatedHemoglobinDate: Joi.date().required(),
     glycatedHemoglobinValuePercent: Joi.number().required(),
   }),
 }
@@ -76,9 +76,9 @@ export const editGlycatedHemoglobinRecordSchema = {
 
 export const creatSleepRecordSchema = {
   body: Joi.object({
-    sleepDate: Joi.date().timestamp('unix').required(),
-    sleepTime: Joi.date().timestamp('unix').required(),
-    wakeUpTime: Joi.date().timestamp('unix').required(),
+    sleepDate: Joi.date().required(),
+    sleepTime: Joi.date().required(),
+    wakeUpTime: Joi.date().required(),
     sleepQuality: Joi.string()
       .valid(...Object.values(SleepQualityType))
       .required(),
@@ -93,7 +93,7 @@ export const editSleepRecordSchema = {
 
 export const creatWeightRecordSchema = {
   body: Joi.object({
-    weightDate: Joi.date().timestamp('unix').required(),
+    weightDate: Joi.date().required(),
     weightValueKg: Joi.number().required(),
     weightNote: Joi.string().optional(),
   }),
@@ -104,6 +104,30 @@ export const editWeightRecordSchema = {
 }
 
 export const getSingleExerciseRecordSchema = {
+  params: Joi.object({
+    id: Joi.string().uuid().required(),
+  }),
+}
+
+export const getSingleBloodPressureRecordSchema = {
+  params: Joi.object({
+    id: Joi.string().uuid().required(),
+  }),
+}
+
+export const getSingleBloodSugarRecordSchema = {
+  params: Joi.object({
+    id: Joi.string().uuid().required(),
+  }),
+}
+
+export const getSingleFoodRecordSchema = {
+  params: Joi.object({
+    id: Joi.string().uuid().required(),
+  }),
+}
+
+export const getSingleGlycatedHemoglobinRecordSchema = {
   params: Joi.object({
     id: Joi.string().uuid().required(),
   }),
