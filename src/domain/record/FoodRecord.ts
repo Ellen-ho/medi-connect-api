@@ -34,13 +34,14 @@ export enum FoodCategoryType {
   SNACK = 'SNACK',
 }
 
-enum FoodUnitType {
-  EXAMPLE = 'EXAMPLE',
+enum Language {
+  ZH_TW = 'zh-TW',
+  EN_US = 'en-US',
 }
 
 interface IFoodkcaloriesPerUnitItem {
-  unit: FoodUnitType
   kcaloriesPerUnit: number
+  examples: Record<Language, string>
 }
 
 export const foodKcaloriesPerUnitList: Record<
@@ -48,8 +49,11 @@ export const foodKcaloriesPerUnitList: Record<
   IFoodkcaloriesPerUnitItem
 > = {
   [FoodCategoryType.FRUIT]: {
-    unit: FoodUnitType.EXAMPLE,
     kcaloriesPerUnit: 100,
+    examples: {
+      [Language.ZH_TW]: '1顆蘋果',
+      [Language.EN_US]: 'an apple',
+    },
   },
 }
 
