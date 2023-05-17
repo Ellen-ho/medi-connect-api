@@ -3,6 +3,7 @@ import { WeightRecord } from '../../domain/record/WeightRecord'
 import { IWeightRecordRepository } from '../../domain/record/interfaces/repositories/IWeightRecordRepository'
 import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
+import { calculateBodyMassIndex } from '../../domain/utils/healthFormula'
 
 interface CreateWeightRecordRequest {
   user: User
@@ -40,11 +41,16 @@ export class CreateWeightRecordUseCase {
       throw new Error('Patient does not exist.')
     }
 
+    const bodyMassIndex = calculateBodyMassIndex({
+      weightValueKg,
+      heightValueCm: existingPatient.heightValueCm,
+    })
+
     const weightRecord = new WeightRecord({
       id: this.uuidService.generateUuid(),
       weightDate,
       weightValueKg,
-      bodyMassIndex: 20,
+      bodyMassIndex,
       weightNote,
       createdAt: new Date(),
       updatedAt: new Date(),

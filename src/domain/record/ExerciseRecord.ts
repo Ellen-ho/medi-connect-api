@@ -38,6 +38,70 @@ export enum IntensityType {
   HIGH = 'HIGH',
 }
 
+export interface IExercisekcaloriesPerFiveMin {
+  kcaloriesPerFiveMin: number
+}
+
+export const exerciseKcaloriesPerFiveMinList: Record<
+  ExerciseType,
+  IExercisekcaloriesPerFiveMin
+> = {
+  [ExerciseType.WALKING]: {
+    kcaloriesPerFiveMin: 14,
+  },
+  [ExerciseType.STRETCHING]: {
+    kcaloriesPerFiveMin: 11,
+  },
+  [ExerciseType.YOGA]: {
+    kcaloriesPerFiveMin: 11,
+  },
+  [ExerciseType.SLOW_DANCE]: {
+    kcaloriesPerFiveMin: 14,
+  },
+  [ExerciseType.BICYCLE]: {
+    kcaloriesPerFiveMin: 18,
+  },
+  [ExerciseType.GOLF]: {
+    kcaloriesPerFiveMin: 22,
+  },
+  [ExerciseType.SWIMMING]: {
+    kcaloriesPerFiveMin: 24,
+  },
+  [ExerciseType.PING_PONG]: {
+    kcaloriesPerFiveMin: 18,
+  },
+  [ExerciseType.BASEBALL]: {
+    kcaloriesPerFiveMin: 23,
+  },
+  [ExerciseType.BADMINTON]: {
+    kcaloriesPerFiveMin: 25,
+  },
+  [ExerciseType.FAST_DANCE]: {
+    kcaloriesPerFiveMin: 25,
+  },
+  [ExerciseType.WEIGHT_TRAINING]: {
+    kcaloriesPerFiveMin: 25,
+  },
+  [ExerciseType.RUNNING]: {
+    kcaloriesPerFiveMin: 32,
+  },
+  [ExerciseType.SPINNING_BIKE]: {
+    kcaloriesPerFiveMin: 37,
+  },
+  [ExerciseType.BASKETBALL]: {
+    kcaloriesPerFiveMin: 30,
+  },
+  [ExerciseType.SOCCER]: {
+    kcaloriesPerFiveMin: 32,
+  },
+  [ExerciseType.TENNIS]: {
+    kcaloriesPerFiveMin: 33,
+  },
+  [ExerciseType.AEROBIC_EXERCISE]: {
+    kcaloriesPerFiveMin: 33,
+  },
+}
+
 interface IExerciseRecordUpdateData {
   [key: string]: any
   exerciseDate: Date
@@ -97,5 +161,17 @@ export class ExerciseRecord {
     this.props.exerciseIntensity = data.exerciseIntensity
     this.props.kcaloriesBurned = data.kcaloriesBurned
     this.props.exerciseNote = data.exerciseNote
+  }
+
+  public static calculateTotalKcalories(
+    exerciseType: ExerciseType,
+    exerciseDurationMinute: number
+  ): number {
+    const targetExerciseKcaloriesPerFiveMin =
+      exerciseKcaloriesPerFiveMinList[exerciseType].kcaloriesPerFiveMin
+
+    return Math.round(
+      targetExerciseKcaloriesPerFiveMin * (exerciseDurationMinute / 5)
+    )
   }
 }

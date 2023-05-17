@@ -22,11 +22,9 @@ Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "foodImage": "https://example.com/food-image.jpg",
-  "foodTime": "1686393000",
-  "foodItem": "Apple",
+  "foodTime": "2023-05-11 00:34:38.091",
   "foodCategory": "FRUIT",
-  "foodAmount": 150,
+  "foodAmount": 3,
   "foodNote": "A delicious red apple"
 }
 ###
@@ -83,7 +81,7 @@ Content-Type: application/json
 {
   "exerciseDate": "2023-05-11 00:34:38.091",
   "exerciseType": "AEROBIC_EXERCISE",
-  "exerciseDurationMinute": 130,
+  "exerciseDurationMinute": 50,
   "exerciseIntensity": "HIGH",
   "exerciseNote": "tired"  
 }

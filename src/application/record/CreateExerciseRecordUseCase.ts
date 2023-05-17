@@ -62,7 +62,10 @@ export class CreateExerciseRecordUseCase {
       exerciseType,
       exerciseDurationMinute,
       exerciseIntensity,
-      kcaloriesBurned: 355, // TODO: this is a mock, need standard mapping later
+      kcaloriesBurned: ExerciseRecord.calculateTotalKcalories(
+        exerciseType,
+        exerciseDurationMinute
+      ),
       exerciseNote,
       createdAt: new Date(),
       updatedAt: new Date(),

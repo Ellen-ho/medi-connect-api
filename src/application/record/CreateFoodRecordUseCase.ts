@@ -49,7 +49,7 @@ export class CreateFoodRecordUseCase {
       foodItem: null,
       foodCategory,
       foodAmount,
-      kcalories: 355, // TODO: mock here, need standard mapping later
+      kcalories: FoodRecord.calculateTotalKcalories(foodCategory, foodAmount),
       foodNote,
       createdAt: new Date(),
       updatedAt: new Date(),
