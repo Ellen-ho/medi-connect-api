@@ -3,6 +3,7 @@ import { SleepQualityType, SleepRecord } from '../../domain/record/SleepRecord'
 import { ISleepRecordRepository } from '../../domain/record/interfaces/repositories/ISleepRecordRepository'
 import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
+import dayjs from 'dayjs'
 
 interface CreateSleepRecordRequest {
   user: User
@@ -44,13 +45,18 @@ export class CreateSleepRecordUseCase {
       throw new Error('Patient does not exist.')
     }
 
+    const sleepDurationHour: number = dayjs(wakeUpTime).diff(
+      dayjs(sleepTime),
+      'hour'
+    )
+
     const sleepRecord = new SleepRecord({
       id: this.uuidService.generateUuid(),
       sleepDate,
       sleepTime,
       wakeUpTime,
       sleepQuality,
-      sleepDurationHour: 0, // TODO: Calculate sleep duration
+      sleepDurationHour,
       sleepNote,
       createdAt: new Date(),
       updatedAt: new Date(),

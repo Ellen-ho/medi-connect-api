@@ -3,6 +3,7 @@ import { SleepQualityType } from '../../domain/record/SleepRecord'
 import { ISleepRecordRepository } from '../../domain/record/interfaces/repositories/ISleepRecordRepository'
 
 import { User } from '../../domain/user/User'
+import dayjs from 'dayjs'
 
 interface EditSleepRecordRequest {
   user: User
@@ -63,11 +64,16 @@ export class EditSleepRecordUseCase {
       throw new Error('This sleep record does not exist.')
     }
 
+    const sleepDurationHour: number = dayjs(wakeUpTime).diff(
+      dayjs(sleepTime),
+      'hour'
+    )
+
     existingSleepRecord.updateData({
       sleepDate,
       sleepTime,
       wakeUpTime,
-      sleepDurationHour: 10,
+      sleepDurationHour,
       sleepQuality,
       sleepNote,
     })
