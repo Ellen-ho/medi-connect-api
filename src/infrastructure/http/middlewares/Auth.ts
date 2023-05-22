@@ -9,6 +9,25 @@ const authenticator = (
   passport.authenticate('local', { session: false })(req, res, next)
 }
 
+const facebookAuthenticator = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
+  passport.authenticate('facebook')(req, res, next)
+}
+
+const facebookCallbackAuthenticator = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
+  passport.authenticate('facebook', {
+    successRedirect: '/',
+    failureRedirect: '/users/login',
+  })(req, res, next)
+}
+
 const authenticated = (
   req: Request,
   res: Response,
@@ -28,4 +47,9 @@ const authenticated = (
   )(req, res, next)
 }
 
-export { authenticator, authenticated }
+export {
+  authenticator,
+  facebookAuthenticator,
+  facebookCallbackAuthenticator,
+  authenticated,
+}

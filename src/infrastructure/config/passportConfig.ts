@@ -2,7 +2,7 @@ import passport from 'passport'
 import { Strategy as LocalStrategy } from 'passport-local'
 import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt'
 import { Strategy as FacebookStrategy } from 'passport-facebook'
-import { Strategy as GoogleStrategy } from 'passport-google-oauth20'
+// import { Strategy as GoogleStrategy } from 'passport-google-oauth20'
 import { IUserRepository } from '../../domain/user/interfaces/repositories/IUserRepository'
 import bcrypt from 'bcrypt'
 
@@ -20,7 +20,7 @@ export class PassportConfig {
     this.initializeLocalStrategy()
     this.initializeJwtStrategy()
     this.initializeFacebookStrategy()
-    this.initializeGoogleStrategy()
+    // this.initializeGoogleStrategy()
   }
 
   private initializeLocalStrategy(): void {
@@ -145,7 +145,6 @@ export class PassportConfig {
           callbackURL: process.env.FACEBOOK_CALLBACK as string,
           profileFields: ['email', 'displayName'],
         },
-
         (accessToken, refreshToken, profile, done) => {
           const { email, displayName } = profile._json
           this.userRepo
@@ -159,13 +158,13 @@ export class PassportConfig {
               const randomPassword = Math.random().toString(36).slice(-8)
               bcrypt
                 .genSalt(10)
-                .then((salt) => bcrypt.hash(randomPassword, salt))
-                .then((hash) => {
+                .then(async (salt) => await bcrypt.hash(randomPassword, salt))
+                .then(async (hash) => {
                   const user = new User({
                     id: this.uuidService.generateUuid(),
                     displayName,
                     email,
-                    hashedPassword: randomPassword,
+                    hashedPassword: hash,
                     role: UserRoleType.PATIENT,
                     createdAt: new Date(),
                     updatedAt: new Date(),
@@ -184,30 +183,30 @@ export class PassportConfig {
     )
   }
 
-  private initializeGoogleStrategy(): void {
-    passport.use(
-      new GoogleStrategy(
-        {
-          clientID: process.env.GOOGLE_ID as string,
-          clientSecret: process.env.GOOGLE_SECRET as string,
-          callbackURL: process.env.GOOGLE_CALLBACK as string,
-        },
+  // private initializeGoogleStrategy(): void {
+  //   passport.use(
+  //     new GoogleStrategy(
+  //       {
+  //         clientID: process.env.GOOGLE_ID as string,
+  //         clientSecret: process.env.GOOGLE_SECRET as string,
+  //         callbackURL: process.env.GOOGLE_CALLBACK as string,
+  //       },
 
-        (accessToken, refreshToken, profile, done) => {
-          this.userRepo
-            .findById(profile.id)
-            .then((user) => {
-              if (user !== null) {
-                done(null, user)
-              } else {
-                done(new Error('User not found'))
-              }
-            })
-            .catch((err) => {
-              done(err)
-            })
-        }
-      )
-    )
-  }
+  //       (accessToken, refreshToken, profile, done) => {
+  //         this.userRepo
+  //           .findById(profile.id)
+  //           .then((user) => {
+  //             if (user !== null) {
+  //               done(null, user)
+  //             } else {
+  //               done(new Error('User not found'))
+  //             }
+  //           })
+  //           .catch((err) => {
+  //             done(err)
+  //           })
+  //       }
+  //     )
+  //   )
+  // }
 }

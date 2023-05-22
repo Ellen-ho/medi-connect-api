@@ -461,7 +461,7 @@ async function main(): Promise<void> {
   app.use(express.urlencoded({ extended: true }))
   app.use(express.json())
   // eslint-disable-next-line no-new
-  new PassportConfig(userRepository)
+  new PassportConfig(userRepository, uuidService)
 
   /**
    * Routes
