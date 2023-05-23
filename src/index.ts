@@ -88,6 +88,10 @@ import { GetFoodRecordsUseCase } from './application/record/GetFoodRecordsUseCas
 import { GetGlycatedHemoglobinRecordsUseCase } from './application/record/GetGlycatedHemoglobinRecordsUseCase'
 import { GetSleepRecordsUseCase } from './application/record/GetSleepRecordsUseCase'
 import { GetWeightRecordsUseCase } from './application/record/GetWeightRecordsUseCase'
+import { CreateHealthGoalUseCase } from './application/goal/CreateHealthGoalUseCase'
+import { HealthGoalController } from './infrastructure/http/controllers/HealthGoalController'
+import { HealthGoalRoutes } from './infrastructure/http/routes/HealthGoalRoutes'
+import { HealthGoalRepository } from './infrastructure/entities/goal/HealthGoalRepository'
 // import { RawQueryRepository } from './infrastructure/database/RawRepository'
 
 void main()
@@ -392,6 +396,18 @@ async function main(): Promise<void> {
   )
 
   /**
+   * HealthGoal Domain
+   */
+  const healthGoalRepository = new HealthGoalRepository(dataSource)
+
+  const createHealthGoalUseCase = new CreateHealthGoalUseCase(
+    healthGoalRepository,
+    patientRepository,
+    doctorRepository,
+    uuidService
+  )
+
+  /**
    * Controllers
    */
   const userController = new UserController(getUserUseCase, createUserUseCase)
@@ -457,6 +473,8 @@ async function main(): Promise<void> {
     editDoctorTimeSlotUseCase
   )
 
+  const healthGoalController = new HealthGoalController(createHealthGoalUseCase)
+
   const app: Express = express()
   app.use(express.urlencoded({ extended: true }))
   app.use(express.json())
@@ -472,6 +490,7 @@ async function main(): Promise<void> {
   const doctorRoutes = new DoctorRoutes(doctorController)
   const questionRoutes = new QuestionRoutes(questionController)
   const consultationRoutes = new ConsultationRoutes(consultationController)
+  const healthGoalRoutes = new HealthGoalRoutes(healthGoalController)
 
   const mainRoutes = new MainRoutes(
     userRoutes,
@@ -479,7 +498,8 @@ async function main(): Promise<void> {
     recordRoutes,
     doctorRoutes,
     questionRoutes,
-    consultationRoutes
+    consultationRoutes,
+    healthGoalRoutes
   )
   app.use('/api', mainRoutes.createRouter())
 
