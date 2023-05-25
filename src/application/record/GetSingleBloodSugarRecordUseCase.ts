@@ -1,5 +1,6 @@
 import { GenderType } from '../../domain/patient/Patient'
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
+import { BloodSugarType } from '../../domain/record/BloodSugarRecord'
 import { IBloodSugarRecordRepository } from '../../domain/record/interfaces/repositories/IBloodSugarRecordRepository'
 import { User } from '../../domain/user/User'
 
@@ -11,7 +12,8 @@ interface GetSingleBloodSugarRecordRequest {
 interface GetSingleBloodSugarRecordResponse {
   data: {
     bloodSugarDate: Date
-    bloodSugarValueMmo: number
+    bloodSugarValue: number
+    bloodSugarType: BloodSugarType
     bloodSugarNote: string | null
     createdAt: Date
     updatedAt: Date
@@ -29,7 +31,8 @@ export interface IRecordOwner {
 export interface IBloodSugarRecordWithOwner {
   id: string
   bloodSugarDate: Date
-  bloodSugarValueMmo: number
+  bloodSugarValue: number
+  bloodSugarType: BloodSugarType
   bloodSugarNote: string | null
   createdAt: Date
   updatedAt: Date
@@ -69,7 +72,8 @@ export class GetSingleBloodSugarRecordUseCase {
     return {
       data: {
         bloodSugarDate: recordWithOwner.bloodSugarDate,
-        bloodSugarValueMmo: recordWithOwner.bloodSugarValueMmo,
+        bloodSugarValue: recordWithOwner.bloodSugarValue,
+        bloodSugarType: recordWithOwner.bloodSugarType,
         bloodSugarNote: recordWithOwner.bloodSugarNote,
         createdAt: recordWithOwner.createdAt,
         updatedAt: recordWithOwner.updatedAt,

@@ -1,3 +1,4 @@
+import { BloodSugarType } from '../../domain/record/BloodSugarRecord'
 import { IBloodSugarRecordRepository } from '../../domain/record/interfaces/repositories/IBloodSugarRecordRepository'
 import { getOffset, getPagination } from '../../infrastructure/utils/Pagination'
 
@@ -8,7 +9,8 @@ interface GetBloodSugarRecordsRequest {
 interface GetBloodSugarRecordsResponse {
   data: Array<{
     bloodSugarDate: Date
-    bloodSugarValueMmo: number // mmol/L
+    bloodSugarValue: number // mg/L
+    bloodSugarType: BloodSugarType
   }>
   pagination: {
     pages: number[]

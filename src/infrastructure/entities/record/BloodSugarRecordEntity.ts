@@ -9,6 +9,7 @@ import {
   RelationId,
 } from 'typeorm'
 import { PatientEntity } from '../patient/PatientEntity'
+import { BloodSugarType } from '../../../domain/record/BloodSugarRecord'
 
 @Entity('blood_sugar_records')
 export class BloodSugarRecordEntity {
@@ -19,13 +20,15 @@ export class BloodSugarRecordEntity {
   public bloodSugarDate!: Date
 
   @Column({
-    name: 'blood_sugar_value_mmol',
+    name: 'blood_sugar_value',
     type: 'numeric',
     precision: 5,
     scale: 2,
-    default: 0,
   })
-  public bloodSugarValueMmo!: number
+  public bloodSugarValue!: number
+
+  @Column({ name: 'blood_sugar_type', type: 'varchar', length: 150 })
+  public bloodSugarType!: BloodSugarType
 
   @Column({ name: 'blood_sugar_note', type: 'varchar', length: 150 })
   public bloodSugarNote!: string | null

@@ -2,6 +2,7 @@ import Joi from 'joi'
 import { ExerciseType, IntensityType } from '../../domain/record/ExerciseRecord'
 import { FoodCategoryType } from '../../domain/record/FoodRecord'
 import { SleepQualityType } from '../../domain/record/SleepRecord'
+import { BloodSugarType } from '../../domain/record/BloodSugarRecord'
 
 export const creatBloodPressureRecordSchema = {
   body: Joi.object({
@@ -20,7 +21,10 @@ export const editBloodPressureRecordSchema = {
 export const creatBloodSugarRecordSchema = {
   body: Joi.object({
     bloodSugarDate: Joi.date().required(),
-    bloodSugarValueMmo: Joi.number().required(),
+    bloodSugarValue: Joi.number().required(),
+    bloodSugarType: Joi.string()
+      .valid(...Object.values(BloodSugarType))
+      .required(),
     bloodSugarNote: Joi.string().optional(),
   }),
 }

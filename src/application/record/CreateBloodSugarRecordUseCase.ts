@@ -1,5 +1,8 @@
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
-import { BloodSugarRecord } from '../../domain/record/BloodSugarRecord'
+import {
+  BloodSugarRecord,
+  BloodSugarType,
+} from '../../domain/record/BloodSugarRecord'
 import { IBloodSugarRecordRepository } from '../../domain/record/interfaces/repositories/IBloodSugarRecordRepository'
 import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
@@ -7,14 +10,16 @@ import { IUuidService } from '../../domain/utils/IUuidService'
 interface CreateBloodSugarRecordRequest {
   user: User
   bloodSugarDate: Date
-  bloodSugarValueMmo: number
+  bloodSugarValue: number
+  bloodSugarType: BloodSugarType
   bloodSugarNote: string | null
 }
 
 interface CreateBloodSugarRecordResponse {
   id: string
   bloodSugarDate: Date
-  bloodSugarValueMmo: number
+  bloodSugarValue: number
+  bloodSugarType: BloodSugarType
   bloodSugarNote: string | null
   createdAt: Date
   updatedAt: Date
@@ -30,7 +35,13 @@ export class CreateBloodSugarRecordUseCase {
   public async execute(
     request: CreateBloodSugarRecordRequest
   ): Promise<CreateBloodSugarRecordResponse> {
-    const { user, bloodSugarDate, bloodSugarValueMmo, bloodSugarNote } = request
+    const {
+      user,
+      bloodSugarDate,
+      bloodSugarValue,
+      bloodSugarType,
+      bloodSugarNote,
+    } = request
 
     const existingPatient = await this.patientRepository.findByUserId(user.id)
 
@@ -41,7 +52,8 @@ export class CreateBloodSugarRecordUseCase {
     const bloodSugarRecord = new BloodSugarRecord({
       id: this.uuidService.generateUuid(),
       bloodSugarDate,
-      bloodSugarValueMmo,
+      bloodSugarValue,
+      bloodSugarType,
       bloodSugarNote,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -52,7 +64,8 @@ export class CreateBloodSugarRecordUseCase {
     return {
       id: bloodSugarRecord.id,
       bloodSugarDate: bloodSugarRecord.bloodSugarDate,
-      bloodSugarValueMmo: bloodSugarRecord.bloodSugarValueMmo,
+      bloodSugarValue: bloodSugarRecord.bloodSugarValue,
+      bloodSugarType: bloodSugarRecord.bloodSugarType,
       bloodSugarNote: bloodSugarRecord.bloodSugarNote,
       createdAt: bloodSugarRecord.createdAt,
       updatedAt: bloodSugarRecord.updatedAt,

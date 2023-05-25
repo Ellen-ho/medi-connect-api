@@ -1,4 +1,5 @@
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
+import { BloodSugarType } from '../../domain/record/BloodSugarRecord'
 import { IBloodSugarRecordRepository } from '../../domain/record/interfaces/repositories/IBloodSugarRecordRepository'
 
 import { User } from '../../domain/user/User'
@@ -7,14 +8,16 @@ interface EditBloodSugarRecordRequest {
   user: User
   bloodSugarRecordId: string
   bloodSugarDate: Date
-  bloodSugarValueMmo: number // mmol/L
+  bloodSugarValue: number
+  bloodSugarType: BloodSugarType // mg/L
   bloodSugarNote: string | null
 }
 
 interface EditBloodSugarRecordResponse {
   id: string
   bloodSugarDate: Date
-  bloodSugarValueMmo: number // mmol/L
+  bloodSugarValue: number // mg/L
+  bloodSugarType: BloodSugarType
   bloodSugarNote: string | null
   createdAt: Date
   updatedAt: Date
@@ -33,7 +36,8 @@ export class EditBloodSugarRecordUseCase {
       user,
       bloodSugarRecordId,
       bloodSugarDate,
-      bloodSugarValueMmo,
+      bloodSugarValue,
+      bloodSugarType,
       bloodSugarNote,
     } = request
 
@@ -57,7 +61,8 @@ export class EditBloodSugarRecordUseCase {
 
     existingBloodSugarRecord.updateData({
       bloodSugarDate,
-      bloodSugarValueMmo,
+      bloodSugarValue,
+      bloodSugarType,
       bloodSugarNote,
     })
 
@@ -66,7 +71,8 @@ export class EditBloodSugarRecordUseCase {
     return {
       id: existingBloodSugarRecord.id,
       bloodSugarDate: existingBloodSugarRecord.bloodSugarDate,
-      bloodSugarValueMmo: existingBloodSugarRecord.bloodSugarValueMmo,
+      bloodSugarValue: existingBloodSugarRecord.bloodSugarValue,
+      bloodSugarType: existingBloodSugarRecord.bloodSugarType,
       bloodSugarNote: existingBloodSugarRecord.bloodSugarNote,
       createdAt: existingBloodSugarRecord.createdAt,
       updatedAt: existingBloodSugarRecord.updatedAt,
