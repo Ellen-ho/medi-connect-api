@@ -1,13 +1,17 @@
+import { BloodSugarType } from '../record/BloodSugarRecord'
+
 export interface IHealthGoalProps {
   id: string
   bloodPressureTargetValue: IBloodPressureValue
   bloodSugarTargetValue: number
+  bloodSugarTargetType: BloodSugarType
   glycatedHemonglobinTargetValue: number
   weightTargetValue: number
+  bodyMassIndexTargetValue: number
   startAt: Date
   endAt: Date
   status: HealthGoalStatus
-  result: IHealthGoalResult
+  result: IHealthGoalResult | null
   createdAt: Date
   updatedAt: Date
   patientId: string
@@ -63,12 +67,20 @@ export class HealthGoal {
     return this.props.bloodSugarTargetValue
   }
 
+  public get bloodSugarTargetType(): BloodSugarType {
+    return this.props.bloodSugarTargetType
+  }
+
   public get glycatedHemonglobinTargetValue(): number {
     return this.props.glycatedHemonglobinTargetValue
   }
 
   public get weightTargetValue(): number {
     return this.props.weightTargetValue
+  }
+
+  public get bodyMassIndexTargetValue(): number {
+    return this.props.bodyMassIndexTargetValue
   }
 
   public get startAt(): Date {
@@ -83,7 +95,7 @@ export class HealthGoal {
     return this.props.status
   }
 
-  public get result(): IHealthGoalResult {
+  public get result(): IHealthGoalResult | null {
     return this.props.result
   }
 

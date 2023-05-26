@@ -67,8 +67,8 @@ export class HealthGoalEntity {
   @Column({ name: 'status' })
   public status!: HealthGoalStatus
 
-  @Column({ name: 'result', type: 'jsonb' })
-  public result!: IHealthGoalResult
+  @Column({ name: 'result', type: 'jsonb', nullable: true })
+  public result!: IHealthGoalResult | null
 
   @CreateDateColumn({ name: 'created_at' })
   public createdAt!: Date
