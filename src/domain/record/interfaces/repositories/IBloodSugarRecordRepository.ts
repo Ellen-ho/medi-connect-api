@@ -23,4 +23,14 @@ export interface IBloodSugarRecordRepository
       bloodSugarType: BloodSugarType
     }>
   }>
+  bloodSugarCountByPatientId: (
+    patientId: string,
+    daysAgo: number
+  ) => Promise<
+    Array<{
+      blood_sugar_date: Date
+      blood_sugar_value: number
+      blood_sugar_type: BloodSugarType
+    }>
+  >
 }

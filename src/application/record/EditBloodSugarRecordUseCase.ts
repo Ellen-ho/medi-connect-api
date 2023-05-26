@@ -9,7 +9,6 @@ interface EditBloodSugarRecordRequest {
   bloodSugarRecordId: string
   bloodSugarDate: Date
   bloodSugarValue: number
-  bloodSugarType: BloodSugarType // mg/L
   bloodSugarNote: string | null
 }
 
@@ -37,7 +36,6 @@ export class EditBloodSugarRecordUseCase {
       bloodSugarRecordId,
       bloodSugarDate,
       bloodSugarValue,
-      bloodSugarType,
       bloodSugarNote,
     } = request
 

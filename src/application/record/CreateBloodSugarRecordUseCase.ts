@@ -11,7 +11,6 @@ interface CreateBloodSugarRecordRequest {
   user: User
   bloodSugarDate: Date
   bloodSugarValue: number
-  bloodSugarType: BloodSugarType
   bloodSugarNote: string | null
 }
 
@@ -35,13 +34,7 @@ export class CreateBloodSugarRecordUseCase {
   public async execute(
     request: CreateBloodSugarRecordRequest
   ): Promise<CreateBloodSugarRecordResponse> {
-    const {
-      user,
-      bloodSugarDate,
-      bloodSugarValue,
-      bloodSugarType,
-      bloodSugarNote,
-    } = request
+    const { user, bloodSugarDate, bloodSugarValue, bloodSugarNote } = request
 
     const existingPatient = await this.patientRepository.findByUserId(user.id)
 
@@ -53,7 +46,7 @@ export class CreateBloodSugarRecordUseCase {
       id: this.uuidService.generateUuid(),
       bloodSugarDate,
       bloodSugarValue,
-      bloodSugarType,
+      bloodSugarType: BloodSugarType.FAST_PLASMA_GLUCOSE,
       bloodSugarNote,
       createdAt: new Date(),
       updatedAt: new Date(),

@@ -149,4 +149,47 @@ export class BloodSugarRecordRepository
       )
     }
   }
+
+  public async bloodSugarCountByPatientId(
+    patientId: string,
+    daysAgo: number
+  ): Promise<
+    Array<{
+      blood_sugar_date: Date
+      blood_sugar_value: number
+      blood_sugar_type: BloodSugarType
+    }>
+  > {
+    try {
+      const bloodSugarRawCounts = await this.getQuery<
+        Array<{
+          blood_sugar_date: Date
+          blood_sugar_value: number
+          blood_sugar_type: BloodSugarType
+        }>
+      >(
+        `SELECT
+              blood_sugar_date,
+              blood_sugar_value,
+              blood_sugar_type
+          FROM
+              blood_sugar_records
+          WHERE
+              patient_id = $1
+              AND blood_sugar_records.blood_sugar_date < CURRENT_DATE - INTERVAL 1 day
+              AND blood_sugar_records.blood_sugar_date >= CURRENT_DATE - INTERVAL $2 day
+          ORDER BY
+              blood_sugar_records.blood_sugar_date DESC
+   `,
+        [patientId, daysAgo]
+      )
+
+      return bloodSugarRawCounts
+    } catch (e) {
+      throw new RepositoryError(
+        'HealthGoalEntity bloodSugarCountByPatientId error',
+        e as Error
+      )
+    }
+  }
 }
