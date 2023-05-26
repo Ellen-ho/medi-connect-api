@@ -82,142 +82,92 @@ export class CreateHealthGoalUseCase {
       existingPatient.id,
       daysAgo
     )
-
-    if (checkedBloodPressureRecord.status === StatusAfterCheck.ABNORMAL) {
-      // create new health goal
-      const healthGoal = new HealthGoal({
-        id: this.uuidService.generateUuid(),
-        bloodPressureTargetValue: {
-          systolicBloodPressure: 120,
-          diastolicBloodPressure: 80,
-        },
-        bloodSugarTargetValue: 100,
-        bloodSugarTargetType: BloodSugarType.FAST_PLASMA_GLUCOSE,
-        glycatedHemonglobinTargetValue: 5,
-        weightTargetValue: 50,
-        bodyMassIndexTargetValue: 22,
-        startAt: new Date(),
-        endAt: new Date(),
-        status: HealthGoalStatus.PARTIAL_GOALS_ACHIEVED,
-        result: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        patientId: existingPatient.id,
-        doctorId: existingDoctor.id,
-      })
-      await this.healthGoalRepository.save(healthGoal)
-
-      return {
-        id: healthGoal.id,
-        bloodPressureTargetValue: healthGoal.bloodPressureTargetValue,
-        bloodSugarTargetValue: healthGoal.bloodSugarTargetValue,
-        bloodSugarTargetType: healthGoal.bloodSugarTargetType,
-        glycatedHemonglobinTargetValue:
-          healthGoal.glycatedHemonglobinTargetValue,
-        weightTargetValue: healthGoal.weightTargetValue,
-        bodyMassIndexTargetValue: healthGoal.bodyMassIndexTargetValue,
-        startAt: new Date(),
-        endAt: new Date(),
-        status: healthGoal.status,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }
+    if (
+      checkedBloodPressureRecord.status === StatusAfterCheck.EMERGENCY ||
+      checkedBloodPressureRecord.status === StatusAfterCheck.INVALID
+    ) {
+      return null
     }
-    //  return null
 
     const checkedBloodSugarRecord = await this.isBloodSugarAbnormal(
       existingPatient.id,
       daysAgo
     )
-
-    if (checkedBloodSugarRecord.status === StatusAfterCheck.ABNORMAL) {
-      // create new health goal
-      const healthGoal = new HealthGoal({
-        id: this.uuidService.generateUuid(),
-        bloodPressureTargetValue: {
-          systolicBloodPressure: 120,
-          diastolicBloodPressure: 80,
-        },
-        bloodSugarTargetValue: 100,
-        bloodSugarTargetType: BloodSugarType.FAST_PLASMA_GLUCOSE,
-        glycatedHemonglobinTargetValue: 5,
-        weightTargetValue: 50,
-        bodyMassIndexTargetValue: 22,
-        startAt: new Date(),
-        endAt: new Date(),
-        status: HealthGoalStatus.PARTIAL_GOALS_ACHIEVED,
-        result: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        patientId: existingPatient.id,
-        doctorId: existingDoctor.id,
-      })
-      await this.healthGoalRepository.save(healthGoal)
-
-      return {
-        id: healthGoal.id,
-        bloodPressureTargetValue: healthGoal.bloodPressureTargetValue,
-        bloodSugarTargetValue: healthGoal.bloodSugarTargetValue,
-        bloodSugarTargetType: healthGoal.bloodSugarTargetType,
-        glycatedHemonglobinTargetValue:
-          healthGoal.glycatedHemonglobinTargetValue,
-        weightTargetValue: healthGoal.weightTargetValue,
-        bodyMassIndexTargetValue: healthGoal.bodyMassIndexTargetValue,
-        startAt: new Date(),
-        endAt: new Date(),
-        status: healthGoal.status,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }
+    if (
+      checkedBloodSugarRecord.status === StatusAfterCheck.EMERGENCY ||
+      checkedBloodSugarRecord.status === StatusAfterCheck.INVALID
+    ) {
+      return null
     }
-    //  return null
 
     const checkedWeightRecord = await this.isBodyMassIndexAbnormal(
       existingPatient.id,
       daysAgo
     )
+    if (
+      checkedWeightRecord.status === StatusAfterCheck.EMERGENCY ||
+      checkedWeightRecord.status === StatusAfterCheck.INVALID
+    ) {
+      return null
+    }
 
-    if (checkedWeightRecord.status === StatusAfterCheck.ABNORMAL) {
-      // create new health goal
-      const healthGoal = new HealthGoal({
-        id: this.uuidService.generateUuid(),
-        bloodPressureTargetValue: {
-          systolicBloodPressure: 120,
-          diastolicBloodPressure: 80,
-        },
-        bloodSugarTargetValue: 100,
-        bloodSugarTargetType: BloodSugarType.FAST_PLASMA_GLUCOSE,
-        glycatedHemonglobinTargetValue: 5,
-        weightTargetValue: 50,
-        bodyMassIndexTargetValue: 22,
-        startAt: new Date(),
-        endAt: new Date(),
-        status: HealthGoalStatus.PARTIAL_GOALS_ACHIEVED,
-        result: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        patientId: existingPatient.id,
-        doctorId: existingDoctor.id,
-      })
-      await this.healthGoalRepository.save(healthGoal)
+    // all records are NORMAL, no need to create new health goal
+    if (
+      this.allRecordsAreNormal([
+        checkedBloodPressureRecord.status,
+        checkedBloodSugarRecord.status,
+        checkedWeightRecord.status,
+      ])
+    ) {
+      return null
+    }
 
-      return {
-        id: healthGoal.id,
-        bloodPressureTargetValue: healthGoal.bloodPressureTargetValue,
-        bloodSugarTargetValue: healthGoal.bloodSugarTargetValue,
-        bloodSugarTargetType: healthGoal.bloodSugarTargetType,
-        glycatedHemonglobinTargetValue:
-          healthGoal.glycatedHemonglobinTargetValue,
-        weightTargetValue: healthGoal.weightTargetValue,
-        bodyMassIndexTargetValue: healthGoal.bodyMassIndexTargetValue,
-        startAt: new Date(),
-        endAt: new Date(),
-        status: healthGoal.status,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+    // if some of the records are ABNORMAL, create new health goal
+    const healthGoal = new HealthGoal({
+      id: this.uuidService.generateUuid(),
+      bloodPressureTargetValue: {
+        systolicBloodPressure: 120,
+        diastolicBloodPressure: 80,
+      },
+      bloodSugarTargetValue: 100,
+      bloodSugarTargetType: BloodSugarType.FAST_PLASMA_GLUCOSE,
+      glycatedHemonglobinTargetValue: 5,
+      weightTargetValue: 50,
+      bodyMassIndexTargetValue: 22,
+      startAt: new Date(),
+      endAt: new Date(),
+      status: HealthGoalStatus.PARTIAL_GOALS_ACHIEVED,
+      result: null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      patientId: existingPatient.id,
+      doctorId: existingDoctor.id,
+    })
+    await this.healthGoalRepository.save(healthGoal)
+
+    return {
+      id: healthGoal.id,
+      bloodPressureTargetValue: healthGoal.bloodPressureTargetValue,
+      bloodSugarTargetValue: healthGoal.bloodSugarTargetValue,
+      bloodSugarTargetType: healthGoal.bloodSugarTargetType,
+      glycatedHemonglobinTargetValue: healthGoal.glycatedHemonglobinTargetValue,
+      weightTargetValue: healthGoal.weightTargetValue,
+      bodyMassIndexTargetValue: healthGoal.bodyMassIndexTargetValue,
+      startAt: new Date(),
+      endAt: new Date(),
+      status: healthGoal.status,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }
+  }
+
+  private allRecordsAreNormal(recordsStatus: StatusAfterCheck[]): boolean {
+    for (const recordStatus of recordsStatus) {
+      if (recordStatus !== StatusAfterCheck.NORMAL) {
+        return false
       }
     }
-    return null
+    return true
   }
 
   private async isBloodPressureAbnormal(
