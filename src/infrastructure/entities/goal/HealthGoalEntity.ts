@@ -15,6 +15,7 @@ import {
   IHealthGoalResult,
 } from '../../../domain/goal/HealthGoal'
 import { DoctorEntity } from '../doctor/DoctorEntity'
+import { BloodSugarType } from '../../../domain/record/BloodSugarRecord'
 
 @Entity('patient_health_goals')
 export class HealthGoalEntity {
@@ -41,6 +42,13 @@ export class HealthGoalEntity {
   public bloodSugarTargetValue!: number
 
   @Column({
+    name: 'blood_sugar_target_type',
+    type: 'varchar',
+    length: 100,
+  })
+  public bloodSugarTargetType!: BloodSugarType
+
+  @Column({
     name: 'glycated_hemonglobin_target_value',
     type: 'numeric',
     precision: 5,
@@ -57,6 +65,15 @@ export class HealthGoalEntity {
     nullable: true,
   })
   public weightTargetValue!: number
+
+  @Column({
+    name: 'body_mass_index',
+    type: 'numeric',
+    precision: 5,
+    scale: 2,
+    nullable: true,
+  })
+  public bodyMassIndex!: number
 
   @Column({ name: 'start_at' })
   public startAt!: Date
