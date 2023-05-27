@@ -114,4 +114,12 @@ export class HealthGoal {
   public get doctorId(): string {
     return this.props.doctorId
   }
+
+  public activateGoal(): void {
+    this.props.status = HealthGoalStatus.IN_PROGRESS
+  }
+
+  public rejectGoal(): void {
+    this.props.status = HealthGoalStatus.IN_PROGRESS
+  }
 }
