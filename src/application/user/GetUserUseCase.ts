@@ -5,7 +5,7 @@ interface GetUserRequest {
   id: string
 }
 
-interface GetUserResponse extends User {}
+interface GetUserResponse extends Omit<User, 'hashedPassword'> {}
 
 export class GetUserUseCase {
   constructor(private readonly userRepository: IUserRepository) {}
@@ -19,6 +19,13 @@ export class GetUserUseCase {
       throw new Error('User not found')
     }
 
-    return existingUser
+    return {
+      id: existingUser.id,
+      email: existingUser.email,
+      displayName: existingUser.displayName,
+      role: existingUser.role,
+      createdAt: existingUser.createdAt,
+      updatedAt: existingUser.updatedAt,
+    }
   }
 }
