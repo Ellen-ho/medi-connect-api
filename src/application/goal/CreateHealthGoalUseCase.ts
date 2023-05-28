@@ -1,4 +1,3 @@
-import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 import {
   HealthGoal,
   HealthGoalStatus,
@@ -9,6 +8,7 @@ import { IPatientRepository } from '../../domain/patient/interfaces/repositories
 import { BloodSugarType } from '../../domain/record/BloodSugarRecord'
 import { IBloodPressureRecordRepository } from '../../domain/record/interfaces/repositories/IBloodPressureRecordRepository'
 import { IBloodSugarRecordRepository } from '../../domain/record/interfaces/repositories/IBloodSugarRecordRepository'
+import { IGlycatedHemoglobinRecordRepository } from '../../domain/record/interfaces/repositories/IGlycatedHemoglobinRecordRepository'
 import { IWeightRecordRepository } from '../../domain/record/interfaces/repositories/IWeightRecordRepository'
 // import { IBloodPressureRecordRepository } from '../../domain/record/interfaces/repositories/IBloodPressureRecordRepository'
 import { User } from '../../domain/user/User'
@@ -44,9 +44,9 @@ export class CreateHealthGoalUseCase {
   constructor(
     private readonly healthGoalRepository: IHealthGoalRepository,
     private readonly patientRepository: IPatientRepository,
-    private readonly doctorRepository: IDoctorRepository,
     private readonly bloodPressureRecordRepository: IBloodPressureRecordRepository,
     private readonly bloodSugarRecordRepository: IBloodSugarRecordRepository,
+    private readonly glycatedHemoglobinRecordRepository: IGlycatedHemoglobinRecordRepository,
     private readonly weightRecordRepository: IWeightRecordRepository,
     private readonly uuidService: IUuidService
   ) {}
@@ -62,20 +62,34 @@ export class CreateHealthGoalUseCase {
       throw new Error('Patient does not exist.')
     }
 
-    const existingDoctor = await this.doctorRepository.findByUserId(user.id)
-
-    if (existingDoctor == null) {
-      throw new Error('Doctor does not exist.')
-    }
-
     const exsitingHealthGoal =
-      await this.healthGoalRepository.countsByPatientId(existingPatient.id)
+      await this.healthGoalRepository.findByPatientIdAndStatus(
+        existingPatient.id,
+        [HealthGoalStatus.IN_PROGRESS, HealthGoalStatus.PENDING]
+      )
 
-    if (exsitingHealthGoal !== 0) {
+    if (exsitingHealthGoal !== null) {
       return null
     }
 
+    const latestRejectedHealthGoal =
+      await this.healthGoalRepository.findByPatientIdAndStatus(
+        existingPatient.id,
+        [HealthGoalStatus.REJECTED]
+      )
+
+    if (latestRejectedHealthGoal !== null) {
+      const createdAtDate = latestRejectedHealthGoal.createdAt
+
+      const fourteenDaysLater = new Date(createdAtDate.getTime())
+      fourteenDaysLater.setDate(fourteenDaysLater.getDate() + 14)
+      if (createdAtDate.getDate() + 1 < fourteenDaysLater.getDate()) {
+        return null
+      }
+    }
+
     const daysAgo = 14
+    const hospitalCheckDaysAgo = 45 // the interval go to hospital to check Hb1c
 
     // Check all records
     const checkedBloodPressureRecord = await this.isBloodPressureAbnormal(
@@ -88,7 +102,9 @@ export class CreateHealthGoalUseCase {
     ) {
       return null
     }
-
+    /**
+     *
+     */
     const checkedBloodSugarRecord = await this.isBloodSugarAbnormal(
       existingPatient.id,
       daysAgo
@@ -96,6 +112,18 @@ export class CreateHealthGoalUseCase {
     if (
       checkedBloodSugarRecord.status === StatusAfterCheck.EMERGENCY ||
       checkedBloodSugarRecord.status === StatusAfterCheck.INVALID
+    ) {
+      return null
+    }
+
+    const checkedGlycatedHemonglobinRecord =
+      await this.isGlycatedHemoglobinAbnormal(
+        existingPatient.id,
+        hospitalCheckDaysAgo
+      )
+    if (
+      checkedGlycatedHemonglobinRecord.status === StatusAfterCheck.EMERGENCY ||
+      checkedGlycatedHemonglobinRecord.status === StatusAfterCheck.INVALID
     ) {
       return null
     }
@@ -111,11 +139,17 @@ export class CreateHealthGoalUseCase {
       return null
     }
 
+    const bloodSugarRelatedStatus =
+      checkedBloodSugarRecord.status === StatusAfterCheck.ABNORMAL ||
+      checkedGlycatedHemonglobinRecord.status === StatusAfterCheck.ABNORMAL
+        ? StatusAfterCheck.ABNORMAL
+        : StatusAfterCheck.NORMAL
+
     // all records are NORMAL, no need to create new health goal
     if (
       this.allRecordsAreNormal([
         checkedBloodPressureRecord.status,
-        checkedBloodSugarRecord.status,
+        bloodSugarRelatedStatus,
         checkedWeightRecord.status,
       ])
     ) {
@@ -141,7 +175,7 @@ export class CreateHealthGoalUseCase {
       createdAt: new Date(),
       updatedAt: new Date(),
       patientId: existingPatient.id,
-      doctorId: existingDoctor.id,
+      doctorId: null,
     })
     await this.healthGoalRepository.save(healthGoal)
 
@@ -208,6 +242,17 @@ export class CreateHealthGoalUseCase {
     const avgSystolicBloodPressure = Math.round(sumSystolicBloodPressure / 14)
     const avgDiastolicBloodPressure = Math.round(sumDiastolicBloodPressure / 14)
 
+    if (avgSystolicBloodPressure >= 140 && avgSystolicBloodPressure >= 90) {
+      console.log('EMERGENCY')
+      return {
+        status: StatusAfterCheck.EMERGENCY,
+        targetValue: {
+          systolicBloodPressure: 0,
+          diastolicBloodPressure: 0,
+        },
+      }
+    }
+
     // abnormal but not emergency, set goal
     if (
       (avgSystolicBloodPressure > 120 && avgSystolicBloodPressure <= 139) ||
@@ -218,18 +263,6 @@ export class CreateHealthGoalUseCase {
         targetValue: {
           systolicBloodPressure: 120,
           diastolicBloodPressure: 80,
-        },
-      }
-    } else if (
-      avgSystolicBloodPressure >= 140 &&
-      avgSystolicBloodPressure >= 90
-    ) {
-      console.log('EMERGENCY')
-      return {
-        status: StatusAfterCheck.EMERGENCY,
-        targetValue: {
-          systolicBloodPressure: 0,
-          diastolicBloodPressure: 0,
         },
       }
     }
@@ -278,21 +311,23 @@ export class CreateHealthGoalUseCase {
 
     const avgBloodSugarValue = Math.round(sumBloodSugarValue / 14)
 
+    if (avgBloodSugarValue >= 126) {
+      console.log('EMERGENCY')
+      return {
+        status: StatusAfterCheck.EMERGENCY,
+        targetValue: {
+          bloodSugarValue: 0,
+          bloodSugarType: BloodSugarType.FAST_PLASMA_GLUCOSE,
+        },
+      }
+    }
+
     // abnormal but not emergency, set goal
     if (avgBloodSugarValue >= 100 && avgBloodSugarValue <= 125) {
       return {
         status: StatusAfterCheck.ABNORMAL,
         targetValue: {
           bloodSugarValue: 80,
-          bloodSugarType: BloodSugarType.FAST_PLASMA_GLUCOSE,
-        },
-      }
-    } else if (avgBloodSugarValue >= 126) {
-      console.log('EMERGENCY')
-      return {
-        status: StatusAfterCheck.EMERGENCY,
-        targetValue: {
-          bloodSugarValue: 0,
           bloodSugarType: BloodSugarType.FAST_PLASMA_GLUCOSE,
         },
       }
@@ -342,16 +377,7 @@ export class CreateHealthGoalUseCase {
 
     const avgBodyMassIndexValue = Math.round(sumBodyMassIndexValue / 14)
 
-    // abnormal but not emergency, set goal
-    if (avgBodyMassIndexValue >= 24 && avgBodyMassIndexValue < 27) {
-      return {
-        status: StatusAfterCheck.ABNORMAL,
-        targetValue: {
-          weightValue: 50,
-          bodyMassIndexValue: 22,
-        },
-      }
-    } else if (avgBodyMassIndexValue >= 27) {
+    if (avgBodyMassIndexValue >= 27) {
       console.log('EMERGENCY')
       return {
         status: StatusAfterCheck.EMERGENCY,
@@ -362,12 +388,94 @@ export class CreateHealthGoalUseCase {
       }
     }
 
+    // abnormal but not emergency, set goal
+    if (avgBodyMassIndexValue >= 24 && avgBodyMassIndexValue < 27) {
+      return {
+        status: StatusAfterCheck.ABNORMAL,
+        targetValue: {
+          weightValue: 50,
+          bodyMassIndexValue: 22,
+        },
+      }
+    }
+
     console.log('normal')
     return {
       status: StatusAfterCheck.NORMAL,
       targetValue: {
         weightValue: 0,
         bodyMassIndexValue: 0,
+      },
+    }
+  }
+
+  private async isGlycatedHemoglobinAbnormal(
+    patientId: string,
+    hospitalCheckDaysAgo: number
+  ): Promise<{
+    status: StatusAfterCheck
+    targetValue: {
+      glycatedHemoglobinValuePercent: number
+    }
+  }> {
+    const pastGlycatedHemoglobinRecord =
+      await this.glycatedHemoglobinRecordRepository.findByPatientId(
+        patientId,
+        hospitalCheckDaysAgo
+      )
+
+    if (pastGlycatedHemoglobinRecord.length === 0) {
+      return {
+        status: StatusAfterCheck.INVALID,
+        targetValue: {
+          glycatedHemoglobinValuePercent: 0,
+        },
+      }
+    }
+
+    const hasGlycatedHemoglobinEmergency = pastGlycatedHemoglobinRecord.some(
+      (record) => {
+        const roundedValue =
+          Math.round(record.glycated_hemoglobin_value_percent * 10) / 10
+        const truncatedValue = Number(roundedValue.toFixed(1))
+        return truncatedValue >= 6.5
+      }
+    )
+
+    if (hasGlycatedHemoglobinEmergency) {
+      console.log('EMERGENCY')
+      return {
+        status: StatusAfterCheck.EMERGENCY,
+        targetValue: {
+          glycatedHemoglobinValuePercent: 0,
+        },
+      }
+    }
+
+    // abnormal but not emergency, set goal
+    const hasGlycatedHemoglobinAbnormal = pastGlycatedHemoglobinRecord.some(
+      (record) => {
+        const roundedValue =
+          Math.round(record.glycated_hemoglobin_value_percent * 10) / 10
+        const truncatedValue = Number(roundedValue.toFixed(1))
+        return truncatedValue >= 5.7 && truncatedValue <= 6.4
+      }
+    )
+
+    if (hasGlycatedHemoglobinAbnormal) {
+      return {
+        status: StatusAfterCheck.ABNORMAL,
+        targetValue: {
+          glycatedHemoglobinValuePercent: 5,
+        },
+      }
+    }
+
+    console.log('normal')
+    return {
+      status: StatusAfterCheck.NORMAL,
+      targetValue: {
+        glycatedHemoglobinValuePercent: 0,
       },
     }
   }

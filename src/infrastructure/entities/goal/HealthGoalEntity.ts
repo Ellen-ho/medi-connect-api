@@ -105,7 +105,7 @@ export class HealthGoalEntity {
   @JoinColumn({ name: 'doctor_id' })
   doctor!: DoctorEntity
 
-  @Column({ name: 'doctor_id' })
+  @Column({ name: 'doctor_id', nullable: true })
   @RelationId((healthGoal: HealthGoalEntity) => healthGoal.doctor)
-  public doctorId!: string
+  public doctorId!: string | null
 }
