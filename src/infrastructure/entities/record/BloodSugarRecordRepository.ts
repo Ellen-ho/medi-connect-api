@@ -2,7 +2,10 @@ import { DataSource } from 'typeorm'
 import { BaseRepository } from '../../database/BaseRepository'
 import { BloodSugarRecordEntity } from './BloodSugarRecordEntity'
 import { IBloodSugarRecordRepository } from '../../../domain/record/interfaces/repositories/IBloodSugarRecordRepository'
-import { BloodSugarRecord } from '../../../domain/record/BloodSugarRecord'
+import {
+  BloodSugarRecord,
+  BloodSugarType,
+} from '../../../domain/record/BloodSugarRecord'
 import { BloodSugarRecordMapper } from './BloodSugarRecordMapper'
 import { RepositoryError } from '../../error/RepositoryError'
 import { IBloodSugarRecordWithOwner } from '../../../application/record/GetSingleBloodSugarRecordUseCase'
@@ -45,7 +48,8 @@ export class BloodSugarRecordRepository
         Array<{
           id: string
           blood_sugar_date: Date
-          blood_sugar_value_mmo: number
+          blood_sugar_value: number
+          blood_sugar_type: BloodSugarType
           blood_sugar_note: string | null
           created_at: Date
           updated_at: Date
@@ -78,7 +82,8 @@ export class BloodSugarRecordRepository
         : {
             id: rawRecordsWithOwner[0].id,
             bloodSugarDate: rawRecordsWithOwner[0].blood_sugar_date,
-            bloodSugarValueMmo: rawRecordsWithOwner[0].blood_sugar_value_mmo,
+            bloodSugarValue: rawRecordsWithOwner[0].blood_sugar_value,
+            bloodSugarType: rawRecordsWithOwner[0].blood_sugar_type,
             bloodSugarNote: rawRecordsWithOwner[0].blood_sugar_note,
             createdAt: rawRecordsWithOwner[0].created_at,
             updatedAt: rawRecordsWithOwner[0].updated_at,
@@ -102,7 +107,8 @@ export class BloodSugarRecordRepository
     total_counts: number
     records: Array<{
       bloodSugarDate: Date
-      bloodSugarValueMmo: number
+      bloodSugarValue: number
+      bloodSugarType: BloodSugarType
     }>
   }> {
     try {
@@ -110,14 +116,16 @@ export class BloodSugarRecordRepository
         Array<{
           total_counts: number
           blood_sugar_date: Date
-          blood_sugar_value_mmo: number
+          blood_sugar_value: number
+          blood_sugar_type: BloodSugarType
         }>
       >(
         `
           SELECT
             (SELECT COUNT(*) FROM blood_sugar_records) as total_counts,
             blood_sugar_date,
-            blood_sugar_value_mmo
+            blood_sugar_value,
+            blood_sugar_type
           FROM
             blood_sugar_records
           LIMIT $1
@@ -130,12 +138,56 @@ export class BloodSugarRecordRepository
         total_counts: rawRecords[0].total_counts,
         records: rawRecords.map((record) => ({
           bloodSugarDate: record.blood_sugar_date,
-          bloodSugarValueMmo: record.blood_sugar_value_mmo,
+          bloodSugarValue: record.blood_sugar_value,
+          bloodSugarType: record.blood_sugar_type,
         })),
       }
     } catch (e) {
       throw new RepositoryError(
         'BloodSugarRecordRepository findAndCountAll error',
+        e as Error
+      )
+    }
+  }
+
+  public async bloodSugarCountByPatientId(
+    patientId: string,
+    daysAgo: number
+  ): Promise<
+    Array<{
+      blood_sugar_date: Date
+      blood_sugar_value: number
+      blood_sugar_type: BloodSugarType
+    }>
+  > {
+    try {
+      const bloodSugarRawCounts = await this.getQuery<
+        Array<{
+          blood_sugar_date: Date
+          blood_sugar_value: number
+          blood_sugar_type: BloodSugarType
+        }>
+      >(
+        `SELECT
+              blood_sugar_date,
+              blood_sugar_value,
+              blood_sugar_type
+          FROM
+              blood_sugar_records
+          WHERE
+              patient_id = $1
+              AND blood_sugar_records.blood_sugar_date < CURRENT_DATE - INTERVAL 1 day
+              AND blood_sugar_records.blood_sugar_date >= CURRENT_DATE - INTERVAL $2 day
+          ORDER BY
+              blood_sugar_records.blood_sugar_date DESC
+   `,
+        [patientId, daysAgo]
+      )
+
+      return bloodSugarRawCounts
+    } catch (e) {
+      throw new RepositoryError(
+        'HealthGoalEntity bloodSugarCountByPatientId error',
         e as Error
       )
     }

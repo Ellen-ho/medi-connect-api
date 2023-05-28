@@ -16,6 +16,20 @@ Content-Type: application/json
 
 @recordPath = {{hostname}}/api/records
 
+### create blood pressure record
+POST {{recordPath}}/blood-pressure
+Authorization: {{accessToken}}
+Content-Type: application/json
+
+{
+  "bloodPressureDate":"2023-05-15 16:34:38.091",
+  "systolicBloodPressure": 138,
+  "diastolicBloodPressure": 90,
+  "heartBeat":78,
+  "bloodPressureNote": "no"
+}
+###
+
 ### create food record
 POST {{recordPath}}/food
 Authorization: {{accessToken}}
@@ -44,7 +58,7 @@ Content-Type: application/json
 }
 ###
 
-### create blood pressure record
+### edit blood pressure record
 POST {{recordPath}}/blood-pressure
 Authorization: {{accessToken}}
 Content-Type: application/json
@@ -54,11 +68,11 @@ Content-Type: application/json
   "systolicBloodPressure": 150,
   "diastolicBloodPressure": 80,
   "heartBeat": 70,
-  "bloodPressureNote": 150
+  "bloodPressureNote": "nervouse"
 }
 ###
 
-### edit food record
+### edit blood pressure record
 @bloodPressureRecordId=7ee5ef35-91ec-4b7d-810e-d2c45df7c745
 PATCH {{recordPath}}/blood-pressure/{{bloodPressureRecordId}}
 Authorization: {{accessToken}}

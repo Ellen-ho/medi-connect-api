@@ -1,17 +1,24 @@
 export interface IBloodSugarRecordProps {
   id: string
   bloodSugarDate: Date
-  bloodSugarValueMmo: number // mmol/L
+  bloodSugarValue: number
+  bloodSugarType: BloodSugarType
   bloodSugarNote: string | null
   createdAt: Date
   updatedAt: Date
   patientId: string
 }
 
+export enum BloodSugarType {
+  FAST_PLASMA_GLUCOSE = 'FAST_PLASMA_GLUCOSE',
+  POSTPRANDIAL_PLASMA_GLUCOSE = 'POSTPRANDIAL_PLASMA_GLUCOSE',
+}
+
 interface IBloodSugarRecordUpdateData {
   [key: string]: any
   bloodSugarDate: Date
-  bloodSugarValueMmo: number // mmol/L
+  bloodSugarValue: number // mg/dl
+  bloodSugarType: BloodSugarType
   bloodSugarNote: string | null
 }
 export class BloodSugarRecord {
@@ -25,8 +32,12 @@ export class BloodSugarRecord {
     return this.props.bloodSugarDate
   }
 
-  public get bloodSugarValueMmo(): number {
-    return this.props.bloodSugarValueMmo
+  public get bloodSugarValue(): number {
+    return this.props.bloodSugarValue
+  }
+
+  public get bloodSugarType(): BloodSugarType {
+    return this.props.bloodSugarType
   }
 
   public get bloodSugarNote(): string | null {
@@ -47,7 +58,8 @@ export class BloodSugarRecord {
 
   public updateData(data: IBloodSugarRecordUpdateData): void {
     this.props.bloodSugarDate = data.bloodSugarDate
-    this.props.bloodSugarValueMmo = data.bloodSugarValueMmo
+    this.props.bloodSugarValue = data.bloodSugarValue
+    this.props.bloodSugarType = data.bloodSugarType
     this.props.bloodSugarNote = data.bloodSugarNote
   }
 }

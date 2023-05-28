@@ -21,4 +21,14 @@ export interface IWeightRecordRepository extends IBaseRepository<WeightRecord> {
       weightValueKg: number
     }>
   }>
+  weightCountByPatientId: (
+    patientId: string,
+    daysAgo: number
+  ) => Promise<
+    Array<{
+      weight_date: Date
+      weight_value_kg: number
+      body_mass_index: number
+    }>
+  >
 }

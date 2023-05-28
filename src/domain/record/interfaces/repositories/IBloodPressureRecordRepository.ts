@@ -23,4 +23,14 @@ export interface IBloodPressureRecordRepository
       diastolicBloodPressure: number
     }>
   }>
+  bloodPressureCountByPatientId: (
+    patientId: string,
+    daysAgo: number
+  ) => Promise<
+    Array<{
+      blood_pressure_date: Date
+      systolic_blood_pressure: number
+      diastolic_blood_pressure: number
+    }>
+  >
 }

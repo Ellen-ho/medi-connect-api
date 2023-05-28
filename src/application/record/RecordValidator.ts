@@ -20,7 +20,7 @@ export const editBloodPressureRecordSchema = {
 export const creatBloodSugarRecordSchema = {
   body: Joi.object({
     bloodSugarDate: Joi.date().required(),
-    bloodSugarValueMmo: Joi.number().required(),
+    bloodSugarValue: Joi.number().required(),
     bloodSugarNote: Joi.string().optional(),
   }),
 }

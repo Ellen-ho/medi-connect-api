@@ -142,4 +142,47 @@ export class WeightRecordRepository
       )
     }
   }
+
+  public async weightCountByPatientId(
+    patientId: string,
+    daysAgo: number
+  ): Promise<
+    Array<{
+      weight_date: Date
+      weight_value_kg: number
+      body_mass_index: number
+    }>
+  > {
+    try {
+      const weightRawCounts = await this.getQuery<
+        Array<{
+          weight_date: Date
+          weight_value_kg: number
+          body_mass_index: number
+        }>
+      >(
+        `SELECT
+              weight_date,
+              weight_value,
+              body_mass_index
+          FROM
+              weight_records
+          WHERE
+              patient_id = $1
+              AND weight_records.weight_date < CURRENT_DATE - INTERVAL 1 day
+              AND weight_records.weight_date >= CURRENT_DATE - INTERVAL $2 day
+          ORDER BY
+              weight_records.weight_date DESC
+   `,
+        [patientId, daysAgo]
+      )
+
+      return weightRawCounts
+    } catch (e) {
+      throw new RepositoryError(
+        'HealthGoalEntity weightCountByPatientId error',
+        e as Error
+      )
+    }
+  }
 }

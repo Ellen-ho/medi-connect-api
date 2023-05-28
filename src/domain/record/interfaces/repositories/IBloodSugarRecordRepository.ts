@@ -1,6 +1,6 @@
 import { IBloodSugarRecordWithOwner } from '../../../../application/record/GetSingleBloodSugarRecordUseCase'
 import { IBaseRepository } from '../../../shared/IBaseRepository'
-import { BloodSugarRecord } from '../../BloodSugarRecord'
+import { BloodSugarRecord, BloodSugarType } from '../../BloodSugarRecord'
 
 export interface IBloodSugarRecordRepository
   extends IBaseRepository<BloodSugarRecord> {
@@ -19,7 +19,18 @@ export interface IBloodSugarRecordRepository
     total_counts: number
     records: Array<{
       bloodSugarDate: Date
-      bloodSugarValueMmo: number
+      bloodSugarValue: number
+      bloodSugarType: BloodSugarType
     }>
   }>
+  bloodSugarCountByPatientId: (
+    patientId: string,
+    daysAgo: number
+  ) => Promise<
+    Array<{
+      blood_sugar_date: Date
+      blood_sugar_value: number
+      blood_sugar_type: BloodSugarType
+    }>
+  >
 }

@@ -6,6 +6,7 @@ import { authenticated } from '../middlewares/Auth'
 import { DoctorRoutes } from './DoctorRoutes'
 import { QuestionRoutes } from './QuestionRoutes'
 import { ConsultationRoutes } from './ConsultationRoutes'
+import { HealthGoalRoutes } from './HealthGoalRoutes'
 
 export class MainRoutes {
   private readonly routes: Router
@@ -15,7 +16,8 @@ export class MainRoutes {
     private readonly recordRoutes: RecordRoutes,
     private readonly doctorRoutes: DoctorRoutes,
     private readonly questionRoutes: QuestionRoutes,
-    private readonly consultationRoutes: ConsultationRoutes
+    private readonly consultationRoutes: ConsultationRoutes,
+    private readonly healthGoalRoutes: HealthGoalRoutes
   ) {
     this.routes = Router()
     this.routes.use('/users', this.userRoutes.createRouter())
@@ -35,6 +37,11 @@ export class MainRoutes {
       '/consultations',
       authenticated,
       this.consultationRoutes.createRouter()
+    )
+    this.routes.use(
+      '/health-goals',
+      authenticated,
+      this.healthGoalRoutes.createRouter()
     )
   }
 

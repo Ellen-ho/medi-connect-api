@@ -155,4 +155,47 @@ export class BloodPressureRecordRepository
       )
     }
   }
+
+  public async bloodPressureCountByPatientId(
+    patientId: string,
+    daysAgo: number
+  ): Promise<
+    Array<{
+      blood_pressure_date: Date
+      systolic_blood_pressure: number
+      diastolic_blood_pressure: number
+    }>
+  > {
+    try {
+      const bloodPressureRawCounts = await this.getQuery<
+        Array<{
+          blood_pressure_date: Date
+          systolic_blood_pressure: number
+          diastolic_blood_pressure: number
+        }>
+      >(
+        `SELECT
+              blood_pressure_date,
+              systolic_blood_pressure,
+              diastolic_blood_pressure
+          FROM
+              blood_pressure_records
+          WHERE
+              patient_id = $1
+              AND blood_pressure_records.blood_pressure_date < CURRENT_DATE - INTERVAL 1 day
+              AND blood_pressure_records.blood_pressure_date >= CURRENT_DATE - INTERVAL $2 day
+          ORDER BY
+              blood_pressure_records.blood_pressure_date DESC
+   `,
+        [patientId, daysAgo + 1]
+      )
+
+      return bloodPressureRawCounts
+    } catch (e) {
+      throw new RepositoryError(
+        'HealthGoalEntity bloodPressureCountByPatientId error',
+        e as Error
+      )
+    }
+  }
 }

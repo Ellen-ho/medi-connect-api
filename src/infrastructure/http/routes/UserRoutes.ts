@@ -1,7 +1,12 @@
 import { Router } from 'express'
 import { IUserController } from '../controllers/UserController'
 import { asyncHandler } from '../middlewares/AsyncHandler'
-import { authenticated, authenticator } from '../middlewares/Auth'
+import {
+  authenticated,
+  authenticator,
+  facebookAuthenticator,
+  facebookCallbackAuthenticator,
+} from '../middlewares/Auth'
 import { validator } from '../middlewares/Validator'
 import { registerUserSchema } from '../../../application/user/UserValidator'
 export class UserRoutes {
@@ -9,6 +14,8 @@ export class UserRoutes {
   constructor(private readonly userController: IUserController) {
     this.routes = Router()
     this.routes
+      .get('/auth/facebook', facebookAuthenticator)
+      .get('/auth/facebook/callback', facebookCallbackAuthenticator)
       .post('/login', authenticator, asyncHandler(this.userController.login))
       .get('/me', authenticated, asyncHandler(this.userController.getUserById))
       .post(
