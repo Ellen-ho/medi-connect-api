@@ -2,7 +2,7 @@ import passport from 'passport'
 import { Strategy as LocalStrategy } from 'passport-local'
 import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt'
 import { Strategy as FacebookStrategy } from 'passport-facebook'
-// import { Strategy as GoogleStrategy } from 'passport-google-oauth20'
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20'
 import { IUserRepository } from '../../domain/user/interfaces/repositories/IUserRepository'
 import bcrypt from 'bcrypt'
 
@@ -20,7 +20,7 @@ export class PassportConfig {
     this.initializeLocalStrategy()
     this.initializeJwtStrategy()
     this.initializeFacebookStrategy()
-    // this.initializeGoogleStrategy()
+    this.initializeGoogleStrategy()
   }
 
   private initializeLocalStrategy(): void {
@@ -88,54 +88,6 @@ export class PassportConfig {
     )
   }
 
-  // private initializeFacebookStrategy(): void {
-  //   passport.use(
-  //     new FacebookStrategy(
-  //       {
-  //         clientID: process.env.FACEBOOK_ID,
-  //         clientSecret: process.env.FACEBOOK_SECRET,
-  //         callbackURL: process.env.FACEBOOK_CALLBACK,
-  //         profileFields: ['email', 'displayName'],
-  //       },
-
-  //       (accessToken, refreshToken, profile, done) => {
-  //         this.userRepo
-  //           .findByEmail({ email: profile._json.email })
-  //           .then((user) => {
-  //             if (user !== null) {
-  //               done(null, user)
-  //               return
-  //             }
-  //           })
-  //   const { name, email } = profile._json
-  //   this.userRepo
-  //     .findByEmail(email)
-  //     .then((user) => {
-  //       if (user == null) {
-  //         const error = new Error('驗證失敗！')
-  //         done(error)
-  //         return
-  //       }
-
-  //       const randomPassword = Math.random().toString(36).slice(-8)
-  //       bcrypt
-  //         .genSalt(10)
-  //         .then((salt) => bcrypt.hash(randomPassword, salt))
-  //         .then((hash) =>
-  //           this.userRepo.createUser({
-  //             name,
-  //             email,
-  //             password: hash,
-  //           })
-  //         )
-  //         .then((createdUser) => done(null, createdUser))
-  //         .catch((err) => done(err, false))
-  //     })
-  //     .catch((err) => done(err, false))
-  //       }
-  //     )
-  //   )
-  // }
   private initializeFacebookStrategy(): void {
     passport.use(
       new FacebookStrategy(
@@ -152,6 +104,11 @@ export class PassportConfig {
             .then((user) => {
               if (user !== null) {
                 done(null, user)
+                return
+              }
+              if (user == null) {
+                const error = new Error('驗證失敗！')
+                done(error)
                 return
               }
 
@@ -187,52 +144,57 @@ export class PassportConfig {
     )
   }
 
-  // private initializeGoogleStrategy(): void {
-  //   passport.use(
-  //     new GoogleStrategy(
-  //       {
-  //         clientID: process.env.GOOGLE_ID as string,
-  //         clientSecret: process.env.GOOGLE_SECRET as string,
-  //         callbackURL: process.env.GOOGLE_CALLBACK as string,
-  //       },
+  private initializeGoogleStrategy(): void {
+    passport.use(
+      new GoogleStrategy(
+        {
+          clientID: process.env.GOOGLE_CLIENT_ID as string,
+          clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+          callbackURL: process.env.GOOGLE_CALLBACK_URL as string,
+        },
+        (accessToken, refreshToken, profile, done) => {
+          const googleId = profile.id
+          this.userRepo
+            .findById(googleId)
+            .then((user) => {
+              if (user !== null) {
+                done(null, user)
+                return
+              }
 
-  //       (accessToken, refreshToken, profile, done) => {
-  //         this.userRepo
-  //           .findById(profile.id)
-  //           .then((user) => {
-  //             if (user !== null) {
-  //               done(null, user)
-  //               return
-  //             }
-  //             const randomPassword = Math.random().toString(36).slice(-8)
-  //             bcrypt
-  //               .genSalt(10)
-  //               .then(async (salt) => await bcrypt.hash(randomPassword, salt))
-  //               .then(async (hash) => {
-  //                 const user = new User({
-  //                   id: this.uuidService.generateUuid(),
-  //                   displayName: profile.displayName,
-  //                   email: profile.emails?.[0].value,
-  //                   hashedPassword: hash,
-  //                   role: UserRoleType.PATIENT,
-  //                   createdAt: new Date(),
-  //                   updatedAt: new Date(),
-  //                 })
+              if (user == null) {
+                const error = new Error('驗證失敗！')
+                done(error)
+                return
+              }
 
-  //                 await this.userRepo.save(user)
-  //               })
-  //               .then((createdUser) => {
-  //                 done(null, createdUser)
-  //               })
-  //               .catch((err) => {
-  //                 done(err, false)
-  //               })
-  //           })
-  //           .catch((err) => {
-  //             done(err)
-  //           })
-  //       }
-  //     )
-  //   )
-  // }
+              const randomPassword = Math.random().toString(36).slice(-8)
+              bcrypt
+                .genSalt(10)
+                .then(async (salt) => await bcrypt.hash(randomPassword, salt))
+                .then(async (hash) => {
+                  const newUser = new User({
+                    id: this.uuidService.generateUuid(),
+                    email: 'jsmith@example.com',
+                    displayName: 'jsmith',
+                    hashedPassword: hash,
+                    role: UserRoleType.PATIENT,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                  })
+
+                  await this.userRepo.save(newUser)
+                  done(null, newUser)
+                })
+                .catch((err) => {
+                  done(err, false)
+                })
+            })
+            .catch((err) => {
+              done(err)
+            })
+        }
+      )
+    )
+  }
 }
