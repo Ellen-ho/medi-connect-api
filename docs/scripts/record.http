@@ -22,9 +22,9 @@ Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "bloodPressureDate":"2023-05-15 16:34:38.091",
+  "bloodPressureDate":"2023-05-13 15:34:38.090",
   "systolicBloodPressure": 138,
-  "diastolicBloodPressure": 90,
+  "diastolicBloodPressure": 95,
   "heartBeat":78,
   "bloodPressureNote": "no"
 }
@@ -36,10 +36,32 @@ Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "bloodSugarDate":"2023-05-28 16:34:38.091",
+  "bloodSugarDate":"2023-05-15 16:34:38.091",
   "bloodSugarValue": 80,
-  "bloodSugarType": "FAST_PLASMA_GLUCOSE",
   "bloodSugarNote": "no"
+}
+###
+
+### create glycatedHemoglobinRecord record
+POST {{recordsPath}}/glycated-hemoglobin
+Authorization: {{accessToken}}
+Content-Type: application/json
+
+{
+  "glycatedHemoglobinDate": "2023-05-29 18:34:38.091",
+  "glycatedHemoglobinValuePercent": 5
+}
+###
+
+### create weight record
+POST {{recordsPath}}/weight
+Authorization: {{accessToken}}
+Content-Type: application/json
+
+{
+  "weightDate": "2023-05-29 16:34:38.091",
+  "weightValueKg": 59,
+  "weightNote": "no"
 }
 ###
 
@@ -158,7 +180,7 @@ Content-Type: application/json
 ###
 
 ### get a single weight record
-@weightRecordId = uuid
+@weightRecordId = 0037ae52-0391-4ecf-9165-7b93daf7e6d9
 GET {{recordsPath}}/weight/{{weightRecordId}}
 Authorization: {{accessToken}}
 Content-Type: application/json
