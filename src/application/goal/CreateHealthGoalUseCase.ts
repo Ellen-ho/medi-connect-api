@@ -242,7 +242,12 @@ export class CreateHealthGoalUseCase {
     const avgSystolicBloodPressure = Math.round(sumSystolicBloodPressure / 14)
     const avgDiastolicBloodPressure = Math.round(sumDiastolicBloodPressure / 14)
 
-    if (avgSystolicBloodPressure >= 140 && avgSystolicBloodPressure >= 90) {
+    if (
+      avgSystolicBloodPressure >= 140 ||
+      avgDiastolicBloodPressure >= 90 ||
+      avgSystolicBloodPressure < 90 ||
+      avgDiastolicBloodPressure < 60
+    ) {
       console.log('EMERGENCY')
       return {
         status: StatusAfterCheck.EMERGENCY,
@@ -311,7 +316,7 @@ export class CreateHealthGoalUseCase {
 
     const avgBloodSugarValue = Math.round(sumBloodSugarValue / 14)
 
-    if (avgBloodSugarValue >= 126) {
+    if (avgBloodSugarValue >= 126 || avgBloodSugarValue < 70) {
       console.log('EMERGENCY')
       return {
         status: StatusAfterCheck.EMERGENCY,
@@ -377,7 +382,7 @@ export class CreateHealthGoalUseCase {
 
     const avgBodyMassIndexValue = Math.round(sumBodyMassIndexValue / 14)
 
-    if (avgBodyMassIndexValue >= 27) {
+    if (avgBodyMassIndexValue >= 27 || avgBodyMassIndexValue < 16) {
       console.log('EMERGENCY')
       return {
         status: StatusAfterCheck.EMERGENCY,
@@ -389,7 +394,10 @@ export class CreateHealthGoalUseCase {
     }
 
     // abnormal but not emergency, set goal
-    if (avgBodyMassIndexValue >= 24 && avgBodyMassIndexValue < 27) {
+    if (
+      (avgBodyMassIndexValue >= 24 && avgBodyMassIndexValue < 27) ||
+      (avgBodyMassIndexValue >= 16 && avgBodyMassIndexValue < 18.5)
+    ) {
       return {
         status: StatusAfterCheck.ABNORMAL,
         targetValue: {
