@@ -1,6 +1,7 @@
 import 'reflect-metadata'
 import express, { Express } from 'express'
 import dotenv from 'dotenv'
+import cors from 'cors'
 import { PostgresDatabase } from './infrastructure/database/PostgresDatabase'
 import { UuidService } from './infrastructure/utils/UuidService'
 import { UserRepository } from './infrastructure/entities/user/UserRepository'
@@ -533,6 +534,8 @@ async function main(): Promise<void> {
   app.use('/api', mainRoutes.createRouter())
 
   app.use(errorHandler)
+
+  app.use(cors())
 
   app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`)
