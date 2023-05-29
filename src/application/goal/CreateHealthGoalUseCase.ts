@@ -349,7 +349,7 @@ export class CreateHealthGoalUseCase {
   ): Promise<{
     status: StatusAfterCheck
     targetValue: {
-      weightValue: number
+      weightValueKg: number
       bodyMassIndexValue: number
     }
   }> {
@@ -363,7 +363,7 @@ export class CreateHealthGoalUseCase {
       return {
         status: StatusAfterCheck.INVALID,
         targetValue: {
-          weightValue: 0,
+          weightValueKg: 0,
           bodyMassIndexValue: 0,
         },
       }
@@ -382,7 +382,7 @@ export class CreateHealthGoalUseCase {
       return {
         status: StatusAfterCheck.EMERGENCY,
         targetValue: {
-          weightValue: 0,
+          weightValueKg: 0,
           bodyMassIndexValue: 0,
         },
       }
@@ -393,7 +393,7 @@ export class CreateHealthGoalUseCase {
       return {
         status: StatusAfterCheck.ABNORMAL,
         targetValue: {
-          weightValue: 50,
+          weightValueKg: 50,
           bodyMassIndexValue: 22,
         },
       }
@@ -403,7 +403,7 @@ export class CreateHealthGoalUseCase {
     return {
       status: StatusAfterCheck.NORMAL,
       targetValue: {
-        weightValue: 0,
+        weightValueKg: 0,
         bodyMassIndexValue: 0,
       },
     }
