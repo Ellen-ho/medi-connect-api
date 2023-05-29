@@ -68,31 +68,31 @@ export class GetHealthGoalUseCase {
 
     const latestBloodPressureRecord =
       await this.bloodPressureRecordRepository.findByPatientIdAndDate(
-        healthGoalId,
+        existingPatient.id,
         new Date()
       )
 
     const latestBloodSugarRecord =
       await this.bloodSugarRecordRepository.findByPatientIdAndDate(
-        healthGoalId,
+        existingPatient.id,
         new Date()
       )
 
     const latestGlycatedHemonglobinRecord =
       await this.glycatedHemonglobinRecordRepository.findByPatientIdAndDate(
-        healthGoalId,
+        existingPatient.id,
         new Date()
       )
 
     const latestWeightRecord =
       await this.weightRecordRepository.findByPatientIdAndDate(
-        healthGoalId,
+        existingPatient.id,
         new Date()
       )
 
     const latestBodyMassIndexRecord =
       await this.weightRecordRepository.findByPatientIdAndDate(
-        healthGoalId,
+        existingPatient.id,
         new Date()
       )
 
