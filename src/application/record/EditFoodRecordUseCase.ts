@@ -60,10 +60,6 @@ export class EditFoodRecordUseCase {
       foodNote,
     })
 
-    console.table({
-      existingFoodRecord: JSON.stringify(existingFoodRecord),
-    })
-
     await this.foodRecordRepository.save(existingFoodRecord)
 
     return {

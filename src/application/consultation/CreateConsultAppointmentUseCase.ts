@@ -62,9 +62,6 @@ export class CreateConsultAppointmentUseCase {
       createdAt: new Date(),
       updatedAt: new Date(),
     })
-    console.table({
-      consultAppointment: JSON.stringify(consultAppointment),
-    })
 
     await this.consultAppointmentRepository.save(consultAppointment)
 
