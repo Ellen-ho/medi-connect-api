@@ -60,7 +60,6 @@ export class EditBloodSugarRecordUseCase {
     existingBloodSugarRecord.updateData({
       bloodSugarDate,
       bloodSugarValue,
-      bloodSugarType,
       bloodSugarNote,
     })
 

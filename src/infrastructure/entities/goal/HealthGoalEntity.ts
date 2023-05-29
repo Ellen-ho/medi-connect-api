@@ -17,7 +17,7 @@ import {
 import { DoctorEntity } from '../doctor/DoctorEntity'
 import { BloodSugarType } from '../../../domain/record/BloodSugarRecord'
 
-@Entity('patient_health_goals')
+@Entity('health_goals')
 export class HealthGoalEntity {
   @PrimaryGeneratedColumn('uuid')
   public id!: string
@@ -67,13 +67,13 @@ export class HealthGoalEntity {
   public weightTargetValue!: number
 
   @Column({
-    name: 'body_mass_index',
+    name: 'body_mass_index_target_value',
     type: 'numeric',
     precision: 5,
     scale: 2,
     nullable: true,
   })
-  public bodyMassIndex!: number
+  public bodyMassIndexTargetValue!: number
 
   @Column({ name: 'start_at' })
   public startAt!: Date

@@ -14,24 +14,60 @@ Content-Type: application/json
 ###
 @accessToken = Bearer {{login.response.body.token}}
 
-@recordPath = {{hostname}}/api/records
+@recordsPath = {{hostname}}/api/records
 
 ### create blood pressure record
-POST {{recordPath}}/blood-pressure
+POST {{recordsPath}}/blood-pressure
 Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "bloodPressureDate":"2023-05-15 16:34:38.091",
+  "bloodPressureDate":"2023-05-13 15:34:38.090",
   "systolicBloodPressure": 138,
-  "diastolicBloodPressure": 90,
+  "diastolicBloodPressure": 95,
   "heartBeat":78,
   "bloodPressureNote": "no"
 }
 ###
 
+### create blood sugar record
+POST {{recordsPath}}/blood-sugar
+Authorization: {{accessToken}}
+Content-Type: application/json
+
+{
+  "bloodSugarDate":"2023-05-15 16:34:38.091",
+  "bloodSugarValue": 80,
+  "bloodSugarNote": "no"
+}
+###
+
+### create glycatedHemoglobinRecord record
+POST {{recordsPath}}/glycated-hemoglobin
+Authorization: {{accessToken}}
+Content-Type: application/json
+
+{
+  "glycatedHemoglobinDate": "2023-05-29 18:34:38.091",
+  "glycatedHemoglobinValuePercent": 5
+}
+###
+
+### create weight record
+POST {{recordsPath}}/weight
+Authorization: {{accessToken}}
+Content-Type: application/json
+
+{
+  "weightDate": "2023-05-29 16:34:38.091",
+  "weightValueKg": 59,
+  "weightNote": "no"
+}
+###
+
+
 ### create food record
-POST {{recordPath}}/food
+POST {{recordsPath}}/food
 Authorization: {{accessToken}}
 Content-Type: application/json
 
@@ -46,7 +82,7 @@ Content-Type: application/json
 ### edit food record
 
 @foodRecordId=bf00a253-8d32-4d3f-86f9-2144c96faeff
-PATCH {{recordPath}}/food/{{foodRecordId}}
+PATCH {{recordsPath}}/food/{{foodRecordId}}
 Authorization: {{accessToken}}
 Content-Type: application/json
 
@@ -59,7 +95,7 @@ Content-Type: application/json
 ###
 
 ### edit blood pressure record
-POST {{recordPath}}/blood-pressure
+POST {{recordsPath}}/blood-pressure
 Authorization: {{accessToken}}
 Content-Type: application/json
 
@@ -74,7 +110,7 @@ Content-Type: application/json
 
 ### edit blood pressure record
 @bloodPressureRecordId=7ee5ef35-91ec-4b7d-810e-d2c45df7c745
-PATCH {{recordPath}}/blood-pressure/{{bloodPressureRecordId}}
+PATCH {{recordsPath}}/blood-pressure/{{bloodPressureRecordId}}
 Authorization: {{accessToken}}
 Content-Type: application/json
 
@@ -88,7 +124,7 @@ Content-Type: application/json
 ###
 
 ### create exercise record
-POST {{recordPath}}/exercise
+POST {{recordsPath}}/exercise
 Authorization: {{accessToken}}
 Content-Type: application/json
 
@@ -103,55 +139,55 @@ Content-Type: application/json
 
 ### get a single exercise record
 @exerciseRecordId = 64b7896a-fe64-4b52-a84c-ddff1d44fb9b
-GET {{recordPath}}/exercise/{{exerciseRecordId}}
+GET {{recordsPath}}/exercise/{{exerciseRecordId}}
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###
 
 ### get a single glycated hemoglobin record
 @glycatedHemoglobinRecordId = uuid
-GET {{recordPath}}/glycatedHemoglobin/{{glycatedHemoglobinRecordId}}
+GET {{recordsPath}}/glycatedHemoglobin/{{glycatedHemoglobinRecordId}}
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###
 
 ### get a single blood pressure record
 @bloodPressureRecordId = uuid
-GET {{recordPath}}/bloodPressure/{{bloodPressureRecordId}}
+GET {{recordsPath}}/bloodPressure/{{bloodPressureRecordId}}
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###
 
 ### get a single blood sugar record
 @bloodSugarRecordId = uuid
-GET {{recordPath}}/bloodSugar/{{bloodSugarRecordId}}
+GET {{recordsPath}}/bloodSugar/{{bloodSugarRecordId}}
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###
 
 ### get a single food record
 @foodRecordId = uuid
-GET {{recordPath}}/food/{{foodRecordId}}
+GET {{recordsPath}}/food/{{foodRecordId}}
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###
 
 ### get a single sleep record
 @sleepRecordId = uuid
-GET {{recordPath}}/sleep/{{sleepRecordId}}
+GET {{recordsPath}}/sleep/{{sleepRecordId}}
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###
 
 ### get a single weight record
-@weightRecordId = uuid
-GET {{recordPath}}/weight/{{weightRecordId}}
+@weightRecordId = 0037ae52-0391-4ecf-9165-7b93daf7e6d9
+GET {{recordsPath}}/weight/{{weightRecordId}}
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###
 
 ### get all exercise record lists
-GET {{recordPath}}/exercise-records?limit=3&page=1
+GET {{recordsPath}}/exercise-records?limit=3&page=1
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###

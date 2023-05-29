@@ -2,17 +2,11 @@ import { BloodSugarType } from '../record/BloodSugarRecord'
 
 export interface IHealthGoalProps {
   id: string
-  currentBloodPressureValue: number | null
   bloodPressureTargetValue: IBloodPressureValue
-  currentBloodSugarValue: number | null
-  currentBloodSugarType: BloodSugarType | null
   bloodSugarTargetValue: number
   bloodSugarTargetType: BloodSugarType
-  currentGlycatedHemonglobinValue: number | null
   glycatedHemonglobinTargetValue: number
-  currentWeightValue: number | null
   weightTargetValue: number
-  currentbBodyMassIndexValue: number | null
   bodyMassIndexTargetValue: number
   startAt: Date
   endAt: Date
@@ -127,29 +121,5 @@ export class HealthGoal {
 
   public rejectGoal(): void {
     this.props.status = HealthGoalStatus.REJECTED
-  }
-
-  public get currentBloodPressureValue(): number | null {
-    return this.props.currentBloodPressureValue
-  }
-
-  public get currentBloodSugarValue(): number | null {
-    return this.props.currentBloodSugarValue
-  }
-
-  public get currentBloodSugarType(): BloodSugarType | null {
-    return this.props.currentBloodSugarType
-  }
-
-  public get currentGlycatedHemonglobinValue(): number | null {
-    return this.props.currentGlycatedHemonglobinValue
-  }
-
-  public get currentWeightValue(): number | null {
-    return this.props.currentWeightValue
-  }
-
-  public get currentbBodyMassIndexValue(): number | null {
-    return this.props.currentbBodyMassIndexValue
   }
 }

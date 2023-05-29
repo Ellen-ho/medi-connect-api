@@ -18,7 +18,6 @@ interface IBloodSugarRecordUpdateData {
   [key: string]: any
   bloodSugarDate: Date
   bloodSugarValue: number // mg/dl
-  bloodSugarType: BloodSugarType
   bloodSugarNote: string | null
 }
 export class BloodSugarRecord {

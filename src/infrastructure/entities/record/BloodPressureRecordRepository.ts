@@ -175,25 +175,71 @@ export class BloodPressureRecordRepository
         }>
       >(
         `SELECT
-              blood_pressure_date,
-              systolic_blood_pressure,
-              diastolic_blood_pressure
-          FROM
-              blood_pressure_records
-          WHERE
-              patient_id = $1
-              AND blood_pressure_records.blood_pressure_date < CURRENT_DATE - INTERVAL 1 day
-              AND blood_pressure_records.blood_pressure_date >= CURRENT_DATE - INTERVAL $2 day
-          ORDER BY
-              blood_pressure_records.blood_pressure_date DESC
-   `,
-        [patientId, daysAgo + 1]
+          blood_pressure_date,
+          systolic_blood_pressure,
+          diastolic_blood_pressure
+    FROM
+          blood_pressure_records
+    WHERE
+          patient_id = $1
+          AND blood_pressure_records."blood_pressure_date" >= CURRENT_DATE - INTERVAL '1 day' * $2
+          AND blood_pressure_records."blood_pressure_date" < CURRENT_DATE
+    ORDER BY
+          blood_pressure_records."blood_pressure_date" DESC
+
+        `,
+        [patientId, daysAgo]
       )
 
       return bloodPressureRawCounts
     } catch (e) {
       throw new RepositoryError(
         'HealthGoalEntity bloodPressureCountByPatientId error',
+        e as Error
+      )
+    }
+  }
+
+  public async findByPatientIdAndDate(
+    patientId: string,
+    date: Date
+  ): Promise<{
+    systolicBloodPressure: number
+    diastolicBloodPressure: number
+  } | null> {
+    try {
+      const bloodPressureRawValue = await this.getQuery<
+        Array<{
+          systolic_blood_pressure: number
+          diastolic_blood_pressure: number
+        }>
+      >(
+        `SELECT
+             systolic_blood_pressure,
+              diastolic_blood_pressure
+          FROM
+              blood_pressure_records
+          WHERE
+              blood_pressure_records.patient_id = $1
+              AND DATE(blood_pressure_records.blood_pressure_date) = DATE($2)
+          ORDER BY
+            blood_pressure_records.blood_pressure_date DESC
+          LIMIT 1
+   `,
+        [patientId, new Date().toISOString()]
+      )
+
+      return bloodPressureRawValue.length === 0
+        ? null
+        : {
+            systolicBloodPressure:
+              bloodPressureRawValue[0].systolic_blood_pressure,
+            diastolicBloodPressure:
+              bloodPressureRawValue[0].diastolic_blood_pressure,
+          }
+    } catch (e) {
+      throw new RepositoryError(
+        'BloodPressureRecordRepository findByPatientIdAndDat error',
         e as Error
       )
     }

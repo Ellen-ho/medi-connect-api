@@ -37,6 +37,18 @@ export class CreateGlycatedHemoglobinRecordUseCase {
       throw new Error('Patient does not exist.')
     }
 
+    const existingRecord =
+      await this.glycatedHemoglobinRecordRepository.findByPatientIdAndDate(
+        existingPatient.id,
+        glycatedHemoglobinDate
+      )
+
+    if (existingRecord != null) {
+      throw new Error(
+        'Only one glycated hemoglobin record can be created per day.'
+      )
+    }
+
     const glycatedHemoglobinRecord = new GlycatedHemoglobinRecord({
       id: this.uuidService.generateUuid(),
       glycatedHemoglobinDate,

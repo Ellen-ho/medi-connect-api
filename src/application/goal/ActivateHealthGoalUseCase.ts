@@ -36,13 +36,6 @@ export class ActivateHealthGoalUseCase {
   public async execute(
     request: ActivateHealthGoalRequest
   ): Promise<ActivateHealthGoalResponse | null> {
-    /**
-     * 1. Check if the health goal exists
-     * 2. Check if the health goal is for the user and the goal is in in progress or pending
-     * 3. Activate the health goal
-     * 4. Return the health goal
-     */
-
     const { user, healthGoalId } = request
 
     const existingPatient = await this.patientRepository.findByUserId(user.id)
@@ -57,6 +50,12 @@ export class ActivateHealthGoalUseCase {
 
     if (existingHealthGoal === null) {
       throw new Error('HealthGoal does not exist.')
+    }
+
+    if (existingHealthGoal.status !== HealthGoalStatus.PENDING) {
+      throw new Error(
+        'HealthGoal status cannot be changed if HealthGoal status is not pending.'
+      )
     }
 
     existingHealthGoal.activateGoal()

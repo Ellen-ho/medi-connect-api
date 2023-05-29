@@ -92,6 +92,9 @@ import { CreateHealthGoalUseCase } from './application/goal/CreateHealthGoalUseC
 import { HealthGoalController } from './infrastructure/http/controllers/HealthGoalController'
 import { HealthGoalRoutes } from './infrastructure/http/routes/HealthGoalRoutes'
 import { HealthGoalRepository } from './infrastructure/entities/goal/HealthGoalRepository'
+import { ActivateHealthGoalUseCase } from './application/goal/ActivateHealthGoalUseCase'
+import { RejectHealthGoalUseCase } from './application/goal/RejectHealthGoalUseCase'
+import { GetHealthGoalUseCase } from './application/goal/GetHealthGoalUseCase'
 // import { RawQueryRepository } from './infrastructure/database/RawRepository'
 
 void main()
@@ -215,18 +218,17 @@ async function main(): Promise<void> {
     weightRecordRepository,
     patientRepository
   )
-  const glycatedHemoglobinRepository = new GlycatedHemoglobinRecordRepository(
-    dataSource
-  )
+  const glycatedHemoglobinRecordRepository =
+    new GlycatedHemoglobinRecordRepository(dataSource)
   const createGlycatedHemoglobinRecordUseCase =
     new CreateGlycatedHemoglobinRecordUseCase(
-      glycatedHemoglobinRepository,
+      glycatedHemoglobinRecordRepository,
       patientRepository,
       uuidService
     )
   const editGlycatedHemoglobinRecordUseCase =
     new EditGlycatedHemoglobinRecordUseCase(
-      glycatedHemoglobinRepository,
+      glycatedHemoglobinRecordRepository,
       patientRepository
     )
   const getSingleExerciseRecordUseCase = new GetSingleExerciseRecordUseCase(
@@ -248,7 +250,7 @@ async function main(): Promise<void> {
   )
   const getSingleGlycatedHemoglobinRecordUseCase =
     new GetSingleGlycatedHemoglobinRecordUseCase(
-      glycatedHemoglobinRepository,
+      glycatedHemoglobinRecordRepository,
       patientRepository
     )
   const getSingleSleepRecordUseCase = new GetSingleSleepRecordUseCase(
@@ -270,7 +272,7 @@ async function main(): Promise<void> {
   )
   const getFoodRecordsUseCase = new GetFoodRecordsUseCase(foodRecordRepository)
   const getGlycatedHemoglobinRecordsUseCase =
-    new GetGlycatedHemoglobinRecordsUseCase(glycatedHemoglobinRepository)
+    new GetGlycatedHemoglobinRecordsUseCase(glycatedHemoglobinRecordRepository)
   const getSleepRecordsUseCase = new GetSleepRecordsUseCase(
     sleepRecordRepository
   )
@@ -403,8 +405,30 @@ async function main(): Promise<void> {
   const createHealthGoalUseCase = new CreateHealthGoalUseCase(
     healthGoalRepository,
     patientRepository,
-    doctorRepository,
+    bloodPressureRecordRepository,
+    bloodSugarRecordRepository,
+    glycatedHemoglobinRecordRepository,
+    weightRecordRepository,
     uuidService
+  )
+
+  const activateHealthGoalUseCase = new ActivateHealthGoalUseCase(
+    healthGoalRepository,
+    patientRepository
+  )
+
+  const rejectHealthGoalUseCase = new RejectHealthGoalUseCase(
+    healthGoalRepository,
+    patientRepository
+  )
+
+  const getHealthGoalUseCase = new GetHealthGoalUseCase(
+    healthGoalRepository,
+    patientRepository,
+    bloodPressureRecordRepository,
+    bloodSugarRecordRepository,
+    glycatedHemoglobinRecordRepository,
+    weightRecordRepository
   )
 
   /**
@@ -473,7 +497,12 @@ async function main(): Promise<void> {
     editDoctorTimeSlotUseCase
   )
 
-  const healthGoalController = new HealthGoalController(createHealthGoalUseCase)
+  const healthGoalController = new HealthGoalController(
+    createHealthGoalUseCase,
+    activateHealthGoalUseCase,
+    rejectHealthGoalUseCase,
+    getHealthGoalUseCase
+  )
 
   const app: Express = express()
   app.use(express.urlencoded({ extended: true }))

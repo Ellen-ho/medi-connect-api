@@ -25,7 +25,6 @@ export class PatientQuestionAnswerRepository
         where: { id },
         relations: ['patientQuestion'], // if no @RalationId set, you need to add relations here
       })
-      console.table({ entity })
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
       throw new RepositoryError(

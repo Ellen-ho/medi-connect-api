@@ -36,12 +36,6 @@ export class RejectHealthGoalUseCase {
   public async execute(
     request: RejectHealthGoalRequest
   ): Promise<RejectHealthGoalResponse | null> {
-    /**
-     * 1. Check if the health goal exists
-     * 2. Check if the health goal is for the user
-     * 3. Reject the health goal
-     * 4. Return null
-     */
     const { user, healthGoalId } = request
 
     const existingPatient = await this.patientRepository.findByUserId(user.id)
@@ -56,6 +50,12 @@ export class RejectHealthGoalUseCase {
 
     if (existingHealthGoal === null) {
       throw new Error('HealthGoal does not exist.')
+    }
+
+    if (existingHealthGoal.status !== HealthGoalStatus.PENDING) {
+      throw new Error(
+        'HealthGoal status cannot be changed if HealthGoal status is not pending.'
+      )
     }
 
     existingHealthGoal.rejectGoal()

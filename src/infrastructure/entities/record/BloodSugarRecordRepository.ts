@@ -176,10 +176,10 @@ export class BloodSugarRecordRepository
               blood_sugar_records
           WHERE
               patient_id = $1
-              AND blood_sugar_records.blood_sugar_date < CURRENT_DATE - INTERVAL 1 day
-              AND blood_sugar_records.blood_sugar_date >= CURRENT_DATE - INTERVAL $2 day
+              AND blood_sugar_records."blood_sugar_date">= CURRENT_DATE - INTERVAL '1 day' * $2
+              AND blood_sugar_records."blood_sugar_date" < CURRENT_DATE
           ORDER BY
-              blood_sugar_records.blood_sugar_date DESC
+              blood_sugar_records."blood_sugar_date" DESC
    `,
         [patientId, daysAgo]
       )
@@ -188,6 +188,48 @@ export class BloodSugarRecordRepository
     } catch (e) {
       throw new RepositoryError(
         'HealthGoalEntity bloodSugarCountByPatientId error',
+        e as Error
+      )
+    }
+  }
+
+  public async findByPatientIdAndDate(
+    patientId: string,
+    date: Date
+  ): Promise<{
+    bloodSugarValue: number
+    bloodSugarType: BloodSugarType
+  } | null> {
+    try {
+      const bloodSugarRawValue = await this.getQuery<
+        Array<{
+          blood_sugar_value: number
+          blood_sugar_type: BloodSugarType
+        }>
+      >(
+        `SELECT
+              blood_sugar_value,
+              blood_sugar_type
+          FROM
+              blood_sugar_records
+          WHERE
+              blood_sugar_records.patient_id = $1
+              AND DATE(blood_sugar_records.blood_sugar_date) = DATE($2)
+          ORDER BY
+            blood_sugar_records.blood_sugar_date DESC
+          LIMIT 1
+   `,
+        [patientId, date]
+      )
+      return bloodSugarRawValue.length === 0
+        ? null
+        : {
+            bloodSugarValue: bloodSugarRawValue[0].blood_sugar_value,
+            bloodSugarType: bloodSugarRawValue[0].blood_sugar_type,
+          }
+    } catch (e) {
+      throw new RepositoryError(
+        'BloodSugarRecordRepository findByPatientIdAndDate error',
         e as Error
       )
     }

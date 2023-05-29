@@ -33,4 +33,11 @@ export interface IBloodSugarRecordRepository
       blood_sugar_type: BloodSugarType
     }>
   >
+  findByPatientIdAndDate: (
+    patientId: string,
+    date: Date
+  ) => Promise<{
+    bloodSugarValue: number
+    bloodSugarType: BloodSugarType
+  } | null>
 }

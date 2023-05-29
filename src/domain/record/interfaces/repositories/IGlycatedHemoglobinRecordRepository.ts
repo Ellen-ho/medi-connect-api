@@ -31,4 +31,10 @@ export interface IGlycatedHemoglobinRecordRepository
       glycated_hemoglobin_value_percent: number
     }>
   >
+  findByPatientIdAndDate: (
+    patientId: string,
+    date: Date
+  ) => Promise<{
+    glycatedHemoglobinValuePercent: number
+  } | null>
 }

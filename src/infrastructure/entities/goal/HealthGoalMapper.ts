@@ -10,8 +10,10 @@ export class HealthGoalMapper
       id: entity.id,
       bloodPressureTargetValue: entity.bloodPressureTargetValue,
       bloodSugarTargetValue: entity.bloodSugarTargetValue,
+      bloodSugarTargetType: entity.bloodSugarTargetType,
       glycatedHemonglobinTargetValue: entity.glycatedHemonglobinTargetValue,
       weightTargetValue: entity.weightTargetValue,
+      bodyMassIndexTargetValue: entity.bodyMassIndexTargetValue,
       startAt: entity.startAt,
       endAt: entity.endAt,
       status: entity.status,
@@ -30,9 +32,12 @@ export class HealthGoalMapper
     healthGoalEntity.bloodPressureTargetValue =
       domainModel.bloodPressureTargetValue
     healthGoalEntity.bloodSugarTargetValue = domainModel.bloodSugarTargetValue
+    healthGoalEntity.bloodSugarTargetType = domainModel.bloodSugarTargetType
     healthGoalEntity.glycatedHemonglobinTargetValue =
       domainModel.glycatedHemonglobinTargetValue
     healthGoalEntity.weightTargetValue = domainModel.weightTargetValue
+    healthGoalEntity.bodyMassIndexTargetValue =
+      domainModel.bodyMassIndexTargetValue
     healthGoalEntity.startAt = domainModel.startAt
     healthGoalEntity.endAt = domainModel.endAt
     healthGoalEntity.status = domainModel.status

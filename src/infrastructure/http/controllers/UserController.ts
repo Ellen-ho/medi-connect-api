@@ -18,14 +18,14 @@ export class UserController implements IUserController {
 
   public login = async (req: Request, res: Response): Promise<Response> => {
     try {
-      const { id, email, createdAt, displayName } = req.user as User
+      const { id, email, createdAt, displayName, role } = req.user as User
 
       const token = jwt.sign({ id, email }, process.env.JWT_SECRET as string, {
         expiresIn: '30d',
       })
       return res.json({
         token,
-        user: { id, createdAt, displayName },
+        user: { id, createdAt, displayName, role },
       })
     } catch (error) {
       // TODO: move this to a middleware
