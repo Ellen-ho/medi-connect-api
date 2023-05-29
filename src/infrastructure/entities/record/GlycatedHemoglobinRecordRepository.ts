@@ -189,4 +189,43 @@ export class GlycatedHemoglobinRecordRepository
       )
     }
   }
+
+  public async findByPatientIdAndDate(
+    patientId: string,
+    date: Date
+  ): Promise<{
+    glycatedHemoglobinValuePercent: number
+  } | null> {
+    try {
+      const glycatedHemoglobinRawValue = await this.getQuery<
+        Array<{
+          glycated_hemoglobin_value_percent: number
+        }>
+      >(
+        `SELECT
+              glycated_hemoglobin_value_percent
+          FROM
+              glycated_hemoglobin_records
+          WHERE
+              glycated_hemoglobin_records.patient_id = $1
+              AND DATE(glycated_hemoglobin_records.glycated_hemoglobin_date) = DATE($2)
+          ORDER BY
+            glycated_hemoglobin_records.glycated_hemoglobin_date DESC
+          LIMIT 1
+   `,
+        [patientId, date]
+      )
+      return glycatedHemoglobinRawValue.length === 0
+        ? null
+        : {
+            glycatedHemoglobinValuePercent:
+              glycatedHemoglobinRawValue[0].glycated_hemoglobin_value_percent,
+          }
+    } catch (e) {
+      throw new RepositoryError(
+        'GlycatedHemoglobinRecordRepository findByPatientIdAndDate error',
+        e as Error
+      )
+    }
+  }
 }
