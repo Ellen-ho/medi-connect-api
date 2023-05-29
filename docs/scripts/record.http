@@ -30,6 +30,20 @@ Content-Type: application/json
 }
 ###
 
+### create blood sugar record
+POST {{recordsPath}}/blood-sugar
+Authorization: {{accessToken}}
+Content-Type: application/json
+
+{
+  "bloodSugarDate":"2023-05-28 16:34:38.091",
+  "bloodSugarValue": 80,
+  "bloodSugarType": "FAST_PLASMA_GLUCOSE",
+  "bloodSugarNote": "no"
+}
+###
+
+
 ### create food record
 POST {{recordsPath}}/food
 Authorization: {{accessToken}}
