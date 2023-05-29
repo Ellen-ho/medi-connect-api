@@ -198,4 +198,48 @@ export class BloodPressureRecordRepository
       )
     }
   }
+
+  public async findByPatientIdAndDate(
+    patientId: string,
+    date: Date
+  ): Promise<{
+    systolicBloodPressure: number
+    diastolicBloodPressure: number
+  } | null> {
+    try {
+      const bloodPressureRawValue = await this.getQuery<
+        Array<{
+          systolic_blood_pressure: number
+          diastolic_blood_pressure: number
+        }>
+      >(
+        `SELECT
+             systolic_blood_pressure,
+              diastolic_blood_pressure
+          FROM
+              blood_pressure_records
+          WHERE
+              blood_pressure_records.patient_id = $1
+              AND DATE(blood_pressure_records.blood_pressure_date) = DATE($2)
+          ORDER BY
+            blood_pressure_records.blood_pressure_date DESC
+          LIMIT 1
+   `,
+        [patientId, date]
+      )
+      return bloodPressureRawValue.length === 0
+        ? null
+        : {
+            systolicBloodPressure:
+              bloodPressureRawValue[0].systolic_blood_pressure,
+            diastolicBloodPressure:
+              bloodPressureRawValue[0].diastolic_blood_pressure,
+          }
+    } catch (e) {
+      throw new RepositoryError(
+        'BloodPressureRecordRepository findByPatientIdAndDat error',
+        e as Error
+      )
+    }
+  }
 }

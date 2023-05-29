@@ -33,4 +33,11 @@ export interface IBloodPressureRecordRepository
       diastolic_blood_pressure: number
     }>
   >
+  findByPatientIdAndDate: (
+    patientId: string,
+    date: Date
+  ) => Promise<{
+    systolicBloodPressure: number
+    diastolicBloodPressure: number
+  } | null>
 }
