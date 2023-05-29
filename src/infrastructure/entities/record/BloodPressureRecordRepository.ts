@@ -175,19 +175,20 @@ export class BloodPressureRecordRepository
         }>
       >(
         `SELECT
-              blood_pressure_date,
-              systolic_blood_pressure,
-              diastolic_blood_pressure
-          FROM
-              blood_pressure_records
-          WHERE
-              patient_id = $1
-              AND blood_pressure_records.blood_pressure_date < CURRENT_DATE - INTERVAL 1 day
-              AND blood_pressure_records.blood_pressure_date >= CURRENT_DATE - INTERVAL $2 day
-          ORDER BY
-              blood_pressure_records.blood_pressure_date DESC
-   `,
-        [patientId, daysAgo + 1]
+          blood_pressure_date,
+          systolic_blood_pressure,
+          diastolic_blood_pressure
+    FROM
+          blood_pressure_records
+    WHERE
+          patient_id = $1
+          AND blood_pressure_records."blood_pressure_date" >= CURRENT_DATE - INTERVAL '1 day' * $2
+          AND blood_pressure_records."blood_pressure_date" < CURRENT_DATE
+    ORDER BY
+          blood_pressure_records."blood_pressure_date" DESC
+
+        `,
+        [patientId, daysAgo]
       )
 
       return bloodPressureRawCounts
@@ -225,8 +226,9 @@ export class BloodPressureRecordRepository
             blood_pressure_records.blood_pressure_date DESC
           LIMIT 1
    `,
-        [patientId, date]
+        [patientId, new Date().toISOString()]
       )
+
       return bloodPressureRawValue.length === 0
         ? null
         : {

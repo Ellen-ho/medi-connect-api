@@ -169,10 +169,10 @@ export class WeightRecordRepository
               weight_records
           WHERE
               patient_id = $1
-              AND weight_records.weight_date < CURRENT_DATE - INTERVAL 1 day
-              AND weight_records.weight_date >= CURRENT_DATE - INTERVAL $2 day
+              AND weight_records."weight_date" >= CURRENT_DATE - INTERVAL '1 day' * $2
+              AND weight_records."weight_date" < CURRENT_DATE
           ORDER BY
-              weight_records.weight_date DESC
+              weight_records."weight_date" DESC
    `,
         [patientId, daysAgo]
       )

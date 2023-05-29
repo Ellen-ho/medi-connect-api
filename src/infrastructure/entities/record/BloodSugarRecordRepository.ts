@@ -176,10 +176,10 @@ export class BloodSugarRecordRepository
               blood_sugar_records
           WHERE
               patient_id = $1
-              AND blood_sugar_records.blood_sugar_date < CURRENT_DATE - INTERVAL 1 day
-              AND blood_sugar_records.blood_sugar_date >= CURRENT_DATE - INTERVAL $2 day
+              AND blood_sugar_records."blood_sugar_date">= CURRENT_DATE - INTERVAL '1 day' * $2
+              AND blood_sugar_records."blood_sugar_date" < CURRENT_DATE
           ORDER BY
-              blood_sugar_records.blood_sugar_date DESC
+              blood_sugar_records."blood_sugar_date" DESC
    `,
         [patientId, daysAgo]
       )
