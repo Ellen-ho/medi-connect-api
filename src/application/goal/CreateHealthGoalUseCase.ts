@@ -170,7 +170,7 @@ export class CreateHealthGoalUseCase {
       bodyMassIndexTargetValue: 22,
       startAt: new Date(),
       endAt: new Date(),
-      status: HealthGoalStatus.PARTIAL_GOALS_ACHIEVED,
+      status: HealthGoalStatus.PENDING,
       result: null,
       createdAt: new Date(),
       updatedAt: new Date(),
