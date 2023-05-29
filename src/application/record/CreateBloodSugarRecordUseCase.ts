@@ -42,6 +42,18 @@ export class CreateBloodSugarRecordUseCase {
       throw new Error('Patient does not exist.')
     }
 
+    const existingRecord =
+      await this.bloodSugarRecordRepository.findByPatientIdAndDate(
+        existingPatient.id,
+        bloodSugarDate
+      )
+
+    if (existingRecord != null) {
+      throw new Error(
+        'Only one fasting blood sugar record can be created per day.'
+      )
+    }
+
     const bloodSugarRecord = new BloodSugarRecord({
       id: this.uuidService.generateUuid(),
       bloodSugarDate,

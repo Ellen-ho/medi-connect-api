@@ -49,6 +49,16 @@ export class CreateBloodPressureRecordUseCase {
       throw new Error('Patient does not exist.')
     }
 
+    const existingRecord =
+      await this.bloodPressureRecordRepository.findByPatientIdAndDate(
+        existingPatient.id,
+        bloodPressureDate
+      )
+
+    if (existingRecord != null) {
+      throw new Error('Only one blood pressure record can be created per day.')
+    }
+
     const bloodPressureRecord = new BloodPressureRecord({
       id: this.uuidService.generateUuid(),
       bloodPressureDate,
