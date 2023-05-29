@@ -17,7 +17,7 @@ import {
 import { DoctorEntity } from '../doctor/DoctorEntity'
 import { BloodSugarType } from '../../../domain/record/BloodSugarRecord'
 
-@Entity('patient_health_goals')
+@Entity('health_goals')
 export class HealthGoalEntity {
   @PrimaryGeneratedColumn('uuid')
   public id!: string
