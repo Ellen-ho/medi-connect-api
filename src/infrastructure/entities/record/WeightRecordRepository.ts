@@ -163,7 +163,7 @@ export class WeightRecordRepository
       >(
         `SELECT
               weight_date,
-              weight_value,
+              weight_value_kg,
               body_mass_index
           FROM
               weight_records
@@ -181,6 +181,48 @@ export class WeightRecordRepository
     } catch (e) {
       throw new RepositoryError(
         'HealthGoalEntity weightCountByPatientId error',
+        e as Error
+      )
+    }
+  }
+
+  public async findByPatientIdAndDate(
+    patientId: string,
+    date: Date
+  ): Promise<{
+    weightValueKg: number
+    bodyMassIndex: number
+  } | null> {
+    try {
+      const weightAndBodyMassIndexRawValue = await this.getQuery<
+        Array<{
+          weight_value_kg: number
+          body_mass_index: number
+        }>
+      >(
+        `SELECT
+             weight_value_kg,
+              body_mass_index
+          FROM
+              weight_records
+          WHERE
+              weight_records.patient_id = $1
+              AND DATE(weight_records.weight_date) = DATE($2)
+          ORDER BY
+            weight_records.weight_date DESC
+          LIMIT 1
+   `,
+        [patientId, date]
+      )
+      return weightAndBodyMassIndexRawValue.length === 0
+        ? null
+        : {
+            weightValueKg: weightAndBodyMassIndexRawValue[0].weight_value_kg,
+            bodyMassIndex: weightAndBodyMassIndexRawValue[0].body_mass_index,
+          }
+    } catch (e) {
+      throw new RepositoryError(
+        'WightRecordRepository findByPatientIdAndDate error',
         e as Error
       )
     }
