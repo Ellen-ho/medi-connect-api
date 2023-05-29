@@ -151,6 +151,7 @@ export class PassportConfig {
           clientID: process.env.GOOGLE_CLIENT_ID as string,
           clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
           callbackURL: process.env.GOOGLE_CALLBACK_URL as string,
+          scope: ['profile'],
         },
         (accessToken, refreshToken, profile, done) => {
           const googleId = profile.id
