@@ -52,6 +52,12 @@ export class RejectHealthGoalUseCase {
       throw new Error('HealthGoal does not exist.')
     }
 
+    if (existingHealthGoal.status !== HealthGoalStatus.PENDING) {
+      throw new Error(
+        'HealthGoal status cannot be changed if HealthGoal status is not pending.'
+      )
+    }
+
     existingHealthGoal.rejectGoal()
 
     await this.healthGoalRepository.save(existingHealthGoal)
