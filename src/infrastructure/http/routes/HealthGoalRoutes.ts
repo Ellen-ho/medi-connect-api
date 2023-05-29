@@ -2,7 +2,11 @@ import { Router } from 'express'
 import { IHealthGoalController } from '../controllers/HealthGoalController'
 import { validator } from '../middlewares/Validator'
 import { asyncHandler } from '../middlewares/AsyncHandler'
-import { createHealthGoalSchema } from '../../../application/goal/GoalValidator'
+import {
+  activateHealthGoalSchema,
+  getHealthGoalSchema,
+  rejectHealthGoalSchema,
+} from '../../../application/goal/GoalValidator'
 
 export class HealthGoalRoutes {
   private readonly routes: Router
@@ -10,8 +14,22 @@ export class HealthGoalRoutes {
     this.routes = Router()
     this.routes.post(
       '/',
-      validator(createHealthGoalSchema),
       asyncHandler(this.HealthGoalController.createHealthGoal)
+    )
+    this.routes.get(
+      '/:id',
+      validator(getHealthGoalSchema),
+      asyncHandler(this.HealthGoalController.getHealthGoal)
+    )
+    this.routes.patch(
+      '/active/:id',
+      validator(activateHealthGoalSchema),
+      asyncHandler(this.HealthGoalController.activateHealthGoal)
+    )
+    this.routes.patch(
+      '/reject/:id',
+      validator(rejectHealthGoalSchema),
+      asyncHandler(this.HealthGoalController.rejectHealthGoal)
     )
   }
 
