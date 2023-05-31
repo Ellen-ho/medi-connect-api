@@ -6,8 +6,8 @@ import { IUuidService } from '../../domain/utils/IUuidService'
 
 interface CreateDoctorTimeSlotRequest {
   user: User
-  startAt: number
-  endAt: number
+  startAt: Date
+  endAt: Date
 }
 
 interface CreateDoctorTimeSlotResponse {
@@ -39,7 +39,7 @@ export class CreateDoctorTimeSlotUseCase {
 
     const existingDoctorTimeSlot =
       await this.doctorTimeSlotRepository.findByStartAtAndDoctorId(
-        new Date(startAt * 1000),
+        new Date(startAt),
         existingDoctor.id
       )
 
@@ -50,9 +50,9 @@ export class CreateDoctorTimeSlotUseCase {
     const doctorTimeSlot = new DoctorTimeSlot({
       id: this.uuidService.generateUuid(),
       doctorId: existingDoctor.id,
-      startAt: new Date(startAt * 1000),
-      endAt: new Date(endAt * 1000),
-      availability: true,
+      startAt: new Date(startAt),
+      endAt: new Date(endAt),
+      availability: true, // after creating availability will be availability
       createdAt: new Date(),
       updatedAt: new Date(),
     })
