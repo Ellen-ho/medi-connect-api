@@ -54,7 +54,7 @@ export class RejectHealthGoalUseCase {
 
     if (existingHealthGoal.status !== HealthGoalStatus.PENDING) {
       throw new Error(
-        'HealthGoal status cannot be changed if HealthGoal status is not pending.'
+        'HealthGoal status can only be changed if it is in pending.'
       )
     }
 
