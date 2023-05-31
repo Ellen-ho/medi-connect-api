@@ -8,8 +8,8 @@ POST {{usersPath}}/login
 Content-Type: application/json
 
 {
-  "email": "doctor2@mail.com",
-  "password": "doctor2"
+  "email": "Amy@gmail.com",
+  "password": "Amy"
 }
 ###
 @accessToken = Bearer {{login.response.body.token}}
@@ -29,14 +29,14 @@ Content-Type: application/json
 ###
 
 ### doctor answer a question
-@questionId=515a551e-f321-4086-8219-ec74ada985c3
+@questionId=8fcc3894-296d-4308-aba8-c11af9ca435e
 
 POST {{questionsPath}}/{{questionId}}/answers
 Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "content": "You can sleep early"
+  "content": "Drink more warm water."
 }
 ###
 

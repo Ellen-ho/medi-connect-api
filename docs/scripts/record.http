@@ -22,9 +22,9 @@ Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "bloodPressureDate":"2023-05-13 15:34:38.090",
+  "bloodPressureDate":"2023-05-29 15:34:38.090",
   "systolicBloodPressure": 138,
-  "diastolicBloodPressure": 95,
+  "diastolicBloodPressure": 78,
   "heartBeat":78,
   "bloodPressureNote": "no"
 }
