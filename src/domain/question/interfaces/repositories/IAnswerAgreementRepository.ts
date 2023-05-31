@@ -19,4 +19,5 @@ export interface IAnswerAgreementRepository
   ) => Promise<AnswerAgreement | null>
   deleteById: (id: string) => Promise<void>
   deleteAllByAnswerId: (answerId: string) => Promise<void>
+  findByDoctorId: (doctorId: string) => Promise<AnswerAgreement[]>
 }

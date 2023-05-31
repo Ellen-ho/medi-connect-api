@@ -20,4 +20,7 @@ export interface IPatientQuestionAnswerRepository
     questionId: string,
     patientId: string
   ) => Promise<IAnswer[]>
+  countByDoctorId: (doctorId: string) => Promise<number>
+  countAppreciatedAnswersByDoctorId: (doctorId: string) => Promise<number>
+  countAgreedAnswersByDoctorId: (doctorId: string) => Promise<number>
 }

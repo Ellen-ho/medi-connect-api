@@ -178,4 +178,23 @@ export class AnswerAgreementRepository
       )
     }
   }
+
+  public async findByDoctorId(doctorId: string): Promise<AnswerAgreement[]> {
+    try {
+      const entities = await this.getRepo().find({
+        where: {
+          agreedDoctor: {
+            id: doctorId,
+          },
+        },
+        relations: ['answer'],
+      })
+      return entities.map((entity) => this.getMapper().toDomainModel(entity))
+    } catch (e) {
+      throw new RepositoryError(
+        'AnswerAgreementRepository findByDoctorId error',
+        e as Error
+      )
+    }
+  }
 }
