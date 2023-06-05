@@ -30,10 +30,12 @@ export const editDoctorTimeSlotSchema = {
 }
 
 export const createMultipleTimeSlotsSchema = {
-  body: Joi.array().items(
-    Joi.object({
-      startAt: Joi.date().required(),
-      endAt: Joi.date().required(),
-    })
-  ),
+  body: Joi.object({
+    timeSlots: Joi.array().items(
+      Joi.object({
+        startAt: Joi.date().required(),
+        endAt: Joi.date().required(),
+      })
+    ),
+  }),
 }
