@@ -180,7 +180,7 @@ export class WeightRecordRepository
       return weightRawCounts
     } catch (e) {
       throw new RepositoryError(
-        'HealthGoalEntity weightCountByPatientId error',
+        'WightRecordRepository weightCountByPatientId error',
         e as Error
       )
     }

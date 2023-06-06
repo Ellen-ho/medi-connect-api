@@ -8,8 +8,8 @@ POST {{usersPath}}/login
 Content-Type: application/json
 
 {
-  "email": "doctor2@mail.com",
-  "password": "doctor2"
+  "email": "Ellen@gmail.com",
+  "password": "Ellen"
 }
 ###
 @accessToken = Bearer {{login.response.body.token}}
@@ -22,15 +22,29 @@ Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "doctorTimeSlotId": "d86ca72e-be83-4e57-9f9e-48b9c8786b36"
+  "doctorTimeSlotId": "0ccbf993-c64d-4696-b61b-19ad7be7ab49"
 }
 ###
 
 ### patient cancel a consult appointment
-@patientCancelAppointmentId = 12f52cd3-33b7-40ca-8b09-5ec7ae954b34
+@patientCancelAppointmentId = d75ebf15-8c0c-48fc-8c68-1989beed775b
 DELETE {{consultationsPath}}/{{patientCancelAppointmentId}}
 Authorization: {{accessToken}}
 Content-Type: application/json
+###
+
+### patient get consult appointments
+Get {{consultationsPath}}/patient
+Authorization: {{accessToken}}
+Content-Type: application/json
+
+###
+
+### doctor get consult appointments
+Get {{consultationsPath}}/doctor
+Authorization: {{accessToken}}
+Content-Type: application/json
+
 ###
 
 ### Doctor create a doctor time slot
@@ -39,8 +53,8 @@ Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "startAt": "1686393000",
-  "endAt": "1686394800"
+  "startAt": "2023-07-19 11:00:00.090",
+  "endAt": "2023-07-19 11:30:00.090"
 }
 ### 
 
@@ -54,3 +68,25 @@ Content-Type: application/json
   "startAt": "1686380400",
   "endAt": "1686382200"
 }
+
+### Doctor create multiple time slots
+POST {{consultationsPath}}/multiple-time-slots
+Authorization: {{accessToken}}
+Content-Type: application/json
+
+{ "timeSlots":
+  [{
+  "startAt": "2023-04-12 11:00:00.090",
+  "endAt": "2023-04-12 11:30:00.090"
+},
+{
+  "startAt": "2023-04-13 11:00:00.090",
+  "endAt": "2023-04-13 11:30:00.090"
+},
+{
+  "startAt": "2023-04-14 11:00:00.090",
+  "endAt": "2023-04-14 11:30:00.090"
+}]
+}
+
+### 

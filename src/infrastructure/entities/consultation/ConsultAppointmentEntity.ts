@@ -7,7 +7,6 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
   RelationId,
-  UpdateDateColumn,
 } from 'typeorm'
 import { ConsultAppointmentStatusType } from '../../../domain/consultation/ConsultAppointment'
 import { PatientEntity } from '../patient/PatientEntity'
@@ -28,9 +27,6 @@ export class ConsultAppointmentEntity {
 
   @CreateDateColumn({ name: 'created_at' })
   public createdAt!: Date
-
-  @UpdateDateColumn({ name: 'updated_at' })
-  public updatedAt!: Date
 
   @DeleteDateColumn({ name: 'deleted_at' })
   public deletedAt?: Date

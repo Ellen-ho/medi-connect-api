@@ -1,3 +1,4 @@
+import { MedicalSpecialtyType } from '../question/PatientQuestion'
 import { User } from '../user/User'
 
 export interface IAddress {
@@ -18,7 +19,7 @@ export interface IDoctorProps {
   gender: GenderType
   aboutMe: string
   languagesSpoken: string[]
-  specialties: string[]
+  specialties: MedicalSpecialtyType[]
   careerStartDate: Date
   officePracticalLocation: IAddress
   education: string[]
@@ -43,7 +44,7 @@ interface IDoctorProfileUpdateData {
   gender: GenderType
   aboutMe: string
   languagesSpoken: string[]
-  specialties: string[]
+  specialties: MedicalSpecialtyType[]
   careerStartDate: Date
   officePracticalLocation: IAddress
   education: string[]
@@ -82,7 +83,7 @@ export class Doctor {
     return this.props.languagesSpoken
   }
 
-  public get specialties(): string[] {
+  public get specialties(): MedicalSpecialtyType[] {
     return this.props.specialties
   }
 

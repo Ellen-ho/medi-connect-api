@@ -7,9 +7,9 @@ POST {{usersPath}}
 Content-Type: application/json
 
 {
-  "displayName":"doctor2",
-  "email": "doctor2@gmail.com",
-  "password": "doctor2",
+  "displayName":"Eric",
+  "email": "Eric@gmail.com",
+  "password": "Eric",
   "role": "DOCTOR"
 }
 ###
@@ -20,8 +20,8 @@ POST {{usersPath}}/login
 Content-Type: application/json
 
 {
-  "email": "tim@gmail.com",
-  "password": "tim"
+  "email": "Ellen@gmail.com",
+  "password": "Ellen"
 }
 ###
 @accessToken = Bearer {{login.response.body.token}}
@@ -158,9 +158,9 @@ Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "avatar": "",
-  "firstName": "doctor2",
-  "lastName": "doctor2",
+  "avatar": "null",
+  "firstName": "Amy",
+  "lastName": "Chen",
   "gender": "FEMALE",
   "aboutMe": "I am a highly skilled doctor with over 10 years of experience in treating various illnesses.",
   "languagesSpoken": ["English", "Spanish", "French"],
@@ -189,8 +189,8 @@ Content-Type: application/json
 
 {
   "avatar": "https://example.com/avatar.png",
-  "firstName": "John",
-  "lastName": "Doe",
+  "firstName": "Amy",
+  "lastName": "Chen",
   "gender": "FEMALE",
   "aboutMe": "I am a highly skilled doctor with over 10 years of experience in treating various illnesses.",
   "languagesSpoken": ["English", "Spanish", "French"],
@@ -210,3 +210,10 @@ Content-Type: application/json
   "affiliations": ["American Medical Association"]
 }
 ###
+
+### get a doctor statistic
+@doctorId=230b0299-fcd7-4eac-ad72-36cf971032f2
+GET {{doctorPath}}/{{doctorId}}/statistic
+Authorization: {{accessToken}}
+Content-Type: application/json
+

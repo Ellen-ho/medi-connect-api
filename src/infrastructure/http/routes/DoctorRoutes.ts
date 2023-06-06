@@ -4,6 +4,7 @@ import { asyncHandler } from '../middlewares/AsyncHandler'
 import {
   creatDoctorProfileSchema,
   editDoctorProfileSchema,
+  getDoctorStatisticSchema,
 } from '../../../application/doctor/DoctorValidator'
 import { authenticated } from '../middlewares/Auth'
 import { validator } from '../middlewares/Validator'
@@ -24,6 +25,12 @@ export class DoctorRoutes {
         authenticated,
         validator(editDoctorProfileSchema),
         asyncHandler(this.doctorController.editDoctorProfile)
+      )
+      .get(
+        '/:id/statistic',
+        authenticated,
+        validator(getDoctorStatisticSchema),
+        asyncHandler(this.doctorController.getDoctorStatistic)
       )
   }
 

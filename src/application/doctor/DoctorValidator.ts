@@ -37,3 +37,9 @@ export const creatDoctorProfileSchema = {
 export const editDoctorProfileSchema = {
   ...creatDoctorProfileSchema,
 }
+
+export const getDoctorStatisticSchema = {
+  params: Joi.object({
+    id: Joi.string().uuid().required(),
+  }),
+}

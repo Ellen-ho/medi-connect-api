@@ -194,7 +194,7 @@ export class BloodPressureRecordRepository
       return bloodPressureRawCounts
     } catch (e) {
       throw new RepositoryError(
-        'HealthGoalEntity bloodPressureCountByPatientId error',
+        'BloodPressureRecordRepository bloodPressureCountByPatientId error',
         e as Error
       )
     }

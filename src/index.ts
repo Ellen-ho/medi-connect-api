@@ -1,6 +1,7 @@
 import 'reflect-metadata'
 import express, { Express } from 'express'
 import dotenv from 'dotenv'
+import cors from 'cors'
 import { PostgresDatabase } from './infrastructure/database/PostgresDatabase'
 import { UuidService } from './infrastructure/utils/UuidService'
 import { UserRepository } from './infrastructure/entities/user/UserRepository'
@@ -95,6 +96,10 @@ import { HealthGoalRepository } from './infrastructure/entities/goal/HealthGoalR
 import { ActivateHealthGoalUseCase } from './application/goal/ActivateHealthGoalUseCase'
 import { RejectHealthGoalUseCase } from './application/goal/RejectHealthGoalUseCase'
 import { GetHealthGoalUseCase } from './application/goal/GetHealthGoalUseCase'
+import { GetDoctorStatisticUseCase } from './application/doctor/GetDoctorStatisticUseCase'
+import { CreateMultipleTimeSlotsUseCase } from './application/consultation/CreateMultipleTimeSlotsUseCase'
+import { GetPatientConsultAppointmentsUseCase } from './application/consultation/GetPatientConsultAppointmentsUseCase'
+import { GetDoctorConsultAppointmentsUseCase } from './application/consultation/GetDoctorConsultAppointmentsUseCase'
 // import { RawQueryRepository } from './infrastructure/database/RawRepository'
 
 void main()
@@ -129,17 +134,6 @@ async function main(): Promise<void> {
     uuidService,
     hashGenerator
   )
-  /**
-   * Patient Domain
-   */
-  const patientRepository = new PatientRepository(dataSource)
-  const createPatientProfileUseCase = new CreatePatientProfileUseCase(
-    patientRepository,
-    uuidService
-  )
-  const editPatientProfileUseCase = new EditPatientProfileUseCase(
-    patientRepository
-  )
 
   /**
    * Doctor Domain
@@ -151,6 +145,18 @@ async function main(): Promise<void> {
   )
   const editDoctorProfileUseCase = new EditDoctorProfileUseCase(
     doctorRepository
+  )
+
+  /**
+   * Patient Domain
+   */
+  const patientRepository = new PatientRepository(dataSource)
+  const createPatientProfileUseCase = new CreatePatientProfileUseCase(
+    patientRepository,
+    uuidService
+  )
+  const editPatientProfileUseCase = new EditPatientProfileUseCase(
+    patientRepository
   )
 
   /**
@@ -396,6 +402,22 @@ async function main(): Promise<void> {
     doctorTimeSlotRepository,
     doctorRepository
   )
+  const createMultipleTimeSlotsUseCase = new CreateMultipleTimeSlotsUseCase(
+    doctorTimeSlotRepository,
+    doctorRepository,
+    uuidService
+  )
+  const getPatientConsultAppointmentsUseCase =
+    new GetPatientConsultAppointmentsUseCase(
+      consultAppointmentRepository,
+      patientRepository
+    )
+
+  const getDoctorConsultAppointmentsUseCase =
+    new GetDoctorConsultAppointmentsUseCase(
+      consultAppointmentRepository,
+      doctorRepository
+    )
 
   /**
    * HealthGoal Domain
@@ -432,6 +454,15 @@ async function main(): Promise<void> {
   )
 
   /**
+   * Cross domain usecase
+   */
+
+  const getDoctorStatisticUseCase = new GetDoctorStatisticUseCase(
+    patientQuestionAnswerRepository,
+    doctorRepository
+  )
+
+  /**
    * Controllers
    */
   const userController = new UserController(getUserUseCase, createUserUseCase)
@@ -441,7 +472,8 @@ async function main(): Promise<void> {
   )
   const doctorController = new DoctorController(
     createDoctorProfileUseCase,
-    editDoctorProfileUseCase
+    editDoctorProfileUseCase,
+    getDoctorStatisticUseCase
   )
   const recordController = new RecordController(
     createWeightRecordUseCase,
@@ -494,7 +526,10 @@ async function main(): Promise<void> {
     createConsultAppointmentUseCase,
     cancelConsultAppointmentUseCase,
     createDoctorTimeSlotUseCase,
-    editDoctorTimeSlotUseCase
+    editDoctorTimeSlotUseCase,
+    createMultipleTimeSlotsUseCase,
+    getPatientConsultAppointmentsUseCase,
+    getDoctorConsultAppointmentsUseCase
   )
 
   const healthGoalController = new HealthGoalController(
@@ -530,6 +565,10 @@ async function main(): Promise<void> {
     consultationRoutes,
     healthGoalRoutes
   )
+  const corsOptions = {
+    origin: process.env.CORS_ORIGIN,
+  }
+  app.use(cors(corsOptions))
   app.use('/api', mainRoutes.createRouter())
 
   app.use(errorHandler)

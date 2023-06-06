@@ -1,4 +1,5 @@
 import { BloodSugarType } from '../record/BloodSugarRecord'
+import dayjs from 'dayjs'
 
 export interface IHealthGoalProps {
   id: string
@@ -117,6 +118,10 @@ export class HealthGoal {
 
   public activateGoal(): void {
     this.props.status = HealthGoalStatus.IN_PROGRESS
+    const startDate = dayjs()
+    const endDate = startDate.add(30, 'day')
+    this.props.startAt = startDate.toDate()
+    this.props.endAt = endDate.toDate()
   }
 
   public rejectGoal(): void {

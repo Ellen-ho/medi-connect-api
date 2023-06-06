@@ -6,6 +6,7 @@ import { BaseRepository } from '../../database/BaseRepository'
 import { IPatientQuestionAnswerRepository } from '../../../domain/question/interfaces/repositories/IPatientQuestionAnswerRepository'
 import { RepositoryError } from '../../error/RepositoryError'
 import { IAnswer } from '../../../application/question/GetSingleQuestionUseCase'
+import { MedicalSpecialtyType } from '../../../domain/question/PatientQuestion'
 
 export class PatientQuestionAnswerRepository
   extends BaseRepository<PatientQuestionAnswerEntity, PatientQuestionAnswer>
@@ -136,7 +137,7 @@ export class PatientQuestionAnswerRepository
           doctor_avatar: string | null
           doctor_first_name: string
           doctor_last_name: string
-          doctor_specialties: string[]
+          doctor_specialties: MedicalSpecialtyType[]
           doctor_career_start_date: Date
           doctor_agreed_counts: number
           answer_thank_counts: number
@@ -186,6 +187,62 @@ export class PatientQuestionAnswerRepository
     } catch (e) {
       throw new RepositoryError(
         'PatientQuestionAnswerRepository findAnswerDetailsByQuestionIdAndPatientId error',
+        e as Error
+      )
+    }
+  }
+
+  public async countByDoctorId(doctorId: string): Promise<number> {
+    try {
+      const count = await this.getRepo().count({
+        where: { doctor: { id: doctorId } },
+      })
+      return count
+    } catch (e) {
+      throw new RepositoryError(
+        'PatientQuestionAnswerRepository countByDoctorId error',
+        e as Error
+      )
+    }
+  }
+
+  public async countAppreciatedAnswersByDoctorId(
+    doctorId: string
+  ): Promise<number> {
+    try {
+      const count = await this.getQuery<number>(
+        `
+        SELECT COUNT(DISTINCT patient_question_answers.id)
+        FROM patient_question_answers
+        JOIN answer_appreciations ON patient_question_answers.id = answer_appreciations.answer_id
+        WHERE patient_question_answers.doctor_id = $1
+      `,
+        [doctorId]
+      )
+      return count
+    } catch (e) {
+      throw new RepositoryError(
+        'PatientQuestionAnswerRepository countAppreciatedAnswersByDoctorId error',
+        e as Error
+      )
+    }
+  }
+
+  public async countAgreedAnswersByDoctorId(doctorId: string): Promise<number> {
+    try {
+      const count = await this.getQuery<number>(
+        `
+          SELECT COUNT(*) as count
+          FROM patient_question_answers AS patient_question_answer
+          JOIN answer_agreements ON patient_question_answer.id = answer_agreements.patient_question_answer_id
+          WHERE patient_question_answer.doctor_id = $1
+        `,
+        [doctorId]
+      )
+      return count
+    } catch (e) {
+      throw new RepositoryError(
+        'PatientQuestionAnswerRepository countAgreedAnswersByDoctorId error',
         e as Error
       )
     }

@@ -1,6 +1,7 @@
 import { IAddress } from '../../domain/doctor/Doctor'
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 import { GenderType } from '../../domain/patient/Patient'
+import { MedicalSpecialtyType } from '../../domain/question/PatientQuestion'
 import { User } from '../../domain/user/User'
 
 interface EditDoctorProfileRequest {
@@ -10,7 +11,7 @@ interface EditDoctorProfileRequest {
   gender: GenderType
   aboutMe: string
   languagesSpoken: string[]
-  specialties: string[]
+  specialties: MedicalSpecialtyType[]
   careerStartDate: Date
   officePracticalLocation: IAddress
   education: string[]
@@ -27,7 +28,7 @@ interface EditDoctorProfileResponse {
   gender: GenderType
   aboutMe: string
   languagesSpoken: string[]
-  specialties: string[]
+  specialties: MedicalSpecialtyType[]
   careerStartDate: Date
   officePracticalLocation: IAddress
   education: string[]

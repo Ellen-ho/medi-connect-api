@@ -21,7 +21,10 @@ export class HealthGoalRepository
       })
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
-      throw new RepositoryError('HealthGoalEntity findById error', e as Error)
+      throw new RepositoryError(
+        'HealthGoalRepository findById error',
+        e as Error
+      )
     }
   }
 
@@ -40,7 +43,7 @@ export class HealthGoalRepository
       return rawCounts[0].count
     } catch (e) {
       throw new RepositoryError(
-        'HealthGoalEntity countsByPatientId error',
+        'HealthGoalRepository countsByPatientId error',
         e as Error
       )
     }
@@ -61,7 +64,7 @@ export class HealthGoalRepository
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
       throw new RepositoryError(
-        'HealthGoalEntity findByPatientIdAndStatus error',
+        'HealthGoalRepository findByPatientIdAndStatus error',
         e as Error
       )
     }
