@@ -2,6 +2,7 @@ import { IUuidService } from '../../domain/utils/IUuidService'
 import { User } from '../../domain/user/User'
 import { Doctor, GenderType, IAddress } from '../../domain/doctor/Doctor'
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
+import { MedicalSpecialtyType } from '../../domain/question/PatientQuestion'
 
 interface CreateDoctorProfileRequest {
   user: User
@@ -11,7 +12,7 @@ interface CreateDoctorProfileRequest {
   gender: GenderType
   aboutMe: string
   languagesSpoken: string[]
-  specialties: string[]
+  specialties: MedicalSpecialtyType[]
   careerStartDate: Date
   officePracticalLocation: IAddress
   education: string[]

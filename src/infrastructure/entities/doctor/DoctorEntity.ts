@@ -11,6 +11,7 @@ import {
 import { UserEntity } from '../user/UserEntity'
 import { GenderType } from '../../../domain/patient/Patient'
 import { IAddress } from '../../../domain/doctor/Doctor'
+import { MedicalSpecialtyType } from '../../../domain/question/PatientQuestion'
 
 @Entity('doctors')
 export class DoctorEntity {
@@ -41,7 +42,7 @@ export class DoctorEntity {
   public languagesSpoken!: string[]
 
   @Column({ name: 'specialties', type: 'jsonb' })
-  public specialties!: string[]
+  public specialties!: MedicalSpecialtyType[]
 
   @Column({ name: 'career_start_date' })
   public careerStartDate!: Date

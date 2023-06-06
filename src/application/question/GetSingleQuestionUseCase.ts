@@ -1,4 +1,5 @@
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
+import { MedicalSpecialtyType } from '../../domain/question/PatientQuestion'
 import { IPatientQuestionAnswerRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionAnswerRepository'
 import { IPatientQuestionRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionRepository'
 import { User } from '../../domain/user/User'
@@ -23,7 +24,7 @@ export interface IAnswer {
   avatar: string | null
   firstName: string
   lastName: string
-  specialties: string[]
+  specialties: MedicalSpecialtyType[]
   careerStartDate: Date
   agreeCounts: number
   thankCounts: number
