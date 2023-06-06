@@ -9,7 +9,7 @@ interface GetDoctorStatisticResponse {
   id: string
   answerCounts: number
   thankedCounts: number
-  agreeByOtherDoctorsCounts: number
+  beAgreedCounts: number
 }
 
 export class GetDoctorStatisticUseCase {
@@ -39,7 +39,7 @@ export class GetDoctorStatisticUseCase {
         existingDoctor.id
       )
 
-    const agreeByOtherDoctorsCounts =
+    const beAgreedCounts =
       await this.patientQuestionAnswerRepository.countAgreedAnswersByDoctorId(
         existingDoctor.id
       )
@@ -48,7 +48,7 @@ export class GetDoctorStatisticUseCase {
       id: existingDoctor.id,
       answerCounts,
       thankedCounts,
-      agreeByOtherDoctorsCounts,
+      beAgreedCounts,
     }
   }
 }
