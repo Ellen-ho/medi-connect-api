@@ -45,11 +45,63 @@ export class CreateConsultAppointmentUseCase {
       throw new Error('Doctor time slot does not exist.')
     }
 
+    const currentDate = dayjs()
+
+    const existingAppointment =
+      await this.consultAppointmentRepository.findByPatientIdAndDate(
+        existingPatient.id,
+        currentDate.toDate()
+      )
+
+    if (existingAppointment !== null) {
+      throw new Error('Patient already has an appointment for today.')
+    }
+
     const wantedAppointmentTime = existingDoctorTimeSlot.startAt
-    const diffInHours = dayjs(wantedAppointmentTime).diff(dayjs(), 'hour')
+    const diffInHours = dayjs(wantedAppointmentTime).diff(currentDate, 'hour')
 
     if (diffInHours <= 24) {
       throw new Error('Appointment should be created before one day.')
+    }
+
+    const currentMonthEndDate = currentDate.endOf('month')
+    const nextMonthStartDate = currentDate.add(1, 'month').startOf('month')
+    const nextMonthEndDate = currentDate.add(1, 'month').endOf('month')
+
+    const currentYear = currentDate.year()
+    const isLeapYear = this.checkLeapYear(currentYear)
+
+    let isWithinCurrentMonthRange = false
+    let isWithinNextMonthRange = false
+
+    if (isLeapYear) {
+      isWithinCurrentMonthRange =
+        dayjs(wantedAppointmentTime).isSame(currentDate.date(28), 'day') ||
+        (dayjs(wantedAppointmentTime).isAfter(currentDate.date(), 'day') &&
+          dayjs(wantedAppointmentTime).isBefore(currentMonthEndDate, 'day') &&
+          dayjs(wantedAppointmentTime).month() === currentDate.month())
+
+      isWithinNextMonthRange =
+        (dayjs(wantedAppointmentTime).isSame(nextMonthStartDate, 'day') ||
+          dayjs(wantedAppointmentTime).isAfter(nextMonthStartDate, 'day')) &&
+        dayjs(wantedAppointmentTime).isBefore(nextMonthEndDate, 'day') &&
+        dayjs(wantedAppointmentTime).month() === nextMonthStartDate.month()
+    } else {
+      isWithinCurrentMonthRange =
+        dayjs(wantedAppointmentTime).isSame(currentDate.date(28), 'day') ||
+        (dayjs(wantedAppointmentTime).isAfter(currentDate.date(), 'day') &&
+          dayjs(wantedAppointmentTime).isBefore(currentMonthEndDate, 'day'))
+
+      isWithinNextMonthRange =
+        (dayjs(wantedAppointmentTime).isSame(nextMonthStartDate, 'day') ||
+          dayjs(wantedAppointmentTime).isAfter(nextMonthStartDate, 'day')) &&
+        dayjs(wantedAppointmentTime).isBefore(nextMonthEndDate, 'day')
+    }
+
+    if (!isWithinCurrentMonthRange && !isWithinNextMonthRange) {
+      throw new Error(
+        'Appointment is not within the current or next month range.'
+      )
     }
 
     existingDoctorTimeSlot.updateAvailability(false)
@@ -60,7 +112,6 @@ export class CreateConsultAppointmentUseCase {
       doctorTimeSlot: existingDoctorTimeSlot,
       status: ConsultAppointmentStatusType.UPCOMING,
       createdAt: new Date(),
-      updatedAt: new Date(),
     })
 
     await this.consultAppointmentRepository.save(consultAppointment)
@@ -68,5 +119,9 @@ export class CreateConsultAppointmentUseCase {
     return {
       id: consultAppointment.id,
     }
+  }
+
+  private checkLeapYear(year: number): boolean {
+    return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0
   }
 }
