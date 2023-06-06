@@ -42,6 +42,14 @@ export class ConsultationRoutes {
         validator(createMultipleTimeSlotsSchema),
         asyncHandler(this.consultationController.createMultipleTimeSlots)
       )
+      .get(
+        '/patient',
+        asyncHandler(this.consultationController.getPatientConsultAppointments)
+      )
+      .get(
+        '/doctor',
+        asyncHandler(this.consultationController.getDoctorConsultAppointments)
+      )
   }
 
   public createRouter(): Router {
