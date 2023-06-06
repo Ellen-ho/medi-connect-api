@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { DoctorTimeSlot } from '../../domain/consultation/DoctorTimeSlot'
 import { IDoctorTimeSlotRepository } from '../../domain/consultation/interfaces/repositories/IDoctorTimeSlotRepository'
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
@@ -49,6 +50,11 @@ export class CreateMultipleTimeSlotsUseCase {
 
       if (singleTimeSlot != null) {
         throw new Error('This time slot already exists.')
+      }
+
+      const currentDate = new Date()
+      if (dayjs(currentDate).isSame(startAt, 'month')) {
+        throw new Error('Doctor cannot create the time slot in the same month.')
       }
 
       const createdSingleTimeSlot = new DoctorTimeSlot({
