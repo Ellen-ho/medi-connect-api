@@ -15,14 +15,19 @@ export class DoctorRepository
     super(DoctorEntity, new DoctorMapper(), dataSource)
   }
 
-  public async findById(id: string): Promise<Doctor | null> {
+  public async findByDoctorId(doctorId: string): Promise<Doctor | null> {
     try {
       const entity = await this.getRepo().findOne({
-        where: { id },
+        where: { id: doctorId },
+        relations: ['user'],
       })
+
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
-      throw new RepositoryError('DoctorRepository findById error', e as Error)
+      throw new RepositoryError(
+        'DoctorRepository findByDoctorId error',
+        e as Error
+      )
     }
   }
 
