@@ -187,7 +187,7 @@ export class BloodSugarRecordRepository
       return bloodSugarRawCounts
     } catch (e) {
       throw new RepositoryError(
-        'HealthGoalEntity bloodSugarCountByPatientId error',
+        'BloodSugarRecordRepository bloodSugarCountByPatientId error',
         e as Error
       )
     }
