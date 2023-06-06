@@ -20,8 +20,8 @@ POST {{usersPath}}/login
 Content-Type: application/json
 
 {
-  "email": "Amy@gmail.com",
-  "password": "Amy"
+  "email": "Ellen@gmail.com",
+  "password": "Ellen"
 }
 ###
 @accessToken = Bearer {{login.response.body.token}}
@@ -212,7 +212,7 @@ Content-Type: application/json
 ###
 
 ### get a doctor statistic
-@doctorId =230b0299-fcd7-4eac-ad72-36cf971032f2
+@doctorId=230b0299-fcd7-4eac-ad72-36cf971032f2
 GET {{doctorPath}}/{{doctorId}}/statistic
 Authorization: {{accessToken}}
 Content-Type: application/json

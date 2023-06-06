@@ -98,6 +98,8 @@ import { RejectHealthGoalUseCase } from './application/goal/RejectHealthGoalUseC
 import { GetHealthGoalUseCase } from './application/goal/GetHealthGoalUseCase'
 import { GetDoctorStatisticUseCase } from './application/doctor/GetDoctorStatisticUseCase'
 import { CreateMultipleTimeSlotsUseCase } from './application/consultation/CreateMultipleTimeSlotsUseCase'
+import { GetPatientConsultAppointmentsUseCase } from './application/consultation/GetPatientConsultAppointmentsUseCase'
+import { GetDoctorConsultAppointmentsUseCase } from './application/consultation/GetDoctorConsultAppointmentsUseCase'
 // import { RawQueryRepository } from './infrastructure/database/RawRepository'
 
 void main()
@@ -405,6 +407,17 @@ async function main(): Promise<void> {
     doctorRepository,
     uuidService
   )
+  const getPatientConsultAppointmentsUseCase =
+    new GetPatientConsultAppointmentsUseCase(
+      consultAppointmentRepository,
+      patientRepository
+    )
+
+  const getDoctorConsultAppointmentsUseCase =
+    new GetDoctorConsultAppointmentsUseCase(
+      consultAppointmentRepository,
+      doctorRepository
+    )
 
   /**
    * HealthGoal Domain
@@ -514,7 +527,9 @@ async function main(): Promise<void> {
     cancelConsultAppointmentUseCase,
     createDoctorTimeSlotUseCase,
     editDoctorTimeSlotUseCase,
-    createMultipleTimeSlotsUseCase
+    createMultipleTimeSlotsUseCase,
+    getPatientConsultAppointmentsUseCase,
+    getDoctorConsultAppointmentsUseCase
   )
 
   const healthGoalController = new HealthGoalController(

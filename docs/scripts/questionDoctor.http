@@ -52,7 +52,7 @@ Content-Type: application/json
 ###
 
 ### doctor agree with a answer of another doctor
-@doctorAgreedAnswerId=9878d031-cd8b-4aa7-9051-0ae5312e42da
+@doctorAgreedAnswerId=7c13b61e-2084-46de-b4ea-bc9795fb50e5
 POST {{questionsPath}}/answers/{{doctorAgreedAnswerId}}/agreements
 Authorization: {{accessToken}}
 Content-Type: application/json
