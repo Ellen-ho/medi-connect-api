@@ -22,12 +22,12 @@ Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "doctorTimeSlotId": "0ccbf993-c64d-4696-b61b-19ad7be7ab49"
+  "doctorTimeSlotId": "704a3dff-cfa9-4911-bd05-9ee262051d4c"
 }
 ###
 
 ### patient cancel a consult appointment
-@patientCancelAppointmentId = d75ebf15-8c0c-48fc-8c68-1989beed775b
+@patientCancelAppointmentId = 9a05c0da-1764-4600-88df-6eaf65d54e20
 DELETE {{consultationsPath}}/{{patientCancelAppointmentId}}
 Authorization: {{accessToken}}
 Content-Type: application/json
@@ -53,20 +53,20 @@ Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "startAt": "2023-07-19 11:00:00.090",
-  "endAt": "2023-07-19 11:30:00.090"
+  "startAt": "2023-07-29 11:30:00.090",
+  "endAt": "2021-07-29 11:00:00.090"
 }
 ### 
 
 ### Doctor edit a doctor time slot
-@DoctorEditTimeSlotId = d86ca72e-be83-4e57-9f9e-48b9c8786b36
+@DoctorEditTimeSlotId = a5b909a6-9c06-49ba-b6ac-33edc6721caa
 PATCH {{consultationsPath}}/time-slot/{{DoctorEditTimeSlotId}}
 Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "startAt": "1686380400",
-  "endAt": "1686382200"
+  "startAt": "2023-08-22 11:10:00.09",
+  "endAt": "2023-08-22 11:30:00.09"
 }
 
 ### Doctor create multiple time slots
@@ -76,16 +76,12 @@ Content-Type: application/json
 
 { "timeSlots":
   [{
-  "startAt": "2023-04-12 11:00:00.090",
-  "endAt": "2023-04-12 11:30:00.090"
+  "startAt": "2023-07-19 11:00:00.090",
+  "endAt": "2023-07-19 11:30:00.090"
 },
 {
-  "startAt": "2023-04-13 11:00:00.090",
-  "endAt": "2023-04-13 11:30:00.090"
-},
-{
-  "startAt": "2023-04-14 11:00:00.090",
-  "endAt": "2023-04-14 11:30:00.090"
+  "startAt": "2023-07-21 11:00:00.090",
+  "endAt": "2023-07-21 11:30:00.090"
 }]
 }
 
