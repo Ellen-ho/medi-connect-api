@@ -100,6 +100,11 @@ import { GetDoctorStatisticUseCase } from './application/doctor/GetDoctorStatist
 import { CreateMultipleTimeSlotsUseCase } from './application/consultation/CreateMultipleTimeSlotsUseCase'
 import { GetPatientConsultAppointmentsUseCase } from './application/consultation/GetPatientConsultAppointmentsUseCase'
 import { GetDoctorConsultAppointmentsUseCase } from './application/consultation/GetDoctorConsultAppointmentsUseCase'
+import { NotificationRepository } from './infrastructure/entities/notification/NotificationRepository'
+import { GetNotificationListsUseCase } from './application/notification/GetNotificationListUseCase'
+import { GetNotificationDetailsUseCase } from './application/notification/GetNotificationDetailsUseCase'
+import { NotificationController } from './infrastructure/http/controllers/NotificationController'
+import { NotificationRoutes } from './infrastructure/http/routes/NotificationRoutes'
 // import { RawQueryRepository } from './infrastructure/database/RawRepository'
 
 void main()
@@ -454,6 +459,19 @@ async function main(): Promise<void> {
   )
 
   /**
+   * Notification Domain
+   */
+  const notificationRepository = new NotificationRepository(dataSource)
+
+  const getNotificationListsUseCase = new GetNotificationListsUseCase(
+    notificationRepository
+  )
+
+  const getNotificationDetailsUseCase = new GetNotificationDetailsUseCase(
+    notificationRepository
+  )
+
+  /**
    * Cross domain usecase
    */
 
@@ -539,6 +557,11 @@ async function main(): Promise<void> {
     getHealthGoalUseCase
   )
 
+  const notificationController = new NotificationController(
+    getNotificationListsUseCase,
+    getNotificationDetailsUseCase
+  )
+
   const app: Express = express()
   app.use(express.urlencoded({ extended: true }))
   app.use(express.json())
@@ -555,6 +578,7 @@ async function main(): Promise<void> {
   const questionRoutes = new QuestionRoutes(questionController)
   const consultationRoutes = new ConsultationRoutes(consultationController)
   const healthGoalRoutes = new HealthGoalRoutes(healthGoalController)
+  const notificationRoutes = new NotificationRoutes(notificationController)
 
   const mainRoutes = new MainRoutes(
     userRoutes,
@@ -563,7 +587,8 @@ async function main(): Promise<void> {
     doctorRoutes,
     questionRoutes,
     consultationRoutes,
-    healthGoalRoutes
+    healthGoalRoutes,
+    notificationRoutes
   )
   const corsOptions = {
     origin: process.env.CORS_ORIGIN,
