@@ -71,8 +71,6 @@ export class GetDoctorConsultAppointmentsUseCase {
         upComingEndDate.toDate()
       )
 
-    console.log({ upComingAppointments })
-
     const completedAppointments =
       await this.consultAppointmentRepository.findByDoctorIdAndStatusWithinDateRange(
         existingDoctor.id,
