@@ -29,25 +29,25 @@ export class PatientQuestionAnswerEntity {
   @DeleteDateColumn({ name: 'deleted_at' })
   public deletedAt?: Date
 
-  @ManyToOne(() => PatientQuestionEntity)
+  @ManyToOne(() => PatientQuestionEntity, { nullable: false })
   @JoinColumn({ name: 'patient_question_id' })
   public patientQuestion!: PatientQuestionEntity
 
   @Column({ name: 'patient_question_id' })
   @RelationId(
-    (PatientQuestionAnswer: PatientQuestionAnswerEntity) =>
-      PatientQuestionAnswer.patientQuestion
+    (patientQuestionAnswer: PatientQuestionAnswerEntity) =>
+      patientQuestionAnswer.patientQuestion
   )
   public patientQuestionId!: string
 
-  @ManyToOne(() => DoctorEntity)
+  @ManyToOne(() => DoctorEntity, { nullable: false })
   @JoinColumn({ name: 'doctor_id' })
   public doctor!: DoctorEntity
 
   @Column({ name: 'doctor_id' })
   @RelationId(
-    (PatientQuestionAnswer: PatientQuestionAnswerEntity) =>
-      PatientQuestionAnswer.doctor
+    (patientQuestionAnswer: PatientQuestionAnswerEntity) =>
+      patientQuestionAnswer.doctor
   )
   public doctorId!: string
 }
