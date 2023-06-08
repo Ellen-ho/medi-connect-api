@@ -49,6 +49,25 @@ export class CreateDoctorTimeSlotUseCase {
     }
 
     const currentDate = dayjs()
+    // const currentDate = dayjs('2021-01-07 15:30:00')
+
+    const minimumOfEndAt = dayjs(startAt).add(30, 'minute')
+
+    // 創建的時間表不能早於現在時間(包括年月日時分秒)
+    // 如:同一天，晚上不能創白天時間表
+    if (dayjs(startAt).isBefore(currentDate)) {
+      throw new Error(
+        'Doctor cannot create time slots before the current time.'
+      )
+    }
+
+    if (dayjs(startAt).isAfter(endAt)) {
+      throw new Error('The start time should before end time.')
+    }
+
+    if (dayjs(endAt).isBefore(minimumOfEndAt)) {
+      throw new Error('The end time should be 30 minutes after the start time.')
+    }
 
     const nextMonthStartDate = currentDate.add(1, 'month').startOf('month')
     const nextMonthEndDate = currentDate.add(1, 'month').endOf('month')
@@ -60,14 +79,6 @@ export class CreateDoctorTimeSlotUseCase {
 
     const thisMonthDivisionDate = thisMonthStartDate.set('date', 28)
     const nextMonthDivisionDate = nextMonthStartDate.set('date', 28)
-
-    // 創建的時間表不能早於現在時間(包括年月日時分秒)
-    // 如:同一天，晚上不能創白天時間表
-    if (dayjs(startAt).isBefore(currentDate)) {
-      throw new Error(
-        'Doctor cannot create time slots before the current time.'
-      )
-    }
 
     // 當月28號前(不含28號)不能創下下月，不可創當月以前時間，只可創下月整月時間
     // 當月28號後(含28號)到下月28號前(不含28號)，不可創當月28後時間到下月整月時間，不可創下下下月，只可以創建下下月
