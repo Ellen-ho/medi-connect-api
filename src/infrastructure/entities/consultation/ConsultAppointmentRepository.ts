@@ -91,12 +91,8 @@ export class ConsultAppointmentRepository
     try {
       const rawAppointments = await this.getQuery<
         Array<{
-          id: string
           status: ConsultAppointmentStatusType
-          created_at: string
           patient_id: string
-          doctor_time_slot_id: string
-          deleted_at: string | null
           first_name: string
           last_name: string
           specialties: MedicalSpecialtyType[]
@@ -106,7 +102,8 @@ export class ConsultAppointmentRepository
       >(
         `
         SELECT
-          consult_appointments.*,
+          consult_appointments.patient_id,
+          consult_appointments.status,
           doctors.first_name,
           doctors.last_name,
           doctors.specialties,
@@ -187,12 +184,8 @@ export class ConsultAppointmentRepository
     try {
       const rawAppointments = await this.getQuery<
         Array<{
-          // id: string
           status: ConsultAppointmentStatusType
-          // created_at: string
           doctor_id: string
-          // doctor_time_slot_id: string
-          // deleted_at: string | null
           first_name: string
           last_name: string
           start_at: Date
