@@ -52,6 +52,9 @@ export class CancelConsultAppointmentUseCase {
       throw new Error('Appointment should be canceled before one day.')
     }
 
+    existingConsultAppointment.doctorTimeSlot.updateAvailability(true)
+
+    await this.consultAppointmentRepository.save(existingConsultAppointment)
     await this.consultAppointmentRepository.deleteById(
       existingConsultAppointment.id
     )
