@@ -33,7 +33,7 @@ export class ConsultAppointmentEntity {
 
   @ManyToOne(() => PatientEntity)
   @JoinColumn({ name: 'patient_id' })
-  patient!: PatientEntity
+  public patient!: PatientEntity
 
   @Column({ name: 'patient_id' })
   @RelationId(
@@ -41,7 +41,13 @@ export class ConsultAppointmentEntity {
   )
   public patientId!: string
 
-  @ManyToOne(() => DoctorTimeSlotEntity, (doctorTimeSlot) => doctorTimeSlot.id)
+  @ManyToOne(
+    () => DoctorTimeSlotEntity,
+    (doctorTimeSlot) => doctorTimeSlot.id,
+    {
+      cascade: true,
+    }
+  )
   @JoinColumn({ name: 'doctor_time_slot_id' })
   public doctorTimeSlot!: DoctorTimeSlotEntity
 }
