@@ -56,6 +56,16 @@ export class EditWeightRecordUseCase {
       heightValueCm: existingPatient.heightValueCm,
     })
 
+    const depulicatedWeightRecord =
+      await this.weightRecordRepository.findByPatientIdAndDate(
+        existingPatient.id,
+        weightDate
+      )
+
+    if (depulicatedWeightRecord != null) {
+      throw new Error("This patient's weight record date is duplicated.")
+    }
+
     existingWeightRecord.updateData({
       weightDate,
       weightValueKg,

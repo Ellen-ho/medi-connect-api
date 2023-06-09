@@ -46,6 +46,16 @@ export class CreateWeightRecordUseCase {
       heightValueCm: existingPatient.heightValueCm,
     })
 
+    const existingRecord =
+      await this.weightRecordRepository.findByPatientIdAndDate(
+        existingPatient.id,
+        weightDate
+      )
+
+    if (existingRecord != null) {
+      throw new Error('Only one weight record can be created per day.')
+    }
+
     const weightRecord = new WeightRecord({
       id: this.uuidService.generateUuid(),
       weightDate,
@@ -56,6 +66,7 @@ export class CreateWeightRecordUseCase {
       updatedAt: new Date(),
       patientId: existingPatient.id,
     })
+
     await this.weightRecordRepository.save(weightRecord)
 
     return {
