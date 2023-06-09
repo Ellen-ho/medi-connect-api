@@ -129,6 +129,7 @@ export class SleepRecordRepository
             sleep_quality
           FROM
             sleep_records
+          ORDER BY sleep_date DESC
           LIMIT $1
           OFFSET $2
         `,
@@ -145,6 +146,26 @@ export class SleepRecordRepository
     } catch (e) {
       throw new RepositoryError(
         'SleepRecordRepository findAndCountAll error',
+        e as Error
+      )
+    }
+  }
+
+  public async findByPatientIdAndDate(
+    patientId: string,
+    sleepDate: Date
+  ): Promise<SleepRecord | null> {
+    try {
+      const entity = await this.getRepo().findOne({
+        where: {
+          patient: { id: patientId },
+          sleepDate,
+        },
+      })
+      return entity != null ? this.getMapper().toDomainModel(entity) : null
+    } catch (e) {
+      throw new RepositoryError(
+        'SleepRecordRepository findByPatientIdAndDate error',
         e as Error
       )
     }

@@ -50,6 +50,16 @@ export class CreateSleepRecordUseCase {
       'hour'
     )
 
+    const existingRecord =
+      await this.sleepRecordRepository.findByPatientIdAndDate(
+        existingPatient.id,
+        sleepDate
+      )
+
+    if (existingRecord != null) {
+      throw new Error('Only one sleep record can be created per day.')
+    }
+
     const sleepRecord = new SleepRecord({
       id: this.uuidService.generateUuid(),
       sleepDate,

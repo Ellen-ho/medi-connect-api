@@ -64,6 +64,16 @@ export class EditSleepRecordUseCase {
       throw new Error('This sleep record does not exist.')
     }
 
+    const depulicatedSleepRecord =
+      await this.sleepRecordRepository.findByPatientIdAndDate(
+        existingPatient.id,
+        sleepDate
+      )
+
+    if (depulicatedSleepRecord != null) {
+      throw new Error("This patient's sleep record date is duplicated.")
+    }
+
     const sleepDurationHour: number = dayjs(wakeUpTime).diff(
       dayjs(sleepTime),
       'hour'
