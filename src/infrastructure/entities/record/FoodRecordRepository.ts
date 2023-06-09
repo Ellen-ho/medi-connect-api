@@ -126,6 +126,7 @@ export class FoodRecordRepository
             food_category
           FROM
             food_records
+          ORDER BY food_date DESC, food_records.update_at DESC
           LIMIT $1
           OFFSET $2
         `,

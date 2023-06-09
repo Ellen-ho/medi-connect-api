@@ -134,6 +134,7 @@ export class BloodPressureRecordRepository
             diastolic_blood_pressure
           FROM
             blood_pressure_records
+            ORDER BY blood_pressure_date DESC
           LIMIT $1
           OFFSET $2
         `,
