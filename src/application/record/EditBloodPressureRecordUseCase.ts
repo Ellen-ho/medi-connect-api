@@ -60,6 +60,18 @@ export class EditBloodPressureRecordUseCase {
       throw new Error('This blood pressure record does not exist.')
     }
 
+    const depulicatedBloodPressureRecord =
+      await this.bloodPressureRecordRepository.findByPatientIdAndDate(
+        existingPatient.id,
+        bloodPressureDate
+      )
+
+    if (depulicatedBloodPressureRecord != null) {
+      throw new Error(
+        "This patient's blood pressure record date is duplicated."
+      )
+    }
+
     existingBloodPressureRecord.updateData({
       bloodPressureDate,
       systolicBloodPressure,

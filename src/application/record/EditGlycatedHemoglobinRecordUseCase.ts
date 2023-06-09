@@ -51,6 +51,18 @@ export class EditGlycatedHemoglobinRecordUseCase {
       throw new Error('This glycated hemoglobin record does not exist.')
     }
 
+    const depulicatedGlycatedHemoglobinRecord =
+      await this.glycatedHemoglobinRecordRepository.findByPatientIdAndDate(
+        existingPatient.id,
+        glycatedHemoglobinDate
+      )
+
+    if (depulicatedGlycatedHemoglobinRecord != null) {
+      throw new Error(
+        "This patient's glycatedHemoglobin record date is duplicated."
+      )
+    }
+
     existingGlycatedHemoglobinRecord.updateData({
       glycatedHemoglobinDate,
       glycatedHemoglobinValuePercent,
