@@ -23,6 +23,10 @@ export class NotificationRoutes {
       '/hints',
       asyncHandler(this.NotificationController.getNotificationHints)
     )
+    this.routes.patch(
+      '/read-all',
+      asyncHandler(this.NotificationController.readAllNotifications)
+    )
   }
 
   public createRouter(): Router {

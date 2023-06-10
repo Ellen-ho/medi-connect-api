@@ -106,6 +106,7 @@ import { GetNotificationDetailsUseCase } from './application/notification/GetNot
 import { NotificationController } from './infrastructure/http/controllers/NotificationController'
 import { NotificationRoutes } from './infrastructure/http/routes/NotificationRoutes'
 import { GetNotificationHintsUseCase } from './application/notification/GetNotificationHintsUseCase'
+import { ReadAllNotificationsUseCase } from './application/notification/ReadAllNotificationsUseCase'
 // import { RawQueryRepository } from './infrastructure/database/RawRepository'
 
 void main()
@@ -476,6 +477,10 @@ async function main(): Promise<void> {
     notificationRepository
   )
 
+  const readAllNotificationsUseCase = new ReadAllNotificationsUseCase(
+    notificationRepository
+  )
+
   /**
    * Cross domain usecase
    */
@@ -565,7 +570,8 @@ async function main(): Promise<void> {
   const notificationController = new NotificationController(
     getNotificationListsUseCase,
     getNotificationDetailsUseCase,
-    getNotificationHintsUseCase
+    getNotificationHintsUseCase,
+    readAllNotificationsUseCase
   )
 
   const app: Express = express()

@@ -15,11 +15,16 @@ export interface INotificationRepository extends IBaseRepository<Notification> {
     notifications: Array<{
       id: string
       title: string
+      content: string
       isRead: boolean
       notificationType: NotificationType
       createdAt: Date
       updatedAt: Date
-    }>
+    }> | null
   }>
   findUnreadByUserId: (userId: string) => Promise<boolean>
+  findAllUnreadNotificationsByUserId: (
+    userId: string
+  ) => Promise<Notification[]>
+  saveAll: (notifications: Notification[]) => Promise<void>
 }

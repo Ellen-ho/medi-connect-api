@@ -28,3 +28,15 @@ GET {{notificationsPath}}/:id
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###
+
+### get notification hints
+GET  {{notificationsPath}}/hints
+Authorization: {{accessToken}}
+Content-Type: application/json
+###
+
+### read  all notifications
+PATCH  {{notificationsPath}}/read-all
+Authorization: {{accessToken}}
+Content-Type: application/json
+###

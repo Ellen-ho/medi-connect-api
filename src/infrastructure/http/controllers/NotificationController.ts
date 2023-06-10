@@ -3,18 +3,21 @@ import { GetNotificationListsUseCase } from '../../../application/notification/G
 import { GetNotificationDetailsUseCase } from '../../../application/notification/GetNotificationDetailsUseCase'
 import { User } from '../../../domain/user/User'
 import { GetNotificationHintsUseCase } from '../../../application/notification/GetNotificationHintsUseCase'
+import { ReadAllNotificationsUseCase } from '../../../application/notification/ReadAllNotificationsUseCase'
 
 export interface INotificationController {
   getNotificationLists: (req: Request, res: Response) => Promise<Response>
   getNotificationDetails: (req: Request, res: Response) => Promise<Response>
   getNotificationHints: (req: Request, res: Response) => Promise<Response>
+  readAllNotifications: (req: Request, res: Response) => Promise<Response>
 }
 
 export class NotificationController implements INotificationController {
   constructor(
     private readonly getNotificationListsUseCase: GetNotificationListsUseCase,
     private readonly getNotificationDetailsUseCase: GetNotificationDetailsUseCase,
-    private readonly getNotificationHintsUseCase: GetNotificationHintsUseCase
+    private readonly getNotificationHintsUseCase: GetNotificationHintsUseCase,
+    private readonly readAllNotificationsUseCase: ReadAllNotificationsUseCase
   ) {}
 
   public getNotificationLists = async (
@@ -61,6 +64,23 @@ export class NotificationController implements INotificationController {
         user: req.user as User,
       }
       const result = await this.getNotificationHintsUseCase.execute(request)
+
+      return res.status(200).json(result)
+    } catch (error) {
+      // TODO: move this to a middleware
+      return res.status(400).json({ message: (error as Error).message })
+    }
+  }
+
+  public readAllNotifications = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    try {
+      const request = {
+        user: req.user as User,
+      }
+      const result = await this.readAllNotificationsUseCase.execute(request)
 
       return res.status(200).json(result)
     } catch (error) {

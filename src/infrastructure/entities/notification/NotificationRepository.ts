@@ -46,6 +46,7 @@ export class NotificationRepository
     notifications: Array<{
       id: string
       title: string
+      content: string
       isRead: boolean
       notificationType: NotificationType
       createdAt: Date
@@ -58,6 +59,7 @@ export class NotificationRepository
           total_counts: number
           id: string
           title: string
+          content: string
           is_read: boolean
           notification_type: NotificationType
           created_at: Date
@@ -69,6 +71,7 @@ export class NotificationRepository
             (SELECT COUNT(*) FROM notifications WHERE user_id = $1) as total_counts,
             id,
             title,
+            content,
             is_read,
             notification_type,
             created_at,
@@ -89,6 +92,7 @@ export class NotificationRepository
         notifications: rawNotifications.map((notification) => ({
           id: notification.id,
           title: notification.title,
+          content: notification.content,
           isRead: notification.is_read,
           notificationType: notification.notification_type,
           createdAt: notification.created_at,
@@ -125,6 +129,26 @@ export class NotificationRepository
     } catch (e) {
       throw new RepositoryError(
         'NotificationRepository findUnreadByUserId error',
+        e as Error
+      )
+    }
+  }
+
+  public async findAllUnreadNotificationsByUserId(
+    userId: string
+  ): Promise<Notification[]> {
+    try {
+      const entities = await this.getRepo().find({
+        where: {
+          user: { id: userId },
+          isRead: false,
+        },
+        relations: ['user'],
+      })
+      return entities.map((entity) => this.getMapper().toDomainModel(entity))
+    } catch (e) {
+      throw new RepositoryError(
+        'NotificationRepository findAllUnreadNotificationsByUserId error',
         e as Error
       )
     }
