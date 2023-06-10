@@ -57,6 +57,18 @@ export class EditBloodSugarRecordUseCase {
       throw new Error('This blood sugar record does not exist.')
     }
 
+    const depulicatedBloodSugarRecord =
+      await this.bloodSugarRecordRepository.findByPatientIdAndDate(
+        existingPatient.id,
+        bloodSugarDate
+      )
+
+    if (depulicatedBloodSugarRecord != null) {
+      throw new Error(
+        "This patient's fasting blood sugar record date is duplicated."
+      )
+    }
+
     existingBloodSugarRecord.updateData({
       bloodSugarDate,
       bloodSugarValue,

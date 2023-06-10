@@ -86,6 +86,7 @@ export class PatientQuestionRepository
             content
           FROM
             patient_questions
+            ORDER BY patient_questions.created_at DESC
           LIMIT $1
           OFFSET $2
         `,

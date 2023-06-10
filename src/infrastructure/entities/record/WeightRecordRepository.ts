@@ -122,6 +122,7 @@ export class WeightRecordRepository
             weight_value_kg
           FROM
             weight_records
+          ORDER BY weight_date DESC
           LIMIT $1
           OFFSET $2
         `,

@@ -19,6 +19,14 @@ export class NotificationRoutes {
       validator(getNotificationDetailsSchema),
       asyncHandler(this.NotificationController.getNotificationDetails)
     )
+    this.routes.get(
+      '/hints',
+      asyncHandler(this.NotificationController.getNotificationHints)
+    )
+    this.routes.patch(
+      '/read-all',
+      asyncHandler(this.NotificationController.readAllNotifications)
+    )
   }
 
   public createRouter(): Router {

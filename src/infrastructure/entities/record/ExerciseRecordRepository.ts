@@ -146,6 +146,7 @@ export class ExerciseRecordRepository
             exercise_type
           FROM
             exercise_records
+          ORDER BY exercise_date DESC, exercise_records.update_at DESC
           LIMIT $1
           OFFSET $2
         `,

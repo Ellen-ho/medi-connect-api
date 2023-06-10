@@ -128,6 +128,7 @@ export class BloodSugarRecordRepository
             blood_sugar_type
           FROM
             blood_sugar_records
+            ORDER BY blood_sugar_date DESC
           LIMIT $1
           OFFSET $2
         `,

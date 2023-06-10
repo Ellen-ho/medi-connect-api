@@ -14,10 +14,11 @@ interface GetNotificationListsResponse {
     id: string
     title: string
     isRead: boolean
+    content: string
     notificationType: NotificationType
     createdAt: Date
     updatedAt: Date
-  }>
+  }> | null
   pagination: {
     pages: number[]
     totalPage: number
@@ -47,7 +48,7 @@ export class GetNotificationListsUseCase {
         offset
       )
 
-    if (existingNotificationLists == null) {
+    if (existingNotificationLists.notifications.length === 0) {
       throw new Error('NotificationLists do not exist.')
     }
 

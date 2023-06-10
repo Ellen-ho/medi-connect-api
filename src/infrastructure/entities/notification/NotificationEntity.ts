@@ -26,7 +26,7 @@ export class NotificationEntity {
   @Column({ name: 'content', type: 'varchar', length: 250 })
   public content!: string
 
-  @Column({ name: 'notification_type', type: 'string', length: 250 })
+  @Column({ name: 'notification_type', type: 'varchar', length: 250 })
   public notificationType!: NotificationType
 
   @CreateDateColumn({ name: 'created_at' })

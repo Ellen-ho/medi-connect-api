@@ -128,6 +128,7 @@ export class GlycatedHemoglobinRecordRepository
             glycated_hemoglobin_value_percent
           FROM
             glycated_hemoglobin_records
+          ORDER BY glycated_hemoglobin_date DESC
           LIMIT $1
           OFFSET $2
         `,
