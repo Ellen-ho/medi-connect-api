@@ -14,10 +14,11 @@ interface GetNotificationListsResponse {
     id: string
     title: string
     isRead: boolean
+    content: string
     notificationType: NotificationType
     createdAt: Date
     updatedAt: Date
-  }>
+  }> | null
   pagination: {
     pages: number[]
     totalPage: number
