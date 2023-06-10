@@ -1,0 +1,30 @@
+@hostname = http://localhost:7000
+
+@usersPath = {{hostname}}/api/users
+
+### user login
+# @name login
+POST {{usersPath}}/login
+Content-Type: application/json
+
+{
+  "email": "tim@gmail.com",
+  "password": "tim"
+}
+
+###
+@accessToken = Bearer {{login.response.body.token}}
+
+@notificationsPath = {{hostname}}/api/notifications
+
+### get notificationLists
+GET {{notificationsPath}}?limit=3&page=1
+Authorization: {{accessToken}}
+Content-Type: application/json
+###
+
+### get notificationDetails
+GET {{notificationsPath}}/:id
+Authorization: {{accessToken}}
+Content-Type: application/json
+###

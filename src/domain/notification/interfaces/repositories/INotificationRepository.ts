@@ -21,4 +21,5 @@ export interface INotificationRepository extends IBaseRepository<Notification> {
       updatedAt: Date
     }>
   }>
+  findUnreadByUserId: (userId: string) => Promise<boolean>
 }

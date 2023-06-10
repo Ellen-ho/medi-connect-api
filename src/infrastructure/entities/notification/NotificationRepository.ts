@@ -77,6 +77,7 @@ export class NotificationRepository
             notifications
             WHERE
           user_id = $1
+          ORDER BY created_at DESC
           LIMIT $2
           OFFSET $3
         `,
@@ -97,6 +98,33 @@ export class NotificationRepository
     } catch (e) {
       throw new RepositoryError(
         'NotificationRepository findAndCountAll error',
+        e as Error
+      )
+    }
+  }
+
+  public async findUnreadByUserId(userId: string): Promise<boolean> {
+    try {
+      const result = await this.getQuery<
+        Array<{
+          is_read: boolean
+        }>
+      >(
+        `
+          SELECT EXISTS (
+            SELECT 1
+            FROM notifications
+            WHERE user_id = $1
+            AND is_read = FALSE
+            LIMIT 1
+          ) AS has_unread_notification
+          `,
+        [userId]
+      )
+      return result[0].is_read
+    } catch (e) {
+      throw new RepositoryError(
+        'NotificationRepository findUnreadByUserId error',
         e as Error
       )
     }
