@@ -42,4 +42,18 @@ export class BaseRepository<E extends ObjectLiteral, DM>
       throw new Error('repository save error')
     }
   }
+
+  public async saveAll(
+    doaminModels: DM[],
+    executor: IExecutor = this.getRepo()
+  ): Promise<void> {
+    try {
+      const entities = doaminModels.map((doaminModel) =>
+        this.mapper.toPersistence(doaminModel)
+      )
+      await executor.save(entities)
+    } catch (e) {
+      throw new Error('repository saveAll error')
+    }
+  }
 }
