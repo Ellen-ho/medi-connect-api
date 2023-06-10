@@ -48,7 +48,7 @@ export class GetNotificationListsUseCase {
         offset
       )
 
-    if (existingNotificationLists == null) {
+    if (existingNotificationLists.notifications.length === 0) {
       throw new Error('NotificationLists do not exist.')
     }
 

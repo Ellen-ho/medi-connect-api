@@ -20,7 +20,7 @@ export interface INotificationRepository extends IBaseRepository<Notification> {
       notificationType: NotificationType
       createdAt: Date
       updatedAt: Date
-    }> | null
+    }>
   }>
   findUnreadByUserId: (userId: string) => Promise<boolean>
   findAllUnreadNotificationsByUserId: (
