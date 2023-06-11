@@ -3,8 +3,8 @@ import { INotificationRepository } from '../../domain/notification/interfaces/re
 import { User } from '../../domain/user/User'
 
 interface GetNotificationDetailsRequest {
-  user: User
   notificationId: string
+  user: User
 }
 
 interface GetNotificationDetailsResponse {
@@ -25,12 +25,12 @@ export class GetNotificationDetailsUseCase {
   public async execute(
     request: GetNotificationDetailsRequest
   ): Promise<GetNotificationDetailsResponse> {
-    const { user, notificationId } = request
+    const { notificationId, user } = request
 
     const existingNotification =
       await this.notificationRepository.findByIdAndUserId(
-        user.id,
-        notificationId
+        notificationId,
+        user.id
       )
 
     if (existingNotification == null) {
