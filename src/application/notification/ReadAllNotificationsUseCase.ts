@@ -38,10 +38,9 @@ export class ReadAllNotificationsUseCase {
       throw new Error('All notifications have been read.')
     }
 
-    existingUnReadNotifications.forEach((notification) => {
+    for (const notification of existingUnReadNotifications) {
       notification.updateIsRead(true)
-    })
-
+    }
     await this.notificationRepository.saveAll(existingUnReadNotifications)
 
     return {

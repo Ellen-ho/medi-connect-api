@@ -107,6 +107,8 @@ import { NotificationController } from './infrastructure/http/controllers/Notifi
 import { NotificationRoutes } from './infrastructure/http/routes/NotificationRoutes'
 import { GetNotificationHintsUseCase } from './application/notification/GetNotificationHintsUseCase'
 import { ReadAllNotificationsUseCase } from './application/notification/ReadAllNotificationsUseCase'
+import { DeleteAllNotificationsUseCase } from './application/notification/DeleteAllNotificationsUseCase'
+import { DeleteNotificationUseCase } from './application/notification/DeleteNotificationUseCase'
 // import { RawQueryRepository } from './infrastructure/database/RawRepository'
 
 void main()
@@ -481,6 +483,14 @@ async function main(): Promise<void> {
     notificationRepository
   )
 
+  const deleteAllNotificationsUseCase = new DeleteAllNotificationsUseCase(
+    notificationRepository
+  )
+
+  const deleteNotificationUseCase = new DeleteNotificationUseCase(
+    notificationRepository
+  )
+
   /**
    * Cross domain usecase
    */
@@ -571,7 +581,9 @@ async function main(): Promise<void> {
     getNotificationListsUseCase,
     getNotificationDetailsUseCase,
     getNotificationHintsUseCase,
-    readAllNotificationsUseCase
+    readAllNotificationsUseCase,
+    deleteAllNotificationsUseCase,
+    deleteNotificationUseCase
   )
 
   const app: Express = express()
