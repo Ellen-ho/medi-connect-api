@@ -36,7 +36,7 @@ export class NotificationEntity {
   public updatedAt!: Date
 
   @DeleteDateColumn({ name: 'deleted_at' })
-  public deletedAt!: Date
+  public deletedAt?: Date
 
   @ManyToOne(() => UserEntity, { nullable: false })
   @JoinColumn({ name: 'user_id' })
