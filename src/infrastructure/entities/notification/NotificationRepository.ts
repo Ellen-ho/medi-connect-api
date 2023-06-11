@@ -27,6 +27,7 @@ export class NotificationRepository
           id: notificationId,
           user: { id: userId }, // need to set @RelationId
         },
+        relations: ['user'],
       })
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
@@ -111,21 +112,21 @@ export class NotificationRepository
     try {
       const result = await this.getQuery<
         Array<{
-          is_read: boolean
+          has_unread_notification: boolean
         }>
       >(
-        `
-          SELECT EXISTS (
-            SELECT 1
-            FROM notifications
-            WHERE user_id = $1
+        `SELECT EXISTS (
+          SELECT 1
+          FROM notifications
+          WHERE user_id = $1
             AND is_read = FALSE
-            LIMIT 1
-          ) AS has_unread_notification
-          `,
+          LIMIT 1
+        ) AS has_unread_notification
+        `,
         [userId]
       )
-      return result[0].is_read
+
+      return result[0].has_unread_notification
     } catch (e) {
       throw new RepositoryError(
         'NotificationRepository findUnreadByUserId error',
@@ -149,6 +150,53 @@ export class NotificationRepository
     } catch (e) {
       throw new RepositoryError(
         'NotificationRepository findAllUnreadNotificationsByUserId error',
+        e as Error
+      )
+    }
+  }
+
+  public async findAllByUserId(userId: string): Promise<Notification[]> {
+    try {
+      const entities = await this.getRepo().find({
+        where: {
+          user: { id: userId },
+        },
+        relations: ['user'],
+      })
+      return entities.map((entity) => this.getMapper().toDomainModel(entity))
+    } catch (e) {
+      throw new RepositoryError(
+        'NotificationRepository findAllByUserId error',
+        e as Error
+      )
+    }
+  }
+
+  public async deleteAllByUserId(userId: string): Promise<void> {
+    try {
+      await this.getRepo()
+        .createQueryBuilder('notifications')
+        .softDelete()
+        .where('userId = :userId', { userId })
+        .execute()
+    } catch (e) {
+      throw new RepositoryError(
+        'NotificationRepository deleteAllByUserId error',
+        e as Error
+      )
+    }
+  }
+
+  public async deleteById(id: string): Promise<void> {
+    try {
+      await this.getRepo()
+        .createQueryBuilder('notifications')
+        .softDelete()
+        .where('id = :id', { id })
+        .execute()
+    } catch (e) {
+      throw new RepositoryError(
+        'NotificationRepository deleteById error',
         e as Error
       )
     }

@@ -27,4 +27,7 @@ export interface INotificationRepository extends IBaseRepository<Notification> {
     userId: string
   ) => Promise<Notification[]>
   saveAll: (notifications: Notification[]) => Promise<void>
+  findAllByUserId: (userId: string) => Promise<Notification[]>
+  deleteAllByUserId: (userId: string) => Promise<void>
+  deleteById: (id: string) => Promise<void>
 }
