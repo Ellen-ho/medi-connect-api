@@ -4,6 +4,8 @@ import { IPatientQuestionAnswerRepository } from '../../domain/question/interfac
 import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
 import { IAnswerAgreementRepository } from '../../domain/question/interfaces/repositories/IAnswerAgreementRepository'
+import { INotificationHelper } from '../notification/NotificationHelper'
+import { NotificationType } from '../../domain/notification/Notification'
 
 interface CreateAnswerAgreementRequest {
   user: User
@@ -25,7 +27,8 @@ export class CreateAnswerAgreementUseCase {
     private readonly patientQuestionAnswerRepository: IPatientQuestionAnswerRepository,
     private readonly answerAgreementRepository: IAnswerAgreementRepository,
     private readonly doctorRepository: IDoctorRepository,
-    private readonly uuidService: IUuidService
+    private readonly uuidService: IUuidService,
+    private readonly notifictionHelper: INotificationHelper
   ) {}
 
   public async execute(
@@ -40,6 +43,16 @@ export class CreateAnswerAgreementUseCase {
     if (existingAnswer == null) {
       throw new Error('Answer does not exist.')
     }
+
+    const beAgreedDoctorId = existingAnswer.doctorId
+    const beAgreedDoctor = await this.doctorRepository.findById(
+      beAgreedDoctorId
+    )
+    if (beAgreedDoctor == null) {
+      throw new Error('Cna not find the doctor who is be agreed.')
+    }
+
+    console.table({ beAgreedDoctorId })
 
     const existingDoctor = await this.doctorRepository.findByUserId(user.id)
 
@@ -66,6 +79,14 @@ export class CreateAnswerAgreementUseCase {
       updatedAt: new Date(),
     })
     await this.answerAgreementRepository.save(answerAgreement)
+
+    await this.notifictionHelper.createNotification({
+      title: 'Congratulations! You have received agreement from other doctors!',
+      content:
+        'Thank you for your professional response. Your answer has received recognition from other doctors. Congratulations!',
+      notificationType: NotificationType.AGREED_NOTIFICATION,
+      user: beAgreedDoctor.user,
+    })
 
     const totalAgreedDoctorCounts =
       await this.answerAgreementRepository.countsByAnswerId(answerId)
