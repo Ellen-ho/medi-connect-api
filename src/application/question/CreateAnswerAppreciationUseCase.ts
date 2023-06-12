@@ -1,9 +1,12 @@
+import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
+import { NotificationType } from '../../domain/notification/Notification'
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { AnswerAppreciation } from '../../domain/question/AnswerAppreciation'
 import { IAnswerAppreciationRepository } from '../../domain/question/interfaces/repositories/IAnswerAppreciationtRepository'
 import { IPatientQuestionAnswerRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionAnswerRepository'
 import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
+import { INotificationHelper } from '../notification/NotificationHelper'
 
 interface CreateAnswerAppreciationRequest {
   user: User
@@ -24,7 +27,9 @@ export class CreateAnswerAppreciationUseCase {
     private readonly patientQuestionAnswerRepository: IPatientQuestionAnswerRepository,
     private readonly patientRepository: IPatientRepository,
     private readonly answerAppreciationRepository: IAnswerAppreciationRepository,
-    private readonly uuidService: IUuidService
+    private readonly uuidService: IUuidService,
+    private readonly notifictionHelper: INotificationHelper,
+    private readonly doctorRepository: IDoctorRepository
   ) {}
 
   public async execute(
@@ -44,6 +49,13 @@ export class CreateAnswerAppreciationUseCase {
     if (existingPatient == null) {
       throw new Error('Patient does not exist.')
     }
+    const beAppreciatedDoctorId = existingAnswer.doctorId
+    const beAppreciatedDoctor = await this.doctorRepository.findById(
+      beAppreciatedDoctorId
+    )
+    if (beAppreciatedDoctor == null) {
+      throw new Error('Cna not find the doctor who is be appreciated.')
+    }
 
     const answerAppreciation = new AnswerAppreciation({
       id: this.uuidService.generateUuid(),
@@ -54,6 +66,14 @@ export class CreateAnswerAppreciationUseCase {
       answer: existingAnswer,
     })
     await this.answerAppreciationRepository.save(answerAppreciation)
+
+    await this.notifictionHelper.createNotification({
+      title: 'Congratulations! You have received gratitude from a patient!',
+      content:
+        'Thank you for your professional and detailed response. The patient expressed gratitude upon receiving your answer.',
+      notificationType: NotificationType.THANK_YOU_NOTIFICATION,
+      user: beAppreciatedDoctor.user,
+    })
 
     const totalThankCounts =
       await this.answerAppreciationRepository.countByAnswerId(answerId)

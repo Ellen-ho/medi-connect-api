@@ -1,9 +1,12 @@
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
+import { NotificationType } from '../../domain/notification/Notification'
 import { PatientQuestionAnswer } from '../../domain/question/PatientQuestionAnswer'
 import { IPatientQuestionAnswerRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionAnswerRepository'
 import { IPatientQuestionRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionRepository'
 import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
+import { INotificationHelper } from '../notification/NotificationHelper'
+import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 
 interface CreatePatientQuestionAnswerRequest {
   user: User
@@ -24,7 +27,9 @@ export class CreatePatientQuestionAnswerUseCase {
     private readonly patientQuestionAnswerRepository: IPatientQuestionAnswerRepository,
     private readonly patientQuestionRepository: IPatientQuestionRepository,
     private readonly doctorRepository: IDoctorRepository,
-    private readonly uuidService: IUuidService
+    private readonly uuidService: IUuidService,
+    private readonly notifictionHelper: INotificationHelper,
+    private readonly patientRepository: IPatientRepository
   ) {}
 
   public async execute(
@@ -37,6 +42,14 @@ export class CreatePatientQuestionAnswerUseCase {
 
     if (existingPatientQuestion == null) {
       throw new Error('Patient question does not exist.')
+    }
+
+    const patientWhoAsk = await this.patientRepository.findById(
+      existingPatientQuestion.askerId
+    )
+
+    if (patientWhoAsk == null) {
+      throw new Error('Patient who asks does not exist.')
     }
 
     const existingDoctor = await this.doctorRepository.findByUserId(user.id)
@@ -64,6 +77,15 @@ export class CreatePatientQuestionAnswerUseCase {
       updatedAt: new Date(),
     })
     await this.patientQuestionAnswerRepository.save(patientQuestionAnswer)
+
+    await this.notifictionHelper.createNotification({
+      title:
+        'Hi, the question you asked has received an answer! You can go and take a look. !',
+      content:
+        'Thank you for your question. A professional doctor has provided an answer to your inquiry.',
+      notificationType: NotificationType.GET_ANSWER_NOTIFICATION,
+      user: patientWhoAsk.user,
+    })
 
     return {
       id: patientQuestionAnswer.id,

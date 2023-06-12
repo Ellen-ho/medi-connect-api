@@ -39,7 +39,7 @@ export class BaseRepository<E extends ObjectLiteral, DM>
       const entity = this.mapper.toPersistence(doaminModel)
       await executor.save(entity)
     } catch (e) {
-      throw new Error('repository save error')
+      throw new Error('repository save error: ' + (e as Error).message)
     }
   }
 
@@ -53,7 +53,7 @@ export class BaseRepository<E extends ObjectLiteral, DM>
       )
       await executor.save(entities)
     } catch (e) {
-      throw new Error('repository saveAll error')
+      throw new Error('repository saveAll error: ' + (e as Error).message)
     }
   }
 }

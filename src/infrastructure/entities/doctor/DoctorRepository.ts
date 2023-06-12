@@ -49,4 +49,16 @@ export class DoctorRepository
       )
     }
   }
+
+  public async findById(id: string): Promise<Doctor | null> {
+    try {
+      const entity = await this.getRepo().findOne({
+        where: { id },
+        relations: ['user'],
+      })
+      return entity != null ? this.getMapper().toDomainModel(entity) : null
+    } catch (e) {
+      throw new RepositoryError('DoctorRepository findById error', e as Error)
+    }
+  }
 }

@@ -109,6 +109,7 @@ import { GetNotificationHintsUseCase } from './application/notification/GetNotif
 import { ReadAllNotificationsUseCase } from './application/notification/ReadAllNotificationsUseCase'
 import { DeleteAllNotificationsUseCase } from './application/notification/DeleteAllNotificationsUseCase'
 import { DeleteNotificationUseCase } from './application/notification/DeleteNotificationUseCase'
+import { NotificationHelper } from './application/notification/NotificationHelper'
 // import { RawQueryRepository } from './infrastructure/database/RawRepository'
 
 void main()
@@ -132,6 +133,12 @@ async function main(): Promise<void> {
   // const rawQueryRepository = new RawQueryRepository(dataSource)
   const uuidService = new UuidService()
   const hashGenerator = new BcryptHashGenerator()
+
+  /**
+   * Repositories
+   */
+
+  const notificationRepository = new NotificationRepository(dataSource)
 
   /**
    * User Domain
@@ -166,6 +173,117 @@ async function main(): Promise<void> {
   )
   const editPatientProfileUseCase = new EditPatientProfileUseCase(
     patientRepository
+  )
+
+  /**
+   * Cross domain helper
+   */
+
+  const notificationHelper = new NotificationHelper(
+    notificationRepository,
+    uuidService
+  )
+
+  /**
+   * Question Domain
+   */
+  const patientQuestionAnswerRepository = new PatientQuestionAnswerRepository(
+    dataSource
+  )
+  const answerAgreementRepository = new AnswerAgreementRepository(dataSource)
+  const patientQuestionRepository = new PatientQuestionRepository(dataSource)
+  const answerAppreciationRepository = new AnswerAppreciationRepository(
+    dataSource
+  )
+  const createAnswerAgreementUseCase = new CreateAnswerAgreementUseCase(
+    patientQuestionAnswerRepository,
+    answerAgreementRepository,
+    doctorRepository,
+    uuidService,
+    notificationHelper
+  )
+  const editAnswerAgreementCommentUseCase =
+    new EditAnswerAgreementCommentUseCase(
+      answerAgreementRepository,
+      doctorRepository
+    )
+  const cancelAnswerAgreementUseCase = new CancelAnswerAgreementUseCase(
+    answerAgreementRepository,
+    doctorRepository
+  )
+
+  const createAnswerAppreciationUseCase = new CreateAnswerAppreciationUseCase(
+    patientQuestionAnswerRepository,
+    patientRepository,
+    answerAppreciationRepository,
+    uuidService,
+    notificationHelper,
+    doctorRepository
+  )
+  const editAnswerAppreciationContentUseCase =
+    new EditAnswerAppreciationContentUseCase(
+      answerAppreciationRepository,
+      patientRepository
+    )
+  const cancelAnswerAppreciationUseCase = new CancelAnswerAppreciationUseCase(
+    answerAppreciationRepository,
+    patientRepository
+  )
+  const createPatientQuestionAnswerUseCase =
+    new CreatePatientQuestionAnswerUseCase(
+      patientQuestionAnswerRepository,
+      patientQuestionRepository,
+      doctorRepository,
+      uuidService,
+      notificationHelper,
+      patientRepository
+    )
+  const editPatientQuestionAnswerContentUseCase =
+    new EditPatientQuestionAnswerContentUseCase(
+      patientQuestionAnswerRepository,
+      doctorRepository
+    )
+  const cancelPatientQuestionAnswerUseCase =
+    new CancelPatientQuestionAnswerUseCase(
+      patientQuestionAnswerRepository,
+      answerAppreciationRepository,
+      answerAgreementRepository,
+      doctorRepository,
+      new RepositoryTx(dataSource)
+    )
+
+  const createPatientQuestionUseCase = new CreatePatientQuestionUseCase(
+    patientQuestionRepository,
+    patientRepository,
+    uuidService
+  )
+  const editPatientQuestionUseCase = new EditPatientQuestionUseCase(
+    patientQuestionRepository,
+    patientRepository
+  )
+  const cancelPatientQuestionUseCase = new CancelPatientQuestionUseCase(
+    patientQuestionRepository,
+    patientRepository,
+    answerAppreciationRepository,
+    answerAgreementRepository,
+    patientQuestionAnswerRepository,
+    new RepositoryTx(dataSource)
+  )
+  const getSingleQuestionUseCase = new GetSingleQuestionUseCase(
+    patientQuestionRepository,
+    patientRepository,
+    patientQuestionAnswerRepository
+  )
+
+  const getQuestionsUseCase = new GetQuestionsUseCase(patientQuestionRepository)
+
+  /**
+   * Cross domain usecase
+   */
+
+  const getDoctorStatisticUseCase = new GetDoctorStatisticUseCase(
+    patientQuestionAnswerRepository,
+    doctorRepository
   )
 
   /**
@@ -296,94 +414,6 @@ async function main(): Promise<void> {
   )
 
   /**
-   * Question Domain
-   */
-  const patientQuestionAnswerRepository = new PatientQuestionAnswerRepository(
-    dataSource
-  )
-  const answerAgreementRepository = new AnswerAgreementRepository(dataSource)
-  const patientQuestionRepository = new PatientQuestionRepository(dataSource)
-  const answerAppreciationRepository = new AnswerAppreciationRepository(
-    dataSource
-  )
-  const createAnswerAgreementUseCase = new CreateAnswerAgreementUseCase(
-    patientQuestionAnswerRepository,
-    answerAgreementRepository,
-    doctorRepository,
-    uuidService
-  )
-  const editAnswerAgreementCommentUseCase =
-    new EditAnswerAgreementCommentUseCase(
-      answerAgreementRepository,
-      doctorRepository
-    )
-  const cancelAnswerAgreementUseCase = new CancelAnswerAgreementUseCase(
-    answerAgreementRepository,
-    doctorRepository
-  )
-
-  const createAnswerAppreciationUseCase = new CreateAnswerAppreciationUseCase(
-    patientQuestionAnswerRepository,
-    patientRepository,
-    answerAppreciationRepository,
-    uuidService
-  )
-  const editAnswerAppreciationContentUseCase =
-    new EditAnswerAppreciationContentUseCase(
-      answerAppreciationRepository,
-      patientRepository
-    )
-  const cancelAnswerAppreciationUseCase = new CancelAnswerAppreciationUseCase(
-    answerAppreciationRepository,
-    patientRepository
-  )
-  const createPatientQuestionAnswerUseCase =
-    new CreatePatientQuestionAnswerUseCase(
-      patientQuestionAnswerRepository,
-      patientQuestionRepository,
-      doctorRepository,
-      uuidService
-    )
-  const editPatientQuestionAnswerContentUseCase =
-    new EditPatientQuestionAnswerContentUseCase(
-      patientQuestionAnswerRepository,
-      doctorRepository
-    )
-  const cancelPatientQuestionAnswerUseCase =
-    new CancelPatientQuestionAnswerUseCase(
-      patientQuestionAnswerRepository,
-      answerAppreciationRepository,
-      answerAgreementRepository,
-      doctorRepository,
-      new RepositoryTx(dataSource)
-    )
-
-  const createPatientQuestionUseCase = new CreatePatientQuestionUseCase(
-    patientQuestionRepository,
-    patientRepository,
-    uuidService
-  )
-  const editPatientQuestionUseCase = new EditPatientQuestionUseCase(
-    patientQuestionRepository,
-    patientRepository
-  )
-  const cancelPatientQuestionUseCase = new CancelPatientQuestionUseCase(
-    patientQuestionRepository,
-    patientRepository,
-    answerAppreciationRepository,
-    answerAgreementRepository,
-    patientQuestionAnswerRepository,
-    new RepositoryTx(dataSource)
-  )
-  const getSingleQuestionUseCase = new GetSingleQuestionUseCase(
-    patientQuestionRepository,
-    patientRepository,
-    patientQuestionAnswerRepository
-  )
-
-  const getQuestionsUseCase = new GetQuestionsUseCase(patientQuestionRepository)
-
-  /**
    * Conultation Domain
    */
   const consultAppointmentRepository = new ConsultAppointmentRepository(
@@ -440,7 +470,8 @@ async function main(): Promise<void> {
     bloodSugarRecordRepository,
     glycatedHemoglobinRecordRepository,
     weightRecordRepository,
-    uuidService
+    uuidService,
+    notificationHelper
   )
 
   const activateHealthGoalUseCase = new ActivateHealthGoalUseCase(
@@ -465,7 +496,6 @@ async function main(): Promise<void> {
   /**
    * Notification Domain
    */
-  const notificationRepository = new NotificationRepository(dataSource)
 
   const getNotificationListsUseCase = new GetNotificationListsUseCase(
     notificationRepository
@@ -489,15 +519,6 @@ async function main(): Promise<void> {
 
   const deleteNotificationUseCase = new DeleteNotificationUseCase(
     notificationRepository
-  )
-
-  /**
-   * Cross domain usecase
-   */
-
-  const getDoctorStatisticUseCase = new GetDoctorStatisticUseCase(
-    patientQuestionAnswerRepository,
-    doctorRepository
   )
 
   /**

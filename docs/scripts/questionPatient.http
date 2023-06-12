@@ -34,7 +34,7 @@ Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "content": "What can I do when I wake up with stuff nose?",
+  "content": "I have a poor appetite recently. What should I do?",
   "medicalSpecialty": "INTERNAL_MEDICINE"
 }
 ###
@@ -52,7 +52,7 @@ Content-Type: application/json
 ###
 
 ### patient thank a doctor's answer
-@answerId = 9878d031-cd8b-4aa7-9051-0ae5312e42da
+@answerId = 9101cee2-4551-46f2-ba7c-3354b89ab856
 POST {{questionsPath}}/answers/{{answerId}}/appreciations
 Authorization: {{accessToken}}
 Content-Type: application/json

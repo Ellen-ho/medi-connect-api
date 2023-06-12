@@ -4,6 +4,8 @@ import {
   IBloodPressureValue,
 } from '../../domain/goal/HealthGoal'
 import { IHealthGoalRepository } from '../../domain/goal/interfaces/repositories/IHealthGoalRepository'
+import { NotificationType } from '../../domain/notification/Notification'
+// import { NotificationType } from '../../domain/notification/Notification'
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { BloodSugarType } from '../../domain/record/BloodSugarRecord'
 import { IBloodPressureRecordRepository } from '../../domain/record/interfaces/repositories/IBloodPressureRecordRepository'
@@ -13,6 +15,7 @@ import { IWeightRecordRepository } from '../../domain/record/interfaces/reposito
 // import { IBloodPressureRecordRepository } from '../../domain/record/interfaces/repositories/IBloodPressureRecordRepository'
 import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
+import { INotificationHelper } from '../notification/NotificationHelper'
 
 interface CreateHealthGoalRequest {
   user: User
@@ -48,7 +51,8 @@ export class CreateHealthGoalUseCase {
     private readonly bloodSugarRecordRepository: IBloodSugarRecordRepository,
     private readonly glycatedHemoglobinRecordRepository: IGlycatedHemoglobinRecordRepository,
     private readonly weightRecordRepository: IWeightRecordRepository,
-    private readonly uuidService: IUuidService
+    private readonly uuidService: IUuidService,
+    private readonly notifictionHelper: INotificationHelper
   ) {}
 
   public async execute(
@@ -69,7 +73,7 @@ export class CreateHealthGoalUseCase {
       )
 
     if (exsitingHealthGoal !== null) {
-      return null
+      throw new Error('The health goal already be created.')
     }
 
     const latestRejectedHealthGoal =
@@ -102,6 +106,9 @@ export class CreateHealthGoalUseCase {
     ) {
       return null
     }
+
+    console.table({ checkedBloodPressureRecord })
+
     /**
      *
      */
@@ -179,6 +186,14 @@ export class CreateHealthGoalUseCase {
     })
     await this.healthGoalRepository.save(healthGoal)
 
+    await this.notifictionHelper.createNotification({
+      title: 'Hi, here is a health goal for you!',
+      content:
+        "You're doing great! You have recorded your health data for 14 consecutive days. We have noticed some values in your records that deviate from the standard range.",
+      notificationType: NotificationType.HEALTH_GOAL_NOTIFICATION,
+      user: existingPatient.user,
+    })
+
     return {
       id: healthGoal.id,
       bloodPressureTargetValue: healthGoal.bloodPressureTargetValue,
@@ -241,6 +256,8 @@ export class CreateHealthGoalUseCase {
 
     const avgSystolicBloodPressure = Math.round(sumSystolicBloodPressure / 14)
     const avgDiastolicBloodPressure = Math.round(sumDiastolicBloodPressure / 14)
+
+    console.table({ avgSystolicBloodPressure })
 
     if (
       avgSystolicBloodPressure >= 140 ||

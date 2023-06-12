@@ -8,8 +8,8 @@ POST {{usersPath}}/login
 Content-Type: application/json
 
 {
-  "email": "Amy@gmail.com",
-  "password": "Amy"
+  "email": "Eric@gmail.com",
+  "password": "Eric"
 }
 ###
 @accessToken = Bearer {{login.response.body.token}}
@@ -29,14 +29,14 @@ Content-Type: application/json
 ###
 
 ### doctor answer a question
-@questionId=8fcc3894-296d-4308-aba8-c11af9ca435e
+@questionId=f5b3f6c4-44ae-413b-80ca-c9ee02eede2c
 
 POST {{questionsPath}}/{{questionId}}/answers
 Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "content": "Drink more warm water."
+  "content": "Eat slowly."
 }
 ###
 
@@ -52,7 +52,7 @@ Content-Type: application/json
 ###
 
 ### doctor agree with a answer of another doctor
-@doctorAgreedAnswerId=7c13b61e-2084-46de-b4ea-bc9795fb50e5
+@doctorAgreedAnswerId=9101cee2-4551-46f2-ba7c-3354b89ab856
 POST {{questionsPath}}/answers/{{doctorAgreedAnswerId}}/agreements
 Authorization: {{accessToken}}
 Content-Type: application/json

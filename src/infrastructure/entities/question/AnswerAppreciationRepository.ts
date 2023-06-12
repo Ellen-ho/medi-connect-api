@@ -18,6 +18,7 @@ export class AnswerAppreciationRepository
     try {
       const entity = await this.getRepo().findOne({
         where: { id },
+        relations: ['user'],
       })
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
