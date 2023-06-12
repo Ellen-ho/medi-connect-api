@@ -23,8 +23,10 @@ Authorization: {{accessToken}}
 Content-Type: application/json
 ###
 
+
 ### get notificationDetails
-GET {{notificationsPath}}/:id
+@notificationDetailId =8228ad41-639a-486f-ad67-603c73291c2c
+GET {{notificationsPath}}/{{notificationDetailId}}
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###
@@ -35,8 +37,21 @@ Authorization: {{accessToken}}
 Content-Type: application/json
 ###
 
-### read  all notifications
+### read all notifications
 PATCH  {{notificationsPath}}/read-all
+Authorization: {{accessToken}}
+Content-Type: application/json
+###
+
+### delete all notifications
+DELETE {{notificationsPath}}/all
+Authorization: {{accessToken}}
+Content-Type: application/json
+###
+
+### delete single notification
+@notificationId=e40b0703-55b2-4fbb-a0eb-8d04aea153ef
+DELETE {{notificationsPath}}/{{notificationId}}
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###

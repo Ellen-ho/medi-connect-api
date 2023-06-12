@@ -124,8 +124,6 @@ export class EditDoctorTimeSlotUseCase {
       endAt,
     })
 
-    console.table({ existingDoctorTimeSlot })
-
     await this.doctorTimeSlotRepository.save(existingDoctorTimeSlot)
 
     return {

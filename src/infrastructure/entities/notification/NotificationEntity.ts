@@ -23,10 +23,10 @@ export class NotificationEntity {
   @Column({ name: 'title', type: 'varchar', length: 100 })
   public title!: string
 
-  @Column({ name: 'content', type: 'varchar', length: 250 })
+  @Column({ name: 'content', type: 'text' })
   public content!: string
 
-  @Column({ name: 'notification_type', type: 'varchar', length: 250 })
+  @Column({ name: 'notification_type', type: 'text' })
   public notificationType!: NotificationType
 
   @CreateDateColumn({ name: 'created_at' })
@@ -36,7 +36,7 @@ export class NotificationEntity {
   public updatedAt!: Date
 
   @DeleteDateColumn({ name: 'deleted_at' })
-  public deletedAt!: Date
+  public deletedAt?: Date
 
   @ManyToOne(() => UserEntity, { nullable: false })
   @JoinColumn({ name: 'user_id' })
