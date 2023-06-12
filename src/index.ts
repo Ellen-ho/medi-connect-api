@@ -110,6 +110,7 @@ import { ReadAllNotificationsUseCase } from './application/notification/ReadAllN
 import { DeleteAllNotificationsUseCase } from './application/notification/DeleteAllNotificationsUseCase'
 import { DeleteNotificationUseCase } from './application/notification/DeleteNotificationUseCase'
 import { NotificationHelper } from './application/notification/NotificationHelper'
+import { GoogleCalendar } from './infrastructure/network/GoogleCalendar'
 // import { RawQueryRepository } from './infrastructure/database/RawRepository'
 
 void main()
@@ -139,6 +140,23 @@ async function main(): Promise<void> {
    */
 
   const notificationRepository = new NotificationRepository(dataSource)
+
+  /**
+   * Google API
+   */
+  const googleCalendarApi = new GoogleCalendar(
+    env.GOOGLE_CLIENT_ID as string,
+    env.GOOGLE_CLIENT_SECRET as string
+  )
+
+  googleCalendarApi
+    .createEvent()
+    .then((event) => {
+      console.log('Event created: %s', JSON.stringify(event))
+    })
+    .catch((error) => {
+      console.log('Some error occured', error)
+    })
 
   /**
    * User Domain
