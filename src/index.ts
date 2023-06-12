@@ -107,6 +107,7 @@ import { NotificationController } from './infrastructure/http/controllers/Notifi
 import { NotificationRoutes } from './infrastructure/http/routes/NotificationRoutes'
 import { GetNotificationHintsUseCase } from './application/notification/GetNotificationHintsUseCase'
 import { ReadAllNotificationsUseCase } from './application/notification/ReadAllNotificationsUseCase'
+import { GoogleCalendar } from './infrastructure/network/GoogleCalendar'
 // import { RawQueryRepository } from './infrastructure/database/RawRepository'
 
 void main()
@@ -130,6 +131,23 @@ async function main(): Promise<void> {
   // const rawQueryRepository = new RawQueryRepository(dataSource)
   const uuidService = new UuidService()
   const hashGenerator = new BcryptHashGenerator()
+
+  /**
+   * Google API
+   */
+  const googleCalendarApi = new GoogleCalendar(
+    env.GOOGLE_CLIENT_ID as string,
+    env.GOOGLE_CLIENT_SECRET as string
+  )
+
+  googleCalendarApi
+    .createEvent()
+    .then((event) => {
+      console.log('Event created: %s', JSON.stringify(event))
+    })
+    .catch((error) => {
+      console.log('Some error occured', error)
+    })
 
   /**
    * User Domain
