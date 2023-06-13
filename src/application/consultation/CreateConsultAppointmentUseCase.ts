@@ -8,6 +8,9 @@ import {
 } from '../../domain/consultation/ConsultAppointment'
 import dayjs from 'dayjs'
 import { IConsultAppointmentRepository } from '../../domain/consultation/interfaces/repositories/IConsultAppointmentRepository'
+import { INotificationHelper } from '../notification/NotificationHelper'
+import { NotificationType } from '../../domain/notification/Notification'
+import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 
 interface CreateConsultAppointmentRequest {
   user: User
@@ -23,7 +26,9 @@ export class CreateConsultAppointmentUseCase {
     private readonly consultAppointmentRepository: IConsultAppointmentRepository,
     private readonly doctorTimeSlotRepository: IDoctorTimeSlotRepository,
     private readonly patientRepository: IPatientRepository,
-    private readonly uuidService: IUuidService
+    private readonly doctorRepository: IDoctorRepository,
+    private readonly uuidService: IUuidService,
+    private readonly notifictionHelper: INotificationHelper
   ) {}
 
   public async execute(
@@ -43,6 +48,14 @@ export class CreateConsultAppointmentUseCase {
 
     if (existingDoctorTimeSlot == null) {
       throw new Error('Doctor time slot does not exist.')
+    }
+
+    const appointmentDoctor = await this.doctorRepository.findById(
+      existingDoctorTimeSlot.id
+    )
+
+    if (appointmentDoctor == null) {
+      throw new Error('Doctor does not exist.')
     }
 
     const currentDate = dayjs()
@@ -115,6 +128,14 @@ export class CreateConsultAppointmentUseCase {
     })
 
     await this.consultAppointmentRepository.save(consultAppointment)
+
+    await this.notifictionHelper.createNotification({
+      title: 'Hi, You have an appointment!',
+      content:
+        "You have an appointment. Please proceed to view your appointment records. Your permission to access the patient's health records has been enabled.",
+      notificationType: NotificationType.CREATE_APPOINTMENT,
+      user: appointmentDoctor.user,
+    })
 
     return {
       id: consultAppointment.id,
