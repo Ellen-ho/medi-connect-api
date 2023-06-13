@@ -443,7 +443,9 @@ async function main(): Promise<void> {
     consultAppointmentRepository,
     doctorTimeSlotRepository,
     patientRepository,
-    uuidService
+    doctorRepository,
+    uuidService,
+    notificationHelper
   )
   const cancelConsultAppointmentUseCase = new CancelConsultAppointmentUseCase(
     consultAppointmentRepository,

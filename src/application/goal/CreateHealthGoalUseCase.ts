@@ -189,7 +189,7 @@ export class CreateHealthGoalUseCase {
     await this.notifictionHelper.createNotification({
       title: 'Hi, here is a health goal for you!',
       content:
-        "You're doing great! You have recorded your health data for 14 consecutive days. We have noticed some values in your records that deviate from the standard range.",
+        "You're doing great! You have recorded your health data for 14 consecutive days. We have noticed some values in your records that deviate from the standard range.Goog",
       notificationType: NotificationType.HEALTH_GOAL_NOTIFICATION,
       user: existingPatient.user,
     })
