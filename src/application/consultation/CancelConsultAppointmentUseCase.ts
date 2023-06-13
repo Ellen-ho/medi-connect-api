@@ -3,6 +3,10 @@ import { ConsultAppointmentStatusType } from '../../domain/consultation/ConsultA
 import { IConsultAppointmentRepository } from '../../domain/consultation/interfaces/repositories/IConsultAppointmentRepository'
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { User } from '../../domain/user/User'
+import { IRepositoryTx } from '../../domain/shared/IRepositoryTx'
+import { INotificationHelper } from '../notification/NotificationHelper'
+import { NotificationType } from '../../domain/notification/Notification'
+import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 
 interface CancelConsultAppointmentRequest {
   user: User
@@ -17,7 +21,10 @@ interface CancelConsultAppointmentResponse {
 export class CancelConsultAppointmentUseCase {
   constructor(
     private readonly consultAppointmentRepository: IConsultAppointmentRepository,
-    private readonly patientRepository: IPatientRepository
+    private readonly patientRepository: IPatientRepository,
+    private readonly doctorRepository: IDoctorRepository,
+    private readonly notifictionHelper: INotificationHelper,
+    private readonly tx: IRepositoryTx
   ) {}
 
   public async execute(
@@ -40,6 +47,14 @@ export class CancelConsultAppointmentUseCase {
       throw new Error('Consult appointment does not exist.')
     }
 
+    const appointmentDoctor = await this.doctorRepository.findById(
+      existingConsultAppointment.doctorTimeSlot.id
+    )
+
+    if (appointmentDoctor == null) {
+      throw new Error('Doctor does not exist.')
+    }
+
     const currentDate = new Date()
     const wantedAppointmentTime =
       existingConsultAppointment.doctorTimeSlot.startAt
@@ -52,16 +67,34 @@ export class CancelConsultAppointmentUseCase {
       throw new Error('Appointment should be canceled before one day.')
     }
 
-    existingConsultAppointment.doctorTimeSlot.updateAvailability(true)
+    try {
+      await this.tx.start()
 
-    await this.consultAppointmentRepository.save(existingConsultAppointment)
-    await this.consultAppointmentRepository.deleteById(
-      existingConsultAppointment.id
-    )
+      existingConsultAppointment.doctorTimeSlot.updateAvailability(true)
 
-    return {
-      consultAppointmentId,
-      status: ConsultAppointmentStatusType.PATIENT_CANCELED,
+      await this.consultAppointmentRepository.save(existingConsultAppointment)
+
+      await this.consultAppointmentRepository.deleteById(
+        existingConsultAppointment.id
+      )
+
+      await this.tx.end()
+
+      await this.notifictionHelper.createNotification({
+        title: 'One of your appointments has been canceled.',
+        content:
+          'One of your appointments has been canceled.Please take a moment to review and confirm your appointment schedule.',
+        notificationType: NotificationType.CANCEL_APPOINTMENT,
+        user: appointmentDoctor.user,
+      })
+
+      return {
+        consultAppointmentId,
+        status: ConsultAppointmentStatusType.PATIENT_CANCELED,
+      }
+    } catch (error) {
+      await this.tx.rollback()
+      throw error
     }
   }
 }

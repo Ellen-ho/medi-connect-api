@@ -449,7 +449,10 @@ async function main(): Promise<void> {
   )
   const cancelConsultAppointmentUseCase = new CancelConsultAppointmentUseCase(
     consultAppointmentRepository,
-    patientRepository
+    patientRepository,
+    doctorRepository,
+    notificationHelper,
+    new RepositoryTx(dataSource)
   )
 
   const createDoctorTimeSlotUseCase = new CreateDoctorTimeSlotUseCase(
