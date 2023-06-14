@@ -38,4 +38,5 @@ export interface IWeightRecordRepository extends IBaseRepository<WeightRecord> {
     weightValueKg: number
     bodyMassIndex: number
   } | null>
+  findById: (id: string) => Promise<WeightRecord | null>
 }

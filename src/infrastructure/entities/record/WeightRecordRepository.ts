@@ -16,6 +16,20 @@ export class WeightRecordRepository
     super(WeightRecordEntity, new WeightRecordMapper(), dataSource)
   }
 
+  public async findById(id: string): Promise<WeightRecord | null> {
+    try {
+      const entity = await this.getRepo().findOne({
+        where: { id },
+      })
+      return entity != null ? this.getMapper().toDomainModel(entity) : null
+    } catch (e) {
+      throw new RepositoryError(
+        'WeightRecordRepository findById error',
+        e as Error
+      )
+    }
+  }
+
   public async findByIdAndPatientId(
     recordId: string,
     patientId: string
