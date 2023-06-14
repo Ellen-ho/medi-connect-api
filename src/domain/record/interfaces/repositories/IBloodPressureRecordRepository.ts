@@ -40,4 +40,5 @@ export interface IBloodPressureRecordRepository
     systolicBloodPressure: number
     diastolicBloodPressure: number
   } | null>
+  findById: (id: string) => Promise<BloodPressureRecord | null>
 }
