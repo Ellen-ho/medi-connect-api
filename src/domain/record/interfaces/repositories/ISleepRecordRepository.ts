@@ -25,4 +25,5 @@ export interface ISleepRecordRepository extends IBaseRepository<SleepRecord> {
     patientId: string,
     sleepDate: Date
   ) => Promise<SleepRecord | null>
+  findById: (id: string) => Promise<SleepRecord | null>
 }
