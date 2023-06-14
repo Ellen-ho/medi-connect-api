@@ -37,4 +37,5 @@ export interface IGlycatedHemoglobinRecordRepository
   ) => Promise<{
     glycatedHemoglobinValuePercent: number
   } | null>
+  findById: (id: string) => Promise<GlycatedHemoglobinRecord | null>
 }
