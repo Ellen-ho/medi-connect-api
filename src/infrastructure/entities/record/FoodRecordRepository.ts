@@ -17,6 +17,20 @@ export class FoodRecordRepository
     super(FoodRecordEntity, new FoodRecordMapper(), dataSource)
   }
 
+  public async findById(id: string): Promise<FoodRecord | null> {
+    try {
+      const entity = await this.getRepo().findOne({
+        where: { id },
+      })
+      return entity != null ? this.getMapper().toDomainModel(entity) : null
+    } catch (e) {
+      throw new RepositoryError(
+        'FoodRecordRepository findById error',
+        e as Error
+      )
+    }
+  }
+
   public async findByIdAndPatientId(
     recordId: string,
     patientId: string

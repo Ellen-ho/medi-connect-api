@@ -21,4 +21,5 @@ export interface IFoodRecordRepository extends IBaseRepository<FoodRecord> {
       foodCategory: FoodCategoryType
     }>
   }>
+  findById: (id: string) => Promise<FoodRecord | null>
 }
