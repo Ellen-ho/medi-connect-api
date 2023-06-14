@@ -59,5 +59,5 @@ export interface IConsultAppointmentRepository {
     patientId: string,
     doctorId: string,
     status: ConsultAppointmentStatusType[]
-  ) => Promise<ConsultAppointment[] | null>
+  ) => Promise<ConsultAppointment[]>
 }

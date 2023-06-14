@@ -236,7 +236,7 @@ export class ConsultAppointmentRepository
     patientId: string,
     doctorId: string,
     status: ConsultAppointmentStatusType[]
-  ): Promise<ConsultAppointment[] | null> {
+  ): Promise<ConsultAppointment[]> {
     try {
       const entities = await this.getRepo().find({
         where: {
@@ -250,7 +250,7 @@ export class ConsultAppointmentRepository
       })
       return entities.length !== 0
         ? entities.map((entity) => this.getMapper().toDomainModel(entity))
-        : null
+        : []
     } catch (e) {
       throw new RepositoryError(
         'ConsultAppointmentRepository findByPatientIdAndDoctorIdAndStatus error',
