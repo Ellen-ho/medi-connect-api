@@ -106,7 +106,6 @@ export class RecordRoutes {
         validator(editGlycatedHemoglobinRecordSchema),
         asyncHandler(this.recordController.editGlycatedHemoglobinRecord)
       )
-
       .post(
         '/sleep',
         authenticated,
@@ -126,13 +125,13 @@ export class RecordRoutes {
         asyncHandler(this.recordController.getSingleExerciseRecord)
       )
       .get(
-        '/blood_presure/:id',
+        '/blood-pressure/:id',
         authenticated,
         validator(getSingleBloodPressureRecordSchema),
         asyncHandler(this.recordController.getSingleBloodPressureRecord)
       )
       .get(
-        '/blood_sugar/:id',
+        '/blood-sugar/:id',
         authenticated,
         validator(getSingleBloodSugarRecordSchema),
         asyncHandler(this.recordController.getSingleBloodSugarRecord)
@@ -144,7 +143,7 @@ export class RecordRoutes {
         asyncHandler(this.recordController.getSingleFoodRecord)
       )
       .get(
-        '/glycatedHemoglobin/:id',
+        '/glycated-hemoglobin/:id',
         authenticated,
         validator(getSingleGlycatedHemoglobinRecordSchema),
         asyncHandler(this.recordController.getSingleGlycatedHemoglobinRecord)
