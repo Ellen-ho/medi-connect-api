@@ -40,4 +40,5 @@ export interface IBloodSugarRecordRepository
     bloodSugarValue: number
     bloodSugarType: BloodSugarType
   } | null>
+  findById: (id: string) => Promise<BloodSugarRecord | null>
 }

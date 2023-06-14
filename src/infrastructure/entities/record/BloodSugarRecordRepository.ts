@@ -19,6 +19,20 @@ export class BloodSugarRecordRepository
     super(BloodSugarRecordEntity, new BloodSugarRecordMapper(), dataSource)
   }
 
+  public async findById(id: string): Promise<BloodSugarRecord | null> {
+    try {
+      const entity = await this.getRepo().findOne({
+        where: { id },
+      })
+      return entity != null ? this.getMapper().toDomainModel(entity) : null
+    } catch (e) {
+      throw new RepositoryError(
+        'BloodSugarRecordRepository findById error',
+        e as Error
+      )
+    }
+  }
+
   public async findByIdAndPatientId(
     recordId: string,
     patientId: string
