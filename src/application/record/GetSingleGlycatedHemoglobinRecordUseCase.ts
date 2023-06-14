@@ -74,7 +74,7 @@ export class GetSingleGlycatedHemoglobinRecordUseCase {
           currentDoctor.id, // 當前登入的醫師
           [ConsultAppointmentStatusType.UPCOMING] // 預約狀態為upComing
         )
-      if (upComingAppointments == null) {
+      if (upComingAppointments.length === 0) {
         throw new Error(
           'The current doctor does not be appointed by this patient.'
         )
