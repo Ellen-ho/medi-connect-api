@@ -434,7 +434,10 @@ async function main(): Promise<void> {
     exerciseRecordRepository
   )
   const getBloodPressureRecordsUseCase = new GetBloodPressureRecordsUseCase(
-    bloodPressureRecordRepository
+    bloodPressureRecordRepository,
+    patientRepository,
+    doctorRepository,
+    consultAppointmentRepository
   )
   const getBloodSugarRecordsUseCase = new GetBloodSugarRecordsUseCase(
     bloodSugarRecordRepository

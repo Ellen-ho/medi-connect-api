@@ -120,55 +120,61 @@ export class BloodPressureRecordRepository
     }
   }
 
-  public async findAndCountAll(
+  public async findByPatientIdAndCountAll(
+    targetPatientId: string,
     limit: number,
     offset: number
   ): Promise<{
     total_counts: number
+    patientData: {
+      firstName: string
+      lastName: string
+      birthDate: Date
+      gender: GenderType
+    }
     records: Array<{
       bloodPressureDate: Date
       systolicBloodPressure: number
       diastolicBloodPressure: number
     }>
   }> {
-    try {
-      const rawRecords = await this.getQuery<
-        Array<{
-          total_counts: number
-          blood_pressure_date: Date
-          systolic_blood_pressure: number
-          diastolic_blood_pressure: number
-        }>
-      >(
-        `
-          SELECT
-            (SELECT COUNT(*) FROM blood_pressure_records) as total_counts,
-            blood_pressure_date,
-            systolic_blood_pressure,
-            diastolic_blood_pressure
-          FROM
-            blood_pressure_records
-            ORDER BY blood_pressure_date DESC
-          LIMIT $1
-          OFFSET $2
-        `,
-        [limit, offset]
-      )
+    const repository = this.getRepo()
+    const queryBuilder = repository
+      .createQueryBuilder('record')
+      .select([
+        'record.blood_pressure_date AS "bloodPressureDate"',
+        'record.systolic_blood_pressure AS "systolicBloodPressure"',
+        'record.diastolic_blood_pressure AS "diastolicBloodPressure"',
+        'patient.first_name AS "firstName"',
+        'patient.last_name AS "lastName"',
+        'patient.birth_date AS "birthDate"',
+        'patient.gender AS "gender"',
+      ])
+      .leftJoin('record.patient', 'patient')
+      .where('patient.id = :targetPatientId', { targetPatientId })
+      .orderBy('record.blood_pressure_date', 'DESC')
+      .take(limit)
+      .skip(offset)
 
-      return {
-        total_counts: rawRecords[0].total_counts,
-        records: rawRecords.map((record) => ({
-          bloodPressureDate: record.blood_pressure_date,
-          systolicBloodPressure: record.systolic_blood_pressure,
-          diastolicBloodPressure: record.diastolic_blood_pressure,
-        })),
-      }
-    } catch (e) {
-      throw new RepositoryError(
-        'BloodPressureRecordRepository findAndCountAll error',
-        e as Error
-      )
+    const result = await queryBuilder.getRawMany()
+
+    // Map the raw result to the desired structure
+    const formattedResult = {
+      total_counts: result.length,
+      patientData: {
+        firstName: result.length > 0 ? result[0].firstName : '',
+        lastName: result.length > 0 ? result[0].lastName : '',
+        birthDate: result.length > 0 ? result[0].birthDate : '',
+        gender: result.length > 0 ? result[0].gender : '',
+      },
+      records: result.map((record) => ({
+        bloodPressureDate: record.bloodPressureDate,
+        systolicBloodPressure: record.systolicBloodPressure,
+        diastolicBloodPressure: record.diastolicBloodPressure,
+      })),
     }
+
+    return formattedResult
   }
 
   public async bloodPressureCountByPatientId(
