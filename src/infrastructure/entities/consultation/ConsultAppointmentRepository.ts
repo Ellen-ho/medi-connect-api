@@ -1,4 +1,4 @@
-import { DataSource } from 'typeorm'
+import { DataSource, In } from 'typeorm'
 import {
   ConsultAppointment,
   ConsultAppointmentStatusType,
@@ -227,6 +227,33 @@ export class ConsultAppointmentRepository
     } catch (e) {
       throw new RepositoryError(
         'ConsultAppointmentRepository findDoctorIdAndStatusWithinDateRange error',
+        e as Error
+      )
+    }
+  }
+
+  public async findByPatientIdAndDoctorIdAndStatus(
+    patientId: string,
+    doctorId: string,
+    status: ConsultAppointmentStatusType[]
+  ): Promise<ConsultAppointment[] | null> {
+    try {
+      const entities = await this.getRepo().find({
+        where: {
+          patientId,
+          doctorTimeSlot: {
+            doctorId,
+          },
+          status: In(status),
+        },
+        relations: ['doctorTimeSlot'],
+      })
+      return entities.length !== 0
+        ? entities.map((entity) => this.getMapper().toDomainModel(entity))
+        : null
+    } catch (e) {
+      throw new RepositoryError(
+        'ConsultAppointmentRepository findByPatientIdAndDoctorIdAndStatus error',
         e as Error
       )
     }

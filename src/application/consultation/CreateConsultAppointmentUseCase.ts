@@ -51,7 +51,7 @@ export class CreateConsultAppointmentUseCase {
     }
 
     const appointmentDoctor = await this.doctorRepository.findById(
-      existingDoctorTimeSlot.id
+      existingDoctorTimeSlot.doctorId
     )
 
     if (appointmentDoctor == null) {

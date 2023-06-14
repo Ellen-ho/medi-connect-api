@@ -8,8 +8,8 @@ POST {{usersPath}}/login
 Content-Type: application/json
 
 {
-  "email": "Ellen@gmail.com",
-  "password": "Ellen"
+  "email": "tim@gmail.com",
+  "password": "tim"
 }
 ###
 @accessToken = Bearer {{login.response.body.token}}
@@ -22,7 +22,7 @@ Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "doctorTimeSlotId": "704a3dff-cfa9-4911-bd05-9ee262051d4c"
+  "doctorTimeSlotId": "d86ca72e-be83-4e57-9f9e-48b9c8786b36"
 }
 ###
 
