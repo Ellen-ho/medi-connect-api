@@ -8,8 +8,8 @@ POST {{usersPath}}/login
 Content-Type: application/json
 
 {
-  "email": "tim@gmail.com",
-  "password": "tim"
+  "email": "Ellen@gmail.com",
+  "password": "Ellen"
 }
 ###
 @accessToken = Bearer {{login.response.body.token}}
@@ -146,14 +146,14 @@ Content-Type: application/json
 
 ### get a single glycated hemoglobin record
 @glycatedHemoglobinRecordId = uuid
-GET {{recordsPath}}/glycatedHemoglobin/{{glycatedHemoglobinRecordId}}
+GET {{recordsPath}}/glycated-hemoglobin/{{glycatedHemoglobinRecordId}}
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###
 
 ### get a single blood pressure record
-@bloodPressureRecordId = uuid
-GET {{recordsPath}}/bloodPressure/{{bloodPressureRecordId}}
+@bloodPressureRecordId =b3f54074-1466-48ff-b727-d798046fa070
+GET {{recordsPath}}/blood-pressure/{{bloodPressureRecordId}}
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###
@@ -188,6 +188,48 @@ Content-Type: application/json
 
 ### get all exercise record lists
 GET {{recordsPath}}/exercise-records?limit=3&page=1
+Authorization: {{accessToken}}
+Content-Type: application/json
+###
+
+### get all blood pressure record lists
+GET {{recordsPath}}/blood-pressure-records?limit=3&page=1&targetPatientId=e6b08543-8ef9-47f0-852d-5442830089da
+Authorization: {{accessToken}}
+Content-Type: application/json
+###
+
+### get all blood sugar record lists
+GET {{recordsPath}}/blood-sugar-records?limit=3&page=1&targetPatientId=e6b08543-8ef9-47f0-852d-5442830089da
+Authorization: {{accessToken}}
+Content-Type: application/json
+###
+
+### get all exercise record lists
+GET {{recordsPath}}/exercise-records?limit=3&page=1&targetPatientId=e6b08543-8ef9-47f0-852d-5442830089da
+Authorization: {{accessToken}}
+Content-Type: application/json
+###
+
+### get all food record lists
+GET {{recordsPath}}/food-records?limit=3&page=1&targetPatientId=e6b08543-8ef9-47f0-852d-5442830089da
+Authorization: {{accessToken}}
+Content-Type: application/json
+###
+
+### get all glycated hemoglobin record lists
+GET {{recordsPath}}/glycated-hemoglobin-records?limit=3&page=1&targetPatientId=e6b08543-8ef9-47f0-852d-5442830089da
+Authorization: {{accessToken}}
+Content-Type: application/json
+###
+
+### get all sleep record lists
+GET {{recordsPath}}/sleep-records?limit=3&page=1&targetPatientId=e6b08543-8ef9-47f0-852d-5442830089da
+Authorization: {{accessToken}}
+Content-Type: application/json
+###
+
+### get all weight record lists
+GET {{recordsPath}}/weight-records?limit=3&page=1&targetPatientId=e6b08543-8ef9-47f0-852d-5442830089da
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###

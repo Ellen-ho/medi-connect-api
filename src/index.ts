@@ -138,7 +138,31 @@ async function main(): Promise<void> {
   /**
    * Repositories
    */
-
+  const userRepository = new UserRepository(dataSource)
+  const doctorRepository = new DoctorRepository(dataSource)
+  const patientRepository = new PatientRepository(dataSource)
+  const patientQuestionAnswerRepository = new PatientQuestionAnswerRepository(
+    dataSource
+  )
+  const answerAgreementRepository = new AnswerAgreementRepository(dataSource)
+  const patientQuestionRepository = new PatientQuestionRepository(dataSource)
+  const answerAppreciationRepository = new AnswerAppreciationRepository(
+    dataSource
+  )
+  const bloodPressureRecordRepository = new BloodPressureRecordRepository(
+    dataSource
+  )
+  const bloodSugarRecordRepository = new BloodSugarRecordRepository(dataSource)
+  const foodRecordRepository = new FoodRecordRepository(dataSource)
+  const exerciseRecordRepository = new ExerciseRecordRepository(dataSource)
+  const glycatedHemoglobinRecordRepository =
+    new GlycatedHemoglobinRecordRepository(dataSource)
+  const weightRecordRepository = new WeightRecordRepository(dataSource)
+  const consultAppointmentRepository = new ConsultAppointmentRepository(
+    dataSource
+  )
+  const doctorTimeSlotRepository = new DoctorTimeSlotRepository(dataSource)
+  const healthGoalRepository = new HealthGoalRepository(dataSource)
   const notificationRepository = new NotificationRepository(dataSource)
 
   /**
@@ -161,7 +185,6 @@ async function main(): Promise<void> {
   /**
    * User Domain
    */
-  const userRepository = new UserRepository(dataSource)
   const getUserUseCase = new GetUserUseCase(userRepository)
   const createUserUseCase = new CreateUserUseCase(
     userRepository,
@@ -172,7 +195,6 @@ async function main(): Promise<void> {
   /**
    * Doctor Domain
    */
-  const doctorRepository = new DoctorRepository(dataSource)
   const createDoctorProfileUseCase = new CreateDoctorProfileUseCase(
     doctorRepository,
     uuidService
@@ -184,7 +206,6 @@ async function main(): Promise<void> {
   /**
    * Patient Domain
    */
-  const patientRepository = new PatientRepository(dataSource)
   const createPatientProfileUseCase = new CreatePatientProfileUseCase(
     patientRepository,
     uuidService
@@ -205,14 +226,6 @@ async function main(): Promise<void> {
   /**
    * Question Domain
    */
-  const patientQuestionAnswerRepository = new PatientQuestionAnswerRepository(
-    dataSource
-  )
-  const answerAgreementRepository = new AnswerAgreementRepository(dataSource)
-  const patientQuestionRepository = new PatientQuestionRepository(dataSource)
-  const answerAppreciationRepository = new AnswerAppreciationRepository(
-    dataSource
-  )
   const createAnswerAgreementUseCase = new CreateAnswerAgreementUseCase(
     patientQuestionAnswerRepository,
     answerAgreementRepository,
@@ -307,9 +320,6 @@ async function main(): Promise<void> {
   /**
    * Record Domain
    */
-  const bloodPressureRecordRepository = new BloodPressureRecordRepository(
-    dataSource
-  )
   const createBloodPressureRecordUseCase = new CreateBloodPressureRecordUseCase(
     bloodPressureRecordRepository,
     patientRepository,
@@ -319,7 +329,6 @@ async function main(): Promise<void> {
     bloodPressureRecordRepository,
     patientRepository
   )
-  const bloodSugarRecordRepository = new BloodSugarRecordRepository(dataSource)
   const createBloodSugarRecordUseCase = new CreateBloodSugarRecordUseCase(
     bloodSugarRecordRepository,
     patientRepository,
@@ -329,7 +338,6 @@ async function main(): Promise<void> {
     bloodSugarRecordRepository,
     patientRepository
   )
-  const foodRecordRepository = new FoodRecordRepository(dataSource)
   const createFoodRecordUseCase = new CreateFoodRecordUseCase(
     foodRecordRepository,
     patientRepository,
@@ -339,7 +347,6 @@ async function main(): Promise<void> {
     foodRecordRepository,
     patientRepository
   )
-  const exerciseRecordRepository = new ExerciseRecordRepository(dataSource)
   const createExerciseRecordUseCase = new CreateExerciseRecordUseCase(
     exerciseRecordRepository,
     patientRepository,
@@ -359,7 +366,6 @@ async function main(): Promise<void> {
     sleepRecordRepository,
     patientRepository
   )
-  const weightRecordRepository = new WeightRecordRepository(dataSource)
   const createWeightRecordUseCase = new CreateWeightRecordUseCase(
     weightRecordRepository,
     patientRepository,
@@ -369,8 +375,6 @@ async function main(): Promise<void> {
     weightRecordRepository,
     patientRepository
   )
-  const glycatedHemoglobinRecordRepository =
-    new GlycatedHemoglobinRecordRepository(dataSource)
   const createGlycatedHemoglobinRecordUseCase =
     new CreateGlycatedHemoglobinRecordUseCase(
       glycatedHemoglobinRecordRepository,
@@ -384,61 +388,95 @@ async function main(): Promise<void> {
     )
   const getSingleExerciseRecordUseCase = new GetSingleExerciseRecordUseCase(
     exerciseRecordRepository,
-    patientRepository
+    patientRepository,
+    doctorRepository,
+    consultAppointmentRepository
   )
   const getSingleBloodPressureRecordUseCase =
     new GetSingleBloodPressureRecordUseCase(
       bloodPressureRecordRepository,
-      patientRepository
+      patientRepository,
+      doctorRepository,
+      consultAppointmentRepository
     )
   const getSingleBloodSugarRecordUseCase = new GetSingleBloodSugarRecordUseCase(
     bloodSugarRecordRepository,
-    patientRepository
+    patientRepository,
+    doctorRepository,
+    consultAppointmentRepository
   )
   const getSingleFoodRecordUseCase = new GetSingleFoodRecordUseCase(
     foodRecordRepository,
-    patientRepository
+    patientRepository,
+    doctorRepository,
+    consultAppointmentRepository
   )
   const getSingleGlycatedHemoglobinRecordUseCase =
     new GetSingleGlycatedHemoglobinRecordUseCase(
       glycatedHemoglobinRecordRepository,
-      patientRepository
+      patientRepository,
+      doctorRepository,
+      consultAppointmentRepository
     )
   const getSingleSleepRecordUseCase = new GetSingleSleepRecordUseCase(
     sleepRecordRepository,
-    patientRepository
+    patientRepository,
+    doctorRepository,
+    consultAppointmentRepository
   )
   const getSingleWeightRecordUseCase = new GetSingleWeightRecordUseCase(
     weightRecordRepository,
-    patientRepository
+    patientRepository,
+    doctorRepository,
+    consultAppointmentRepository
   )
   const getExerciseRecordsUseCase = new GetExerciseRecordsUseCase(
-    exerciseRecordRepository
+    exerciseRecordRepository,
+    patientRepository,
+    doctorRepository,
+    consultAppointmentRepository
   )
   const getBloodPressureRecordsUseCase = new GetBloodPressureRecordsUseCase(
-    bloodPressureRecordRepository
+    bloodPressureRecordRepository,
+    patientRepository,
+    doctorRepository,
+    consultAppointmentRepository
   )
   const getBloodSugarRecordsUseCase = new GetBloodSugarRecordsUseCase(
-    bloodSugarRecordRepository
+    bloodSugarRecordRepository,
+    patientRepository,
+    doctorRepository,
+    consultAppointmentRepository
   )
-  const getFoodRecordsUseCase = new GetFoodRecordsUseCase(foodRecordRepository)
+  const getFoodRecordsUseCase = new GetFoodRecordsUseCase(
+    foodRecordRepository,
+    patientRepository,
+    doctorRepository,
+    consultAppointmentRepository
+  )
   const getGlycatedHemoglobinRecordsUseCase =
-    new GetGlycatedHemoglobinRecordsUseCase(glycatedHemoglobinRecordRepository)
+    new GetGlycatedHemoglobinRecordsUseCase(
+      glycatedHemoglobinRecordRepository,
+      patientRepository,
+      doctorRepository,
+      consultAppointmentRepository
+    )
   const getSleepRecordsUseCase = new GetSleepRecordsUseCase(
-    sleepRecordRepository
+    sleepRecordRepository,
+    patientRepository,
+    doctorRepository,
+    consultAppointmentRepository
   )
   const getWeightRecordsUseCase = new GetWeightRecordsUseCase(
-    weightRecordRepository
+    weightRecordRepository,
+    patientRepository,
+    doctorRepository,
+    consultAppointmentRepository
   )
 
   /**
    * Conultation Domain
    */
-  const consultAppointmentRepository = new ConsultAppointmentRepository(
-    dataSource
-  )
-  const doctorTimeSlotRepository = new DoctorTimeSlotRepository(dataSource)
-
   const createConsultAppointmentUseCase = new CreateConsultAppointmentUseCase(
     consultAppointmentRepository,
     doctorTimeSlotRepository,
@@ -484,8 +522,6 @@ async function main(): Promise<void> {
   /**
    * HealthGoal Domain
    */
-  const healthGoalRepository = new HealthGoalRepository(dataSource)
-
   const createHealthGoalUseCase = new CreateHealthGoalUseCase(
     healthGoalRepository,
     patientRepository,

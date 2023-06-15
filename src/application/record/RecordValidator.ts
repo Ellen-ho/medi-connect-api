@@ -145,8 +145,58 @@ export const getSingleWeightRecordSchema = {
   }),
 }
 
+export const getBloodPressureRecordsSchema = {
+  query: Joi.object({
+    limit: Joi.number().optional(),
+    page: Joi.number().optional(),
+    targetPatientId: Joi.string().uuid().required(),
+  }),
+}
+
+export const getBloodSugarRecordsSchema = {
+  query: Joi.object({
+    limit: Joi.number().optional(),
+    page: Joi.number().optional(),
+    targetPatientId: Joi.string().uuid().required(),
+  }),
+}
+
 export const getExerciseRecordsSchema = {
-  params: Joi.object({
-    id: Joi.string().uuid().required(),
+  query: Joi.object({
+    limit: Joi.number().optional(),
+    page: Joi.number().optional(),
+    targetPatientId: Joi.string().uuid().required(),
+  }),
+}
+
+export const getFoodRecordsSchema = {
+  query: Joi.object({
+    limit: Joi.number().optional(),
+    page: Joi.number().optional(),
+    targetPatientId: Joi.string().uuid().required(),
+  }),
+}
+
+export const getGlycatedHemoglobinRecordsSchema = {
+  query: Joi.object({
+    limit: Joi.number().optional(),
+    page: Joi.number().optional(),
+    targetPatientId: Joi.string().uuid().required(),
+  }),
+}
+
+export const getSleepRecordsSchema = {
+  query: Joi.object({
+    limit: Joi.number().optional(),
+    page: Joi.number().optional(),
+    targetPatientId: Joi.string().uuid().required(),
+  }),
+}
+
+export const getWeightRecordsSchema = {
+  query: Joi.object({
+    limit: Joi.number().optional(),
+    page: Joi.number().optional(),
+    targetPatientId: Joi.string().uuid().required(),
   }),
 }

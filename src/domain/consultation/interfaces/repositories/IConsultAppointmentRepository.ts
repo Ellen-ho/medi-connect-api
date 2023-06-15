@@ -55,4 +55,9 @@ export interface IConsultAppointmentRepository {
       }
     }>
   >
+  findByPatientIdAndDoctorIdAndStatus: (
+    patientId: string,
+    doctorId: string,
+    status: ConsultAppointmentStatusType[]
+  ) => Promise<ConsultAppointment[]>
 }

@@ -24,6 +24,20 @@ export class GlycatedHemoglobinRecordRepository
     )
   }
 
+  public async findById(id: string): Promise<GlycatedHemoglobinRecord | null> {
+    try {
+      const entity = await this.getRepo().findOne({
+        where: { id },
+      })
+      return entity != null ? this.getMapper().toDomainModel(entity) : null
+    } catch (e) {
+      throw new RepositoryError(
+        'GlycatedHemoglobinRecordRepository findById error',
+        e as Error
+      )
+    }
+  }
+
   public async findByIdAndPatientId(
     recordId: string,
     patientId: string
@@ -225,6 +239,65 @@ export class GlycatedHemoglobinRecordRepository
     } catch (e) {
       throw new RepositoryError(
         'GlycatedHemoglobinRecordRepository findByPatientIdAndDate error',
+        e as Error
+      )
+    }
+  }
+
+  public async findByPatientIdAndCountAll(
+    targetPatientId: string,
+    limit: number,
+    offset: number
+  ): Promise<{
+    total_counts: number
+    patientData: {
+      firstName: string
+      lastName: string
+      birthDate: Date
+      gender: GenderType
+    }
+    recordsData: Array<{
+      glycatedHemoglobinDate: Date
+      glycatedHemoglobinValuePercent: number
+    }>
+  }> {
+    try {
+      const rawResult = this.getRepo()
+        .createQueryBuilder('record')
+        .select([
+          'record.glycated_hemoglobin_date AS "glycatedHemoglobinDate"',
+          'record.glycated_hemoglobin_value_percent AS "glycatedHemoglobinValuePercent"',
+          'patient.first_name AS "firstName"',
+          'patient.last_name AS "lastName"',
+          'patient.birth_date AS "birthDate"',
+          'patient.gender AS "gender"',
+        ])
+        .leftJoin('record.patient', 'patient')
+        .where('patient.id = :targetPatientId', { targetPatientId })
+        .orderBy('glycated_hemoglobin_date', 'DESC')
+        .take(limit)
+        .skip(offset)
+
+      const result = await rawResult.getRawMany()
+
+      // Map the raw result to the desired structure
+      const formattedResult = {
+        total_counts: result.length,
+        patientData: {
+          firstName: result.length > 0 ? result[0].firstName : '',
+          lastName: result.length > 0 ? result[0].lastName : '',
+          birthDate: result.length > 0 ? result[0].birthDate : '',
+          gender: result.length > 0 ? result[0].gender : '',
+        },
+        recordsData: result.map((record) => ({
+          glycatedHemoglobinDate: record.glycatedHemoglobinDate,
+          glycatedHemoglobinValuePercent: record.glycatedHemoglobinValuePercent,
+        })),
+      }
+      return formattedResult
+    } catch (e) {
+      throw new RepositoryError(
+        'GlycatedHemoglobinRecordRepository findByPatientIdAndCountAll error',
         e as Error
       )
     }

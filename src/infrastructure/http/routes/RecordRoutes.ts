@@ -19,6 +19,11 @@ import {
   editGlycatedHemoglobinRecordSchema,
   editSleepRecordSchema,
   editWeightRecordSchema,
+  getBloodPressureRecordsSchema,
+  getBloodSugarRecordsSchema,
+  getExerciseRecordsSchema,
+  getFoodRecordsSchema,
+  getGlycatedHemoglobinRecordsSchema,
   getSingleBloodPressureRecordSchema,
   getSingleBloodSugarRecordSchema,
   getSingleExerciseRecordSchema,
@@ -26,6 +31,8 @@ import {
   getSingleGlycatedHemoglobinRecordSchema,
   getSingleSleepRecordSchema,
   getSingleWeightRecordSchema,
+  getSleepRecordsSchema,
+  getWeightRecordsSchema,
 } from '../../../application/record/RecordValidator'
 export class RecordRoutes {
   private readonly routes: Router
@@ -106,7 +113,6 @@ export class RecordRoutes {
         validator(editGlycatedHemoglobinRecordSchema),
         asyncHandler(this.recordController.editGlycatedHemoglobinRecord)
       )
-
       .post(
         '/sleep',
         authenticated,
@@ -126,13 +132,13 @@ export class RecordRoutes {
         asyncHandler(this.recordController.getSingleExerciseRecord)
       )
       .get(
-        '/blood_presure/:id',
+        '/blood-pressure/:id',
         authenticated,
         validator(getSingleBloodPressureRecordSchema),
         asyncHandler(this.recordController.getSingleBloodPressureRecord)
       )
       .get(
-        '/blood_sugar/:id',
+        '/blood-sugar/:id',
         authenticated,
         validator(getSingleBloodSugarRecordSchema),
         asyncHandler(this.recordController.getSingleBloodSugarRecord)
@@ -144,7 +150,7 @@ export class RecordRoutes {
         asyncHandler(this.recordController.getSingleFoodRecord)
       )
       .get(
-        '/glycatedHemoglobin/:id',
+        '/glycated-hemoglobin/:id',
         authenticated,
         validator(getSingleGlycatedHemoglobinRecordSchema),
         asyncHandler(this.recordController.getSingleGlycatedHemoglobinRecord)
@@ -164,36 +170,43 @@ export class RecordRoutes {
       .get(
         '/exercise-records',
         authenticated,
+        validator(getExerciseRecordsSchema),
         asyncHandler(this.recordController.getExerciseRecords)
       )
       .get(
         '/blood-pressure-records',
         authenticated,
+        validator(getBloodPressureRecordsSchema),
         asyncHandler(this.recordController.getBloodPressureRecords)
       )
       .get(
         '/blood-sugar-records',
         authenticated,
+        validator(getBloodSugarRecordsSchema),
         asyncHandler(this.recordController.getBloodSugarRecords)
       )
       .get(
         '/food-records',
         authenticated,
+        validator(getFoodRecordsSchema),
         asyncHandler(this.recordController.getFoodRecords)
       )
       .get(
         '/glycated-hemoglobin-records',
         authenticated,
+        validator(getGlycatedHemoglobinRecordsSchema),
         asyncHandler(this.recordController.getGlycatedHemoglobinRecords)
       )
       .get(
         '/sleep-records',
         authenticated,
+        validator(getSleepRecordsSchema),
         asyncHandler(this.recordController.getSleepRecords)
       )
       .get(
         '/weight-records',
         authenticated,
+        validator(getWeightRecordsSchema),
         asyncHandler(this.recordController.getWeightRecords)
       )
   }

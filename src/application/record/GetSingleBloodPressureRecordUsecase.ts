@@ -1,7 +1,10 @@
+import { ConsultAppointmentStatusType } from '../../domain/consultation/ConsultAppointment'
+import { IConsultAppointmentRepository } from '../../domain/consultation/interfaces/repositories/IConsultAppointmentRepository'
 import { GenderType } from '../../domain/patient/Patient'
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { IBloodPressureRecordRepository } from '../../domain/record/interfaces/repositories/IBloodPressureRecordRepository'
-import { User } from '../../domain/user/User'
+import { User, UserRoleType } from '../../domain/user/User'
+import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 
 interface GetSingleBloodPressureRecordRequest {
   user: User
@@ -46,7 +49,9 @@ export interface IBloodPressureRecordWithOwner {
 export class GetSingleBloodPressureRecordUseCase {
   constructor(
     private readonly bloodPressureRecordRepository: IBloodPressureRecordRepository,
-    private readonly patientRepository: IPatientRepository
+    private readonly patientRepository: IPatientRepository,
+    private readonly doctorRepository: IDoctorRepository,
+    private readonly consultAppointmentRepository: IConsultAppointmentRepository
   ) {}
 
   public async execute(
@@ -54,20 +59,71 @@ export class GetSingleBloodPressureRecordUseCase {
   ): Promise<GetSingleBloodPressureRecordResponse> {
     const { user, bloodPressureRecordId } = request
 
-    const existingPatient = await this.patientRepository.findByUserId(user.id)
-
-    if (existingPatient == null) {
-      throw new Error('Patient does not exist.')
+    const existingRecord = await this.bloodPressureRecordRepository.findById(
+      bloodPressureRecordId
+    )
+    if (existingRecord == null) {
+      throw new Error('The blood pressure record does not exist.')
     }
 
+    const patientId = existingRecord.patientId
+
+    // 若登入者為doctor
+    if (user.role === UserRoleType.DOCTOR) {
+      const currentDoctor = await this.doctorRepository.findByUserId(user.id)
+      if (currentDoctor == null) {
+        throw new Error('The currentDoctor does not exist.')
+      }
+      const upComingAppointments =
+        await this.consultAppointmentRepository.findByPatientIdAndDoctorIdAndStatus(
+          patientId, // 該紀錄的擁有患者
+          currentDoctor.id, // 當前登入的醫師
+          [ConsultAppointmentStatusType.UPCOMING] // 預約狀態為upComing
+        )
+      if (upComingAppointments.length === 0) {
+        throw new Error(
+          'The current doctor does not be appointed by this patient.'
+        )
+      }
+      const appointmentPatient = await this.patientRepository.findById(
+        patientId
+      )
+      if (appointmentPatient == null) {
+        throw new Error('Patient who made the appointment does not exist.')
+      }
+      return {
+        data: {
+          bloodPressureDate: existingRecord.bloodPressureDate,
+          systolicBloodPressure: existingRecord.systolicBloodPressure,
+          diastolicBloodPressure: existingRecord.diastolicBloodPressure,
+          heartBeat: existingRecord.heartBeat,
+          bloodPressureNote: existingRecord.bloodPressureNote,
+          createdAt: existingRecord.createdAt,
+          updatedAt: existingRecord.updatedAt,
+        },
+        recordOwner: {
+          firstName: appointmentPatient.firstName,
+          lastName: appointmentPatient.lastName,
+          birthDate: appointmentPatient.birthDate,
+          gender: appointmentPatient.gender,
+        },
+      }
+    }
+
+    // 若登入者身分為患者
+    const currentPatient = await this.patientRepository.findByUserId(user.id)
+    if (currentPatient == null) {
+      throw new Error('The current patient does not exist.')
+    }
+    // 判斷此record是否屬於當前登入的患者
     const recordWithOwner =
       await this.bloodPressureRecordRepository.findRecordWithOwnerByRecordIdAndPatientId(
         bloodPressureRecordId,
-        existingPatient.id
+        currentPatient.id // 當前登入的patient
       )
 
     if (recordWithOwner == null) {
-      throw new Error('Record does not exist.')
+      throw new Error('The record does not belong to the current patient.')
     }
 
     return {

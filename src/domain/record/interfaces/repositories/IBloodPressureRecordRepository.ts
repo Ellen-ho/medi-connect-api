@@ -1,4 +1,5 @@
 import { IBloodPressureRecordWithOwner } from '../../../../application/record/GetSingleBloodPressureRecordUsecase'
+import { GenderType } from '../../../patient/Patient'
 import { IBaseRepository } from '../../../shared/IBaseRepository'
 import { BloodPressureRecord } from '../../BloodPressureRecord'
 
@@ -12,12 +13,19 @@ export interface IBloodPressureRecordRepository
     recordId: string,
     patientId: string
   ) => Promise<IBloodPressureRecordWithOwner | null>
-  findAndCountAll: (
+  findByPatientIdAndCountAll: (
+    patientId: string,
     limit: number,
     offset: number
   ) => Promise<{
     total_counts: number
-    records: Array<{
+    patientData: {
+      firstName: string
+      lastName: string
+      birthDate: Date
+      gender: GenderType
+    }
+    recordsData: Array<{
       bloodPressureDate: Date
       systolicBloodPressure: number
       diastolicBloodPressure: number
@@ -40,4 +48,5 @@ export interface IBloodPressureRecordRepository
     systolicBloodPressure: number
     diastolicBloodPressure: number
   } | null>
+  findById: (id: string) => Promise<BloodPressureRecord | null>
 }

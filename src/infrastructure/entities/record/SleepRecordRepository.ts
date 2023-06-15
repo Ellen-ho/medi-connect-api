@@ -19,6 +19,20 @@ export class SleepRecordRepository
     super(SleepRecordEntity, new SleepRecordMapper(), dataSource)
   }
 
+  public async findById(id: string): Promise<SleepRecord | null> {
+    try {
+      const entity = await this.getRepo().findOne({
+        where: { id },
+      })
+      return entity != null ? this.getMapper().toDomainModel(entity) : null
+    } catch (e) {
+      throw new RepositoryError(
+        'SleepRecordRepository findById error',
+        e as Error
+      )
+    }
+  }
+
   public async findByIdAndPatientId(
     recordId: string,
     patientId: string
@@ -166,6 +180,65 @@ export class SleepRecordRepository
     } catch (e) {
       throw new RepositoryError(
         'SleepRecordRepository findByPatientIdAndDate error',
+        e as Error
+      )
+    }
+  }
+
+  public async findByPatientIdAndCountAll(
+    targetPatientId: string,
+    limit: number,
+    offset: number
+  ): Promise<{
+    total_counts: number
+    patientData: {
+      firstName: string
+      lastName: string
+      birthDate: Date
+      gender: GenderType
+    }
+    recordsData: Array<{
+      sleepDate: Date
+      sleepQuality: SleepQualityType
+    }>
+  }> {
+    try {
+      const rawResult = this.getRepo()
+        .createQueryBuilder('record')
+        .select([
+          'record.sleep_date AS "sleepDate"',
+          'record.sleep_quality AS "sleepQuality"',
+          'patient.first_name AS "firstName"',
+          'patient.last_name AS "lastName"',
+          'patient.birth_date AS "birthDate"',
+          'patient.gender AS "gender"',
+        ])
+        .leftJoin('record.patient', 'patient')
+        .where('patient.id = :targetPatientId', { targetPatientId })
+        .orderBy('sleep_date', 'DESC')
+        .take(limit)
+        .skip(offset)
+
+      const result = await rawResult.getRawMany()
+
+      // Map the raw result to the desired structure
+      const formattedResult = {
+        total_counts: result.length,
+        patientData: {
+          firstName: result.length > 0 ? result[0].firstName : '',
+          lastName: result.length > 0 ? result[0].lastName : '',
+          birthDate: result.length > 0 ? result[0].birthDate : '',
+          gender: result.length > 0 ? result[0].gender : '',
+        },
+        recordsData: result.map((record) => ({
+          sleepDate: record.sleepDate,
+          sleepQuality: record.sleepQuality,
+        })),
+      }
+      return formattedResult
+    } catch (e) {
+      throw new RepositoryError(
+        'SleepRecordRepository findByPatientIdAndCountAll error',
         e as Error
       )
     }

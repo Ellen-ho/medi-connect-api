@@ -1,4 +1,5 @@
 import { IWeightRecordWithOwner } from '../../../../application/record/GetSingleWeightRecordUseCase'
+import { GenderType } from '../../../patient/Patient'
 import { IBaseRepository } from '../../../shared/IBaseRepository'
 import { WeightRecord } from '../../WeightRecord'
 
@@ -38,4 +39,23 @@ export interface IWeightRecordRepository extends IBaseRepository<WeightRecord> {
     weightValueKg: number
     bodyMassIndex: number
   } | null>
+  findById: (id: string) => Promise<WeightRecord | null>
+  findByPatientIdAndCountAll: (
+    patientId: string,
+    limit: number,
+    offset: number
+  ) => Promise<{
+    total_counts: number
+    patientData: {
+      firstName: string
+      lastName: string
+      birthDate: Date
+      gender: GenderType
+    }
+    recordsData: Array<{
+      weightDate: Date
+      weightValueKg: number
+      bodyMassIndex: number
+    }>
+  }>
 }
