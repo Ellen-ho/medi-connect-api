@@ -44,10 +44,6 @@ export class GetBloodPressureRecordsUseCase {
   public async execute(
     request: GetBloodPressureRecordsRequest
   ): Promise<GetBloodPressureRecordsResponse> {
-    /**
-     * if User is Patient, check the patientId is User
-     * if User is Doctor, check the doctor has appointment with the patient
-     */
     const { user, targetPatientId } = request
     const page: number = request.page != null ? request.page : 1
     const limit: number = request.limit != null ? request.limit : 10

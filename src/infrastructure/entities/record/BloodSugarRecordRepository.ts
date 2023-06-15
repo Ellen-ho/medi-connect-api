@@ -249,4 +249,66 @@ export class BloodSugarRecordRepository
       )
     }
   }
+
+  public async findByPatientIdAndCountAll(
+    targetPatientId: string,
+    limit: number,
+    offset: number
+  ): Promise<{
+    total_counts: number
+    patientData: {
+      firstName: string
+      lastName: string
+      birthDate: Date
+      gender: GenderType
+    }
+    records: Array<{
+      bloodSugarDate: Date
+      bloodSugarValue: number // mg/L
+      bloodSugarType: BloodSugarType
+    }>
+  }> {
+    try {
+      const rawResult = this.getRepo()
+        .createQueryBuilder('record')
+        .select([
+          'record.blood_sugar_date AS "bloodSugarDate"',
+          'record.blood_sugar_value AS "bloodSugarValue"',
+          'record.blood_sugar_type AS "bloodSugarType"',
+          'patient.first_name AS "firstName"',
+          'patient.last_name AS "lastName"',
+          'patient.birth_date AS "birthDate"',
+          'patient.gender AS "gender"',
+        ])
+        .leftJoin('record.patient', 'patient')
+        .where('patient.id = :targetPatientId', { targetPatientId })
+        .orderBy('record.blood_sugar_date', 'DESC')
+        .take(limit)
+        .skip(offset)
+
+      const result = await rawResult.getRawMany()
+
+      // Map the raw result to the desired structure
+      const formattedResult = {
+        total_counts: result.length,
+        patientData: {
+          firstName: result.length > 0 ? result[0].firstName : '',
+          lastName: result.length > 0 ? result[0].lastName : '',
+          birthDate: result.length > 0 ? result[0].birthDate : '',
+          gender: result.length > 0 ? result[0].gender : '',
+        },
+        records: result.map((record) => ({
+          bloodSugarDate: record.bloodSugarDate,
+          bloodSugarValue: record.bloodSugarValue,
+          bloodSugarType: record.bloodSugarType,
+        })),
+      }
+      return formattedResult
+    } catch (e) {
+      throw new RepositoryError(
+        'BloodSugarRecordRepository findByPatientIdAndCountAll error',
+        e as Error
+      )
+    }
+  }
 }

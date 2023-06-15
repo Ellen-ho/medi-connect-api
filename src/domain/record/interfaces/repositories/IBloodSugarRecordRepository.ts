@@ -1,4 +1,5 @@
 import { IBloodSugarRecordWithOwner } from '../../../../application/record/GetSingleBloodSugarRecordUseCase'
+import { GenderType } from '../../../patient/Patient'
 import { IBaseRepository } from '../../../shared/IBaseRepository'
 import { BloodSugarRecord, BloodSugarType } from '../../BloodSugarRecord'
 
@@ -41,4 +42,22 @@ export interface IBloodSugarRecordRepository
     bloodSugarType: BloodSugarType
   } | null>
   findById: (id: string) => Promise<BloodSugarRecord | null>
+  findByPatientIdAndCountAll: (
+    patientId: string,
+    limit: number,
+    offset: number
+  ) => Promise<{
+    total_counts: number
+    patientData: {
+      firstName: string
+      lastName: string
+      birthDate: Date
+      gender: GenderType
+    }
+    records: Array<{
+      bloodSugarDate: Date
+      bloodSugarValue: number
+      bloodSugarType: BloodSugarType
+    }>
+  }>
 }
