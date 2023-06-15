@@ -17,7 +17,7 @@ Content-Type: application/json
 
 @notificationsPath = {{hostname}}/api/notifications
 
-### get notificationLists
+### get notificationList
 GET {{notificationsPath}}?limit=3&page=1
 Authorization: {{accessToken}}
 Content-Type: application/json

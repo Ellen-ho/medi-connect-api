@@ -24,7 +24,7 @@ export class NotificationRoutes {
     )
     this.routes.get(
       '/',
-      asyncHandler(this.NotificationController.getNotificationLists)
+      asyncHandler(this.NotificationController.getNotificationList)
     )
     this.routes.patch(
       '/read-all',
