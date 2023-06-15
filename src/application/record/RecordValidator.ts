@@ -184,3 +184,19 @@ export const getGlycatedHemoglobinRecordsSchema = {
     targetPatientId: Joi.string().uuid().required(),
   }),
 }
+
+export const getSleepRecordsSchema = {
+  query: Joi.object({
+    limit: Joi.number().optional(),
+    page: Joi.number().optional(),
+    targetPatientId: Joi.string().uuid().required(),
+  }),
+}
+
+export const getWeightRecordsSchema = {
+  query: Joi.object({
+    limit: Joi.number().optional(),
+    page: Joi.number().optional(),
+    targetPatientId: Joi.string().uuid().required(),
+  }),
+}
