@@ -176,3 +176,11 @@ export const getFoodRecordsSchema = {
     targetPatientId: Joi.string().uuid().required(),
   }),
 }
+
+export const getGlycatedHemoglobinRecordsSchema = {
+  query: Joi.object({
+    limit: Joi.number().optional(),
+    page: Joi.number().optional(),
+    targetPatientId: Joi.string().uuid().required(),
+  }),
+}

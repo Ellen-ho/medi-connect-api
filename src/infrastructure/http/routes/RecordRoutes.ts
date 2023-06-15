@@ -23,6 +23,7 @@ import {
   getBloodSugarRecordsSchema,
   getExerciseRecordsSchema,
   getFoodRecordsSchema,
+  getGlycatedHemoglobinRecordsSchema,
   getSingleBloodPressureRecordSchema,
   getSingleBloodSugarRecordSchema,
   getSingleExerciseRecordSchema,
@@ -191,6 +192,7 @@ export class RecordRoutes {
       .get(
         '/glycated-hemoglobin-records',
         authenticated,
+        validator(getGlycatedHemoglobinRecordsSchema),
         asyncHandler(this.recordController.getGlycatedHemoglobinRecords)
       )
       .get(

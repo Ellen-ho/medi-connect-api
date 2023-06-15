@@ -561,6 +561,8 @@ export class RecordController implements IRecordController {
   ): Promise<Response> => {
     try {
       const request = {
+        user: req.user as User,
+        targetPatientId: req.query.targetPatientId as string,
         limit: Number(req.query.limit),
         page: Number(req.query.page),
       }

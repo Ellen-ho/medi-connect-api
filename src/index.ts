@@ -455,7 +455,12 @@ async function main(): Promise<void> {
     consultAppointmentRepository
   )
   const getGlycatedHemoglobinRecordsUseCase =
-    new GetGlycatedHemoglobinRecordsUseCase(glycatedHemoglobinRecordRepository)
+    new GetGlycatedHemoglobinRecordsUseCase(
+      glycatedHemoglobinRecordRepository,
+      patientRepository,
+      doctorRepository,
+      consultAppointmentRepository
+    )
   const getSleepRecordsUseCase = new GetSleepRecordsUseCase(
     sleepRecordRepository
   )
