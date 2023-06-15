@@ -138,8 +138,7 @@ export class BloodPressureRecordRepository
       diastolicBloodPressure: number
     }>
   }> {
-    const repository = this.getRepo()
-    const queryBuilder = repository
+    const result = await this.getRepo()
       .createQueryBuilder('record')
       .select([
         'record.blood_pressure_date AS "bloodPressureDate"',
@@ -155,8 +154,7 @@ export class BloodPressureRecordRepository
       .orderBy('record.blood_pressure_date', 'DESC')
       .take(limit)
       .skip(offset)
-
-    const result = await queryBuilder.getRawMany()
+      .getRawMany()
 
     // Map the raw result to the desired structure
     const formattedResult = {

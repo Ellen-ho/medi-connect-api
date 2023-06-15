@@ -262,7 +262,7 @@ export class GlycatedHemoglobinRecordRepository
     }>
   }> {
     try {
-      const rawResult = this.getRepo()
+      const result = await this.getRepo()
         .createQueryBuilder('record')
         .select([
           'record.glycated_hemoglobin_date AS "glycatedHemoglobinDate"',
@@ -277,8 +277,7 @@ export class GlycatedHemoglobinRecordRepository
         .orderBy('glycated_hemoglobin_date', 'DESC')
         .take(limit)
         .skip(offset)
-
-      const result = await rawResult.getRawMany()
+        .getRawMany()
 
       // Map the raw result to the desired structure
       const formattedResult = {

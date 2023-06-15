@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { GetNotificationListsUseCase } from '../../../application/notification/GetNotificationListUseCase'
+import { GetNotificationListUseCase } from '../../../application/notification/GetNotificationListUseCase'
 import { GetNotificationDetailsUseCase } from '../../../application/notification/GetNotificationDetailsUseCase'
 import { User } from '../../../domain/user/User'
 import { GetNotificationHintsUseCase } from '../../../application/notification/GetNotificationHintsUseCase'
@@ -8,7 +8,7 @@ import { DeleteAllNotificationsUseCase } from '../../../application/notification
 import { DeleteNotificationUseCase } from '../../../application/notification/DeleteNotificationUseCase'
 
 export interface INotificationController {
-  getNotificationLists: (req: Request, res: Response) => Promise<Response>
+  getNotificationList: (req: Request, res: Response) => Promise<Response>
   getNotificationDetails: (req: Request, res: Response) => Promise<Response>
   getNotificationHints: (req: Request, res: Response) => Promise<Response>
   readAllNotifications: (req: Request, res: Response) => Promise<Response>
@@ -18,7 +18,7 @@ export interface INotificationController {
 
 export class NotificationController implements INotificationController {
   constructor(
-    private readonly getNotificationListsUseCase: GetNotificationListsUseCase,
+    private readonly getNotificationListUseCase: GetNotificationListUseCase,
     private readonly getNotificationDetailsUseCase: GetNotificationDetailsUseCase,
     private readonly getNotificationHintsUseCase: GetNotificationHintsUseCase,
     private readonly readAllNotificationsUseCase: ReadAllNotificationsUseCase,
@@ -26,7 +26,7 @@ export class NotificationController implements INotificationController {
     private readonly deleteNotificationUseCase: DeleteNotificationUseCase
   ) {}
 
-  public getNotificationLists = async (
+  public getNotificationList = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
@@ -34,7 +34,7 @@ export class NotificationController implements INotificationController {
       const request = {
         user: req.user as User,
       }
-      const result = await this.getNotificationListsUseCase.execute(request)
+      const result = await this.getNotificationListUseCase.execute(request)
 
       return res.status(200).json(result)
     } catch (error) {

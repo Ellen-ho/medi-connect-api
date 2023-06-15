@@ -8,8 +8,8 @@ POST {{usersPath}}/login
 Content-Type: application/json
 
 {
-  "email": "tim@gmail.com",
-  "password": "tim"
+  "email": "Ellen@gmail.com",
+  "password": "Ellen"
 }
 ###
 @accessToken = Bearer {{login.response.body.token}}
@@ -24,6 +24,12 @@ Content-Type: application/json
 ### get a health goal
 @healthGoalId=f5ae1de0-880b-422c-9577-a78a1cf83ebb
 Get {{healthGoalsPath}}/{{healthGoalId}}
+Authorization: {{accessToken}}
+Content-Type: application/json
+###
+
+### get health goal list
+Get {{healthGoalsPath}}?limit=3&page=1&targetPatientId=e6b08543-8ef9-47f0-852d-5442830089da
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###

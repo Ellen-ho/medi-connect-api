@@ -269,7 +269,7 @@ export class BloodSugarRecordRepository
     }>
   }> {
     try {
-      const rawResult = this.getRepo()
+      const result = await this.getRepo()
         .createQueryBuilder('record')
         .select([
           'record.blood_sugar_date AS "bloodSugarDate"',
@@ -285,8 +285,7 @@ export class BloodSugarRecordRepository
         .orderBy('record.blood_sugar_date', 'DESC')
         .take(limit)
         .skip(offset)
-
-      const result = await rawResult.getRawMany()
+        .getRawMany()
 
       // Map the raw result to the desired structure
       const formattedResult = {

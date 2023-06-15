@@ -1,3 +1,6 @@
+import { ConsultAppointmentStatusType } from '../../domain/consultation/ConsultAppointment'
+import { IConsultAppointmentRepository } from '../../domain/consultation/interfaces/repositories/IConsultAppointmentRepository'
+import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 import {
   HealthGoalStatus,
   IBloodPressureValue,
@@ -10,7 +13,7 @@ import { IBloodPressureRecordRepository } from '../../domain/record/interfaces/r
 import { IBloodSugarRecordRepository } from '../../domain/record/interfaces/repositories/IBloodSugarRecordRepository'
 import { IGlycatedHemoglobinRecordRepository } from '../../domain/record/interfaces/repositories/IGlycatedHemoglobinRecordRepository'
 import { IWeightRecordRepository } from '../../domain/record/interfaces/repositories/IWeightRecordRepository'
-import { User } from '../../domain/user/User'
+import { User, UserRoleType } from '../../domain/user/User'
 interface GetHealthGoalRequest {
   healthGoalId: string
   user: User
@@ -41,22 +44,18 @@ export class GetHealthGoalUseCase {
   constructor(
     private readonly healthGoalRepository: IHealthGoalRepository,
     private readonly patientRepository: IPatientRepository,
+    private readonly doctorRepository: IDoctorRepository,
     private readonly bloodPressureRecordRepository: IBloodPressureRecordRepository,
     private readonly bloodSugarRecordRepository: IBloodSugarRecordRepository,
     private readonly glycatedHemonglobinRecordRepository: IGlycatedHemoglobinRecordRepository,
-    private readonly weightRecordRepository: IWeightRecordRepository
+    private readonly weightRecordRepository: IWeightRecordRepository,
+    private readonly consultAppointmentRepository: IConsultAppointmentRepository
   ) {}
 
   public async execute(
     request: GetHealthGoalRequest
   ): Promise<GetHealthGoalResponse | null> {
     const { user, healthGoalId } = request
-
-    const existingPatient = await this.patientRepository.findByUserId(user.id)
-
-    if (existingPatient == null) {
-      throw new Error('Patient does not exist.')
-    }
 
     const existingHealthGoal = await this.healthGoalRepository.findById(
       healthGoalId
@@ -66,36 +65,79 @@ export class GetHealthGoalUseCase {
       throw new Error('HealthGoal does not exist.')
     }
 
+    if (existingHealthGoal.status === 'REJECTED') {
+      throw new Error(
+        'The health goal becomes invalid after being rejected by the patient.'
+      )
+    }
+
     const latestBloodPressureRecord =
       await this.bloodPressureRecordRepository.findByPatientIdAndDate(
-        existingPatient.id,
+        existingHealthGoal.patientId,
         new Date()
       )
 
     const latestBloodSugarRecord =
       await this.bloodSugarRecordRepository.findByPatientIdAndDate(
-        existingPatient.id,
+        existingHealthGoal.patientId,
         new Date()
       )
 
     const latestGlycatedHemonglobinRecord =
       await this.glycatedHemonglobinRecordRepository.findByPatientIdAndDate(
-        existingPatient.id,
+        existingHealthGoal.patientId,
         new Date()
       )
 
     const latestWeightRecord =
       await this.weightRecordRepository.findByPatientIdAndDate(
-        existingPatient.id,
+        existingHealthGoal.patientId,
         new Date()
       )
 
     const latestBodyMassIndexRecord =
       await this.weightRecordRepository.findByPatientIdAndDate(
-        existingPatient.id,
+        existingHealthGoal.patientId,
         new Date()
       )
 
+    // 若登入者為doctor
+    if (user.role === UserRoleType.DOCTOR) {
+      const currentDoctor = await this.doctorRepository.findByUserId(user.id)
+      if (currentDoctor == null) {
+        throw new Error('The currentDoctor does not exist.')
+      }
+      const upComingAppointments =
+        await this.consultAppointmentRepository.findByPatientIdAndDoctorIdAndStatus(
+          existingHealthGoal.patientId, // 紀錄的擁有患者
+          currentDoctor.id, // 當前登入的醫師
+          [ConsultAppointmentStatusType.UPCOMING] // 預約狀態為upComing的期間
+        )
+      if (upComingAppointments.length === 0) {
+        throw new Error(
+          'The current doctor does not be appointed by this patient.'
+        )
+      }
+      const appointmentPatient = await this.patientRepository.findById(
+        existingHealthGoal.patientId
+      )
+      if (appointmentPatient == null) {
+        throw new Error('Patient who made the appointment does not exist.')
+      }
+    }
+
+    // 若登入者身分為患者
+    if (user.role === UserRoleType.PATIENT) {
+      const currentPatient = await this.patientRepository.findByUserId(user.id)
+      if (currentPatient == null) {
+        throw new Error('The current patient does not exist.')
+      }
+      if (currentPatient.id !== existingHealthGoal.patientId) {
+        throw new Error(
+          'The health goal does not belong to the current patient.'
+        )
+      }
+    }
     return {
       id: existingHealthGoal.id,
       bloodPressureCurrentValue:

@@ -186,7 +186,7 @@ export class ExerciseRecordRepository
     }>
   }> {
     try {
-      const rawResult = this.getRepo()
+      const result = await this.getRepo()
         .createQueryBuilder('record')
         .select([
           'record.exercise_date AS "exerciseDate"',
@@ -201,8 +201,7 @@ export class ExerciseRecordRepository
         .orderBy('exercise_date', 'DESC')
         .take(limit)
         .skip(offset)
-
-      const result = await rawResult.getRawMany()
+        .getRawMany()
 
       // Map the raw result to the desired structure
       const formattedResult = {

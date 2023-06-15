@@ -3,13 +3,13 @@ import { INotificationRepository } from '../../domain/notification/interfaces/re
 import { User } from '../../domain/user/User'
 import { getOffset, getPagination } from '../../infrastructure/utils/Pagination'
 
-interface GetNotificationListsRequest {
+interface GetNotificationListRequest {
   user: User
   page?: number
   limit?: number
 }
 
-interface GetNotificationListsResponse {
+interface GetNotificationListResponse {
   data: Array<{
     id: string
     title: string
@@ -28,36 +28,36 @@ interface GetNotificationListsResponse {
   }
 }
 
-export class GetNotificationListsUseCase {
+export class GetNotificationListUseCase {
   constructor(
     private readonly notificationRepository: INotificationRepository
   ) {}
 
   public async execute(
-    request: GetNotificationListsRequest
-  ): Promise<GetNotificationListsResponse> {
+    request: GetNotificationListRequest
+  ): Promise<GetNotificationListResponse> {
     const { user } = request
     const page: number = request.page != null ? request.page : 1
     const limit: number = request.limit != null ? request.limit : 10
     const offset: number = getOffset(limit, page)
 
-    const existingNotificationLists =
+    const existingNotificationList =
       await this.notificationRepository.findByUserIdAndCountAll(
         user.id,
         limit,
         offset
       )
 
-    if (existingNotificationLists.notifications.length === 0) {
-      throw new Error('NotificationLists do not exist.')
+    if (existingNotificationList.notifications.length === 0) {
+      throw new Error('NotificationList do not exist.')
     }
 
     return {
-      data: existingNotificationLists.notifications,
+      data: existingNotificationList.notifications,
       pagination: getPagination(
         limit,
         page,
-        existingNotificationLists.total_counts
+        existingNotificationList.total_counts
       ),
     }
   }

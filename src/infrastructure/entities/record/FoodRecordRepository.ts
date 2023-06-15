@@ -180,7 +180,7 @@ export class FoodRecordRepository
     }>
   }> {
     try {
-      const rawResult = this.getRepo()
+      const result = await this.getRepo()
         .createQueryBuilder('record')
         .select([
           'record.food_time AS "foodTime"',
@@ -195,8 +195,7 @@ export class FoodRecordRepository
         .orderBy('food_time', 'DESC')
         .take(limit)
         .skip(offset)
-
-      const result = await rawResult.getRawMany()
+        .getRawMany()
 
       // Map the raw result to the desired structure
       const formattedResult = {
