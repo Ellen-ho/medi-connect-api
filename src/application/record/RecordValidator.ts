@@ -145,12 +145,6 @@ export const getSingleWeightRecordSchema = {
   }),
 }
 
-export const getExerciseRecordsSchema = {
-  query: Joi.object({
-    id: Joi.string().uuid().required(),
-  }),
-}
-
 export const getBloodPressureRecordsSchema = {
   query: Joi.object({
     limit: Joi.number().optional(),
@@ -160,6 +154,14 @@ export const getBloodPressureRecordsSchema = {
 }
 
 export const getBloodSugarRecordsSchema = {
+  query: Joi.object({
+    limit: Joi.number().optional(),
+    page: Joi.number().optional(),
+    targetPatientId: Joi.string().uuid().required(),
+  }),
+}
+
+export const getExerciseRecordsSchema = {
   query: Joi.object({
     limit: Joi.number().optional(),
     page: Joi.number().optional(),
