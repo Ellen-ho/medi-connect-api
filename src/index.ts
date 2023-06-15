@@ -101,7 +101,7 @@ import { CreateMultipleTimeSlotsUseCase } from './application/consultation/Creat
 import { GetPatientConsultAppointmentsUseCase } from './application/consultation/GetPatientConsultAppointmentsUseCase'
 import { GetDoctorConsultAppointmentsUseCase } from './application/consultation/GetDoctorConsultAppointmentsUseCase'
 import { NotificationRepository } from './infrastructure/entities/notification/NotificationRepository'
-import { GetNotificationListsUseCase } from './application/notification/GetNotificationListUseCase'
+import { GetNotificationListUseCase } from './application/notification/GetNotificationListUseCase'
 import { GetNotificationDetailsUseCase } from './application/notification/GetNotificationDetailsUseCase'
 import { NotificationController } from './infrastructure/http/controllers/NotificationController'
 import { NotificationRoutes } from './infrastructure/http/routes/NotificationRoutes'
@@ -111,6 +111,7 @@ import { DeleteAllNotificationsUseCase } from './application/notification/Delete
 import { DeleteNotificationUseCase } from './application/notification/DeleteNotificationUseCase'
 import { NotificationHelper } from './application/notification/NotificationHelper'
 import { GoogleCalendar } from './infrastructure/network/GoogleCalendar'
+import { GetHealthGoalListUseCase } from './application/goal/GetHealthGoalListUseCase'
 // import { RawQueryRepository } from './infrastructure/database/RawRepository'
 
 void main()
@@ -546,17 +547,26 @@ async function main(): Promise<void> {
   const getHealthGoalUseCase = new GetHealthGoalUseCase(
     healthGoalRepository,
     patientRepository,
+    doctorRepository,
     bloodPressureRecordRepository,
     bloodSugarRecordRepository,
     glycatedHemoglobinRecordRepository,
-    weightRecordRepository
+    weightRecordRepository,
+    consultAppointmentRepository
+  )
+
+  const getHealthGoalListUseCase = new GetHealthGoalListUseCase(
+    healthGoalRepository,
+    patientRepository,
+    doctorRepository,
+    consultAppointmentRepository
   )
 
   /**
    * Notification Domain
    */
 
-  const getNotificationListsUseCase = new GetNotificationListsUseCase(
+  const getNotificationListUseCase = new GetNotificationListUseCase(
     notificationRepository
   )
 
@@ -654,11 +664,12 @@ async function main(): Promise<void> {
     createHealthGoalUseCase,
     activateHealthGoalUseCase,
     rejectHealthGoalUseCase,
-    getHealthGoalUseCase
+    getHealthGoalUseCase,
+    getHealthGoalListUseCase
   )
 
   const notificationController = new NotificationController(
-    getNotificationListsUseCase,
+    getNotificationListUseCase,
     getNotificationDetailsUseCase,
     getNotificationHintsUseCase,
     readAllNotificationsUseCase,

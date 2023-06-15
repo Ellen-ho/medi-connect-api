@@ -4,6 +4,7 @@ import { validator } from '../middlewares/Validator'
 import { asyncHandler } from '../middlewares/AsyncHandler'
 import {
   activateHealthGoalSchema,
+  getHealthGoalListSchema,
   getHealthGoalSchema,
   rejectHealthGoalSchema,
 } from '../../../application/goal/GoalValidator'
@@ -15,6 +16,11 @@ export class HealthGoalRoutes {
     this.routes.post(
       '/',
       asyncHandler(this.HealthGoalController.createHealthGoal)
+    )
+    this.routes.get(
+      '/',
+      validator(getHealthGoalListSchema),
+      asyncHandler(this.HealthGoalController.getHealthGoalList)
     )
     this.routes.get(
       '/:id',
