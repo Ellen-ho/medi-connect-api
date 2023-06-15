@@ -262,7 +262,7 @@ export class BloodSugarRecordRepository
       birthDate: Date
       gender: GenderType
     }
-    records: Array<{
+    recordsData: Array<{
       bloodSugarDate: Date
       bloodSugarValue: number // mg/L
       bloodSugarType: BloodSugarType
@@ -297,7 +297,7 @@ export class BloodSugarRecordRepository
           birthDate: result.length > 0 ? result[0].birthDate : '',
           gender: result.length > 0 ? result[0].gender : '',
         },
-        records: result.map((record) => ({
+        recordsData: result.map((record) => ({
           bloodSugarDate: record.bloodSugarDate,
           bloodSugarValue: record.bloodSugarValue,
           bloodSugarType: record.bloodSugarType,

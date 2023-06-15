@@ -57,7 +57,7 @@ export class GetBloodSugarRecordsUseCase {
         offset
       )
 
-    if (existingBloodSugarRecords.records.length === 0) {
+    if (existingBloodSugarRecords.recordsData.length === 0) {
       throw new Error('No record exists.')
     }
 
@@ -92,7 +92,7 @@ export class GetBloodSugarRecordsUseCase {
           birthDate: appointmentPatient.birthDate,
           gender: appointmentPatient.gender,
         },
-        recordsData: existingBloodSugarRecords.records,
+        recordsData: existingBloodSugarRecords.recordsData,
         pagination: getPagination(
           limit,
           page,
@@ -117,7 +117,7 @@ export class GetBloodSugarRecordsUseCase {
         birthDate: currentPatient.birthDate,
         gender: currentPatient.gender,
       },
-      recordsData: existingBloodSugarRecords.records,
+      recordsData: existingBloodSugarRecords.recordsData,
       pagination: getPagination(
         limit,
         page,

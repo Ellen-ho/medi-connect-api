@@ -54,7 +54,7 @@ export interface IBloodSugarRecordRepository
       birthDate: Date
       gender: GenderType
     }
-    records: Array<{
+    recordsData: Array<{
       bloodSugarDate: Date
       bloodSugarValue: number
       bloodSugarType: BloodSugarType

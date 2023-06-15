@@ -56,7 +56,7 @@ export class GetBloodPressureRecordsUseCase {
         offset
       )
 
-    if (existingBloodPressureRecords.records.length === 0) {
+    if (existingBloodPressureRecords.recordsData.length === 0) {
       throw new Error('No record exists.')
     }
 
@@ -91,7 +91,7 @@ export class GetBloodPressureRecordsUseCase {
           birthDate: appointmentPatient.birthDate,
           gender: appointmentPatient.gender,
         },
-        recordsData: existingBloodPressureRecords.records,
+        recordsData: existingBloodPressureRecords.recordsData,
         pagination: getPagination(
           limit,
           page,
@@ -116,7 +116,7 @@ export class GetBloodPressureRecordsUseCase {
         birthDate: currentPatient.birthDate,
         gender: currentPatient.gender,
       },
-      recordsData: existingBloodPressureRecords.records,
+      recordsData: existingBloodPressureRecords.recordsData,
       pagination: getPagination(
         limit,
         page,
