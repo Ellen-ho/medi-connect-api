@@ -221,7 +221,7 @@ export class ExerciseRecordRepository
       return formattedResult
     } catch (e) {
       throw new RepositoryError(
-        'ExerciseRepository findByPatientIdAndCountAll error',
+        'ExerciseRecordRepository findByPatientIdAndCountAll error',
         e as Error
       )
     }

@@ -22,6 +22,7 @@ import {
   getBloodPressureRecordsSchema,
   getBloodSugarRecordsSchema,
   getExerciseRecordsSchema,
+  getFoodRecordsSchema,
   getSingleBloodPressureRecordSchema,
   getSingleBloodSugarRecordSchema,
   getSingleExerciseRecordSchema,
@@ -184,6 +185,7 @@ export class RecordRoutes {
       .get(
         '/food-records',
         authenticated,
+        validator(getFoodRecordsSchema),
         asyncHandler(this.recordController.getFoodRecords)
       )
       .get(

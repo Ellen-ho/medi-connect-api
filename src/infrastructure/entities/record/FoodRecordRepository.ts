@@ -161,4 +161,63 @@ export class FoodRecordRepository
       )
     }
   }
+
+  public async findByPatientIdAndCountAll(
+    targetPatientId: string,
+    limit: number,
+    offset: number
+  ): Promise<{
+    total_counts: number
+    patientData: {
+      firstName: string
+      lastName: string
+      birthDate: Date
+      gender: GenderType
+    }
+    recordsData: Array<{
+      foodTime: Date
+      foodCategory: FoodCategoryType
+    }>
+  }> {
+    try {
+      const rawResult = this.getRepo()
+        .createQueryBuilder('record')
+        .select([
+          'record.food_time AS "foodTime"',
+          'record.food_category AS "foodCategory"',
+          'patient.first_name AS "firstName"',
+          'patient.last_name AS "lastName"',
+          'patient.birth_date AS "birthDate"',
+          'patient.gender AS "gender"',
+        ])
+        .leftJoin('record.patient', 'patient')
+        .where('patient.id = :targetPatientId', { targetPatientId })
+        .orderBy('food_time', 'DESC')
+        .take(limit)
+        .skip(offset)
+
+      const result = await rawResult.getRawMany()
+
+      // Map the raw result to the desired structure
+      const formattedResult = {
+        total_counts: result.length,
+        patientData: {
+          firstName: result.length > 0 ? result[0].firstName : '',
+          lastName: result.length > 0 ? result[0].lastName : '',
+          birthDate: result.length > 0 ? result[0].birthDate : '',
+          gender: result.length > 0 ? result[0].gender : '',
+        },
+        recordsData: result.map((record) => ({
+          foodTime: record.foodTime,
+          foodCategory: record.foodCategory,
+        })),
+      }
+      return formattedResult
+    } catch (e) {
+      throw new RepositoryError(
+        'FoodRecordRepository findByPatientIdAndCountAll error',
+        e as Error
+      )
+    }
+  }
 }

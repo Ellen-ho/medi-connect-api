@@ -210,3 +210,9 @@ GET {{recordsPath}}/exercise-records?limit=3&page=1&targetPatientId=e6b08543-8ef
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###
+
+### get all food record lists
+GET {{recordsPath}}/food-records?limit=3&page=1&targetPatientId=e6b08543-8ef9-47f0-852d-5442830089da
+Authorization: {{accessToken}}
+Content-Type: application/json
+###

@@ -448,7 +448,12 @@ async function main(): Promise<void> {
     doctorRepository,
     consultAppointmentRepository
   )
-  const getFoodRecordsUseCase = new GetFoodRecordsUseCase(foodRecordRepository)
+  const getFoodRecordsUseCase = new GetFoodRecordsUseCase(
+    foodRecordRepository,
+    patientRepository,
+    doctorRepository,
+    consultAppointmentRepository
+  )
   const getGlycatedHemoglobinRecordsUseCase =
     new GetGlycatedHemoglobinRecordsUseCase(glycatedHemoglobinRecordRepository)
   const getSleepRecordsUseCase = new GetSleepRecordsUseCase(

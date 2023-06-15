@@ -168,3 +168,11 @@ export const getExerciseRecordsSchema = {
     targetPatientId: Joi.string().uuid().required(),
   }),
 }
+
+export const getFoodRecordsSchema = {
+  query: Joi.object({
+    limit: Joi.number().optional(),
+    page: Joi.number().optional(),
+    targetPatientId: Joi.string().uuid().required(),
+  }),
+}
