@@ -262,7 +262,7 @@ export class WeightRecordRepository
     }>
   }> {
     try {
-      const rawResult = this.getRepo()
+      const result = await this.getRepo()
         .createQueryBuilder('record')
         .select([
           'record.weight_date AS "weightDate"',
@@ -278,8 +278,7 @@ export class WeightRecordRepository
         .orderBy('weight_date', 'DESC')
         .take(limit)
         .skip(offset)
-
-      const result = await rawResult.getRawMany()
+        .getRawMany()
 
       // Map the raw result to the desired structure
       const formattedResult = {
