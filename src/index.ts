@@ -462,10 +462,16 @@ async function main(): Promise<void> {
       consultAppointmentRepository
     )
   const getSleepRecordsUseCase = new GetSleepRecordsUseCase(
-    sleepRecordRepository
+    sleepRecordRepository,
+    patientRepository,
+    doctorRepository,
+    consultAppointmentRepository
   )
   const getWeightRecordsUseCase = new GetWeightRecordsUseCase(
-    weightRecordRepository
+    weightRecordRepository,
+    patientRepository,
+    doctorRepository,
+    consultAppointmentRepository
   )
 
   /**

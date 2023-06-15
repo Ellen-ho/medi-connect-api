@@ -221,3 +221,15 @@ GET {{recordsPath}}/glycated-hemoglobin-records?limit=3&page=1&targetPatientId=e
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###
+
+### get all sleep record lists
+GET {{recordsPath}}/sleep-records?limit=3&page=1&targetPatientId=e6b08543-8ef9-47f0-852d-5442830089da
+Authorization: {{accessToken}}
+Content-Type: application/json
+###
+
+### get all weight record lists
+GET {{recordsPath}}/weight-records?limit=3&page=1&targetPatientId=e6b08543-8ef9-47f0-852d-5442830089da
+Authorization: {{accessToken}}
+Content-Type: application/json
+###

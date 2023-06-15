@@ -1,4 +1,5 @@
 import { ISleepRecordWithOwner } from '../../../../application/record/GetSingleSleepRecordUseCase'
+import { GenderType } from '../../../patient/Patient'
 import { IBaseRepository } from '../../../shared/IBaseRepository'
 import { SleepQualityType, SleepRecord } from '../../SleepRecord'
 
@@ -26,4 +27,21 @@ export interface ISleepRecordRepository extends IBaseRepository<SleepRecord> {
     sleepDate: Date
   ) => Promise<SleepRecord | null>
   findById: (id: string) => Promise<SleepRecord | null>
+  findByPatientIdAndCountAll: (
+    patientId: string,
+    limit: number,
+    offset: number
+  ) => Promise<{
+    total_counts: number
+    patientData: {
+      firstName: string
+      lastName: string
+      birthDate: Date
+      gender: GenderType
+    }
+    recordsData: Array<{
+      sleepDate: Date
+      sleepQuality: SleepQualityType
+    }>
+  }>
 }
