@@ -30,7 +30,7 @@ export class BloodSugarRecordEntity {
   @Column({ name: 'blood_sugar_type', type: 'varchar', length: 150 })
   public bloodSugarType!: BloodSugarType
 
-  @Column({ name: 'blood_sugar_note', type: 'varchar', length: 150 })
+  @Column({ name: 'blood_sugar_note', type: 'varchar', length: 250 })
   public bloodSugarNote!: string | null
 
   @CreateDateColumn({ name: 'created_at' })

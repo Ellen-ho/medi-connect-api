@@ -68,7 +68,7 @@ export class GetHealthGoalListUseCase {
     }
 
     const filteredGoalsData = existingHealthGoals.goalsData.filter(
-      (goal) => goal.status !== 'REJECTED'
+      (goal) => goal.status !== 'REJECTED' && goal.status !== 'PENDING'
     )
 
     if (user.role === UserRoleType.DOCTOR) {

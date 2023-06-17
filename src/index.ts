@@ -112,6 +112,9 @@ import { DeleteNotificationUseCase } from './application/notification/DeleteNoti
 import { NotificationHelper } from './application/notification/NotificationHelper'
 import { GoogleCalendar } from './infrastructure/network/GoogleCalendar'
 import { GetHealthGoalListUseCase } from './application/goal/GetHealthGoalListUseCase'
+import { HealthGoalCronJob } from './application/cronjob/HealthGoalCronJob'
+import { Scheduler } from './infrastructure/network/Scheduler'
+import { CancelHealthGoalUseCase } from './application/goal/CancelHealthGoalUseCase'
 // import { RawQueryRepository } from './infrastructure/database/RawRepository'
 
 void main()
@@ -135,6 +138,7 @@ async function main(): Promise<void> {
   // const rawQueryRepository = new RawQueryRepository(dataSource)
   const uuidService = new UuidService()
   const hashGenerator = new BcryptHashGenerator()
+  const scheduler = new Scheduler()
 
   /**
    * Repositories
@@ -492,14 +496,16 @@ async function main(): Promise<void> {
     patientRepository,
     doctorRepository,
     uuidService,
-    notificationHelper
+    notificationHelper,
+    scheduler
   )
   const cancelConsultAppointmentUseCase = new CancelConsultAppointmentUseCase(
     consultAppointmentRepository,
     patientRepository,
     doctorRepository,
     notificationHelper,
-    new RepositoryTx(dataSource)
+    new RepositoryTx(dataSource),
+    scheduler
   )
 
   const createDoctorTimeSlotUseCase = new CreateDoctorTimeSlotUseCase(
@@ -539,6 +545,12 @@ async function main(): Promise<void> {
     glycatedHemoglobinRecordRepository,
     weightRecordRepository,
     uuidService,
+    notificationHelper
+  )
+
+  const cancelHealthGoalUseCase = new CancelHealthGoalUseCase(
+    patientRepository,
+    healthGoalRepository,
     notificationHelper
   )
 
@@ -598,6 +610,16 @@ async function main(): Promise<void> {
     notificationRepository
   )
 
+  /**
+   * Cron Job
+   */
+  const healthGoalCronJob = new HealthGoalCronJob(
+    scheduler,
+    createHealthGoalUseCase,
+    cancelHealthGoalUseCase,
+    userRepository
+  )
+  await healthGoalCronJob.init()
   /**
    * Controllers
    */
@@ -670,6 +692,7 @@ async function main(): Promise<void> {
 
   const healthGoalController = new HealthGoalController(
     createHealthGoalUseCase,
+    cancelHealthGoalUseCase,
     activateHealthGoalUseCase,
     rejectHealthGoalUseCase,
     getHealthGoalUseCase,

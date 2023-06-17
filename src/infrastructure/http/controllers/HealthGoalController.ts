@@ -5,6 +5,7 @@ import { ActivateHealthGoalUseCase } from '../../../application/goal/ActivateHea
 import { RejectHealthGoalUseCase } from '../../../application/goal/RejectHealthGoalUseCase'
 import { GetHealthGoalUseCase } from '../../../application/goal/GetHealthGoalUseCase'
 import { GetHealthGoalListUseCase } from '../../../application/goal/GetHealthGoalListUseCase'
+import { CancelHealthGoalUseCase } from '../../../application/goal/CancelHealthGoalUseCase'
 
 export interface IHealthGoalController {
   createHealthGoal: (req: Request, res: Response) => Promise<Response>
@@ -17,6 +18,7 @@ export interface IHealthGoalController {
 export class HealthGoalController implements IHealthGoalController {
   constructor(
     private readonly createHealthGoalUseCase: CreateHealthGoalUseCase,
+    private readonly cancelHealthGoalUseCase: CancelHealthGoalUseCase,
     private readonly activateHealthGoalUseCase: ActivateHealthGoalUseCase,
     private readonly rejectHealthGoalUseCase: RejectHealthGoalUseCase,
     private readonly getHealthGoalUseCase: GetHealthGoalUseCase,
@@ -32,6 +34,23 @@ export class HealthGoalController implements IHealthGoalController {
         user: req.user as User,
       }
       const result = await this.createHealthGoalUseCase.execute(request)
+
+      return res.status(200).json(result)
+    } catch (error) {
+      // TODO: move this to a middleware
+      return res.status(400).json({ message: (error as Error).message })
+    }
+  }
+
+  public canceleHealthGoal = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    try {
+      const request = {
+        user: req.user as User,
+      }
+      const result = await this.cancelHealthGoalUseCase.execute(request)
 
       return res.status(200).json(result)
     } catch (error) {

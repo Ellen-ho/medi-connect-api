@@ -39,7 +39,7 @@ export class ExerciseRecordEntity {
   @Column({ name: 'kcalories_burned', type: 'numeric', precision: 5, scale: 2 })
   public kcaloriesBurned!: number
 
-  @Column({ name: 'exercise_note', type: 'varchar', length: 150 })
+  @Column({ name: 'exercise_note', type: 'varchar', length: 250 })
   public exerciseNote!: string | null
 
   @CreateDateColumn({ name: 'created_at' })

@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm'
 import { IUserRepository } from '../../../domain/user/interfaces/repositories/IUserRepository'
-import { User } from '../../../domain/user/User'
+import { User, UserRoleType } from '../../../domain/user/User'
 import { BaseRepository } from '../../database/BaseRepository'
 import { UserMapper } from './UserMapper'
 import { UserEntity } from './UserEntity'
@@ -33,6 +33,23 @@ export class UserRepository
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
       throw new RepositoryError('UserRepository findByEmail error', e as Error)
+    }
+  }
+
+  public async findAllByRole(role: UserRoleType): Promise<User[]> {
+    try {
+      const entities = await this.getRepo().find({
+        where: { role },
+        relations: ['patient'],
+      })
+      return entities.length !== 0
+        ? entities.map((entity) => this.getMapper().toDomainModel(entity))
+        : []
+    } catch (e) {
+      throw new RepositoryError(
+        'UserRepository findAllByRole error',
+        e as Error
+      )
     }
   }
 }

@@ -20,7 +20,7 @@ export class ConsultAppointmentEntity {
   @Column({
     name: 'status',
     type: 'varchar',
-    length: 100,
+    length: 150,
     default: ConsultAppointmentStatusType.UPCOMING,
   })
   public status!: ConsultAppointmentStatusType

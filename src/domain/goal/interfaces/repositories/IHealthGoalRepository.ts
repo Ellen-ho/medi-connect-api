@@ -12,7 +12,7 @@ export interface IHealthGoalRepository extends IBaseRepository<HealthGoal> {
   findByPatientIdAndStatus: (
     patientId: string,
     status: HealthGoalStatus[]
-  ) => Promise<HealthGoal | null>
+  ) => Promise<HealthGoal[]>
   findByPatientIdAndCountAll: (
     patientId: string,
     limit: number,
@@ -32,4 +32,10 @@ export interface IHealthGoalRepository extends IBaseRepository<HealthGoal> {
       result: IHealthGoalResult | null
     }>
   }>
+  findByPatientIdAndStatusAndDateEdge: (
+    patientId: string,
+    status: HealthGoalStatus[],
+    currentDate: Date
+  ) => Promise<HealthGoal[]>
+  deleteById: (id: string) => Promise<void>
 }
