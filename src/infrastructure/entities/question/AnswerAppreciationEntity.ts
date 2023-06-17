@@ -16,7 +16,7 @@ export class AnswerAppreciationEntity {
   @PrimaryGeneratedColumn('uuid')
   public id!: string
 
-  @Column({ name: 'content', type: 'varchar', length: 300, nullable: true })
+  @Column({ name: 'content', type: 'text', length: 300, nullable: true })
   public content!: string | null
 
   @CreateDateColumn({ name: 'created_at' })

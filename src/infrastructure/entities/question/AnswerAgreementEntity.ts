@@ -17,7 +17,7 @@ export class AnswerAgreementEntity {
   @PrimaryGeneratedColumn('uuid')
   public id!: string
 
-  @Column({ name: 'comment', type: 'varchar', length: 400, nullable: true })
+  @Column({ name: 'comment', type: 'text', length: 500, nullable: true })
   public comment!: string | null
 
   @CreateDateColumn({ name: 'created_at' })

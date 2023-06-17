@@ -17,10 +17,10 @@ export class PatientQuestionEntity {
   @PrimaryGeneratedColumn('uuid')
   public id!: string
 
-  @Column({ name: 'content', type: 'varchar', length: 300 })
+  @Column({ name: 'content', type: 'text', length: 500 })
   public content!: string
 
-  @Column({ name: 'medical_specialty', type: 'varchar', length: 50 })
+  @Column({ name: 'medical_specialty', type: 'varchar', length: 100 })
   public medicalSpecialty!: MedicalSpecialtyType
 
   @CreateDateColumn({ name: 'created_at' })

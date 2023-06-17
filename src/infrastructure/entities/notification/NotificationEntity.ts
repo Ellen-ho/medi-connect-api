@@ -20,13 +20,13 @@ export class NotificationEntity {
   @Column({ name: 'is_read', type: 'boolean', default: false })
   public isRead!: boolean
 
-  @Column({ name: 'title', type: 'varchar', length: 100 })
+  @Column({ name: 'title', type: 'varchar', length: 255 })
   public title!: string
 
-  @Column({ name: 'content', type: 'text' })
+  @Column({ name: 'content', type: 'text', length: 500 })
   public content!: string
 
-  @Column({ name: 'notification_type', type: 'text' })
+  @Column({ name: 'notification_type', type: 'varchar', length: 255 })
   public notificationType!: NotificationType
 
   @CreateDateColumn({ name: 'created_at' })

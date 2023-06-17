@@ -25,7 +25,7 @@ export class WeightRecordEntity {
   @Column({ name: 'body_mass_index', type: 'numeric', precision: 5, scale: 2 })
   public bodyMassIndex!: number
 
-  @Column({ name: 'weight_note', type: 'varchar', length: 150 })
+  @Column({ name: 'weight_note', type: 'varchar', length: 250 })
   public weightNote!: string | null
 
   @CreateDateColumn({ name: 'created_at' })
