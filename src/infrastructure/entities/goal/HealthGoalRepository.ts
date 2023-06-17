@@ -1,4 +1,4 @@
-import { DataSource, In } from 'typeorm'
+import { DataSource, In, LessThanOrEqual } from 'typeorm'
 import { BaseRepository } from '../../database/BaseRepository'
 import { HealthGoalEntity } from './HealthGoalEntity'
 import { HealthGoalMapper } from './HealthGoalMapper'
@@ -57,16 +57,18 @@ export class HealthGoalRepository
   public async findByPatientIdAndStatus(
     patientId: string,
     status: HealthGoalStatus[]
-  ): Promise<HealthGoal | null> {
+  ): Promise<HealthGoal[]> {
     try {
-      const entity = await this.getRepo().findOne({
+      const entities = await this.getRepo().find({
         where: {
           patient: { id: patientId }, // need to set @RelationId
           status: In(status),
         },
         order: { createdAt: 'DESC' },
       })
-      return entity != null ? this.getMapper().toDomainModel(entity) : null
+      return entities.length !== 0
+        ? entities.map((entity) => this.getMapper().toDomainModel(entity))
+        : []
     } catch (e) {
       throw new RepositoryError(
         'HealthGoalRepository findByPatientIdAndStatus error',
@@ -134,6 +136,45 @@ export class HealthGoalRepository
     } catch (e) {
       throw new RepositoryError(
         'HealthGoalRepository findByPatientIdAndCountAll error',
+        e as Error
+      )
+    }
+  }
+
+  public async findByPatientIdAndStatusAndDateEdge(
+    patientId: string,
+    status: HealthGoalStatus[],
+    edgeDate: Date
+  ): Promise<HealthGoal[]> {
+    try {
+      const entities = await this.getRepo().find({
+        where: {
+          patient: { id: patientId },
+          status: In(status), // need to set @RelationId
+          createdAt: LessThanOrEqual(edgeDate),
+        },
+      })
+      return entities.length !== 0
+        ? entities.map((entity) => this.getMapper().toDomainModel(entity))
+        : []
+    } catch (e) {
+      throw new RepositoryError(
+        'HealthGoalRepository findByPatientIdAndStatusAndDate error',
+        e as Error
+      )
+    }
+  }
+
+  public async deleteById(id: string): Promise<void> {
+    try {
+      await this.getRepo()
+        .createQueryBuilder('heal_goals')
+        .softDelete()
+        .where('id = :id', { id })
+        .execute()
+    } catch (e) {
+      throw new RepositoryError(
+        'HealthGoalRepositoryRepository deleteById error',
         e as Error
       )
     }

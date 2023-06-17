@@ -34,7 +34,7 @@ export class FoodRecordEntity {
   @Column({ name: 'kcalories', type: 'numeric', precision: 5, scale: 2 })
   public kcalories!: number
 
-  @Column({ name: 'food_note', type: 'varchar', length: 150, nullable: true })
+  @Column({ name: 'food_note', type: 'varchar', length: 250, nullable: true })
   public foodNote!: string | null
 
   @CreateDateColumn({ name: 'created_at' })

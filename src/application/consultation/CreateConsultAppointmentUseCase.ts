@@ -11,6 +11,7 @@ import { IConsultAppointmentRepository } from '../../domain/consultation/interfa
 import { INotificationHelper } from '../notification/NotificationHelper'
 import { NotificationType } from '../../domain/notification/Notification'
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
+import { IScheduler } from '../../infrastructure/network/Scheduler'
 
 interface CreateConsultAppointmentRequest {
   user: User
@@ -28,7 +29,8 @@ export class CreateConsultAppointmentUseCase {
     private readonly patientRepository: IPatientRepository,
     private readonly doctorRepository: IDoctorRepository,
     private readonly uuidService: IUuidService,
-    private readonly notifictionHelper: INotificationHelper
+    private readonly notifictionHelper: INotificationHelper,
+    private readonly scheduler: IScheduler
   ) {}
 
   public async execute(
@@ -136,6 +138,29 @@ export class CreateConsultAppointmentUseCase {
       notificationType: NotificationType.CREATE_APPOINTMENT,
       user: appointmentDoctor.user,
     })
+
+    const notificationTime = dayjs(existingDoctorTimeSlot.startAt)
+      .subtract(22, 'hour')
+      .toDate()
+
+    this.scheduler.createJob(
+      consultAppointment.id,
+      notificationTime,
+      async () => {
+        await this.notifictionHelper.createNotification({
+          title: 'Appointment Reminder!',
+          content: 'Your appointment is coming up soon.',
+          notificationType: NotificationType.UPCOMING_APPOINTMENT,
+          user: appointmentDoctor.user,
+        })
+        await this.notifictionHelper.createNotification({
+          title: 'Appointment Reminder!',
+          content: 'Your appointment is coming up soon.',
+          notificationType: NotificationType.UPCOMING_APPOINTMENT,
+          user: existingPatient.user,
+        })
+      }
+    )
 
     return {
       id: consultAppointment.id,

@@ -27,7 +27,7 @@ export class BloodPressureRecordEntity {
   @Column({ name: 'heart_beat', type: 'int' })
   public heartBeat!: number
 
-  @Column({ name: 'blood_pressure_note', type: 'varchar', length: 150 })
+  @Column({ name: 'blood_pressure_note', type: 'varchar', length: 250 })
   public bloodPressureNote!: string | null
 
   @CreateDateColumn({ name: 'created_at' })
