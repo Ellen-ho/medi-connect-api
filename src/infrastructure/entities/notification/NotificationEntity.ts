@@ -23,7 +23,7 @@ export class NotificationEntity {
   @Column({ name: 'title', type: 'varchar', length: 255 })
   public title!: string
 
-  @Column({ name: 'content', type: 'text', length: 500 })
+  @Column({ name: 'content', type: 'text' })
   public content!: string
 
   @Column({ name: 'notification_type', type: 'varchar', length: 255 })

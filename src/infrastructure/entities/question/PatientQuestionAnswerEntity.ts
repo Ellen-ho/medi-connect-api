@@ -17,7 +17,7 @@ export class PatientQuestionAnswerEntity {
   @PrimaryGeneratedColumn('uuid')
   public id!: string
 
-  @Column({ name: 'content', type: 'text', length: 300 })
+  @Column({ name: 'content', type: 'text' })
   public content!: string
 
   @CreateDateColumn({ name: 'created_at' })

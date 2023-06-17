@@ -35,7 +35,7 @@ export class DoctorEntity {
   @Column({ name: 'gender', type: 'varchar', length: 20 })
   public gender!: GenderType
 
-  @Column({ name: 'about_me', type: 'text', length: 500 })
+  @Column({ name: 'about_me', type: 'text' })
   public aboutMe!: string
 
   @Column({ name: 'languages_spoken', type: 'jsonb' })
