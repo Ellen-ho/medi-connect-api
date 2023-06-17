@@ -66,13 +66,13 @@ export class CreateHealthGoalUseCase {
       throw new Error('Patient does not exist.')
     }
 
-    const exsitingHealthGoal =
+    const exsitingHealthGoals =
       await this.healthGoalRepository.findByPatientIdAndStatus(
         existingPatient.id,
         [HealthGoalStatus.IN_PROGRESS, HealthGoalStatus.PENDING]
       )
 
-    if (exsitingHealthGoal !== null) {
+    if (exsitingHealthGoals.length !== 0) {
       throw new Error('The health goal already be created.')
     }
 
@@ -82,8 +82,8 @@ export class CreateHealthGoalUseCase {
         [HealthGoalStatus.REJECTED]
       )
 
-    if (latestRejectedHealthGoal !== null) {
-      const createdAtDate = latestRejectedHealthGoal.createdAt
+    if (latestRejectedHealthGoal[0] !== null) {
+      const createdAtDate = latestRejectedHealthGoal[0].createdAt
 
       const fourteenDaysLater = new Date(createdAtDate.getTime())
       fourteenDaysLater.setDate(fourteenDaysLater.getDate() + 14)

@@ -7,6 +7,7 @@ import { IRepositoryTx } from '../../domain/shared/IRepositoryTx'
 import { INotificationHelper } from '../notification/NotificationHelper'
 import { NotificationType } from '../../domain/notification/Notification'
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
+import { IScheduler } from '../../infrastructure/network/Scheduler'
 
 interface CancelConsultAppointmentRequest {
   user: User
@@ -24,7 +25,8 @@ export class CancelConsultAppointmentUseCase {
     private readonly patientRepository: IPatientRepository,
     private readonly doctorRepository: IDoctorRepository,
     private readonly notifictionHelper: INotificationHelper,
-    private readonly tx: IRepositoryTx
+    private readonly tx: IRepositoryTx,
+    private readonly scheduler: IScheduler
   ) {}
 
   public async execute(
@@ -77,6 +79,8 @@ export class CancelConsultAppointmentUseCase {
       await this.consultAppointmentRepository.deleteById(
         existingConsultAppointment.id
       )
+
+      this.scheduler.cancelJob(existingConsultAppointment.id)
 
       await this.tx.end()
 
