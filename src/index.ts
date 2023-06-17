@@ -171,17 +171,25 @@ async function main(): Promise<void> {
    */
   const googleCalendarApi = new GoogleCalendar(
     env.GOOGLE_CLIENT_ID as string,
-    env.GOOGLE_CLIENT_SECRET as string
+    env.GOOGLE_CLIENT_SECRET as string,
+    env.GOOGLE_ACCESS_TOKEN as string
   )
 
-  googleCalendarApi
-    .createEvent()
-    .then((event) => {
-      console.log('Event created: %s', JSON.stringify(event))
-    })
-    .catch((error) => {
-      console.log('Some error occured', error)
-    })
+  // create a for loop to create 100 events
+  for (let i = 0; i < 90; i++) {
+    googleCalendarApi
+      .createEvent()
+      .then((event) => {
+        const googleMeetLink = event.data.hangoutLink as string
+        console.log(`'${googleMeetLink}'`)
+      })
+      .catch((error) => {
+        console.log('Some error occured', error)
+      })
+      // create a setTimeout to wait for 5 second before creating another event
+      await new Promise((resolve) => setTimeout(resolve, 5000))
+  }
+ 
 
   /**
    * User Domain
