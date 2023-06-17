@@ -110,11 +110,11 @@ import { ReadAllNotificationsUseCase } from './application/notification/ReadAllN
 import { DeleteAllNotificationsUseCase } from './application/notification/DeleteAllNotificationsUseCase'
 import { DeleteNotificationUseCase } from './application/notification/DeleteNotificationUseCase'
 import { NotificationHelper } from './application/notification/NotificationHelper'
-import { GoogleCalendar } from './infrastructure/network/GoogleCalendar'
 import { GetHealthGoalListUseCase } from './application/goal/GetHealthGoalListUseCase'
 import { HealthGoalCronJob } from './application/cronjob/HealthGoalCronJob'
 import { Scheduler } from './infrastructure/network/Scheduler'
 import { CancelHealthGoalUseCase } from './application/goal/CancelHealthGoalUseCase'
+import { MeetingLinkRepository } from './infrastructure/entities/meeting/MeetingLinkRepository'
 // import { RawQueryRepository } from './infrastructure/database/RawRepository'
 
 void main()
@@ -169,30 +169,7 @@ async function main(): Promise<void> {
   const doctorTimeSlotRepository = new DoctorTimeSlotRepository(dataSource)
   const healthGoalRepository = new HealthGoalRepository(dataSource)
   const notificationRepository = new NotificationRepository(dataSource)
-
-  /**
-   * Google API
-   */
-  const googleCalendarApi = new GoogleCalendar(
-    env.GOOGLE_CLIENT_ID as string,
-    env.GOOGLE_CLIENT_SECRET as string,
-    env.GOOGLE_ACCESS_TOKEN as string
-  )
-
-  // create a for loop to create 100 events
-  for (let i = 0; i < 90; i++) {
-    googleCalendarApi
-      .createEvent()
-      .then((event) => {
-        const googleMeetLink = event.data.hangoutLink as string
-        console.log(`'${googleMeetLink}'`)
-      })
-      .catch((error) => {
-        console.log('Some error occured', error)
-      })
-      // create a setTimeout to wait for 5 second before creating another event
-      await new Promise((resolve) => setTimeout(resolve, 5000))
-  }
+  const meetingLinkRepository = new MeetingLinkRepository(dataSource)
  
 
   /**
