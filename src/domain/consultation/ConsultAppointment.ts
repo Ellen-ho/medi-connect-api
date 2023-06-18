@@ -7,6 +7,7 @@ export interface IConsultAppointmentProps {
   doctorTimeSlot: DoctorTimeSlot
   status: ConsultAppointmentStatusType
   createdAt: Date
+  updatedAt: Date
 }
 
 export enum ConsultAppointmentStatusType {
@@ -26,7 +27,6 @@ export class ConsultAppointment {
     return this.props.meetingLink
   }
 
-
   public get patientId(): string {
     return this.props.patientId
   }
@@ -41,5 +41,9 @@ export class ConsultAppointment {
 
   public get createdAt(): Date {
     return this.props.createdAt
+  }
+
+  public get updatedAt(): Date {
+    return this.props.updatedAt
   }
 }

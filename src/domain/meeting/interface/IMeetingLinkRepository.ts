@@ -1,6 +1,6 @@
 import { IBaseRepository } from '../../shared/IBaseRepository'
-import { MeetingLink } from '../MeetingLink'
+import { MeetingLink, MeetingLinkStatus } from '../MeetingLink'
 
 export interface IMeetingLinkRepository extends IBaseRepository<MeetingLink> {
-  findRandomByStatus: () => Promise<string | null>
+  findRandomByStatus: (status: MeetingLinkStatus) => Promise<MeetingLink | null>
 }

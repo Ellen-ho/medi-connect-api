@@ -170,7 +170,6 @@ async function main(): Promise<void> {
   const healthGoalRepository = new HealthGoalRepository(dataSource)
   const notificationRepository = new NotificationRepository(dataSource)
   const meetingLinkRepository = new MeetingLinkRepository(dataSource)
- 
 
   /**
    * User Domain
@@ -472,6 +471,7 @@ async function main(): Promise<void> {
     doctorTimeSlotRepository,
     patientRepository,
     doctorRepository,
+    meetingLinkRepository,
     uuidService,
     notificationHelper,
     scheduler
