@@ -7,6 +7,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
   RelationId,
+  UpdateDateColumn,
 } from 'typeorm'
 import { ConsultAppointmentStatusType } from '../../../domain/consultation/ConsultAppointment'
 import { PatientEntity } from '../patient/PatientEntity'
@@ -31,9 +32,15 @@ export class ConsultAppointmentEntity {
   @DeleteDateColumn({ name: 'deleted_at' })
   public deletedAt?: Date
 
+  @UpdateDateColumn({ name: 'updated_at' })
+  public updatedAt!: Date
+
   @ManyToOne(() => PatientEntity)
   @JoinColumn({ name: 'patient_id' })
   public patient!: PatientEntity
+
+  @Column({ name: 'meeting_link', type: 'text', nullable: true })
+  public meetingLink!: string | null
 
   @Column({ name: 'patient_id' })
   @RelationId(

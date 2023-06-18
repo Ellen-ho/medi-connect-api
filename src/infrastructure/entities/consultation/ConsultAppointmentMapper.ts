@@ -10,7 +10,9 @@ export class ConsultAppointmentMapper
     const consultAppointment = new ConsultAppointment({
       id: entity.id,
       status: entity.status,
+      meetingLink: entity.meetingLink,
       createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
       patientId: entity.patientId,
       doctorTimeSlot: new DoctorTimeSlotMapper().toDomainModel(
         entity.doctorTimeSlot
@@ -25,7 +27,9 @@ export class ConsultAppointmentMapper
     const consultAppointmentEntity = new ConsultAppointmentEntity()
     consultAppointmentEntity.id = domainModel.id
     consultAppointmentEntity.status = domainModel.status
+    consultAppointmentEntity.meetingLink = domainModel.meetingLink
     consultAppointmentEntity.createdAt = domainModel.createdAt
+    consultAppointmentEntity.updatedAt = domainModel.updatedAt
     consultAppointmentEntity.patientId = domainModel.patientId
     consultAppointmentEntity.doctorTimeSlot =
       new DoctorTimeSlotMapper().toPersistence(domainModel.doctorTimeSlot)

@@ -1,0 +1,123 @@
+import { MigrationInterface, QueryRunner } from "typeorm";
+
+export class InsertMeetingLinks1687026324000 implements MigrationInterface {
+    name = 'InsertMeetingLinks1687026324000'
+
+    public async up(queryRunner: QueryRunner): Promise<void> {
+
+        const links = [
+            'https://meet.google.com/xuu-bptp-cdn',
+            'https://meet.google.com/uwb-hmck-ahq',
+            'https://meet.google.com/isa-dcsh-qkk',
+            'https://meet.google.com/hfq-vdys-tkk',
+            'https://meet.google.com/aeb-ghst-gup',
+            'https://meet.google.com/qwx-qfam-bip',
+            'https://meet.google.com/feh-jmkn-wqg',
+            'https://meet.google.com/ghs-dznk-wtr',
+            'https://meet.google.com/enu-kfmm-rks',
+            'https://meet.google.com/aue-iekm-vtu',
+            'https://meet.google.com/qsy-cajo-brq',
+            'https://meet.google.com/wmd-bfbb-rbw',
+            'https://meet.google.com/wxi-rapj-xng',
+            'https://meet.google.com/sds-jbvt-eie',
+            'https://meet.google.com/iyo-ritw-pgm',
+            'https://meet.google.com/aef-uhcz-xja',
+            'https://meet.google.com/akk-dwin-sbh',
+            'https://meet.google.com/ruh-cftt-gxm',
+            'https://meet.google.com/owx-iohp-dvz',
+            'https://meet.google.com/axj-jvuo-tdz',
+            'https://meet.google.com/xug-gygv-ssi',
+            'https://meet.google.com/ixp-bhmg-vkr',
+            'https://meet.google.com/rjh-oyen-wng',
+            'https://meet.google.com/yvm-dsre-jsp',
+            'https://meet.google.com/gqb-wanj-aor',
+            'https://meet.google.com/rcu-uewu-xct',
+            'https://meet.google.com/eii-vtgg-gzo',
+            'https://meet.google.com/brw-gqbs-xhv',
+            'https://meet.google.com/eec-xiid-ret',
+            'https://meet.google.com/mxw-xwgg-uoz',
+            'https://meet.google.com/pkr-ttzx-fpd',
+            'https://meet.google.com/dnp-zgim-gkg',
+            'https://meet.google.com/qcz-fvbn-qic',
+            'https://meet.google.com/idd-ghxv-ojv',
+            'https://meet.google.com/tkr-skqe-byw',
+            'https://meet.google.com/mhv-edix-dqo',
+            'https://meet.google.com/gcq-nshs-cka',
+            'https://meet.google.com/khh-eutx-tjr',
+            'https://meet.google.com/env-gkds-unv',
+            'https://meet.google.com/xnh-czmr-pcr',
+            'https://meet.google.com/kgb-jfth-xem',
+            'https://meet.google.com/uds-qvgi-png',
+            'https://meet.google.com/hgi-yukz-kwd',
+            'https://meet.google.com/yvk-ysgd-dsp',
+            'https://meet.google.com/nqd-yfwn-sxv',
+            'https://meet.google.com/qsv-ktbm-pcx',
+            'https://meet.google.com/xwb-bbpx-hjr',
+            'https://meet.google.com/kzg-rgai-foc',
+            'https://meet.google.com/pww-hpmr-ggs',
+            'https://meet.google.com/kts-gunp-vqu',
+            'https://meet.google.com/xgk-ntyw-ryp',
+            'https://meet.google.com/txf-uorz-hgt',
+            'https://meet.google.com/jqb-mucz-eji',
+            'https://meet.google.com/njk-qcyf-mvt',
+            'https://meet.google.com/ehg-hepa-jgo',
+            'https://meet.google.com/ygi-poff-mon',
+            'https://meet.google.com/nbs-mugq-gqf',
+            'https://meet.google.com/gom-rxsx-rjq',
+            'https://meet.google.com/pfx-bpof-idh',
+            'https://meet.google.com/thy-owrf-xas',
+            'https://meet.google.com/cpu-homp-okw',
+            'https://meet.google.com/agv-bczn-vga',
+            'https://meet.google.com/rum-voey-raj',
+            'https://meet.google.com/otg-tzuk-qmq',
+            'https://meet.google.com/uww-aypi-orp',
+            'https://meet.google.com/sdo-fnyz-ruf',
+            'https://meet.google.com/ogw-eucy-yzm',
+            'https://meet.google.com/gfn-fyuq-rrc',
+            'https://meet.google.com/idw-xqvd-zzo',
+            'https://meet.google.com/gah-twyh-ouy',
+            'https://meet.google.com/ing-xskr-ubp',
+            'https://meet.google.com/kqa-yghx-eyt',
+            'https://meet.google.com/qcn-wioy-tnn',
+            'https://meet.google.com/cpr-zxmv-iah',
+            'https://meet.google.com/jih-herg-wvy',
+            'https://meet.google.com/vma-jrod-mxa',
+            'https://meet.google.com/pfx-moti-crn',
+            'https://meet.google.com/aej-wbow-pvx',
+            'https://meet.google.com/sxt-pvkw-onb',
+            'https://meet.google.com/fpx-uueq-bao',
+            'https://meet.google.com/qpn-pkai-yda',
+            'https://meet.google.com/zyc-oxxk-yep',
+            'https://meet.google.com/pwe-zhfp-rno',
+            'https://meet.google.com/wmi-mztz-vqc',
+            'https://meet.google.com/xtd-bsru-zhv',
+            'https://meet.google.com/hfe-dpas-jws',
+            'https://meet.google.com/ffi-mysj-jbc',
+            'https://meet.google.com/hcq-ufdg-efy',
+            'https://meet.google.com/xfz-ztat-xjo',
+            'https://meet.google.com/ggw-wtem-kit',
+            'https://meet.google.com/jcr-qsqz-wve',
+            'https://meet.google.com/kaj-anah-cmn',
+            'https://meet.google.com/xof-bvnn-yna',
+            'https://meet.google.com/ezt-grva-ywg',
+            'https://meet.google.com/jxs-nuot-maw',
+            'https://meet.google.com/nky-cvex-nsu',
+            'https://meet.google.com/jea-syxi-ywi',
+            'https://meet.google.com/jtb-tmbo-fyg',
+            'https://meet.google.com/qxa-kiwv-zdp',
+            'https://meet.google.com/gry-hsmc-kst'
+        ];
+        
+
+        for (const link of links) {
+            await queryRunner.query(
+                `INSERT INTO "meeting_links" ("link", "status") VALUES ($1, $2)`,
+                [link, 'AVAILABLE']
+            );
+        }
+    }
+
+    public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`DELETE FROM "meeting_links"`);
+    }
+}

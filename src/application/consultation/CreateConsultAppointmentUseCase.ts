@@ -12,6 +12,8 @@ import { INotificationHelper } from '../notification/NotificationHelper'
 import { NotificationType } from '../../domain/notification/Notification'
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 import { IScheduler } from '../../infrastructure/network/Scheduler'
+import { IMeetingLinkRepository } from '../../domain/meeting/interface/IMeetingLinkRepository'
+import { MeetingLinkStatus } from '../../domain/meeting/MeetingLink'
 
 interface CreateConsultAppointmentRequest {
   user: User
@@ -28,6 +30,7 @@ export class CreateConsultAppointmentUseCase {
     private readonly doctorTimeSlotRepository: IDoctorTimeSlotRepository,
     private readonly patientRepository: IPatientRepository,
     private readonly doctorRepository: IDoctorRepository,
+    private readonly meetingLinkRepository: IMeetingLinkRepository,
     private readonly uuidService: IUuidService,
     private readonly notifictionHelper: INotificationHelper,
     private readonly scheduler: IScheduler
@@ -121,12 +124,26 @@ export class CreateConsultAppointmentUseCase {
 
     existingDoctorTimeSlot.updateAvailability(false)
 
+    const randomMeetingLink =
+      await this.meetingLinkRepository.findRandomByStatus(
+        MeetingLinkStatus.AVAILABLE
+      )
+
+    if (randomMeetingLink == null) {
+      throw new Error('No available meeting link.')
+    }
+
+    randomMeetingLink.setStatusToInUsed()
+    await this.meetingLinkRepository.save(randomMeetingLink)
+
     const consultAppointment = new ConsultAppointment({
       id: this.uuidService.generateUuid(),
       patientId: existingPatient.id,
       doctorTimeSlot: existingDoctorTimeSlot,
       status: ConsultAppointmentStatusType.UPCOMING,
+      meetingLink: randomMeetingLink.link,
       createdAt: new Date(),
+      updatedAt: new Date(),
     })
 
     await this.consultAppointmentRepository.save(consultAppointment)
