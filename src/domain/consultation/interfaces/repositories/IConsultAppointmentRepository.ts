@@ -34,6 +34,7 @@ export interface IConsultAppointmentRepository {
         lastName: string
         specialties: MedicalSpecialtyType[]
       }
+      meetingLink: string | null
     }>
   >
   findByDoctorIdAndStatusWithinDateRange: (
@@ -53,6 +54,7 @@ export interface IConsultAppointmentRepository {
         firstName: string
         lastName: string
       }
+      meetingLink: string | null
     }>
   >
   findByPatientIdAndDoctorIdAndStatus: (

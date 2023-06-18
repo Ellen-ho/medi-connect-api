@@ -86,6 +86,7 @@ export class ConsultAppointmentRepository
         lastName: string
         specialties: MedicalSpecialtyType[]
       }
+      meetingLink: string | null
     }>
   > {
     try {
@@ -98,12 +99,14 @@ export class ConsultAppointmentRepository
           specialties: MedicalSpecialtyType[]
           start_at: Date
           end_at: Date
+          meeting_link: string | null
         }>
       >(
         `
         SELECT
           consult_appointments.patient_id,
           consult_appointments.status,
+          consult_appointments.meeting_link,
           doctors.first_name,
           doctors.last_name,
           doctors.specialties,
@@ -132,6 +135,7 @@ export class ConsultAppointmentRepository
           lastName: rawItem.last_name,
           specialties: rawItem.specialties,
         },
+        meetingLink: rawItem.meeting_link,
       }))
     } catch (e) {
       throw new RepositoryError(
@@ -179,6 +183,7 @@ export class ConsultAppointmentRepository
         firstName: string
         lastName: string
       }
+      meetingLink: string | null
     }>
   > {
     try {
@@ -190,12 +195,14 @@ export class ConsultAppointmentRepository
           last_name: string
           start_at: Date
           end_at: Date
+          meetin_link: string | null
         }>
       >(
         `
         SELECT
           doctor_time_slots.doctor_id AS "doctor_id",
           consult_appointments.status,
+          consult_appointments.meeting_link,
           doctor_time_slots.start_at AS "start_at",
           doctor_time_slots.end_at AS "end_at",
           patients.first_name AS "first_name",
@@ -223,6 +230,7 @@ export class ConsultAppointmentRepository
           firstName: rawItem.first_name,
           lastName: rawItem.last_name,
         },
+        meetingLink: rawItem.meetin_link,
       }))
     } catch (e) {
       throw new RepositoryError(
