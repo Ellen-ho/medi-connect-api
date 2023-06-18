@@ -480,6 +480,7 @@ async function main(): Promise<void> {
     consultAppointmentRepository,
     patientRepository,
     doctorRepository,
+    meetingLinkRepository,
     notificationHelper,
     new RepositoryTx(dataSource),
     scheduler

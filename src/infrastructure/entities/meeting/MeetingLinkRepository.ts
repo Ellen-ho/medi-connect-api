@@ -28,7 +28,25 @@ export class MeetingLinkRepository
 
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
-      throw new RepositoryError('UserRepository findById error', e as Error)
+      throw new RepositoryError(
+        'MeetingLinkRepository findById error',
+        e as Error
+      )
+    }
+  }
+
+  public async findByLink(link: string): Promise<MeetingLink | null> {
+    try {
+      const entity = await this.getRepo().findOne({
+        where: { link },
+      })
+
+      return entity != null ? this.getMapper().toDomainModel(entity) : null
+    } catch (e) {
+      throw new RepositoryError(
+        'MeetingLinkRepository findById error',
+        e as Error
+      )
     }
   }
 }

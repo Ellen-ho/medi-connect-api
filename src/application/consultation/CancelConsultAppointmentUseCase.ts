@@ -8,6 +8,7 @@ import { INotificationHelper } from '../notification/NotificationHelper'
 import { NotificationType } from '../../domain/notification/Notification'
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 import { IScheduler } from '../../infrastructure/network/Scheduler'
+import { IMeetingLinkRepository } from '../../domain/meeting/interface/IMeetingLinkRepository'
 
 interface CancelConsultAppointmentRequest {
   user: User
@@ -24,6 +25,7 @@ export class CancelConsultAppointmentUseCase {
     private readonly consultAppointmentRepository: IConsultAppointmentRepository,
     private readonly patientRepository: IPatientRepository,
     private readonly doctorRepository: IDoctorRepository,
+    private readonly meetingLinkRepository: IMeetingLinkRepository,
     private readonly notifictionHelper: INotificationHelper,
     private readonly tx: IRepositoryTx,
     private readonly scheduler: IScheduler
@@ -73,6 +75,19 @@ export class CancelConsultAppointmentUseCase {
       await this.tx.start()
 
       existingConsultAppointment.doctorTimeSlot.updateAvailability(true)
+
+      if (existingConsultAppointment.meetingLink == null) {
+        throw new Error('The meeting link does not exist')
+      }
+
+      const existingMeetingLink = await this.meetingLinkRepository.findByLink(
+        existingConsultAppointment.meetingLink
+      )
+
+      if (existingMeetingLink !== null) {
+        existingMeetingLink.setStatusToAvailable()
+        await this.meetingLinkRepository.save(existingMeetingLink)
+      }
 
       await this.consultAppointmentRepository.save(existingConsultAppointment)
 
