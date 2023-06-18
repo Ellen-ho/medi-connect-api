@@ -10,7 +10,9 @@ export enum MeetingLinkStatus {
   IN_USED = 'IN_USED',
   AVAILABLE = 'AVAILABLE',
 }
-
+/**
+ * This is meeting link provider which is a temp measure to replace 3rd party meeting link provider.
+ */
 export class MeetingLink {
   constructor(private readonly props: IMeetingLinkProps) {}
 
