@@ -33,4 +33,12 @@ export class MeetingLink {
   public get updatedAt(): Date {
     return this.props.updatedAt
   }
+
+  public setStatusToInUsed(): void {
+    this.props.link = MeetingLinkStatus.IN_USED
+  }
+
+  public setStatusToAvailable(): void {
+    this.props.link = MeetingLinkStatus.AVAILABLE
+  }
 }
