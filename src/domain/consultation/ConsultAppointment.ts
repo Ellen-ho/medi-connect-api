@@ -2,6 +2,7 @@ import { DoctorTimeSlot } from './DoctorTimeSlot'
 
 export interface IConsultAppointmentProps {
   id: string
+  meetingLink: string | null
   patientId: string
   doctorTimeSlot: DoctorTimeSlot
   status: ConsultAppointmentStatusType
@@ -20,6 +21,11 @@ export class ConsultAppointment {
   public get id(): string {
     return this.props.id
   }
+
+  public get meetingLink(): string | null {
+    return this.props.meetingLink
+  }
+
 
   public get patientId(): string {
     return this.props.patientId

@@ -35,6 +35,9 @@ export class ConsultAppointmentEntity {
   @JoinColumn({ name: 'patient_id' })
   public patient!: PatientEntity
 
+  @Column({ name: 'meeting_link', type: 'text', nullable: true })
+  public meetingLink!: string | null
+
   @Column({ name: 'patient_id' })
   @RelationId(
     (consultAppointment: ConsultAppointmentEntity) => consultAppointment.patient
