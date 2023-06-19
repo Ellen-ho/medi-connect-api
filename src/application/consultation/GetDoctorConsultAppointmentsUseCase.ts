@@ -122,7 +122,6 @@ export class GetDoctorConsultAppointmentsUseCase {
     if (canceledAppointments == null) {
       throw new Error('There is no canceled appointment.')
     }
-
     return {
       upComingAppointments: upcomingConsultAppointments,
       completedAppointments: this.mapConsultAppointmentData(
