@@ -82,44 +82,46 @@ export class CreateConsultAppointmentUseCase {
       throw new Error('Appointment should be created before one day.')
     }
 
+    const currentDateDay = currentDate.date()
     const currentMonthEndDate = currentDate.endOf('month')
     const nextMonthStartDate = currentDate.add(1, 'month').startOf('month')
-    const nextMonthEndDate = currentDate.add(1, 'month').endOf('month')
-
-    const currentYear = currentDate.year()
-    const isLeapYear = this.checkLeapYear(currentYear)
+    const nextMonthEndDate = currentDate.add(2, 'month').endOf('month')
 
     let isWithinCurrentMonthRange = false
     let isWithinNextMonthRange = false
 
-    if (isLeapYear) {
+    // 28號以前預約，範圍:在當天以後，在當月最後一天前
+    if (currentDateDay < 28) {
+      const wantedAppointmentTime = dayjs(existingDoctorTimeSlot.startAt)
       isWithinCurrentMonthRange =
-        dayjs(wantedAppointmentTime).isSame(currentDate.date(28), 'day') ||
-        (dayjs(wantedAppointmentTime).isAfter(currentDate.date(), 'day') &&
-          dayjs(wantedAppointmentTime).isBefore(currentMonthEndDate, 'day') &&
-          dayjs(wantedAppointmentTime).month() === currentDate.month())
-
-      isWithinNextMonthRange =
-        (dayjs(wantedAppointmentTime).isSame(nextMonthStartDate, 'day') ||
-          dayjs(wantedAppointmentTime).isAfter(nextMonthStartDate, 'day')) &&
-        dayjs(wantedAppointmentTime).isBefore(nextMonthEndDate, 'day') &&
-        dayjs(wantedAppointmentTime).month() === nextMonthStartDate.month()
-    } else {
-      isWithinCurrentMonthRange =
-        dayjs(wantedAppointmentTime).isSame(currentDate.date(28), 'day') ||
-        (dayjs(wantedAppointmentTime).isAfter(currentDate.date(), 'day') &&
-          dayjs(wantedAppointmentTime).isBefore(currentMonthEndDate, 'day'))
-
-      isWithinNextMonthRange =
-        (dayjs(wantedAppointmentTime).isSame(nextMonthStartDate, 'day') ||
-          dayjs(wantedAppointmentTime).isAfter(nextMonthStartDate, 'day')) &&
-        dayjs(wantedAppointmentTime).isBefore(nextMonthEndDate, 'day')
+        (wantedAppointmentTime.isAfter(currentDate, 'day') &&
+          wantedAppointmentTime.isBefore(currentMonthEndDate, 'day')) ||
+        wantedAppointmentTime.isSame(currentMonthEndDate, 'day')
     }
 
-    if (!isWithinCurrentMonthRange && !isWithinNextMonthRange) {
+    if (!isWithinCurrentMonthRange) {
       throw new Error(
         'Appointment is not within the current or next month range.'
       )
+    }
+    // 28號以後預約(含28號當天)，28,29,30,31,範圍:當月28號後到當月底，下月整月到下月底
+    if (currentDateDay >= 28) {
+      const wantedAppointmentTime = dayjs(existingDoctorTimeSlot.startAt)
+      isWithinCurrentMonthRange =
+        dayjs(wantedAppointmentTime).isAfter(currentDate.date(), 'day') &&
+        dayjs(wantedAppointmentTime).isBefore(currentMonthEndDate, 'day')
+
+      isWithinNextMonthRange =
+        dayjs(wantedAppointmentTime).isSame(nextMonthStartDate, 'day') ||
+        (dayjs(wantedAppointmentTime).isAfter(nextMonthStartDate, 'day') &&
+          dayjs(wantedAppointmentTime).isSame(nextMonthEndDate, 'day')) ||
+        dayjs(wantedAppointmentTime).isBefore(nextMonthEndDate, 'day')
+
+      if (!(isWithinCurrentMonthRange || isWithinNextMonthRange)) {
+        throw new Error(
+          'Appointment is not within the current or next month range.'
+        )
+      }
     }
 
     existingDoctorTimeSlot.updateAvailability(false)
@@ -161,7 +163,7 @@ export class CreateConsultAppointmentUseCase {
       .toDate()
 
     this.scheduler.createJob(
-      consultAppointment.id,
+      `${consultAppointment.id}_notification`,
       notificationTime,
       async () => {
         await this.notifictionHelper.createNotification({
@@ -176,15 +178,20 @@ export class CreateConsultAppointmentUseCase {
           notificationType: NotificationType.UPCOMING_APPOINTMENT,
           user: existingPatient.user,
         })
+
+        this.scheduler.createJob(
+          `${consultAppointment.id}_completed`,
+          consultAppointment.doctorTimeSlot.endAt,
+          async () => {
+            consultAppointment.completeAppointment()
+            await this.consultAppointmentRepository.save(consultAppointment)
+          }
+        )
       }
     )
 
     return {
       id: consultAppointment.id,
     }
-  }
-
-  private checkLeapYear(year: number): boolean {
-    return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0
   }
 }

@@ -46,4 +46,8 @@ export class ConsultAppointment {
   public get updatedAt(): Date {
     return this.props.updatedAt
   }
+
+  public completeAppointment(): void {
+    this.props.status = ConsultAppointmentStatusType.COMPLETED
+  }
 }

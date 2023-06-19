@@ -37,10 +37,10 @@ export class MeetingLink {
   }
 
   public setStatusToInUsed(): void {
-    this.props.link = MeetingLinkStatus.IN_USED
+    this.props.status = MeetingLinkStatus.IN_USED
   }
 
   public setStatusToAvailable(): void {
-    this.props.link = MeetingLinkStatus.AVAILABLE
+    this.props.status = MeetingLinkStatus.AVAILABLE
   }
 }
