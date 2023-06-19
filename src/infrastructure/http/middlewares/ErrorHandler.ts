@@ -1,21 +1,40 @@
-import { ErrorRequestHandler } from 'express';
+import { ErrorRequestHandler } from 'express'
+import { ValidationError } from '../../error/ValidationError'
+import { AuthenticationError } from '../../error/AuthenticationError'
+import { NotFoundError } from '../../error/NotFoundError'
 
-interface ApiError extends Error {
-  status?: number;
-}
-
-export const errorHandler: ErrorRequestHandler = (err: unknown, req, res, next) => {
-  if (err instanceof Error) {
-    const apiError = err as ApiError;
-    res.status(apiError.status ?? 500).json({
+export const errorHandler: ErrorRequestHandler = (
+  err: unknown,
+  req,
+  res,
+  next
+) => {
+  if (err instanceof ValidationError) {
+    res.status(400).json({
       status: 'error',
-      message: apiError.message,
-    });
-  } else {
-    res.status(500).json({
-      status: 'error',
-      message: String(err),
-    });
+      message: err.message,
+    })
+    return
   }
-  next(err as Error);
-};
+
+  if (err instanceof AuthenticationError) {
+    res.status(401).json({
+      status: 'error',
+      message: err.message,
+    })
+    return
+  }
+
+  if (err instanceof NotFoundError) {
+    res.status(404).json({
+      status: 'error',
+      message: err.message,
+    })
+    return
+  }
+
+  res.status(500).json({
+    status: 'error',
+    message: String(err),
+  })
+}

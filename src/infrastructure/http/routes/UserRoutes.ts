@@ -8,7 +8,10 @@ import {
   facebookCallbackAuthenticator,
 } from '../middlewares/Auth'
 import { validator } from '../middlewares/Validator'
-import { registerUserSchema } from '../../../application/user/UserValidator'
+import {
+  logInUserSchema,
+  registerUserSchema,
+} from '../../../application/user/UserValidator'
 export class UserRoutes {
   private readonly routes: Router
   constructor(private readonly userController: IUserController) {
@@ -16,7 +19,12 @@ export class UserRoutes {
     this.routes
       .get('/auth/facebook', facebookAuthenticator)
       .get('/auth/facebook/callback', facebookCallbackAuthenticator)
-      .post('/login', authenticator, asyncHandler(this.userController.login))
+      .post(
+        '/login',
+        validator(logInUserSchema),
+        authenticator,
+        asyncHandler(this.userController.login)
+      )
       .get('/me', authenticated, asyncHandler(this.userController.getUserById))
       .post(
         '/',
