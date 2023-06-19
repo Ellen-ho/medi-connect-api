@@ -195,7 +195,7 @@ export class ConsultAppointmentRepository
           last_name: string
           start_at: Date
           end_at: Date
-          meetin_link: string | null
+          meeting_link: string | null
         }>
       >(
         `
@@ -230,7 +230,7 @@ export class ConsultAppointmentRepository
           firstName: rawItem.first_name,
           lastName: rawItem.last_name,
         },
-        meetingLink: rawItem.meetin_link,
+        meetingLink: rawItem.meeting_link,
       }))
     } catch (e) {
       throw new RepositoryError(
