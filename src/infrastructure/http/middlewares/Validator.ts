@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import Joi from 'joi'
+import { ValidationError } from '../../error/ValidationError'
 
 type ValidationTarget = 'body' | 'params' | 'query'
 
@@ -12,7 +13,7 @@ export const validator =
     for (const [target, schema] of Object.entries(schemas)) {
       const { error } = schema.validate(req[target as ValidationTarget])
       if (error != null) {
-        return res.status(400).send(error.details[0].message)
+        next(new ValidationError(error.details[0].message, error))
       }
     }
 

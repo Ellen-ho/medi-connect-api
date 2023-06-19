@@ -1,5 +1,6 @@
 import { User } from '../../domain/user/User'
 import { IUserRepository } from '../../domain/user/interfaces/repositories/IUserRepository'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 
 interface GetUserRequest {
   id: string
@@ -16,7 +17,7 @@ export class GetUserUseCase {
     const existingUser = await this.userRepository.findById(id)
 
     if (existingUser == null) {
-      throw new Error('User not found')
+      throw new NotFoundError('User not found')
     }
 
     return {

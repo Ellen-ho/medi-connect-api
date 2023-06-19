@@ -9,6 +9,7 @@ import bcrypt from 'bcrypt'
 import dotenv from 'dotenv'
 import { User, UserRoleType } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
+import { AuthenticationError } from '../error/AuthenticationError'
 
 dotenv.config()
 
@@ -32,11 +33,13 @@ export class PassportConfig {
           passReqToCallback: true,
         },
         (req, email, password, done) => {
+          const errorMessage = 'Email or password is incorrect.'
+
           this.userRepo
             .findByEmail(email)
             .then((user) => {
               if (user == null) {
-                const error = new Error('驗證失敗！')
+                const error = new AuthenticationError(errorMessage)
                 done(error)
                 return
               }
@@ -45,18 +48,18 @@ export class PassportConfig {
                 .compare(password, user.hashedPassword)
                 .then((res) => {
                   if (!res) {
-                    const error = new Error('驗證失敗！')
+                    const error = new AuthenticationError(errorMessage)
                     done(error)
                     return
                   }
                   done(null, user)
                 })
                 .catch((err) => {
-                  done(err)
+                  done(new AuthenticationError(errorMessage, err))
                 })
             })
             .catch((err) => {
-              done(err)
+              done(new AuthenticationError(errorMessage, err))
             })
         }
       )
@@ -78,7 +81,9 @@ export class PassportConfig {
               return
             }
 
-            const error = new Error('Extract JWT Error')
+            const error = new AuthenticationError(
+              'Invalid token. User not found.'
+            )
             done({ error }, false)
           })
           .catch((error) => {
@@ -107,7 +112,9 @@ export class PassportConfig {
                 return
               }
               if (user == null) {
-                const error = new Error('驗證失敗！')
+                const error = new AuthenticationError(
+                  'Email or password is incorrect.'
+                )
                 done(error)
                 return
               }
@@ -164,7 +171,9 @@ export class PassportConfig {
               }
 
               if (user == null) {
-                const error = new Error('驗證失敗！')
+                const error = new AuthenticationError(
+                  'Email or password is incorrect.'
+                )
                 done(error)
                 return
               }

@@ -17,54 +17,41 @@ export class UserController implements IUserController {
   ) {}
 
   public login = async (req: Request, res: Response): Promise<Response> => {
-    try {
-      const { id, email, createdAt, displayName, role } = req.user as User
+    const { id, email, createdAt, displayName, role } = req.user as User
 
-      const token = jwt.sign({ id, email }, process.env.JWT_SECRET as string, {
-        expiresIn: '30d',
-      })
-      return res.json({
-        token,
-        user: { id, createdAt, displayName, role },
-      })
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: error })
-    }
+    const token = jwt.sign({ id, email }, process.env.JWT_SECRET as string, {
+      expiresIn: '30d',
+    })
+
+    return res.status(200).json({
+      token,
+      user: { id, createdAt, displayName, role },
+    })
   }
 
   public getUserById = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const { id } = req.user as User
-      const user = await this.getUserUseCase.execute({ id })
+    const { id } = req.user as User
+    const user = await this.getUserUseCase.execute({ id })
 
-      return res.status(200).json(user)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: 'create user error' })
-    }
+    return res.status(200).json(user)
   }
 
   public registerNewUser = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const { displayName, email, password, role } = req.body
+    const { displayName, email, password, role } = req.body
 
-      const newUser = await this.createUserUseCase.execute({
-        displayName,
-        email,
-        password,
-        role,
-      })
+    const newUser = await this.createUserUseCase.execute({
+      displayName,
+      email,
+      password,
+      role,
+    })
 
-      return res.status(201).json(newUser)
-    } catch (error) {
-      return res.status(400).json({ message: 'create user error' })
-    }
+    return res.status(201).json(newUser)
   }
 }
