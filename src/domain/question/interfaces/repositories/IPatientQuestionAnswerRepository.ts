@@ -1,5 +1,6 @@
 import { IAnswer } from '../../../../application/question/GetSingleQuestionUseCase'
 import { IBaseRepository } from '../../../shared/IBaseRepository'
+import { IExecutor } from '../../../shared/IRepositoryTx'
 import { PatientQuestionAnswer } from '../../PatientQuestionAnswer'
 
 export interface IPatientQuestionAnswerRepository
@@ -14,8 +15,11 @@ export interface IPatientQuestionAnswerRepository
     doctorId: string
   ) => Promise<PatientQuestionAnswer | null>
   findAllByQuestionId: (questionId: string) => Promise<PatientQuestionAnswer[]>
-  deleteAllByQuestionId: (questionId: string) => Promise<void>
-  deleteById: (id: string) => Promise<void>
+  deleteAllByQuestionId: (
+    questionId: string,
+    executor?: IExecutor
+  ) => Promise<void>
+  deleteById: (id: string, executor?: IExecutor) => Promise<void>
   findAnswerDetailsByQuestionIdAndPatientId: (
     questionId: string,
     patientId: string

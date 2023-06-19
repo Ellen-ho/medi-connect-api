@@ -5,6 +5,7 @@ import { PatientQuestionEntity } from './PatientQuestionEntity'
 import { PatientQuestionMapper } from './PatientQuestionMapper'
 import { IPatientQuestionRepository } from '../../../domain/question/interfaces/repositories/IPatientQuestionRepository'
 import { RepositoryError } from '../../error/RepositoryError'
+import { IExecutor } from '../../../domain/shared/IRepositoryTx'
 
 export class PatientQuestionRepository
   extends BaseRepository<PatientQuestionEntity, PatientQuestion>
@@ -49,9 +50,12 @@ export class PatientQuestionRepository
     }
   }
 
-  public async deleteById(id: string): Promise<void> {
+  public async deleteById(
+    id: string,
+    executor: IExecutor = this.getRepo()
+  ): Promise<void> {
     try {
-      await this.getRepo()
+      await executor
         .createQueryBuilder('patient_questions')
         .softDelete()
         .where('id = :id', { id })

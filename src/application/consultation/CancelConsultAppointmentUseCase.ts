@@ -73,6 +73,7 @@ export class CancelConsultAppointmentUseCase {
 
     try {
       await this.tx.start()
+      const txExecutor = this.tx.getExecutor()
 
       existingConsultAppointment.doctorTimeSlot.updateAvailability(true)
 
@@ -86,13 +87,17 @@ export class CancelConsultAppointmentUseCase {
 
       if (existingMeetingLink !== null) {
         existingMeetingLink.setStatusToAvailable()
-        await this.meetingLinkRepository.save(existingMeetingLink)
+        await this.meetingLinkRepository.save(existingMeetingLink, txExecutor)
       }
 
-      await this.consultAppointmentRepository.save(existingConsultAppointment)
+      await this.consultAppointmentRepository.save(
+        existingConsultAppointment,
+        txExecutor
+      )
 
       await this.consultAppointmentRepository.deleteById(
-        existingConsultAppointment.id
+        existingConsultAppointment.id,
+        txExecutor
       )
 
       this.scheduler.cancelJob(`${existingConsultAppointment.id}_notification`)

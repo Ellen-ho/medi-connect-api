@@ -1,4 +1,5 @@
 import { IBaseRepository } from '../../../shared/IBaseRepository'
+import { IExecutor } from '../../../shared/IRepositoryTx'
 import { AnswerAgreement } from '../../AnswerAgreement'
 
 export interface IAnswerAgreementRepository
@@ -17,7 +18,7 @@ export interface IAnswerAgreementRepository
     answerId: string,
     agreedDoctorId: string
   ) => Promise<AnswerAgreement | null>
-  deleteById: (id: string) => Promise<void>
-  deleteAllByAnswerId: (answerId: string) => Promise<void>
+  deleteById: (id: string, executor?: IExecutor) => Promise<void>
+  deleteAllByAnswerId: (answerId: string, executor?: IExecutor) => Promise<void>
   findByDoctorId: (doctorId: string) => Promise<AnswerAgreement[]>
 }

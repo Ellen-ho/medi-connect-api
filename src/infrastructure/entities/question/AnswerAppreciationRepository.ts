@@ -5,6 +5,7 @@ import { AnswerAppreciationEntity } from './AnswerAppreciationEntity'
 import { AnswerAppreciationMapper } from './AnswerAppreciationMapper'
 import { IAnswerAppreciationRepository } from '../../../domain/question/interfaces/repositories/IAnswerAppreciationtRepository'
 import { RepositoryError } from '../../error/RepositoryError'
+import { IExecutor } from '../../../domain/shared/IRepositoryTx'
 
 export class AnswerAppreciationRepository
   extends BaseRepository<AnswerAppreciationEntity, AnswerAppreciation>
@@ -70,9 +71,12 @@ export class AnswerAppreciationRepository
     }
   }
 
-  public async deleteById(id: string): Promise<void> {
+  public async deleteById(
+    id: string,
+    executor: IExecutor = this.getRepo()
+  ): Promise<void> {
     try {
-      await this.getRepo()
+      await executor
         .createQueryBuilder('answer_appreciations')
         .softDelete()
         .where('id = :id', { id })
@@ -85,9 +89,12 @@ export class AnswerAppreciationRepository
     }
   }
 
-  public async deleteAllByAnswerId(answerId: string): Promise<void> {
+  public async deleteAllByAnswerId(
+    answerId: string,
+    executor: IExecutor = this.getRepo()
+  ): Promise<void> {
     try {
-      await this.getRepo()
+      await executor
         .createQueryBuilder('answer_appreciations')
         .softDelete()
         .where('answer_id = :answerId', { answerId })

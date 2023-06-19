@@ -5,6 +5,7 @@ import { AnswerAgreement } from '../../../domain/question/AnswerAgreement'
 import { AnswerAgreementMapper } from './AnswerAgreementMapper'
 import { IAnswerAgreementRepository } from '../../../domain/question/interfaces/repositories/IAnswerAgreementRepository'
 import { RepositoryError } from '../../error/RepositoryError'
+import { IExecutor } from '../../../domain/shared/IRepositoryTx'
 
 export class AnswerAgreementRepository
   extends BaseRepository<AnswerAgreementEntity, AnswerAgreement>
@@ -127,9 +128,12 @@ export class AnswerAgreementRepository
     }
   }
 
-  public async deleteById(id: string): Promise<void> {
+  public async deleteById(
+    id: string,
+    executor: IExecutor = this.getRepo()
+  ): Promise<void> {
     try {
-      await this.getRepo()
+      await executor
         .createQueryBuilder('answer_agreements')
         .softDelete()
         .where('id = :id', { id })
@@ -142,9 +146,12 @@ export class AnswerAgreementRepository
     }
   }
 
-  public async deleteAllByAnswerId(answerId: string): Promise<void> {
+  public async deleteAllByAnswerId(
+    answerId: string,
+    executor: IExecutor = this.getRepo()
+  ): Promise<void> {
     try {
-      await this.getRepo()
+      await executor
         .createQueryBuilder('answer_agreements')
         .softDelete()
         .where('patient_question_answer_id = :answerId', { answerId })

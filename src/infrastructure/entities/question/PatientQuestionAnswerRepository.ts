@@ -7,6 +7,7 @@ import { IPatientQuestionAnswerRepository } from '../../../domain/question/inter
 import { RepositoryError } from '../../error/RepositoryError'
 import { IAnswer } from '../../../application/question/GetSingleQuestionUseCase'
 import { MedicalSpecialtyType } from '../../../domain/question/PatientQuestion'
+import { IExecutor } from '../../../domain/shared/IRepositoryTx'
 
 export class PatientQuestionAnswerRepository
   extends BaseRepository<PatientQuestionAnswerEntity, PatientQuestionAnswer>
@@ -95,9 +96,12 @@ export class PatientQuestionAnswerRepository
     }
   }
 
-  public async deleteById(id: string): Promise<void> {
+  public async deleteById(
+    id: string,
+    executor: IExecutor = this.getRepo()
+  ): Promise<void> {
     try {
-      await this.getRepo()
+      await executor
         .createQueryBuilder('patient_question_answers')
         .softDelete()
         .where('id = :id', { id })
@@ -110,9 +114,12 @@ export class PatientQuestionAnswerRepository
     }
   }
 
-  public async deleteAllByQuestionId(questionId: string): Promise<void> {
+  public async deleteAllByQuestionId(
+    questionId: string,
+    executor: IExecutor = this.getRepo()
+  ): Promise<void> {
     try {
-      await this.getRepo()
+      await executor
         .createQueryBuilder('patient_question_answers')
         .softDelete()
         .where('patient_question_id = :questionId', { questionId })

@@ -1,4 +1,5 @@
 import { IBaseRepository } from '../../../shared/IBaseRepository'
+import { IExecutor } from '../../../shared/IRepositoryTx'
 import { PatientQuestion } from '../../PatientQuestion'
 
 export interface IPatientQuestionRepository
@@ -8,7 +9,7 @@ export interface IPatientQuestionRepository
     patientQuestionAnswerId: string,
     askerId: string
   ) => Promise<PatientQuestion | null>
-  deleteById: (id: string) => Promise<void>
+  deleteById: (id: string, executor?: IExecutor) => Promise<void>
   findAndCountAll: (
     limit: number,
     offset: number

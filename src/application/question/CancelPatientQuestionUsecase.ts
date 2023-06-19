@@ -48,22 +48,32 @@ export class CancelPatientQuestionUseCase {
 
     try {
       await this.tx.start()
+      const txExecutor = this.tx.getExecutor()
+
       const answers =
         await this.patientQuestionAnswerRepository.findAllByQuestionId(
           patientQuestionId
         )
 
       for (const answer of answers) {
-        await this.answerAppreciationRepository.deleteAllByAnswerId(answer.id)
-        await this.answerAgreementRepository.deleteAllByAnswerId(answer.id)
+        await this.answerAppreciationRepository.deleteAllByAnswerId(
+          answer.id,
+          txExecutor
+        )
+        await this.answerAgreementRepository.deleteAllByAnswerId(
+          answer.id,
+          txExecutor
+        )
       }
 
       await this.patientQuestionAnswerRepository.deleteAllByQuestionId(
-        patientQuestionId
+        patientQuestionId,
+        txExecutor
       )
 
       await this.patientQuestionRepository.deleteById(
-        existingPatientQuestion.id
+        existingPatientQuestion.id,
+        txExecutor
       )
       await this.tx.end()
       return {

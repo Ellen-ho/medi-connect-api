@@ -1,10 +1,13 @@
 import { MedicalSpecialtyType } from '../../../question/PatientQuestion'
+import { IBaseRepository } from '../../../shared/IBaseRepository'
+import { IExecutor } from '../../../shared/IRepositoryTx'
 import {
   ConsultAppointment,
   ConsultAppointmentStatusType,
 } from '../../ConsultAppointment'
 
-export interface IConsultAppointmentRepository {
+export interface IConsultAppointmentRepository
+  extends IBaseRepository<ConsultAppointment> {
   findById: (id: string) => Promise<ConsultAppointment | null>
   findByIdAndPatientId: (
     consultAppointmentId: string,
@@ -14,8 +17,7 @@ export interface IConsultAppointmentRepository {
     patientId: string,
     currentDate: Date
   ) => Promise<ConsultAppointment | null>
-  deleteById: (id: string) => Promise<void>
-  save: (consultAppointment: ConsultAppointment) => Promise<void>
+  deleteById: (id: string, executo?: IExecutor) => Promise<void>
   findByPatientIdAndStatusWithinDateRange: (
     patientId: string,
     status: ConsultAppointmentStatusType[],

@@ -9,6 +9,7 @@ import { RepositoryError } from '../../error/RepositoryError'
 import { ConsultAppointmentEntity } from './ConsultAppointmentEntity'
 import { ConsultAppointmentMapper } from './ConsultAppointmentMapper'
 import { MedicalSpecialtyType } from '../../../domain/question/PatientQuestion'
+import { IExecutor } from '../../../domain/shared/IRepositoryTx'
 
 export class ConsultAppointmentRepository
   extends BaseRepository<ConsultAppointmentEntity, ConsultAppointment>
@@ -53,9 +54,12 @@ export class ConsultAppointmentRepository
     }
   }
 
-  public async deleteById(id: string): Promise<void> {
+  public async deleteById(
+    id: string,
+    executor: IExecutor = this.getRepo()
+  ): Promise<void> {
     try {
-      await this.getRepo()
+      await executor
         .createQueryBuilder('consult_appointments')
         .softDelete()
         .where('id = :id', { id })

@@ -44,12 +44,20 @@ export class CancelPatientQuestionAnswerUseCase {
     }
     try {
       await this.tx.start()
+      const txExecutor = this.tx.getExecutor()
 
       await this.patientQuestionAnswerRepository.deleteById(
-        existingPatientQuestionAnswer.id
+        existingPatientQuestionAnswer.id,
+        txExecutor
       )
-      await this.answerAgreementRepository.deleteAllByAnswerId(answerId)
-      await this.answerAppreciationRepository.deleteAllByAnswerId(answerId)
+      await this.answerAgreementRepository.deleteAllByAnswerId(
+        answerId,
+        txExecutor
+      )
+      await this.answerAppreciationRepository.deleteAllByAnswerId(
+        answerId,
+        txExecutor
+      )
       await this.tx.end()
       return {
         answerId,
