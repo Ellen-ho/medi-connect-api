@@ -95,7 +95,7 @@ export class CancelConsultAppointmentUseCase {
         existingConsultAppointment.id
       )
 
-      this.scheduler.cancelJob(existingConsultAppointment.id)
+      this.scheduler.cancelJob(`${existingConsultAppointment.id}_notification`)
 
       await this.tx.end()
 
