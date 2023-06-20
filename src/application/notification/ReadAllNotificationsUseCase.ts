@@ -1,6 +1,7 @@
 import { NotificationType } from '../../domain/notification/Notification'
 import { INotificationRepository } from '../../domain/notification/interfaces/repositories/INotificationRepository'
 import { User } from '../../domain/user/User'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 
 interface ReadAllNotificationsRequest {
   user: User
@@ -35,7 +36,7 @@ export class ReadAllNotificationsUseCase {
       )
 
     if (existingUnReadNotifications == null) {
-      throw new Error('All notifications have been read.')
+      throw new NotFoundError('All notifications have been read.')
     }
 
     for (const notification of existingUnReadNotifications) {
