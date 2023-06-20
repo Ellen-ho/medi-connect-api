@@ -3,6 +3,7 @@ import { User } from '../../domain/user/User'
 import { Doctor, GenderType, IAddress } from '../../domain/doctor/Doctor'
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 import { MedicalSpecialtyType } from '../../domain/question/PatientQuestion'
+import { ValidationError } from '../../infrastructure/error/ValidationError'
 
 interface CreateDoctorProfileRequest {
   user: User
@@ -54,8 +55,8 @@ export class CreateDoctorProfileUseCase {
       user.id
     )
 
-    if (existingDoctorProfile != null) {
-      throw new Error('Doctor already exists.')
+    if (existingDoctorProfile !== null) {
+      throw new ValidationError('Doctor already exists.')
     }
 
     const doctor = new Doctor({
