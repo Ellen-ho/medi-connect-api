@@ -9,6 +9,8 @@ import { IHealthGoalRepository } from '../../domain/goal/interfaces/repositories
 import { GenderType } from '../../domain/patient/Patient'
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { User, UserRoleType } from '../../domain/user/User'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 import { getOffset, getPagination } from '../../infrastructure/utils/Pagination'
 
 interface GetHealthGoalListRequest {
@@ -64,7 +66,7 @@ export class GetHealthGoalListUseCase {
       )
 
     if (existingHealthGoals.goalsData.length === 0) {
-      throw new Error('No record exists.')
+      throw new NotFoundError('No record exists.')
     }
 
     const filteredGoalsData = existingHealthGoals.goalsData.filter(
@@ -75,7 +77,7 @@ export class GetHealthGoalListUseCase {
       // 若登入者為doctor
       const currentDoctor = await this.doctorRepository.findByUserId(user.id)
       if (currentDoctor == null) {
-        throw new Error('The currentDoctor does not exist.')
+        throw new AuthorizationError('The currentDoctor does not exist.')
       }
       const upComingAppointments =
         await this.consultAppointmentRepository.findByPatientIdAndDoctorIdAndStatus(
@@ -84,7 +86,7 @@ export class GetHealthGoalListUseCase {
           [ConsultAppointmentStatusType.UPCOMING] // 預約狀態為upComing
         )
       if (upComingAppointments.length === 0) {
-        throw new Error(
+        throw new AuthorizationError(
           'The current doctor does not be appointed by this patient.'
         )
       }
@@ -92,7 +94,9 @@ export class GetHealthGoalListUseCase {
         targetPatientId
       )
       if (appointmentPatient == null) {
-        throw new Error('Patient who made the appointment does not exist.')
+        throw new AuthorizationError(
+          'Patient who made the appointment does not exist.'
+        )
       }
       return {
         patientData: {
@@ -113,10 +117,10 @@ export class GetHealthGoalListUseCase {
     // 若登入者身分為患者
     const currentPatient = await this.patientRepository.findByUserId(user.id)
     if (currentPatient == null) {
-      throw new Error('The current patient does not exist.')
+      throw new AuthorizationError('The current patient does not exist.')
     }
     if (currentPatient.id !== targetPatientId) {
-      throw new Error(
+      throw new AuthorizationError(
         'These health goals do not belong to the current patient.'
       )
     }
