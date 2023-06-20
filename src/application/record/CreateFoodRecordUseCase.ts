@@ -3,6 +3,7 @@ import { FoodCategoryType, FoodRecord } from '../../domain/record/FoodRecord'
 import { IFoodRecordRepository } from '../../domain/record/interfaces/repositories/IFoodRecordRepository'
 import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
 
 interface CreateFoodRecordRequest {
   user: User
@@ -38,7 +39,7 @@ export class CreateFoodRecordUseCase {
     const existingPatient = await this.patientRepository.findByUserId(user.id)
 
     if (existingPatient == null) {
-      throw new Error('Patient does not exist.')
+      throw new AuthorizationError('Patient does not exist.')
     }
 
     // kc,foodTime,foodImage

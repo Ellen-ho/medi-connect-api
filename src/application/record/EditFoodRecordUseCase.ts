@@ -3,6 +3,8 @@ import { FoodCategoryType } from '../../domain/record/FoodRecord'
 import { IFoodRecordRepository } from '../../domain/record/interfaces/repositories/IFoodRecordRepository'
 
 import { User } from '../../domain/user/User'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 
 interface EditFoodRecordRequest {
   user: User
@@ -39,7 +41,7 @@ export class EditFoodRecordUseCase {
     const existingPatient = await this.patientRepository.findByUserId(user.id)
 
     if (existingPatient == null) {
-      throw new Error('Patient does not exist.')
+      throw new AuthorizationError('Patient does not exist.')
     }
 
     const existingFoodRecord =
@@ -49,7 +51,7 @@ export class EditFoodRecordUseCase {
       )
 
     if (existingFoodRecord == null) {
-      throw new Error('This food record does not exist.')
+      throw new NotFoundError('This food record does not exist.')
     }
 
     existingFoodRecord.updateData({

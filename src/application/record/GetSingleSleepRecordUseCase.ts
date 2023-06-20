@@ -6,6 +6,8 @@ import { IPatientRepository } from '../../domain/patient/interfaces/repositories
 import { SleepQualityType } from '../../domain/record/SleepRecord'
 import { ISleepRecordRepository } from '../../domain/record/interfaces/repositories/ISleepRecordRepository'
 import { User, UserRoleType } from '../../domain/user/User'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 
 interface GetSingleSleepRecordRequest {
   user: User
@@ -66,7 +68,7 @@ export class GetSingleSleepRecordUseCase {
       sleepRecordId
     )
     if (existingRecord == null) {
-      throw new Error('The sleep record does not exist.')
+      throw new NotFoundError('The sleep record does not exist.')
     }
 
     const patientId = existingRecord.patientId
@@ -75,7 +77,7 @@ export class GetSingleSleepRecordUseCase {
     if (user.role === UserRoleType.DOCTOR) {
       const currentDoctor = await this.doctorRepository.findByUserId(user.id)
       if (currentDoctor == null) {
-        throw new Error('The currentDoctor does not exist.')
+        throw new AuthorizationError('The currentDoctor does not exist.')
       }
       const upComingAppointments =
         await this.consultAppointmentRepository.findByPatientIdAndDoctorIdAndStatus(
@@ -84,7 +86,7 @@ export class GetSingleSleepRecordUseCase {
           [ConsultAppointmentStatusType.UPCOMING] // 預約狀態為upComing
         )
       if (upComingAppointments.length === 0) {
-        throw new Error(
+        throw new AuthorizationError(
           'The current doctor does not be appointed by this patient.'
         )
       }
@@ -92,7 +94,9 @@ export class GetSingleSleepRecordUseCase {
         patientId
       )
       if (appointmentPatient == null) {
-        throw new Error('Patient who made the appointment does not exist.')
+        throw new AuthorizationError(
+          'Patient who made the appointment does not exist.'
+        )
       }
       return {
         data: {
@@ -116,7 +120,7 @@ export class GetSingleSleepRecordUseCase {
     // 若登入者身分為患者
     const currentPatient = await this.patientRepository.findByUserId(user.id)
     if (currentPatient == null) {
-      throw new Error('The current patient does not exist.')
+      throw new AuthorizationError('The current patient does not exist.')
     }
     // 判斷此record是否屬於當前登入的患者
     const recordWithOwner =
@@ -126,7 +130,9 @@ export class GetSingleSleepRecordUseCase {
       )
 
     if (recordWithOwner == null) {
-      throw new Error('The record does not belong to the current patient.')
+      throw new AuthorizationError(
+        'The current patient does not have sleep record.'
+      )
     }
 
     return {

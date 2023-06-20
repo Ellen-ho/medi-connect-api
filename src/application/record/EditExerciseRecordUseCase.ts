@@ -3,6 +3,8 @@ import { ExerciseType, IntensityType } from '../../domain/record/ExerciseRecord'
 import { IExerciseRecordRepository } from '../../domain/record/interfaces/repositories/IExerciseRepository'
 
 import { User } from '../../domain/user/User'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 
 interface EditExerciseRecordRequest {
   user: User
@@ -45,11 +47,10 @@ export class EditExerciseRecordUseCase {
       exerciseNote,
     } = request
 
-    // get patient by userId
     const existingPatient = await this.patientRepository.findByUserId(user.id)
 
     if (existingPatient == null) {
-      throw new Error('Patient does not exist.')
+      throw new AuthorizationError('Patient does not exist.')
     }
 
     // get record by recordId and patientId
@@ -60,7 +61,7 @@ export class EditExerciseRecordUseCase {
       )
 
     if (existingExerciseRecord == null) {
-      throw new Error('This exercise record does not exist.')
+      throw new NotFoundError('This exercise record does not exist.')
     }
 
     existingExerciseRecord.updateData({

@@ -7,6 +7,7 @@ import {
 import { IExerciseRecordRepository } from '../../domain/record/interfaces/repositories/IExerciseRepository'
 import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
 
 interface CreateExerciseRecordRequest {
   user: User
@@ -51,14 +52,13 @@ export class CreateExerciseRecordUseCase {
     const existingPatient = await this.patientRepository.findByUserId(user.id)
 
     if (existingPatient == null) {
-      throw new Error('Patient does not exist.')
+      throw new AuthorizationError('Patient does not exist.')
     }
 
     // no other: kc from standard
     const exerciseRecord = new ExerciseRecord({
       id: this.uuidService.generateUuid(),
       exerciseDate,
-      // exerciseDate: new Date(exerciseDate).getTime() / 1000,
       exerciseType,
       exerciseDurationMinute,
       exerciseIntensity,

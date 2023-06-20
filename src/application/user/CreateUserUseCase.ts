@@ -2,6 +2,7 @@ import { User, UserRoleType } from '../../domain/user/User'
 import { IUserRepository } from '../../domain/user/interfaces/repositories/IUserRepository'
 import { IUuidService } from '../../domain/utils/IUuidService'
 import { IHashGenerator } from '../../domain/utils/IHashGenerator'
+import { ValidationError } from '../../infrastructure/error/ValidationError'
 
 interface CreateUserRequest {
   displayName: string
@@ -31,8 +32,8 @@ export class CreateUserUseCase {
 
     const userExists = await this.userRepository.findByEmail(email)
 
-    if (userExists != null) {
-      throw new Error('User already exists with this email.')
+    if (userExists !== null) {
+      throw new ValidationError('User already exists with this email.')
     }
 
     const hashedPassword = await this.hashGenerator.hash(password)

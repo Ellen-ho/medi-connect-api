@@ -4,6 +4,9 @@ import { ISleepRecordRepository } from '../../domain/record/interfaces/repositor
 
 import { User } from '../../domain/user/User'
 import dayjs from 'dayjs'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
+import { ValidationError } from '../../infrastructure/error/ValidationError'
 
 interface EditSleepRecordRequest {
   user: User
@@ -46,14 +49,12 @@ export class EditSleepRecordUseCase {
       sleepNote,
     } = request
 
-    // get patient by userId
     const existingPatient = await this.patientRepository.findByUserId(user.id)
 
     if (existingPatient == null) {
-      throw new Error('Patient does not exist.')
+      throw new AuthorizationError('Patient does not exist.')
     }
 
-    // get record by recordId and patientId
     const existingSleepRecord =
       await this.sleepRecordRepository.findByIdAndPatientId(
         sleepRecordId,
@@ -61,7 +62,7 @@ export class EditSleepRecordUseCase {
       )
 
     if (existingSleepRecord == null) {
-      throw new Error('This sleep record does not exist.')
+      throw new NotFoundError('This sleep record does not exist.')
     }
 
     const depulicatedSleepRecord =
@@ -70,8 +71,10 @@ export class EditSleepRecordUseCase {
         sleepDate
       )
 
-    if (depulicatedSleepRecord != null) {
-      throw new Error("This patient's sleep record date is duplicated.")
+    if (depulicatedSleepRecord !== null) {
+      throw new ValidationError(
+        "This patient's sleep record date is duplicated."
+      )
     }
 
     const sleepDurationHour: number = dayjs(wakeUpTime).diff(

@@ -2,6 +2,9 @@ import { IPatientRepository } from '../../domain/patient/interfaces/repositories
 import { IWeightRecordRepository } from '../../domain/record/interfaces/repositories/IWeightRecordRepository'
 import { User } from '../../domain/user/User'
 import { calculateBodyMassIndex } from '../../domain/utils/healthFormula'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
+import { ValidationError } from '../../infrastructure/error/ValidationError'
 
 interface EditWeightRecordRequest {
   user: User
@@ -33,14 +36,12 @@ export class EditWeightRecordUseCase {
     const { user, weightRecordId, weightDate, weightValueKg, weightNote } =
       request
 
-    // get patient by userId
     const existingPatient = await this.patientRepository.findByUserId(user.id)
 
     if (existingPatient == null) {
-      throw new Error('Patient does not exist.')
+      throw new AuthorizationError('Patient does not exist.')
     }
 
-    // get record by recordId and patientId
     const existingWeightRecord =
       await this.weightRecordRepository.findByIdAndPatientId(
         weightRecordId,
@@ -48,7 +49,7 @@ export class EditWeightRecordUseCase {
       )
 
     if (existingWeightRecord == null) {
-      throw new Error('This weight record does not exist.')
+      throw new NotFoundError('This weight record does not exist.')
     }
 
     const bodyMassIndex = calculateBodyMassIndex({
@@ -62,8 +63,10 @@ export class EditWeightRecordUseCase {
         weightDate
       )
 
-    if (depulicatedWeightRecord != null) {
-      throw new Error("This patient's weight record date is duplicated.")
+    if (depulicatedWeightRecord !== null) {
+      throw new ValidationError(
+        "This patient's weight record date is duplicated."
+      )
     }
 
     existingWeightRecord.updateData({

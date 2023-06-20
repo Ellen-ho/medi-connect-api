@@ -4,6 +4,8 @@ import { ISleepRecordRepository } from '../../domain/record/interfaces/repositor
 import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
 import dayjs from 'dayjs'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { ValidationError } from '../../infrastructure/error/ValidationError'
 
 interface CreateSleepRecordRequest {
   user: User
@@ -42,7 +44,7 @@ export class CreateSleepRecordUseCase {
     const existingPatient = await this.patientRepository.findByUserId(user.id)
 
     if (existingPatient == null) {
-      throw new Error('Patient does not exist.')
+      throw new AuthorizationError('Patient does not exist.')
     }
 
     const sleepDurationHour: number = dayjs(wakeUpTime).diff(
@@ -56,8 +58,8 @@ export class CreateSleepRecordUseCase {
         sleepDate
       )
 
-    if (existingRecord != null) {
-      throw new Error('Only one sleep record can be created per day.')
+    if (existingRecord !== null) {
+      throw new ValidationError('Only one sleep record can be created per day.')
     }
 
     const sleepRecord = new SleepRecord({
