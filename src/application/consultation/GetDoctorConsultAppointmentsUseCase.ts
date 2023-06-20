@@ -3,6 +3,8 @@ import { ConsultAppointmentStatusType } from '../../domain/consultation/ConsultA
 import { IConsultAppointmentRepository } from '../../domain/consultation/interfaces/repositories/IConsultAppointmentRepository'
 import { User, UserRoleType } from '../../domain/user/User'
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 export interface ConsultAppointmentDatas {
   doctorId: string
   status: ConsultAppointmentStatusType
@@ -49,13 +51,13 @@ export class GetDoctorConsultAppointmentsUseCase {
     const { user } = request
 
     if (user.role === UserRoleType.PATIENT) {
-      throw new Error('Only doctor can get the data')
+      throw new AuthorizationError('Only doctor can get the data')
     }
 
     const existingDoctor = await this.doctorRepository.findByUserId(user.id)
 
     if (existingDoctor == null) {
-      throw new Error('Doctor does not exist.')
+      throw new AuthorizationError('Doctor does not exist.')
     }
 
     const currentDate = dayjs()
@@ -77,7 +79,7 @@ export class GetDoctorConsultAppointmentsUseCase {
         upComingEndDate.toDate()
       )
     if (upComingAppointments == null) {
-      throw new Error('There is no upComing appointment.')
+      throw new NotFoundError('There is no upComing appointment.')
     }
 
     const upcomingConsultAppointments: ConsultAppointmentDatas[] = []
@@ -116,11 +118,11 @@ export class GetDoctorConsultAppointmentsUseCase {
       )
 
     if (completedAppointments == null) {
-      throw new Error('There is no completed appointment.')
+      throw new NotFoundError('There is no completed appointment.')
     }
 
     if (canceledAppointments == null) {
-      throw new Error('There is no canceled appointment.')
+      throw new NotFoundError('There is no canceled appointment.')
     }
     return {
       upComingAppointments: upcomingConsultAppointments,

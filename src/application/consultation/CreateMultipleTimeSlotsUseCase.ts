@@ -4,6 +4,9 @@ import { IDoctorTimeSlotRepository } from '../../domain/consultation/interfaces/
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
+import { ValidationError } from '../../infrastructure/error/ValidationError'
 
 interface CreateMultipleTimeSlotsRequest {
   user: User
@@ -34,7 +37,7 @@ export class CreateMultipleTimeSlotsUseCase {
     const existingDoctor = await this.doctorRepository.findByUserId(user.id)
 
     if (existingDoctor == null) {
-      throw new Error('Doctor does not exist.')
+      throw new AuthorizationError('Doctor does not exist.')
     }
 
     const createdTimeSlots: DoctorTimeSlot[] = []
@@ -61,24 +64,24 @@ export class CreateMultipleTimeSlotsUseCase {
           existingDoctor.id
         )
 
-      if (singleTimeSlot != null) {
-        throw new Error('This time slot already exists.')
+      if (singleTimeSlot !== null) {
+        throw new NotFoundError('This time slot already exists.')
       }
 
       if (dayjs(startAt).isBefore(currentDate)) {
-        throw new Error(
+        throw new ValidationError(
           'Doctor cannot create time slots before the current time.'
         )
       }
 
       if (dayjs(startAt).isAfter(endAt)) {
-        throw new Error('The start time should before end time.')
+        throw new ValidationError('The start time should before end time.')
       }
 
       const minimumOfEndAt = dayjs(startAt).add(30, 'minute')
 
       if (!dayjs(endAt).isSame(minimumOfEndAt)) {
-        throw new Error(
+        throw new ValidationError(
           'The end time should be 30 minutes after the start time.'
         )
       }
@@ -92,7 +95,7 @@ export class CreateMultipleTimeSlotsUseCase {
             dayjs(startAt).isSame(nextMonthEndDate, 'day'))
         )
       ) {
-        throw new Error(
+        throw new ValidationError(
           'Doctor can only create time slots of the next month before the 28th of this month.'
         )
       }
@@ -108,7 +111,7 @@ export class CreateMultipleTimeSlotsUseCase {
             dayjs(startAt).isSame(nextNextMonthEndDate, 'day'))
         )
       ) {
-        throw new Error(
+        throw new ValidationError(
           'During the 28th of this month to the 27th of next month, the doctor can only create time slots for the next next month.'
         )
       }

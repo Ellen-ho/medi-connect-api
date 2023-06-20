@@ -4,6 +4,8 @@ import { IDoctorTimeSlotRepository } from '../../domain/consultation/interfaces/
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { ValidationError } from '../../infrastructure/error/ValidationError'
 
 interface CreateDoctorTimeSlotRequest {
   user: User
@@ -35,7 +37,7 @@ export class CreateDoctorTimeSlotUseCase {
     const existingDoctor = await this.doctorRepository.findByUserId(user.id)
 
     if (existingDoctor == null) {
-      throw new Error('Doctor does not exist.')
+      throw new AuthorizationError('Doctor does not exist.')
     }
 
     const existingDoctorTimeSlot =
@@ -44,29 +46,30 @@ export class CreateDoctorTimeSlotUseCase {
         existingDoctor.id
       )
 
-    if (existingDoctorTimeSlot != null) {
-      throw new Error("This doctor's time slot has already exists.")
+    if (existingDoctorTimeSlot !== null) {
+      throw new ValidationError("This doctor's time slot has already exists.")
     }
 
     const currentDate = dayjs()
-    // const currentDate = dayjs('2021-01-07 15:30:00')
 
     const minimumOfEndAt = dayjs(startAt).add(30, 'minute')
 
     // 創建的時間表不能早於現在時間(包括年月日時分秒)
     // 如:同一天，晚上不能創白天時間表
     if (dayjs(startAt).isBefore(currentDate)) {
-      throw new Error(
+      throw new ValidationError(
         'Doctor cannot create time slots before the current time.'
       )
     }
 
     if (dayjs(startAt).isAfter(endAt)) {
-      throw new Error('The start time should before end time.')
+      throw new ValidationError('The start time should before end time.')
     }
 
     if (dayjs(endAt).isBefore(minimumOfEndAt)) {
-      throw new Error('The end time should be 30 minutes after the start time.')
+      throw new ValidationError(
+        'The end time should be 30 minutes after the start time.'
+      )
     }
 
     const nextMonthStartDate = currentDate.add(1, 'month').startOf('month')
@@ -92,7 +95,7 @@ export class CreateDoctorTimeSlotUseCase {
           dayjs(startAt).isSame(nextMonthEndDate, 'day'))
       )
     ) {
-      throw new Error(
+      throw new ValidationError(
         'Doctor can only create time slots of next month before 28th of this month.'
       )
     }
@@ -108,7 +111,7 @@ export class CreateDoctorTimeSlotUseCase {
           dayjs(startAt).isSame(nextNextMonthEndDate, 'day'))
       )
     ) {
-      throw new Error(
+      throw new ValidationError(
         'During 28th of this month to 27th of next month, doctor can only create time slots of next next month.'
       )
     }
