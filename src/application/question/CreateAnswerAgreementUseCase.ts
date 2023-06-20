@@ -6,6 +6,9 @@ import { IUuidService } from '../../domain/utils/IUuidService'
 import { IAnswerAgreementRepository } from '../../domain/question/interfaces/repositories/IAnswerAgreementRepository'
 import { INotificationHelper } from '../notification/NotificationHelper'
 import { NotificationType } from '../../domain/notification/Notification'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { ValidationError } from '../../infrastructure/error/ValidationError'
 
 interface CreateAnswerAgreementRequest {
   user: User
@@ -41,7 +44,7 @@ export class CreateAnswerAgreementUseCase {
     )
 
     if (existingAnswer == null) {
-      throw new Error('Answer does not exist.')
+      throw new NotFoundError('Answer does not exist.')
     }
 
     const beAgreedDoctorId = existingAnswer.doctorId
@@ -49,15 +52,13 @@ export class CreateAnswerAgreementUseCase {
       beAgreedDoctorId
     )
     if (beAgreedDoctor == null) {
-      throw new Error('Cna not find the doctor who is be agreed.')
+      throw new AuthorizationError('Cna not find the doctor who is be agreed.')
     }
-
-    console.table({ beAgreedDoctorId })
 
     const existingDoctor = await this.doctorRepository.findByUserId(user.id)
 
     if (existingDoctor == null) {
-      throw new Error('Doctor does not exist.')
+      throw new AuthorizationError('Doctor does not exist.')
     }
 
     const existingAnswerAgreement =
@@ -67,7 +68,9 @@ export class CreateAnswerAgreementUseCase {
       )
 
     if (existingAnswerAgreement !== null) {
-      throw new Error('Agreement to this answer by you already exists.')
+      throw new ValidationError(
+        'Agreement to this answer by you already exists.'
+      )
     }
 
     const answerAgreement = new AnswerAgreement({

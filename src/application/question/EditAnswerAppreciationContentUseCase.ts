@@ -2,6 +2,9 @@ import { IPatientRepository } from '../../domain/patient/interfaces/repositories
 import { IAnswerAppreciationRepository } from '../../domain/question/interfaces/repositories/IAnswerAppreciationtRepository'
 
 import { User } from '../../domain/user/User'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
+import { ValidationError } from '../../infrastructure/error/ValidationError'
 
 interface EditAnswerAppreciationContentRequest {
   user: User
@@ -26,13 +29,13 @@ export class EditAnswerAppreciationContentUseCase {
     const { user, answerAppreciationId, content } = request
 
     if (content == null) {
-      throw new Error('Content cannot be empty after editing')
+      throw new ValidationError('Content cannot be empty after editing')
     }
 
     const existingPatient = await this.patientRepository.findByUserId(user.id)
 
     if (existingPatient == null) {
-      throw new Error('Patient does not exist.')
+      throw new AuthorizationError('Patient does not exist.')
     }
 
     const existingAnswerAppreciation =
@@ -42,7 +45,7 @@ export class EditAnswerAppreciationContentUseCase {
       )
 
     if (existingAnswerAppreciation == null) {
-      throw new Error('Answer appreciation does not exist.')
+      throw new NotFoundError('Answer appreciation does not exist.')
     }
 
     existingAnswerAppreciation.updateContent(content)
