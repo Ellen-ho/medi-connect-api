@@ -111,509 +111,345 @@ export class RecordController implements IRecordController {
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = { ...req.body, user: req.user }
-      const record = await this.createWeightRecordUseCase.execute(request)
-
-      return res.status(200).json(record)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
-    }
+    const request = { ...req.body, user: req.user }
+    const record = await this.createWeightRecordUseCase.execute(request)
+    return res.status(200).json(record)
   }
 
   public editWeightRecord = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = {
-        ...req.body,
-        user: req.user,
-        weightRecordId: req.params.id,
-      }
-      const record = await this.editWeightRecordUseCase.execute(request)
-
-      return res.status(200).json(record)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
+    const request = {
+      ...req.body,
+      user: req.user,
+      weightRecordId: req.params.id,
     }
+    const record = await this.editWeightRecordUseCase.execute(request)
+    return res.status(200).json(record)
   }
 
   public createBloodPressureRecord = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = { ...req.body, user: req.user }
-      const record = await this.createBloodPressureRecordUseCase.execute(
-        request
-      )
-
-      return res.status(200).json(record)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
-    }
+    const request = { ...req.body, user: req.user }
+    const record = await this.createBloodPressureRecordUseCase.execute(request)
+    return res.status(200).json(record)
   }
 
   public editBloodPressureRecord = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = {
-        ...req.body,
-        user: req.user,
-        bloodPressureRecordId: req.params.id,
-      }
-      const record = await this.editBloodPressureRecordUseCase.execute(request)
-
-      return res.status(200).json(record)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
+    const request = {
+      ...req.body,
+      user: req.user,
+      bloodPressureRecordId: req.params.id,
     }
+    const record = await this.editBloodPressureRecordUseCase.execute(request)
+    return res.status(200).json(record)
   }
 
   public createBloodSugarRecord = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = { ...req.body, user: req.user }
-      const record = await this.createBloodSugarRecordUseCase.execute(request)
-
-      return res.status(200).json(record)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
-    }
+    const request = { ...req.body, user: req.user }
+    const record = await this.createBloodSugarRecordUseCase.execute(request)
+    return res.status(200).json(record)
   }
 
   public editBloodSugarRecord = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = {
-        ...req.body,
-        user: req.user,
-        bloodSugarRecordId: req.params.id,
-      }
-      const record = await this.editBloodSugarRecordUseCase.execute(request)
-
-      return res.status(200).json(record)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
+    const request = {
+      ...req.body,
+      user: req.user,
+      bloodSugarRecordId: req.params.id,
     }
+    const record = await this.editBloodSugarRecordUseCase.execute(request)
+    return res.status(200).json(record)
   }
 
   public createExerciseRecord = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = { ...req.body, user: req.user }
-      const record = await this.createExerciseRecordUseCase.execute(request)
-
-      return res.status(200).json(record)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
-    }
+    const request = { ...req.body, user: req.user }
+    const record = await this.createExerciseRecordUseCase.execute(request)
+    return res.status(200).json(record)
   }
 
   public editExerciseRecord = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = {
-        ...req.body,
-        user: req.user,
-        exerciseRecordId: req.params.id,
-      }
-      const record = await this.editExerciseRecordUseCase.execute(request)
-
-      return res.status(200).json(record)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
+    const request = {
+      ...req.body,
+      user: req.user,
+      exerciseRecordId: req.params.id,
     }
+    const record = await this.editExerciseRecordUseCase.execute(request)
+    return res.status(200).json(record)
   }
 
   public createFoodRecord = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = { ...req.body, user: req.user }
-      const record = await this.createFoodRecordUseCase.execute(request)
-
-      return res.status(200).json(record)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
-    }
+    const request = { ...req.body, user: req.user }
+    const record = await this.createFoodRecordUseCase.execute(request)
+    return res.status(200).json(record)
   }
 
   public editFoodRecord = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = {
-        ...req.body,
-        user: req.user,
-        foodRecordId: req.params.id,
-      }
-
-      const record = await this.editFoodRecordUseCase.execute(request)
-
-      return res.status(200).json(record)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
+    const request = {
+      ...req.body,
+      user: req.user,
+      foodRecordId: req.params.id,
     }
+    const record = await this.editFoodRecordUseCase.execute(request)
+    return res.status(200).json(record)
   }
 
   public createGlycatedHemoglobinRecord = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = { ...req.body, user: req.user }
-      const record = await this.createGlycatedHemoglobinRecordUseCase.execute(
-        request
-      )
-      return res.status(200).json(record)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
-    }
+    const request = { ...req.body, user: req.user }
+    const record = await this.createGlycatedHemoglobinRecordUseCase.execute(
+      request
+    )
+    return res.status(200).json(record)
   }
 
   public editGlycatedHemoglobinRecord = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = {
-        ...req.body,
-        user: req.user,
-        glycatedHemoglobinRecordId: req.params.id,
-      }
-      const record = await this.editGlycatedHemoglobinRecordUseCase.execute(
-        request
-      )
-
-      return res.status(200).json(record)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
+    const request = {
+      ...req.body,
+      user: req.user,
+      glycatedHemoglobinRecordId: req.params.id,
     }
+    const record = await this.editGlycatedHemoglobinRecordUseCase.execute(
+      request
+    )
+    return res.status(200).json(record)
   }
 
   public createSleepRecord = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = { ...req.body, user: req.user }
-      const record = await this.createSleepRecordUseCase.execute(request)
-
-      return res.status(200).json(record)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
-    }
+    const request = { ...req.body, user: req.user }
+    const record = await this.createSleepRecordUseCase.execute(request)
+    return res.status(200).json(record)
   }
 
   public editSleepRecord = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = {
-        ...req.body,
-        user: req.user,
-        sleepRecordId: req.params.id,
-      }
-      const record = await this.editSleepRecordUseCase.execute(request)
-
-      return res.status(200).json(record)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
+    const request = {
+      ...req.body,
+      user: req.user,
+      sleepRecordId: req.params.id,
     }
+    const record = await this.editSleepRecordUseCase.execute(request)
+    return res.status(200).json(record)
   }
 
   public getSingleExerciseRecord = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = {
-        user: req.user as User,
-        exerciseRecordId: req.params.id,
-      }
-      const record = await this.getSingleExerciseRecordUseCase.execute(request)
-      return res.status(200).json(record)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
+    const request = {
+      user: req.user as User,
+      exerciseRecordId: req.params.id,
     }
+    const record = await this.getSingleExerciseRecordUseCase.execute(request)
+    return res.status(200).json(record)
   }
 
   public getSingleBloodPressureRecord = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = {
-        user: req.user as User,
-        bloodPressureRecordId: req.params.id,
-      }
-      const record = await this.getSingleBloodPressureRecordUseCase.execute(
-        request
-      )
-      return res.status(200).json(record)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
+    const request = {
+      user: req.user as User,
+      bloodPressureRecordId: req.params.id,
     }
+    const record = await this.getSingleBloodPressureRecordUseCase.execute(
+      request
+    )
+    return res.status(200).json(record)
   }
 
   public getSingleBloodSugarRecord = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = {
-        user: req.user as User,
-        bloodSugarRecordId: req.params.id,
-      }
-      const record = await this.getSingleBloodSugarRecordUseCase.execute(
-        request
-      )
-      return res.status(200).json(record)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
+    const request = {
+      user: req.user as User,
+      bloodSugarRecordId: req.params.id,
     }
+    const record = await this.getSingleBloodSugarRecordUseCase.execute(request)
+    return res.status(200).json(record)
   }
 
   public getSingleFoodRecord = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = {
-        user: req.user as User,
-        foodRecordId: req.params.id,
-      }
-      const record = await this.getSingleFoodRecordUseCase.execute(request)
-      return res.status(200).json(record)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
+    const request = {
+      user: req.user as User,
+      foodRecordId: req.params.id,
     }
+    const record = await this.getSingleFoodRecordUseCase.execute(request)
+    return res.status(200).json(record)
   }
 
   public getSingleGlycatedHemoglobinRecord = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = {
-        user: req.user as User,
-        glycatedHemoglobinRecordId: req.params.id,
-      }
-      const record =
-        await this.getSingleGlycatedHemoglobinRecordUseCase.execute(request)
-      return res.status(200).json(record)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
+    const request = {
+      user: req.user as User,
+      glycatedHemoglobinRecordId: req.params.id,
     }
+    const record = await this.getSingleGlycatedHemoglobinRecordUseCase.execute(
+      request
+    )
+    return res.status(200).json(record)
   }
 
   public getSingleSleepRecord = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = {
-        user: req.user as User,
-        sleepRecordId: req.params.id,
-      }
-      const record = await this.getSingleSleepRecordUseCase.execute(request)
-      return res.status(200).json(record)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
+    const request = {
+      user: req.user as User,
+      sleepRecordId: req.params.id,
     }
+    const record = await this.getSingleSleepRecordUseCase.execute(request)
+    return res.status(200).json(record)
   }
 
   public getSingleWeightRecord = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = {
-        user: req.user as User,
-        weightRecordId: req.params.id,
-      }
-      const record = await this.getSingleWeightRecordUseCase.execute(request)
-      return res.status(200).json(record)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
+    const request = {
+      user: req.user as User,
+      weightRecordId: req.params.id,
     }
+    const record = await this.getSingleWeightRecordUseCase.execute(request)
+    return res.status(200).json(record)
   }
 
   public getExerciseRecords = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = {
-        user: req.user as User,
-        targetPatientId: req.query.targetPatientId as string,
-        limit: Number(req.query.limit),
-        page: Number(req.query.page),
-      }
-      const result = await this.getExerciseRecordsUseCase.execute(request)
-
-      return res.status(200).json(result)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
+    const request = {
+      user: req.user as User,
+      targetPatientId: req.query.targetPatientId as string,
+      limit: Number(req.query.limit),
+      page: Number(req.query.page),
     }
+    const result = await this.getExerciseRecordsUseCase.execute(request)
+    return res.status(200).json(result)
   }
 
   public getBloodPressureRecords = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = {
-        user: req.user as User,
-        targetPatientId: req.query.targetPatientId as string,
-        limit: Number(req.query.limit),
-        page: Number(req.query.page),
-      }
-      const result = await this.getBloodPressureRecordsUseCase.execute(request)
-
-      return res.status(200).json(result)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
+    const request = {
+      user: req.user as User,
+      targetPatientId: req.query.targetPatientId as string,
+      limit: Number(req.query.limit),
+      page: Number(req.query.page),
     }
+    const result = await this.getBloodPressureRecordsUseCase.execute(request)
+    return res.status(200).json(result)
   }
 
   public getBloodSugarRecords = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = {
-        user: req.user as User,
-        targetPatientId: req.query.targetPatientId as string,
-        limit: Number(req.query.limit),
-        page: Number(req.query.page),
-      }
-      const result = await this.getBloodSugarRecordsUseCase.execute(request)
-
-      return res.status(200).json(result)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
+    const request = {
+      user: req.user as User,
+      targetPatientId: req.query.targetPatientId as string,
+      limit: Number(req.query.limit),
+      page: Number(req.query.page),
     }
+    const result = await this.getBloodSugarRecordsUseCase.execute(request)
+    return res.status(200).json(result)
   }
 
   public getFoodRecords = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = {
-        user: req.user as User,
-        targetPatientId: req.query.targetPatientId as string,
-        limit: Number(req.query.limit),
-        page: Number(req.query.page),
-      }
-      const result = await this.getFoodRecordsUseCase.execute(request)
-
-      return res.status(200).json(result)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
+    const request = {
+      user: req.user as User,
+      targetPatientId: req.query.targetPatientId as string,
+      limit: Number(req.query.limit),
+      page: Number(req.query.page),
     }
+    const result = await this.getFoodRecordsUseCase.execute(request)
+    return res.status(200).json(result)
   }
 
   public getGlycatedHemoglobinRecords = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = {
-        user: req.user as User,
-        targetPatientId: req.query.targetPatientId as string,
-        limit: Number(req.query.limit),
-        page: Number(req.query.page),
-      }
-      const result = await this.getGlycatedHemoglobinRecordsUseCase.execute(
-        request
-      )
-
-      return res.status(200).json(result)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
+    const request = {
+      user: req.user as User,
+      targetPatientId: req.query.targetPatientId as string,
+      limit: Number(req.query.limit),
+      page: Number(req.query.page),
     }
+    const result = await this.getGlycatedHemoglobinRecordsUseCase.execute(
+      request
+    )
+    return res.status(200).json(result)
   }
 
   public getSleepRecords = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = {
-        user: req.user as User,
-        targetPatientId: req.query.targetPatientId as string,
-        limit: Number(req.query.limit),
-        page: Number(req.query.page),
-      }
-      const result = await this.getSleepRecordsUseCase.execute(request)
-
-      return res.status(200).json(result)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
+    const request = {
+      user: req.user as User,
+      targetPatientId: req.query.targetPatientId as string,
+      limit: Number(req.query.limit),
+      page: Number(req.query.page),
     }
+    const result = await this.getSleepRecordsUseCase.execute(request)
+    return res.status(200).json(result)
   }
 
   public getWeightRecords = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = {
-        user: req.user as User,
-        targetPatientId: req.query.targetPatientId as string,
-        limit: Number(req.query.limit),
-        page: Number(req.query.page),
-      }
-      const result = await this.getWeightRecordsUseCase.execute(request)
-
-      return res.status(200).json(result)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
+    const request = {
+      user: req.user as User,
+      targetPatientId: req.query.targetPatientId as string,
+      limit: Number(req.query.limit),
+      page: Number(req.query.page),
     }
+    const result = await this.getWeightRecordsUseCase.execute(request)
+    return res.status(200).json(result)
   }
 }
