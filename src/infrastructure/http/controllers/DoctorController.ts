@@ -21,47 +21,30 @@ export class DoctorController implements IDoctorController {
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = { ...req.body, user: req.user }
-      const user = await this.createDoctorProfileUseCase.execute(request)
+    const request = { ...req.body, user: req.user }
+    const user = await this.createDoctorProfileUseCase.execute(request)
 
-      return res.status(200).json(user)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
-    }
+    return res.status(200).json(user)
   }
 
   public editDoctorProfile = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = { ...req.body, user: req.user }
-      const user = await this.editDoctorProfileUseCase.execute(request)
-
-      return res.status(200).json(user)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: 'edit doctor error' })
-    }
+    const request = { ...req.body, user: req.user }
+    const user = await this.editDoctorProfileUseCase.execute(request)
+    return res.status(200).json(user)
   }
 
   public getDoctorStatistic = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = {
-        user: req.user as User,
-        doctorId: req.params.id,
-      }
-      const result = await this.getDoctorStatisticUseCase.execute(request)
-
-      return res.status(200).json(result)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
+    const request = {
+      user: req.user as User,
+      doctorId: req.params.id,
     }
+    const result = await this.getDoctorStatisticUseCase.execute(request)
+    return res.status(200).json(result)
   }
 }
