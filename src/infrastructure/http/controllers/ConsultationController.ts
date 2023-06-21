@@ -39,124 +39,87 @@ export class ConsultationController implements IConsultationController {
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = {
-        status: req.body.status,
-        user: req.user as User,
-        doctorTimeSlotId: req.body.doctorTimeSlotId,
-      }
-      const result = await this.createConsultAppointmentUseCase.execute(request)
-
-      return res.status(200).json(result)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
+    const request = {
+      status: req.body.status,
+      user: req.user as User,
+      doctorTimeSlotId: req.body.doctorTimeSlotId,
     }
+    const result = await this.createConsultAppointmentUseCase.execute(request)
+
+    return res.status(200).json(result)
   }
 
   public cancelConsultAppointment = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = {
-        user: req.user as User,
-        consultAppointmentId: req.params.id,
-      }
-      const result = await this.cancelConsultAppointmentUseCase.execute(request)
-
-      return res.status(200).json(result)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
+    const request = {
+      user: req.user as User,
+      consultAppointmentId: req.params.id,
     }
+    const result = await this.cancelConsultAppointmentUseCase.execute(request)
+
+    return res.status(200).json(result)
   }
 
   public createDoctorTimeSlot = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = { ...req.body, user: req.user }
-      const result = await this.createDoctorTimeSlotUseCase.execute(request)
+    const request = { ...req.body, user: req.user }
+    const result = await this.createDoctorTimeSlotUseCase.execute(request)
 
-      return res.status(200).json(result)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
-    }
+    return res.status(200).json(result)
   }
 
   public editDoctorTimeSlot = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = {
-        startAt: req.body.startAt,
-        endAt: req.body.endAt,
-        availability: req.body.availability,
-        user: req.user as User,
-        doctorTimeSlotId: req.params.id,
-      }
-      const result = await this.editDoctorTimeSlotUseCase.execute(request)
-
-      return res.status(200).json(result)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
+    const request = {
+      startAt: req.body.startAt,
+      endAt: req.body.endAt,
+      availability: req.body.availability,
+      user: req.user as User,
+      doctorTimeSlotId: req.params.id,
     }
+    const result = await this.editDoctorTimeSlotUseCase.execute(request)
+
+    return res.status(200).json(result)
   }
 
   public createMultipleTimeSlots = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = { ...req.body, user: req.user }
-      const result = await this.createMultipleTimeSlotsUseCase.execute(request)
-      return res.status(200).json(result)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
-    }
+    const request = { ...req.body, user: req.user }
+    const result = await this.createMultipleTimeSlotsUseCase.execute(request)
+    return res.status(200).json(result)
   }
 
   public getPatientConsultAppointments = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = {
-        user: req.user as User,
-      }
-      const result = await this.getPatientConsultAppointmentsUseCase.execute(
-        request
-      )
-
-      return res.status(200).json(result)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
+    const request = {
+      user: req.user as User,
     }
+    const result = await this.getPatientConsultAppointmentsUseCase.execute(
+      request
+    )
+    return res.status(200).json(result)
   }
 
   public getDoctorConsultAppointments = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = {
-        user: req.user as User,
-      }
-      const result = await this.getDoctorConsultAppointmentsUseCase.execute(
-        request
-      )
-
-      return res.status(200).json(result)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
+    const request = {
+      user: req.user as User,
     }
+    const result = await this.getDoctorConsultAppointmentsUseCase.execute(
+      request
+    )
+    return res.status(200).json(result)
   }
 }
