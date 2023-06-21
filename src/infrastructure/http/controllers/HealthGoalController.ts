@@ -29,107 +29,71 @@ export class HealthGoalController implements IHealthGoalController {
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = {
-        user: req.user as User,
-      }
-      const result = await this.createHealthGoalUseCase.execute(request)
-
-      return res.status(200).json(result)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
+    const request = {
+      user: req.user as User,
     }
+    const result = await this.createHealthGoalUseCase.execute(request)
+    return res.status(200).json(result)
   }
 
   public canceleHealthGoal = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = {
-        user: req.user as User,
-      }
-      const result = await this.cancelHealthGoalUseCase.execute(request)
-
-      return res.status(200).json(result)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
+    const request = {
+      user: req.user as User,
     }
+    const result = await this.cancelHealthGoalUseCase.execute(request)
+    return res.status(200).json(result)
   }
 
   public activateHealthGoal = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = {
-        user: req.user as User,
-        healthGoalId: req.params.id,
-      }
-      const result = await this.activateHealthGoalUseCase.execute(request)
-
-      return res.status(200).json(result)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
+    const request = {
+      user: req.user as User,
+      healthGoalId: req.params.id,
     }
+    const result = await this.activateHealthGoalUseCase.execute(request)
+    return res.status(200).json(result)
   }
 
   public rejectHealthGoal = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = {
-        user: req.user as User,
-        healthGoalId: req.params.id,
-      }
-      const result = await this.rejectHealthGoalUseCase.execute(request)
-
-      return res.status(200).json(result)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
+    const request = {
+      user: req.user as User,
+      healthGoalId: req.params.id,
     }
+    const result = await this.rejectHealthGoalUseCase.execute(request)
+    return res.status(200).json(result)
   }
 
   public getHealthGoal = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = {
-        user: req.user as User,
-        healthGoalId: req.params.id,
-      }
-      const result = await this.getHealthGoalUseCase.execute(request)
-
-      return res.status(200).json(result)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
+    const request = {
+      user: req.user as User,
+      healthGoalId: req.params.id,
     }
+    const result = await this.getHealthGoalUseCase.execute(request)
+    return res.status(200).json(result)
   }
 
   public getHealthGoalList = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = {
-        user: req.user as User,
-        targetPatientId: req.query.targetPatientId as string,
-        limit: Number(req.query.limit),
-        page: Number(req.query.page),
-      }
-      const result = await this.getHealthGoalListUseCase.execute(request)
-
-      return res.status(200).json(result)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
+    const request = {
+      user: req.user as User,
+      targetPatientId: req.query.targetPatientId as string,
+      limit: Number(req.query.limit),
+      page: Number(req.query.page),
     }
+    const result = await this.getHealthGoalListUseCase.execute(request)
+    return res.status(200).json(result)
   }
 }
