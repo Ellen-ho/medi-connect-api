@@ -1,5 +1,6 @@
 import { INotificationRepository } from '../../domain/notification/interfaces/repositories/INotificationRepository'
 import { User } from '../../domain/user/User'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 
 interface DeleteNotificationRequest {
   user: User
@@ -28,7 +29,7 @@ export class DeleteNotificationUseCase {
       )
 
     if (existingNotification == null) {
-      throw new Error('The notification does not exits.')
+      throw new NotFoundError('The notification does not exits.')
     }
 
     await this.notificationRepository.deleteById(existingNotification.id)

@@ -1,5 +1,6 @@
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 import { IPatientQuestionAnswerRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionAnswerRepository'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 
 interface GetDoctorStatisticRequest {
   doctorId: string
@@ -26,7 +27,7 @@ export class GetDoctorStatisticUseCase {
     const existingDoctor = await this.doctorRepository.findByDoctorId(doctorId)
 
     if (existingDoctor == null) {
-      throw new Error('Doctor does not exist.')
+      throw new NotFoundError('Doctor does not exist.')
     }
 
     const answerCounts =

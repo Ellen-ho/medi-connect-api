@@ -2,6 +2,9 @@ import { IDoctorTimeSlotRepository } from '../../domain/consultation/interfaces/
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 import { User } from '../../domain/user/User'
 import dayjs from 'dayjs'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
+import { ValidationError } from '../../infrastructure/error/ValidationError'
 
 interface EditDoctorTimeSlotRequest {
   user: User
@@ -34,7 +37,7 @@ export class EditDoctorTimeSlotUseCase {
     const existingDoctor = await this.doctorRepository.findByUserId(user.id)
 
     if (existingDoctor == null) {
-      throw new Error('Doctor does not exist.')
+      throw new AuthorizationError('Doctor does not exist.')
     }
 
     const existingDoctorTimeSlot =
@@ -44,7 +47,7 @@ export class EditDoctorTimeSlotUseCase {
       )
 
     if (existingDoctorTimeSlot == null) {
-      throw new Error('Doctor time Slot does not exist.')
+      throw new NotFoundError('Doctor time Slot does not exist.')
     }
 
     const depulicatedDoctorTimeSlot =
@@ -54,7 +57,7 @@ export class EditDoctorTimeSlotUseCase {
       )
 
     if (depulicatedDoctorTimeSlot != null) {
-      throw new Error(
+      throw new ValidationError(
         "This doctor's time slot has already exists and the time is duplicated."
       )
     }
@@ -62,15 +65,19 @@ export class EditDoctorTimeSlotUseCase {
     // 更改後的時間表不能早於現在時間(包括年月日時分秒)
     // 如:同一天，晚上不能創白天時間表
     if (dayjs(startAt).isBefore(currentDate)) {
-      throw new Error('Time slots can not be before the current time.')
+      throw new ValidationError(
+        'Time slots can not be before the current time.'
+      )
     }
 
     if (dayjs(startAt).isAfter(endAt)) {
-      throw new Error('The start time should before end time.')
+      throw new ValidationError('The start time should before end time.')
     }
 
     if (dayjs(endAt).isBefore(minimumOfEndAt)) {
-      throw new Error('The end time should be 30 minutes after the start time.')
+      throw new ValidationError(
+        'The end time should be 30 minutes after the start time.'
+      )
     }
 
     const nextMonthStartDate = currentDate.add(1, 'month').startOf('month')
@@ -96,7 +103,7 @@ export class EditDoctorTimeSlotUseCase {
           dayjs(startAt).isSame(nextMonthEndDate, 'day'))
       )
     ) {
-      throw new Error(
+      throw new ValidationError(
         'Doctor can only create time slots of next month before 28th of this month.'
       )
     }
@@ -112,14 +119,12 @@ export class EditDoctorTimeSlotUseCase {
           dayjs(startAt).isSame(nextNextMonthEndDate, 'day'))
       )
     ) {
-      throw new Error(
+      throw new ValidationError(
         'During 28th of this month to 27th of next month, doctor can only create time slots of next next month.'
       )
     }
 
     existingDoctorTimeSlot.updateData({
-      // startAt: new Date(startAt),
-      // endAt: new Date(endAt),
       startAt,
       endAt,
     })
@@ -128,7 +133,6 @@ export class EditDoctorTimeSlotUseCase {
 
     return {
       id: existingDoctorTimeSlot.id,
-      // startAt: new Date(startAt),
       startAt: existingDoctorTimeSlot.startAt,
       endAt: existingDoctorTimeSlot.endAt,
       updatedAt: existingDoctorTimeSlot.updatedAt,

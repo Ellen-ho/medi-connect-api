@@ -7,6 +7,8 @@ import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
 import { INotificationHelper } from '../notification/NotificationHelper'
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { ValidationError } from '../../infrastructure/error/ValidationError'
 
 interface CreatePatientQuestionAnswerRequest {
   user: User
@@ -41,7 +43,7 @@ export class CreatePatientQuestionAnswerUseCase {
       await this.patientQuestionRepository.findById(patientQuestionId)
 
     if (existingPatientQuestion == null) {
-      throw new Error('Patient question does not exist.')
+      throw new AuthorizationError('Patient question does not exist.')
     }
 
     const patientWhoAsk = await this.patientRepository.findById(
@@ -49,13 +51,13 @@ export class CreatePatientQuestionAnswerUseCase {
     )
 
     if (patientWhoAsk == null) {
-      throw new Error('Patient who asks does not exist.')
+      throw new AuthorizationError('Patient who asks does not exist.')
     }
 
     const existingDoctor = await this.doctorRepository.findByUserId(user.id)
 
     if (existingDoctor == null) {
-      throw new Error('Doctor does not exist.')
+      throw new AuthorizationError('Doctor does not exist.')
     }
 
     const existingPatientQuestionAnswer =
@@ -65,7 +67,7 @@ export class CreatePatientQuestionAnswerUseCase {
       )
 
     if (existingPatientQuestionAnswer !== null) {
-      throw new Error('You have already answered this question.')
+      throw new ValidationError('You have already answered this question.')
     }
 
     const patientQuestionAnswer = new PatientQuestionAnswer({

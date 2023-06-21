@@ -1,5 +1,6 @@
 import { INotificationRepository } from '../../domain/notification/interfaces/repositories/INotificationRepository'
 import { User } from '../../domain/user/User'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 
 interface DeleteAllNotificationsRequest {
   user: User
@@ -26,7 +27,7 @@ export class DeleteAllNotificationsUseCase {
       )
 
     if (existingNotifications == null) {
-      throw new Error('No notification exits.')
+      throw new NotFoundError('No notification exits.')
     }
 
     await this.notificationRepository.deleteAllByUserId(user.id)

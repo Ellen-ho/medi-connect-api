@@ -4,6 +4,8 @@ import { IConsultAppointmentRepository } from '../../domain/consultation/interfa
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { User, UserRoleType } from '../../domain/user/User'
 import { MedicalSpecialtyType } from '../../domain/question/PatientQuestion'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 export interface ConsultAppointmentDatas {
   patientId: string
   status: ConsultAppointmentStatusType
@@ -52,13 +54,13 @@ export class GetPatientConsultAppointmentsUseCase {
     const { user } = request
 
     if (user.role === UserRoleType.DOCTOR) {
-      throw new Error('Only patient can get the data')
+      throw new AuthorizationError('Only patient can get the data')
     }
 
     const existingPatient = await this.patientRepository.findByUserId(user.id)
 
     if (existingPatient == null) {
-      throw new Error('Patient does not exist.')
+      throw new AuthorizationError('Patient does not exist.')
     }
 
     const currentDate = dayjs()
@@ -82,7 +84,7 @@ export class GetPatientConsultAppointmentsUseCase {
       )
 
     if (upComingAppointments == null) {
-      throw new Error('There is no upComing appointment.')
+      throw new NotFoundError('There is no upComing appointment.')
     }
 
     const upcomingConsultAppointments: ConsultAppointmentDatas[] = []
@@ -122,11 +124,11 @@ export class GetPatientConsultAppointmentsUseCase {
       )
 
     if (completedAppointments == null) {
-      throw new Error('There is no completed appointment.')
+      throw new NotFoundError('There is no completed appointment.')
     }
 
     if (canceledAppointments == null) {
-      throw new Error('There is no canceled appointment.')
+      throw new NotFoundError('There is no canceled appointment.')
     }
 
     return {

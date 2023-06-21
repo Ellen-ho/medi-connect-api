@@ -3,6 +3,8 @@ import { GlycatedHemoglobinRecord } from '../../domain/record/GlycatedHemoglobin
 import { IGlycatedHemoglobinRecordRepository } from '../../domain/record/interfaces/repositories/IGlycatedHemoglobinRecordRepository'
 import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { ValidationError } from '../../infrastructure/error/ValidationError'
 
 interface CreateGlycatedHemoglobinRecordRequest {
   user: User
@@ -34,7 +36,7 @@ export class CreateGlycatedHemoglobinRecordUseCase {
     const existingPatient = await this.patientRepository.findByUserId(user.id)
 
     if (existingPatient == null) {
-      throw new Error('Patient does not exist.')
+      throw new AuthorizationError('Patient does not exist.')
     }
 
     const existingRecord =
@@ -43,8 +45,8 @@ export class CreateGlycatedHemoglobinRecordUseCase {
         glycatedHemoglobinDate
       )
 
-    if (existingRecord != null) {
-      throw new Error(
+    if (existingRecord !== null) {
+      throw new ValidationError(
         'Only one glycated hemoglobin record can be created per day.'
       )
     }

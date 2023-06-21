@@ -3,6 +3,9 @@ import { BloodSugarType } from '../../domain/record/BloodSugarRecord'
 import { IBloodSugarRecordRepository } from '../../domain/record/interfaces/repositories/IBloodSugarRecordRepository'
 
 import { User } from '../../domain/user/User'
+import { AuthenticationError } from '../../infrastructure/error/AuthenticationError'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
+import { ValidationError } from '../../infrastructure/error/ValidationError'
 
 interface EditBloodSugarRecordRequest {
   user: User
@@ -43,7 +46,7 @@ export class EditBloodSugarRecordUseCase {
     const existingPatient = await this.patientRepository.findByUserId(user.id)
 
     if (existingPatient == null) {
-      throw new Error('Patient does not exist.')
+      throw new AuthenticationError('Patient does not exist.')
     }
 
     // get record by recordId and patientId
@@ -54,7 +57,7 @@ export class EditBloodSugarRecordUseCase {
       )
 
     if (existingBloodSugarRecord == null) {
-      throw new Error('This blood sugar record does not exist.')
+      throw new NotFoundError('This blood sugar record does not exist.')
     }
 
     const depulicatedBloodSugarRecord =
@@ -63,8 +66,8 @@ export class EditBloodSugarRecordUseCase {
         bloodSugarDate
       )
 
-    if (depulicatedBloodSugarRecord != null) {
-      throw new Error(
+    if (depulicatedBloodSugarRecord !== null) {
+      throw new ValidationError(
         "This patient's fasting blood sugar record date is duplicated."
       )
     }

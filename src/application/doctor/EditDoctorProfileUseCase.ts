@@ -3,6 +3,7 @@ import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/I
 import { GenderType } from '../../domain/patient/Patient'
 import { MedicalSpecialtyType } from '../../domain/question/PatientQuestion'
 import { User } from '../../domain/user/User'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 
 interface EditDoctorProfileRequest {
   avatar: string | null
@@ -65,7 +66,7 @@ export class EditDoctorProfileUseCase {
     )
 
     if (existingDoctorProfile == null) {
-      throw new Error('Doctor does not exist.')
+      throw new NotFoundError('Doctor does not exist.')
     }
 
     existingDoctorProfile.updateData({

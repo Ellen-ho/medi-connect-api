@@ -1,6 +1,9 @@
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { IBloodPressureRecordRepository } from '../../domain/record/interfaces/repositories/IBloodPressureRecordRepository'
 import { User } from '../../domain/user/User'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
+import { ValidationError } from '../../infrastructure/error/ValidationError'
 
 interface EditBloodPressureRecordRequest {
   user: User
@@ -42,14 +45,12 @@ export class EditBloodPressureRecordUseCase {
       bloodPressureNote,
     } = request
 
-    // get patient by userId
     const existingPatient = await this.patientRepository.findByUserId(user.id)
 
     if (existingPatient == null) {
-      throw new Error('Patient does not exist.')
+      throw new AuthorizationError('Patient does not exist.')
     }
 
-    // get record by recordId and patientId
     const existingBloodPressureRecord =
       await this.bloodPressureRecordRepository.findByIdAndPatientId(
         bloodPressureRecordId,
@@ -57,7 +58,7 @@ export class EditBloodPressureRecordUseCase {
       )
 
     if (existingBloodPressureRecord == null) {
-      throw new Error('This blood pressure record does not exist.')
+      throw new NotFoundError('This blood pressure record does not exist.')
     }
 
     const depulicatedBloodPressureRecord =
@@ -66,8 +67,8 @@ export class EditBloodPressureRecordUseCase {
         bloodPressureDate
       )
 
-    if (depulicatedBloodPressureRecord != null) {
-      throw new Error(
+    if (depulicatedBloodPressureRecord !== null) {
+      throw new ValidationError(
         "This patient's blood pressure record date is duplicated."
       )
     }

@@ -15,6 +15,8 @@ import { IWeightRecordRepository } from '../../domain/record/interfaces/reposito
 // import { IBloodPressureRecordRepository } from '../../domain/record/interfaces/repositories/IBloodPressureRecordRepository'
 import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { ValidationError } from '../../infrastructure/error/ValidationError'
 import { INotificationHelper } from '../notification/NotificationHelper'
 
 interface CreateHealthGoalRequest {
@@ -63,7 +65,7 @@ export class CreateHealthGoalUseCase {
     const existingPatient = await this.patientRepository.findByUserId(user.id)
 
     if (existingPatient == null) {
-      throw new Error('Patient does not exist.')
+      throw new AuthorizationError('Patient does not exist.')
     }
 
     const exsitingHealthGoals =
@@ -73,7 +75,7 @@ export class CreateHealthGoalUseCase {
       )
 
     if (exsitingHealthGoals.length !== 0) {
-      throw new Error('The health goal already be created.')
+      throw new ValidationError('The health goal already be created.')
     }
 
     const latestRejectedHealthGoal =
@@ -256,8 +258,6 @@ export class CreateHealthGoalUseCase {
 
     const avgSystolicBloodPressure = Math.round(sumSystolicBloodPressure / 14)
     const avgDiastolicBloodPressure = Math.round(sumDiastolicBloodPressure / 14)
-
-    console.table({ avgSystolicBloodPressure })
 
     if (
       avgSystolicBloodPressure >= 140 ||

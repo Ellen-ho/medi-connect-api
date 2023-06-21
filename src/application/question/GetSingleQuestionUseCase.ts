@@ -4,6 +4,8 @@ import { IPatientQuestionAnswerRepository } from '../../domain/question/interfac
 import { IPatientQuestionRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionRepository'
 import { User } from '../../domain/user/User'
 import dayjs from 'dayjs'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
 
 interface GetSingleQuestionRequest {
   user: User
@@ -47,7 +49,7 @@ export class GetSingleQuestionUseCase {
       await this.patientQuestionRepository.findById(patientQuestionId)
 
     if (existingPatientQuestion == null) {
-      throw new Error('Question does not exist.')
+      throw new NotFoundError('Question does not exist.')
     }
 
     const asker = await this.patientRepository.findById(
@@ -55,7 +57,7 @@ export class GetSingleQuestionUseCase {
     )
 
     if (asker == null) {
-      throw new Error('Asker does not exist.')
+      throw new AuthorizationError('Asker does not exist.')
     }
 
     const answerDetails =

@@ -14,6 +14,8 @@ import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/I
 import { IScheduler } from '../../infrastructure/network/Scheduler'
 import { IMeetingLinkRepository } from '../../domain/meeting/interface/IMeetingLinkRepository'
 import { MeetingLinkStatus } from '../../domain/meeting/MeetingLink'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { ValidationError } from '../../infrastructure/error/ValidationError'
 
 interface CreateConsultAppointmentRequest {
   user: User
@@ -44,7 +46,7 @@ export class CreateConsultAppointmentUseCase {
     const existingPatient = await this.patientRepository.findByUserId(user.id)
 
     if (existingPatient == null) {
-      throw new Error('Patient does not exist.')
+      throw new AuthorizationError('Patient does not exist.')
     }
 
     const existingDoctorTimeSlot = await this.doctorTimeSlotRepository.findById(
@@ -52,7 +54,7 @@ export class CreateConsultAppointmentUseCase {
     )
 
     if (existingDoctorTimeSlot == null) {
-      throw new Error('Doctor time slot does not exist.')
+      throw new AuthorizationError('Doctor time slot does not exist.')
     }
 
     const appointmentDoctor = await this.doctorRepository.findById(
@@ -60,7 +62,7 @@ export class CreateConsultAppointmentUseCase {
     )
 
     if (appointmentDoctor == null) {
-      throw new Error('Doctor does not exist.')
+      throw new AuthorizationError('Doctor does not exist.')
     }
 
     const currentDate = dayjs()
@@ -72,14 +74,14 @@ export class CreateConsultAppointmentUseCase {
       )
 
     if (existingAppointment !== null) {
-      throw new Error('Patient already has an appointment for today.')
+      throw new ValidationError('Patient already has an appointment for today.')
     }
 
     const wantedAppointmentTime = existingDoctorTimeSlot.startAt
     const diffInHours = dayjs(wantedAppointmentTime).diff(currentDate, 'hour')
 
     if (diffInHours <= 24) {
-      throw new Error('Appointment should be created before one day.')
+      throw new ValidationError('Appointment should be created before one day.')
     }
 
     const currentDateDay = currentDate.date()
@@ -100,7 +102,7 @@ export class CreateConsultAppointmentUseCase {
     }
 
     if (!isWithinCurrentMonthRange) {
-      throw new Error(
+      throw new ValidationError(
         'Appointment is not within the current or next month range.'
       )
     }
@@ -118,7 +120,7 @@ export class CreateConsultAppointmentUseCase {
         dayjs(wantedAppointmentTime).isBefore(nextMonthEndDate, 'day')
 
       if (!(isWithinCurrentMonthRange || isWithinNextMonthRange)) {
-        throw new Error(
+        throw new ValidationError(
           'Appointment is not within the current or next month range.'
         )
       }
@@ -132,7 +134,7 @@ export class CreateConsultAppointmentUseCase {
       )
 
     if (randomMeetingLink == null) {
-      throw new Error('No available meeting link.')
+      throw new AuthorizationError('No available meeting link.')
     }
 
     randomMeetingLink.setStatusToInUsed()

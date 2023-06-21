@@ -3,6 +3,8 @@ import { IHealthGoalRepository } from '../../domain/goal/interfaces/repositories
 import { NotificationType } from '../../domain/notification/Notification'
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { User } from '../../domain/user/User'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 import { INotificationHelper } from '../notification/NotificationHelper'
 
 interface CancelHealthGoalRequest {
@@ -28,7 +30,7 @@ export class CancelHealthGoalUseCase {
     const existingPatient = await this.patientRepository.findByUserId(user.id)
 
     if (existingPatient == null) {
-      throw new Error('Patient does not exist.')
+      throw new AuthorizationError('Patient does not exist.')
     }
 
     const currentDate = new Date()
@@ -42,7 +44,9 @@ export class CancelHealthGoalUseCase {
       )
 
     if (overThreeDaysPendingHealthGoals.length === 0) {
-      throw new Error('There are no over time pending health goals exist.')
+      throw new NotFoundError(
+        'There are no over time pending health goals exist.'
+      )
     }
 
     for (const healthGoal of overThreeDaysPendingHealthGoals) {

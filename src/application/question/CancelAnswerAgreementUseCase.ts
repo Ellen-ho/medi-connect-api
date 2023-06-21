@@ -1,6 +1,8 @@
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 import { IAnswerAgreementRepository } from '../../domain/question/interfaces/repositories/IAnswerAgreementRepository'
 import { User } from '../../domain/user/User'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 
 interface CancelAnswerAgreementRequest {
   user: User
@@ -26,7 +28,7 @@ export class CancelAnswerAgreementUseCase {
     const existingDoctor = await this.doctorRepository.findByUserId(user.id)
 
     if (existingDoctor == null) {
-      throw new Error('Doctor does not exist.')
+      throw new AuthorizationError('Doctor does not exist.')
     }
 
     const existingAnswerAgreement =
@@ -35,7 +37,7 @@ export class CancelAnswerAgreementUseCase {
         existingDoctor.id
       )
     if (existingAnswerAgreement == null) {
-      throw new Error('Answer agreement does not exist.')
+      throw new NotFoundError('Answer agreement does not exist.')
     }
 
     await this.answerAgreementRepository.deleteById(existingAnswerAgreement.id)

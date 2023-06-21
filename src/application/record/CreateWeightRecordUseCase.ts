@@ -4,6 +4,8 @@ import { IWeightRecordRepository } from '../../domain/record/interfaces/reposito
 import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
 import { calculateBodyMassIndex } from '../../domain/utils/healthFormula'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { ValidationError } from '../../infrastructure/error/ValidationError'
 
 interface CreateWeightRecordRequest {
   user: User
@@ -34,11 +36,10 @@ export class CreateWeightRecordUseCase {
   ): Promise<CreateWeightRecordResponse> {
     const { user, weightDate, weightValueKg, weightNote } = request
 
-    // get patient by userId
     const existingPatient = await this.patientRepository.findByUserId(user.id)
 
     if (existingPatient == null) {
-      throw new Error('Patient does not exist.')
+      throw new AuthorizationError('Patient does not exist.')
     }
 
     const bodyMassIndex = calculateBodyMassIndex({
@@ -52,8 +53,10 @@ export class CreateWeightRecordUseCase {
         weightDate
       )
 
-    if (existingRecord != null) {
-      throw new Error('Only one weight record can be created per day.')
+    if (existingRecord !== null) {
+      throw new ValidationError(
+        'Only one weight record can be created per day.'
+      )
     }
 
     const weightRecord = new WeightRecord({

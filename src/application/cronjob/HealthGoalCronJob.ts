@@ -1,5 +1,6 @@
 import { UserRoleType } from '../../domain/user/User'
 import { IUserRepository } from '../../domain/user/interfaces/repositories/IUserRepository'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
 import { IScheduler } from '../../infrastructure/network/Scheduler'
 import { CancelHealthGoalUseCase } from '../goal/CancelHealthGoalUseCase'
 import { CreateHealthGoalUseCase } from '../goal/CreateHealthGoalUseCase'
@@ -43,7 +44,7 @@ export class HealthGoalCronJob implements IHealthGoalCronJob {
       UserRoleType.PATIENT
     )
     if (existingPatients.length === 0) {
-      throw new Error('No patient exists')
+      throw new AuthorizationError('No patient exists')
     }
 
     for (const patient of existingPatients) {
@@ -74,7 +75,7 @@ export class HealthGoalCronJob implements IHealthGoalCronJob {
       UserRoleType.PATIENT
     )
     if (existingPatients.length === 0) {
-      throw new Error('No patient exists')
+      throw new AuthorizationError('No patient exists')
     }
 
     for (const patient of existingPatients) {

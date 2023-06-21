@@ -2,6 +2,7 @@ import { ErrorRequestHandler } from 'express'
 import { ValidationError } from '../../error/ValidationError'
 import { AuthenticationError } from '../../error/AuthenticationError'
 import { NotFoundError } from '../../error/NotFoundError'
+import { AuthorizationError } from '../../error/AuthorizationError'
 
 export const errorHandler: ErrorRequestHandler = (
   err: unknown,
@@ -19,6 +20,14 @@ export const errorHandler: ErrorRequestHandler = (
 
   if (err instanceof AuthenticationError) {
     res.status(401).json({
+      status: 'error',
+      message: err.message,
+    })
+    return
+  }
+
+  if (err instanceof AuthorizationError) {
+    res.status(403).json({
       status: 'error',
       message: err.message,
     })

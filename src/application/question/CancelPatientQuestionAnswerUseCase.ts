@@ -4,6 +4,8 @@ import { IAnswerAppreciationRepository } from '../../domain/question/interfaces/
 import { IPatientQuestionAnswerRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionAnswerRepository'
 import { IRepositoryTx } from '../../domain/shared/IRepositoryTx'
 import { User } from '../../domain/user/User'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 
 interface CancelPatientQuestionAnswerRequest {
   user: User
@@ -31,7 +33,7 @@ export class CancelPatientQuestionAnswerUseCase {
     const existingDoctor = await this.doctorRepository.findByUserId(user.id)
 
     if (existingDoctor == null) {
-      throw new Error('Doctor does not exist.')
+      throw new AuthorizationError('Doctor does not exist.')
     }
 
     const existingPatientQuestionAnswer =
@@ -40,7 +42,7 @@ export class CancelPatientQuestionAnswerUseCase {
         existingDoctor.id
       )
     if (existingPatientQuestionAnswer == null) {
-      throw new Error('Answer does not exist.')
+      throw new NotFoundError('Answer does not exist.')
     }
     try {
       await this.tx.start()

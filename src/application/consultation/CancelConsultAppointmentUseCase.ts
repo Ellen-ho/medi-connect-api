@@ -9,6 +9,9 @@ import { NotificationType } from '../../domain/notification/Notification'
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 import { IScheduler } from '../../infrastructure/network/Scheduler'
 import { IMeetingLinkRepository } from '../../domain/meeting/interface/IMeetingLinkRepository'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
+import { ValidationError } from '../../infrastructure/error/ValidationError'
 
 interface CancelConsultAppointmentRequest {
   user: User
@@ -39,7 +42,7 @@ export class CancelConsultAppointmentUseCase {
     const existingPatient = await this.patientRepository.findByUserId(user.id)
 
     if (existingPatient == null) {
-      throw new Error('Patient does not exist.')
+      throw new AuthorizationError('Patient does not exist.')
     }
 
     const existingConsultAppointment =
@@ -48,7 +51,7 @@ export class CancelConsultAppointmentUseCase {
         existingPatient.id
       )
     if (existingConsultAppointment == null) {
-      throw new Error('Consult appointment does not exist.')
+      throw new NotFoundError('Consult appointment does not exist.')
     }
 
     const appointmentDoctor = await this.doctorRepository.findById(
@@ -56,7 +59,7 @@ export class CancelConsultAppointmentUseCase {
     )
 
     if (appointmentDoctor == null) {
-      throw new Error('Doctor does not exist.')
+      throw new AuthorizationError('Doctor does not exist.')
     }
 
     const currentDate = new Date()
@@ -68,7 +71,9 @@ export class CancelConsultAppointmentUseCase {
     )
 
     if (diffInHours <= 24) {
-      throw new Error('Appointment should be canceled before one day.')
+      throw new ValidationError(
+        'Appointment should be canceled before one day.'
+      )
     }
 
     try {
@@ -78,7 +83,7 @@ export class CancelConsultAppointmentUseCase {
       existingConsultAppointment.doctorTimeSlot.updateAvailability(true)
 
       if (existingConsultAppointment.meetingLink == null) {
-        throw new Error('The meeting link does not exist')
+        throw new NotFoundError('The meeting link does not exist')
       }
 
       const existingMeetingLink = await this.meetingLinkRepository.findByLink(

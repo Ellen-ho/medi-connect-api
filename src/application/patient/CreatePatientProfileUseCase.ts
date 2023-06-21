@@ -9,6 +9,7 @@ import {
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { IUuidService } from '../../domain/utils/IUuidService'
 import { User } from '../../domain/user/User'
+import { ValidationError } from '../../infrastructure/error/ValidationError'
 
 interface CreatePatientProfileRequest {
   user: User
@@ -56,8 +57,8 @@ export class CreatePatientProfileUseCase {
       user.id
     )
 
-    if (existingPatientProfile != null) {
-      throw new Error('Patient already exists.')
+    if (existingPatientProfile !== null) {
+      throw new ValidationError('Patient already exists.')
     }
 
     const patient = new Patient({

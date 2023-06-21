@@ -16,29 +16,17 @@ export class PatientController implements IPatientController {
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = { ...req.body, user: req.user }
-      const user = await this.createPatientProfileUseCase.execute(request)
-
-      return res.status(200).json(user)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: (error as Error).message })
-    }
+    const request = { ...req.body, user: req.user }
+    const user = await this.createPatientProfileUseCase.execute(request)
+    return res.status(200).json(user)
   }
 
   public editPatientProfile = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    try {
-      const request = { ...req.body, user: req.user }
-      const user = await this.editPatientProfileUseCase.execute(request)
-
-      return res.status(200).json(user)
-    } catch (error) {
-      // TODO: move this to a middleware
-      return res.status(400).json({ message: 'edit patient error' })
-    }
+    const request = { ...req.body, user: req.user }
+    const user = await this.editPatientProfileUseCase.execute(request)
+    return res.status(200).json(user)
   }
 }

@@ -7,6 +7,7 @@ import {
 } from '../../domain/patient/Patient'
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { User } from '../../domain/user/User'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 
 interface EditPatientProfileRequest {
   avatar: string | null
@@ -63,7 +64,7 @@ export class EditPatientProfileUseCase {
     )
 
     if (existingPatientProfile == null) {
-      throw new Error('Patient does not exist.')
+      throw new NotFoundError('Patient does not exist.')
     }
 
     existingPatientProfile.updateData({

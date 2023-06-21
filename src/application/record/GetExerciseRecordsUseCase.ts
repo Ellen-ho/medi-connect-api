@@ -6,6 +6,8 @@ import { IPatientRepository } from '../../domain/patient/interfaces/repositories
 import { ExerciseType } from '../../domain/record/ExerciseRecord'
 import { IExerciseRecordRepository } from '../../domain/record/interfaces/repositories/IExerciseRepository'
 import { User, UserRoleType } from '../../domain/user/User'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 import { getOffset, getPagination } from '../../infrastructure/utils/Pagination'
 
 interface GetExerciseRecordsRequest {
@@ -57,13 +59,13 @@ export class GetExerciseRecordsUseCase {
       )
 
     if (existingExerciseRecords.recordsData.length === 0) {
-      throw new Error('No record exists.')
+      throw new NotFoundError('No record exists.')
     }
     // 若登入者為doctor
     if (user.role === UserRoleType.DOCTOR) {
       const currentDoctor = await this.doctorRepository.findByUserId(user.id)
       if (currentDoctor == null) {
-        throw new Error('The currentDoctor does not exist.')
+        throw new AuthorizationError('The currentDoctor does not exist.')
       }
       const upComingAppointments =
         await this.consultAppointmentRepository.findByPatientIdAndDoctorIdAndStatus(
@@ -72,7 +74,7 @@ export class GetExerciseRecordsUseCase {
           [ConsultAppointmentStatusType.UPCOMING] // 預約狀態為upComing
         )
       if (upComingAppointments.length === 0) {
-        throw new Error(
+        throw new AuthorizationError(
           'The current doctor does not be appointed by this patient.'
         )
       }
@@ -80,7 +82,9 @@ export class GetExerciseRecordsUseCase {
         targetPatientId
       )
       if (appointmentPatient == null) {
-        throw new Error('Patient who made the appointment does not exist.')
+        throw new AuthorizationError(
+          'Patient who made the appointment does not exist.'
+        )
       }
 
       return {
@@ -101,11 +105,13 @@ export class GetExerciseRecordsUseCase {
     // 若登入者身分為患者
     const currentPatient = await this.patientRepository.findByUserId(user.id)
     if (currentPatient == null) {
-      throw new Error('The current patient does not exist.')
+      throw new AuthorizationError('The current patient does not exist.')
     }
     // 判斷此record是否屬於當前登入的患者
     if (currentPatient.id !== targetPatientId) {
-      throw new Error('These records do not belong to the current patient.')
+      throw new AuthorizationError(
+        'These records do not belong to the current patient.'
+      )
     }
 
     return {

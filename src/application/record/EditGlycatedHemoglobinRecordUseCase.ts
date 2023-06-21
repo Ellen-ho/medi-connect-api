@@ -1,6 +1,9 @@
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { IGlycatedHemoglobinRecordRepository } from '../../domain/record/interfaces/repositories/IGlycatedHemoglobinRecordRepository'
 import { User } from '../../domain/user/User'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
+import { ValidationError } from '../../infrastructure/error/ValidationError'
 
 interface EditGlycatedHemoglobinRecordRequest {
   user: User
@@ -33,14 +36,12 @@ export class EditGlycatedHemoglobinRecordUseCase {
       glycatedHemoglobinValuePercent,
     } = request
 
-    // get patient by userId
     const existingPatient = await this.patientRepository.findByUserId(user.id)
 
     if (existingPatient == null) {
-      throw new Error('Patient does not exist.')
+      throw new AuthorizationError('Patient does not exist.')
     }
 
-    // get record by recordId and patientId
     const existingGlycatedHemoglobinRecord =
       await this.glycatedHemoglobinRecordRepository.findByIdAndPatientId(
         glycatedHemoglobinRecordId,
@@ -48,7 +49,7 @@ export class EditGlycatedHemoglobinRecordUseCase {
       )
 
     if (existingGlycatedHemoglobinRecord == null) {
-      throw new Error('This glycated hemoglobin record does not exist.')
+      throw new NotFoundError('This glycated hemoglobin record does not exist.')
     }
 
     const depulicatedGlycatedHemoglobinRecord =
@@ -57,8 +58,8 @@ export class EditGlycatedHemoglobinRecordUseCase {
         glycatedHemoglobinDate
       )
 
-    if (depulicatedGlycatedHemoglobinRecord != null) {
-      throw new Error(
+    if (depulicatedGlycatedHemoglobinRecord !== null) {
+      throw new ValidationError(
         "This patient's glycatedHemoglobin record date is duplicated."
       )
     }

@@ -2,6 +2,8 @@ import { IPatientRepository } from '../../domain/patient/interfaces/repositories
 import { MedicalSpecialtyType } from '../../domain/question/PatientQuestion'
 import { IPatientQuestionRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionRepository'
 import { User } from '../../domain/user/User'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 
 interface EditPatientQuestionRequest {
   user: User
@@ -31,7 +33,7 @@ export class EditPatientQuestionUseCase {
     const existingAsker = await this.patientRepository.findByUserId(user.id)
 
     if (existingAsker == null) {
-      throw new Error('Asker does not exist.')
+      throw new AuthorizationError('Asker does not exist.')
     }
 
     const existingPatientQuestion =
@@ -41,7 +43,7 @@ export class EditPatientQuestionUseCase {
       )
 
     if (existingPatientQuestion == null) {
-      throw new Error('Answer agreement does not exist.')
+      throw new NotFoundError('Answer agreement does not exist.')
     }
 
     existingPatientQuestion.updateData({ content, medicalSpecialty })

@@ -1,6 +1,9 @@
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 import { IPatientQuestionAnswerRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionAnswerRepository'
 import { User } from '../../domain/user/User'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
+import { ValidationError } from '../../infrastructure/error/ValidationError'
 
 interface EditPatientQuestionAnswerContentRequest {
   user: User
@@ -26,13 +29,13 @@ export class EditPatientQuestionAnswerContentUseCase {
     const { user, content, patientQuestionAnswerId } = request
 
     if (content == null) {
-      throw new Error('Content cannot be empty')
+      throw new ValidationError('Content cannot be empty')
     }
 
     const existingDoctor = await this.doctorRepository.findByUserId(user.id)
 
     if (existingDoctor == null) {
-      throw new Error('Doctor does not exist.')
+      throw new AuthorizationError('Doctor does not exist.')
     }
 
     const existingPatientQuestionAnswer =
@@ -42,7 +45,7 @@ export class EditPatientQuestionAnswerContentUseCase {
       )
 
     if (existingPatientQuestionAnswer == null) {
-      throw new Error('Answer does not exist.')
+      throw new NotFoundError('Answer does not exist.')
     }
 
     existingPatientQuestionAnswer.updateContent(content)

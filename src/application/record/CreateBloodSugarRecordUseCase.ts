@@ -6,6 +6,8 @@ import {
 import { IBloodSugarRecordRepository } from '../../domain/record/interfaces/repositories/IBloodSugarRecordRepository'
 import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { ValidationError } from '../../infrastructure/error/ValidationError'
 
 interface CreateBloodSugarRecordRequest {
   user: User
@@ -39,7 +41,7 @@ export class CreateBloodSugarRecordUseCase {
     const existingPatient = await this.patientRepository.findByUserId(user.id)
 
     if (existingPatient == null) {
-      throw new Error('Patient does not exist.')
+      throw new AuthorizationError('Patient does not exist.')
     }
 
     const existingRecord =
@@ -48,8 +50,8 @@ export class CreateBloodSugarRecordUseCase {
         bloodSugarDate
       )
 
-    if (existingRecord != null) {
-      throw new Error(
+    if (existingRecord !== null) {
+      throw new ValidationError(
         'Only one fasting blood sugar record can be created per day.'
       )
     }

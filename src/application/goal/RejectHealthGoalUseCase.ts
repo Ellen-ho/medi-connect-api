@@ -6,6 +6,9 @@ import { IHealthGoalRepository } from '../../domain/goal/interfaces/repositories
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { BloodSugarType } from '../../domain/record/BloodSugarRecord'
 import { User } from '../../domain/user/User'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
+import { ValidationError } from '../../infrastructure/error/ValidationError'
 
 interface RejectHealthGoalRequest {
   healthGoalId: string
@@ -41,7 +44,7 @@ export class RejectHealthGoalUseCase {
     const existingPatient = await this.patientRepository.findByUserId(user.id)
 
     if (existingPatient == null) {
-      throw new Error('Patient does not exist.')
+      throw new AuthorizationError('Patient does not exist.')
     }
 
     const existingHealthGoal = await this.healthGoalRepository.findById(
@@ -49,11 +52,11 @@ export class RejectHealthGoalUseCase {
     )
 
     if (existingHealthGoal === null) {
-      throw new Error('HealthGoal does not exist.')
+      throw new NotFoundError('HealthGoal does not exist.')
     }
 
     if (existingHealthGoal.status !== HealthGoalStatus.PENDING) {
-      throw new Error(
+      throw new ValidationError(
         'HealthGoal status can only be changed if it is in pending.'
       )
     }

@@ -6,6 +6,8 @@ import { IAnswerAppreciationRepository } from '../../domain/question/interfaces/
 import { IPatientQuestionAnswerRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionAnswerRepository'
 import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 import { INotificationHelper } from '../notification/NotificationHelper'
 
 interface CreateAnswerAppreciationRequest {
@@ -41,20 +43,22 @@ export class CreateAnswerAppreciationUseCase {
       answerId
     )
     if (existingAnswer == null) {
-      throw new Error('Answer does not exist.')
+      throw new NotFoundError('Answer does not exist.')
     }
 
     const existingPatient = await this.patientRepository.findByUserId(user.id)
 
     if (existingPatient == null) {
-      throw new Error('Patient does not exist.')
+      throw new AuthorizationError('Patient does not exist.')
     }
     const beAppreciatedDoctorId = existingAnswer.doctorId
     const beAppreciatedDoctor = await this.doctorRepository.findById(
       beAppreciatedDoctorId
     )
     if (beAppreciatedDoctor == null) {
-      throw new Error('Cna not find the doctor who is be appreciated.')
+      throw new AuthorizationError(
+        'Cna not find the doctor who is be appreciated.'
+      )
     }
 
     const answerAppreciation = new AnswerAppreciation({

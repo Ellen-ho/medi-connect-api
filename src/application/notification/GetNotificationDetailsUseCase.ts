@@ -1,6 +1,7 @@
 import { NotificationType } from '../../domain/notification/Notification'
 import { INotificationRepository } from '../../domain/notification/interfaces/repositories/INotificationRepository'
 import { User } from '../../domain/user/User'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 
 interface GetNotificationDetailsRequest {
   notificationId: string
@@ -34,7 +35,7 @@ export class GetNotificationDetailsUseCase {
       )
 
     if (existingNotification == null) {
-      throw new Error('This notification does not exist.')
+      throw new NotFoundError('This notification does not exist.')
     }
 
     existingNotification.updateIsRead(true)

@@ -3,6 +3,8 @@ import { BloodPressureRecord } from '../../domain/record/BloodPressureRecord'
 import { IBloodPressureRecordRepository } from '../../domain/record/interfaces/repositories/IBloodPressureRecordRepository'
 import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { ValidationError } from '../../infrastructure/error/ValidationError'
 
 interface CreateBloodPressureRecordRequest {
   user: User
@@ -46,7 +48,7 @@ export class CreateBloodPressureRecordUseCase {
     const existingPatient = await this.patientRepository.findByUserId(user.id)
 
     if (existingPatient == null) {
-      throw new Error('Patient does not exist.')
+      throw new AuthorizationError('Patient does not exist.')
     }
 
     const existingRecord =
@@ -55,8 +57,10 @@ export class CreateBloodPressureRecordUseCase {
         bloodPressureDate
       )
 
-    if (existingRecord != null) {
-      throw new Error('Only one blood pressure record can be created per day.')
+    if (existingRecord !== null) {
+      throw new ValidationError(
+        'Only one blood pressure record can be created per day.'
+      )
     }
 
     const bloodPressureRecord = new BloodPressureRecord({
