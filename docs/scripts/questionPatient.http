@@ -34,7 +34,7 @@ Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "content": "I have a poor appetite recently. What should I do?",
+  "content": "I have bad sleep. What should I do?",
   "medicalSpecialty": "INTERNAL_MEDICINE"
 }
 ###
