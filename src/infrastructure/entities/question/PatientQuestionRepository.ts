@@ -91,8 +91,8 @@ export class PatientQuestionRepository
         `
           SELECT
             (SELECT COUNT(*) FROM patient_questions) as total_counts,
-            id
-            content
+            id,
+            content,
             created_at
           FROM
             patient_questions
