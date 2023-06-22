@@ -74,20 +74,26 @@ export class PatientQuestionRepository
   ): Promise<{
     total_counts: number
     questions: Array<{
+      id: string
       content: string
+      createdAt: Date
     }>
   }> {
     try {
       const rawQuestions = await this.getQuery<
         Array<{
           total_counts: number
+          id: string
           content: string
+          created_at: Date
         }>
       >(
         `
           SELECT
             (SELECT COUNT(*) FROM patient_questions) as total_counts,
+            id
             content
+            created_at
           FROM
             patient_questions
             ORDER BY patient_questions.created_at DESC
@@ -100,7 +106,9 @@ export class PatientQuestionRepository
       return {
         total_counts: rawQuestions[0].total_counts,
         questions: rawQuestions.map((question) => ({
+          id: question.id,
           content: question.content,
+          createdAt: question.created_at,
         })),
       }
     } catch (e) {
