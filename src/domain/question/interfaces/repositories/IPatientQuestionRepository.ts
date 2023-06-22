@@ -16,7 +16,9 @@ export interface IPatientQuestionRepository
   ) => Promise<{
     total_counts: number
     questions: Array<{
+      id: string
       content: string
+      createdAt: Date
     }>
   }>
 }

@@ -7,7 +7,9 @@ interface GetQuestionsRequest {
 }
 interface GetQuestionsResponse {
   data: Array<{
+    id: string
     content: string
+    createdAt: Date
   }>
   pagination: {
     pages: number[]
