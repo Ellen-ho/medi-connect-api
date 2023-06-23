@@ -12,6 +12,7 @@ import {
   PatientQuestion,
 } from '../../domain/question/PatientQuestion'
 import dayjs from 'dayjs'
+import MockDate from 'mockdate'
 
 describe('Unit test: GetSingleQuestionUseCase', () => {
   const mockPatientQuestionRepo = mock<IPatientQuestionRepository>()
@@ -25,7 +26,7 @@ describe('Unit test: GetSingleQuestionUseCase', () => {
   )
 
   const mockedDate = new Date('2023-06-18T13:18:00.155Z')
-  jest.spyOn(global, 'Date').mockImplementation(() => mockedDate)
+  MockDate.set('2023-06-18')
 
   afterEach(() => {
     jest.resetAllMocks()
