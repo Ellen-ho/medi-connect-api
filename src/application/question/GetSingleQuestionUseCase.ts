@@ -2,13 +2,11 @@ import { IPatientRepository } from '../../domain/patient/interfaces/repositories
 import { MedicalSpecialtyType } from '../../domain/question/PatientQuestion'
 import { IPatientQuestionAnswerRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionAnswerRepository'
 import { IPatientQuestionRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionRepository'
-import { User } from '../../domain/user/User'
 import dayjs from 'dayjs'
 import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
 
 interface GetSingleQuestionRequest {
-  user: User
   patientQuestionId: string
 }
 
@@ -43,7 +41,7 @@ export class GetSingleQuestionUseCase {
   public async execute(
     request: GetSingleQuestionRequest
   ): Promise<GetSingleQuestionResponse> {
-    const { user, patientQuestionId } = request
+    const { patientQuestionId } = request
 
     const existingPatientQuestion =
       await this.patientQuestionRepository.findById(patientQuestionId)
@@ -63,9 +61,12 @@ export class GetSingleQuestionUseCase {
     const answerDetails =
       await this.patientQuestionAnswerRepository.findAnswerDetailsByQuestionIdAndPatientId(
         patientQuestionId,
-        user.id
+        asker.id
       )
 
+    if (answerDetails.length === 0) {
+      throw new NotFoundError('No answer for this question.')
+    }
     return {
       question: {
         content: existingPatientQuestion.content,

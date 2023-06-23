@@ -22,7 +22,7 @@ Content-Type: application/json
 ###
 
 ### get a single question
-@questionId = uuid
+@questionId =6151ce4b-8111-4f0c-b56a-9b3909e06a36
 GET {{questionsPath}}/{{questionId}}
 Authorization: {{accessToken}}
 Content-Type: application/json
