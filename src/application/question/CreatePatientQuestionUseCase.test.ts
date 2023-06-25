@@ -107,7 +107,7 @@ describe('Unit test: CreatePatientQuestionUseCase', () => {
       mockPatientQuestion
     )
   })
-  it('should throw Authorization when the patient does not exist', async () => {
+  it('should throw AuthorizationError when the patient does not exist', async () => {
     mockPatientRepo.findByUserId.mockResolvedValue(null)
 
     await expect(

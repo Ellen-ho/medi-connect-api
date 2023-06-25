@@ -57,7 +57,7 @@ export class CreateAnswerAppreciationUseCase {
     )
     if (beAppreciatedDoctor == null) {
       throw new AuthorizationError(
-        'Cna not find the doctor who is be appreciated.'
+        'Cna not find the doctor who is appreciated.'
       )
     }
 
