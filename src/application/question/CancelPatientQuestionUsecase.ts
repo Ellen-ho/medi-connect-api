@@ -78,9 +78,7 @@ export class CancelPatientQuestionUseCase {
         txExecutor
       )
       await this.tx.end()
-      return {
-        patientQuestionId,
-      }
+      return { patientQuestionId }
     } catch (error) {
       await this.tx.rollback()
       throw error
