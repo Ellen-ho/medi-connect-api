@@ -149,27 +149,6 @@ export class ConsultAppointmentRepository
     }
   }
 
-  public async findByPatientIdAndDate(
-    patientId: string,
-    currentDate: Date
-  ): Promise<ConsultAppointment | null> {
-    try {
-      const entity = await this.getRepo().findOne({
-        where: {
-          patient: { id: patientId },
-          createdAt: currentDate,
-        },
-        relations: ['doctorTimeSlot'],
-      })
-      return entity != null ? this.getMapper().toDomainModel(entity) : null
-    } catch (e) {
-      throw new RepositoryError(
-        'ConsultAppointmentRepository findByIdAndPatientId error',
-        e as Error
-      )
-    }
-  }
-
   public async findByDoctorIdAndStatusWithinDateRange(
     doctorId: string,
     status: ConsultAppointmentStatusType[],
