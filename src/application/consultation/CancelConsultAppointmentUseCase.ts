@@ -55,7 +55,7 @@ export class CancelConsultAppointmentUseCase {
     }
 
     const appointmentDoctor = await this.doctorRepository.findById(
-      existingConsultAppointment.doctorTimeSlot.id
+      existingConsultAppointment.doctorTimeSlot.doctorId
     )
 
     if (appointmentDoctor == null) {
