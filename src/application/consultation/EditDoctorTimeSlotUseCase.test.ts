@@ -261,21 +261,6 @@ describe('Unit test: EditDoctorTimeSlotUseCase', () => {
     ).toHaveBeenCalledWith(mockRequest.startAt, mockExistingDoctor.id)
   })
   it('should throw the edit doctor time slot when the valid request is provided', async () => {
-    // const mockRequest2 = {
-    //   user: new User({
-    //     id: 'doctor1',
-    //     email: 'doctor1@test.com',
-    //     displayName: 'Test doctor1',
-    //     role: UserRoleType.DOCTOR,
-    //     hashedPassword: 'hashedPassword',
-    //     createdAt: mockedDate,
-    //     updatedAt: mockedDate,
-    //   }),
-    //   doctorTimeSlotId: 'Slot2',
-    //   startAt: new Date('2023-07-22T13:00:00.155Z'),
-    //   endAt: new Date('2023-07-22T13:30:00.155Z'),
-    // }
-
     const mockDoctorTimeSlot2 = new DoctorTimeSlot({
       id: 'DoctorTimeSlot2',
       doctorId: 'doctor1',

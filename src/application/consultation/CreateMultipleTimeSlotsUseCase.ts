@@ -5,7 +5,6 @@ import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/I
 import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
-import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 import { ValidationError } from '../../infrastructure/error/ValidationError'
 
 interface CreateMultipleTimeSlotsRequest {
@@ -14,7 +13,7 @@ interface CreateMultipleTimeSlotsRequest {
 }
 
 interface CreateMultipleTimeSlotsResponse {
-  id: string
+  doctorId: string
   timeSlots: Array<{
     id: string
     startAt: Date
@@ -65,7 +64,7 @@ export class CreateMultipleTimeSlotsUseCase {
         )
 
       if (singleTimeSlot !== null) {
-        throw new NotFoundError('This time slot already exists.')
+        throw new ValidationError('This time slot already exists.')
       }
 
       if (dayjs(startAt).isBefore(currentDate)) {
@@ -132,7 +131,7 @@ export class CreateMultipleTimeSlotsUseCase {
     }
 
     return {
-      id: existingDoctor.id,
+      doctorId: existingDoctor.id,
       timeSlots: createdTimeSlots.map((createdSingleTimeSlot) => ({
         id: createdSingleTimeSlot.id,
         startAt: createdSingleTimeSlot.startAt,
