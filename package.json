@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon",
-    "test": "jest --watch src",
+    "test:unit": "jest --watch src",
+    "test:integration": "NODE_ENV=test jest --detectOpenHandles --runInBand --testRegex='.*\\.integration.test\\.ts'",
     "lint": "eslint ./src --ext .ts",
     "prettier": "prettier --check .",
     "build": "rimraf ./build && tsc",
