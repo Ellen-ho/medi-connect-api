@@ -65,9 +65,7 @@ export class EditDoctorTimeSlotUseCase {
     // 更改後的時間表不能早於現在時間(包括年月日時分秒)
     // 如:同一天，晚上不能創白天時間表
     if (dayjs(startAt).isBefore(currentDate)) {
-      throw new ValidationError(
-        'Time slots can not be before the current time.'
-      )
+      throw new ValidationError('Time slot can not be before the current time.')
     }
 
     if (dayjs(startAt).isAfter(endAt)) {
