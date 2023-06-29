@@ -2,18 +2,21 @@ import dayjs from 'dayjs'
 import { ConsultAppointmentStatusType } from '../../domain/consultation/ConsultAppointment'
 import { IConsultAppointmentRepository } from '../../domain/consultation/interfaces/repositories/IConsultAppointmentRepository'
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
-import { User, UserRoleType } from '../../domain/user/User'
+import { User } from '../../domain/user/User'
 import { MedicalSpecialtyType } from '../../domain/question/PatientQuestion'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
-import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 export interface ConsultAppointmentDatas {
   patientId: string
   status: ConsultAppointmentStatusType
-  startTime: Date
-  endTime: Date
-  doctorFirstName: string
-  doctorLastName: string
-  doctorSpecialties: MedicalSpecialtyType[]
+  doctorTimeSlot: {
+    startAt: Date
+    endAt: Date
+  }
+  doctor: {
+    firstName: string
+    lastName: string
+    specialties: MedicalSpecialtyType[]
+  }
   meetingLink: string | null
 }
 
@@ -37,7 +40,7 @@ interface GetPatientConsultAppointmentsRequest {
 }
 
 interface GetPatientConsultAppointmentsResponse {
-  upComingAppointments: ConsultAppointmentDatas[]
+  upcomingAppointments: ConsultAppointmentDatas[]
   completedAppointments: ConsultAppointmentDatas[]
   canceledAppointments: ConsultAppointmentDatas[]
 }
@@ -53,13 +56,9 @@ export class GetPatientConsultAppointmentsUseCase {
   ): Promise<GetPatientConsultAppointmentsResponse> {
     const { user } = request
 
-    if (user.role === UserRoleType.DOCTOR) {
-      throw new AuthorizationError('Only patient can get the data')
-    }
+    const currentPatient = await this.patientRepository.findByUserId(user.id)
 
-    const existingPatient = await this.patientRepository.findByUserId(user.id)
-
-    if (existingPatient == null) {
+    if (currentPatient == null) {
       throw new AuthorizationError('Patient does not exist.')
     }
 
@@ -75,32 +74,32 @@ export class GetPatientConsultAppointmentsUseCase {
       upComingEndDate = nextMonthEndDate
     }
 
-    const upComingAppointments =
+    const upcomingAppointments =
       await this.consultAppointmentRepository.findByPatientIdAndStatusWithinDateRange(
-        existingPatient.id,
+        currentPatient.id,
         [ConsultAppointmentStatusType.UPCOMING],
         currentDate.toDate(),
         upComingEndDate.toDate()
       )
 
-    if (upComingAppointments == null) {
-      throw new NotFoundError('There is no upComing appointment.')
-    }
-
     const upcomingConsultAppointments: ConsultAppointmentDatas[] = []
 
-    for (const appointment of upComingAppointments) {
+    for (const appointment of upcomingAppointments) {
       const startTime = dayjs(appointment.doctorTimeSlot.startAt)
       const timeDifference = startTime.diff(currentDate, 'hour')
 
       const consultAppointmentData: ConsultAppointmentDatas = {
         patientId: appointment.patientId,
         status: appointment.status,
-        startTime: appointment.doctorTimeSlot.startAt,
-        endTime: appointment.doctorTimeSlot.endAt,
-        doctorFirstName: appointment.doctor.firstName,
-        doctorLastName: appointment.doctor.lastName,
-        doctorSpecialties: appointment.doctor.specialties,
+        doctorTimeSlot: {
+          startAt: appointment.doctorTimeSlot.startAt,
+          endAt: appointment.doctorTimeSlot.endAt,
+        },
+        doctor: {
+          firstName: appointment.doctor.firstName,
+          lastName: appointment.doctor.lastName,
+          specialties: appointment.doctor.specialties,
+        },
         meetingLink: timeDifference > 22 ? null : appointment.meetingLink,
       }
 
@@ -109,7 +108,7 @@ export class GetPatientConsultAppointmentsUseCase {
 
     const completedAppointments =
       await this.consultAppointmentRepository.findByPatientIdAndStatusWithinDateRange(
-        existingPatient.id,
+        currentPatient.id,
         [ConsultAppointmentStatusType.COMPLETED],
         currentMonthStartDate.toDate(),
         currentMonthEndDate.toDate()
@@ -117,22 +116,14 @@ export class GetPatientConsultAppointmentsUseCase {
 
     const canceledAppointments =
       await this.consultAppointmentRepository.findByPatientIdAndStatusWithinDateRange(
-        existingPatient.id,
+        currentPatient.id,
         [ConsultAppointmentStatusType.PATIENT_CANCELED],
         currentMonthStartDate.toDate(),
         currentMonthEndDate.toDate()
       )
 
-    if (completedAppointments == null) {
-      throw new NotFoundError('There is no completed appointment.')
-    }
-
-    if (canceledAppointments == null) {
-      throw new NotFoundError('There is no canceled appointment.')
-    }
-
     return {
-      upComingAppointments: upcomingConsultAppointments,
+      upcomingAppointments: upcomingConsultAppointments,
       completedAppointments: this.mapConsultAppointmentData(
         completedAppointments
       ),
@@ -147,11 +138,15 @@ export class GetPatientConsultAppointmentsUseCase {
     return appointments.map((appointment) => ({
       patientId: appointment.patientId,
       status: appointment.status,
-      startTime: appointment.doctorTimeSlot.startAt,
-      endTime: appointment.doctorTimeSlot.endAt,
-      doctorFirstName: appointment.doctor.firstName,
-      doctorLastName: appointment.doctor.lastName,
-      doctorSpecialties: appointment.doctor.specialties,
+      doctorTimeSlot: {
+        startAt: appointment.doctorTimeSlot.startAt,
+        endAt: appointment.doctorTimeSlot.endAt,
+      },
+      doctor: {
+        firstName: appointment.doctor.firstName,
+        lastName: appointment.doctor.lastName,
+        specialties: appointment.doctor.specialties,
+      },
       meetingLink: null,
     }))
   }

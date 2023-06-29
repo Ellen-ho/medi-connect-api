@@ -67,21 +67,13 @@ export class CreateConsultAppointmentUseCase {
 
     const currentDate = dayjs()
 
-    const existingAppointment =
-      await this.consultAppointmentRepository.findByPatientIdAndDate(
-        existingPatient.id,
-        currentDate.toDate()
-      )
-
-    if (existingAppointment !== null) {
-      throw new ValidationError('Patient already has an appointment for today.')
-    }
-
     const wantedAppointmentTime = existingDoctorTimeSlot.startAt
     const diffInHours = dayjs(wantedAppointmentTime).diff(currentDate, 'hour')
 
     if (diffInHours <= 24) {
-      throw new ValidationError('Appointment should be created before one day.')
+      throw new ValidationError(
+        'Appointment should be created before at least 24 hours.'
+      )
     }
 
     const currentDateDay = currentDate.date()
@@ -103,7 +95,7 @@ export class CreateConsultAppointmentUseCase {
 
     if (!isWithinCurrentMonthRange) {
       throw new ValidationError(
-        'Appointment is not within the current or next month range.'
+        'Appointment is not within the current month range.'
       )
     }
     // 28號以後預約(含28號當天)，28,29,30,31,範圍:當月28號後到當月底，下月整月到下月底

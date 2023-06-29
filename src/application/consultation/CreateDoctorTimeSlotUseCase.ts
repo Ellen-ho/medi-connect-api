@@ -66,7 +66,7 @@ export class CreateDoctorTimeSlotUseCase {
       throw new ValidationError('The start time should before end time.')
     }
 
-    if (dayjs(endAt).isBefore(minimumOfEndAt)) {
+    if (!dayjs(endAt).isSame(minimumOfEndAt)) {
       throw new ValidationError(
         'The end time should be 30 minutes after the start time.'
       )

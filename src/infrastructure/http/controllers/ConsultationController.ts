@@ -66,7 +66,7 @@ export class ConsultationController implements IConsultationController {
     req: Request,
     res: Response
   ): Promise<Response> => {
-    const request = { ...req.body, user: req.user }
+    const request = { ...req.body, user: req.user as User }
     const result = await this.createDoctorTimeSlotUseCase.execute(request)
 
     return res.status(200).json(result)
@@ -92,7 +92,7 @@ export class ConsultationController implements IConsultationController {
     req: Request,
     res: Response
   ): Promise<Response> => {
-    const request = { ...req.body, user: req.user }
+    const request = { ...req.body, user: req.user as User }
     const result = await this.createMultipleTimeSlotsUseCase.execute(request)
     return res.status(200).json(result)
   }
