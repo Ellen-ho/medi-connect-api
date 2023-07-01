@@ -32,7 +32,6 @@ describe('Integration test: GetUserUseCase', () => {
     const uuid = faker.string.uuid()
     const user = UserFactory.build({
       id: uuid,
-      hashedPassword: 'password',
       displayName: 'test',
       email: 'test@gmail.com',
       role: UserRoleType.PATIENT,
