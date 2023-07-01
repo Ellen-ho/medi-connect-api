@@ -3,6 +3,7 @@ import getOrmConfig from '../config/ormconfig'
 
 export class PostgresDatabase {
   private dataSource: DataSource | null
+
   constructor() {
     this.dataSource = null
   }
@@ -14,6 +15,15 @@ export class PostgresDatabase {
       console.log(`Data Source has been initialized`)
     } catch (error) {
       console.error(`Data Source initialization error`, error)
+    }
+  }
+
+  public async disconnect(): Promise<void> {
+    try {
+      await this.dataSource?.destroy()
+      console.log(`Data Source has been destroyed`)
+    } catch (error) {
+      console.error(`Data Source destroy error`, error)
     }
   }
 

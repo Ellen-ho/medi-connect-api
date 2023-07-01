@@ -2,7 +2,7 @@ import { User } from '../../domain/user/User'
 import { IUserRepository } from '../../domain/user/interfaces/repositories/IUserRepository'
 import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 
-interface GetUserRequest {
+export interface GetUserRequest {
   id: string
 }
 
