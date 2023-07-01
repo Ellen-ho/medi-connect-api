@@ -1,14 +1,11 @@
 import { faker } from '@faker-js/faker'
-import { PostgresDatabase } from '../infrastructure/database/PostgresDatabase'
-import { UserRoleType } from '../domain/user/User'
-import {
-  GetUserRequest,
-  GetUserUseCase,
-} from '../application/user/GetUserUseCase'
-import { UserRepository } from '../infrastructure/entities/user/UserRepository'
-import { UserFactory } from '../domain/user/test/UserFactory'
+import { GetUserRequest, GetUserUseCase } from '../GetUserUseCase'
+import { PostgresDatabase } from '../../../infrastructure/database/PostgresDatabase'
+import { UserRepository } from '../../../infrastructure/entities/user/UserRepository'
+import { UserFactory } from '../../../domain/user/test/UserFactory'
+import { UserRoleType } from '../../../domain/user/User'
 
-describe('INTEGRATION: User Use Cases', () => {
+describe('Integration test: GetUserUseCase', () => {
   let database: PostgresDatabase
   let userRepo: UserRepository
 
@@ -20,6 +17,8 @@ describe('INTEGRATION: User Use Cases', () => {
     userRepo = new UserRepository(database.getDataSource())
   }, 300000)
 
+  beforeEach(async () => {})
+
   afterEach(async () => {
     // clear data in the table which had inserted data in the test
     await userRepo.clear()
@@ -29,7 +28,7 @@ describe('INTEGRATION: User Use Cases', () => {
     await database.disconnect()
   })
 
-  it('should get correct correct user data', async () => {
+  it('should get correct user data', async () => {
     const uuid = faker.string.uuid()
     const user = UserFactory.build({
       id: uuid,
