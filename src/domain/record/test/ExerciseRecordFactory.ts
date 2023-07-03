@@ -8,12 +8,9 @@ export const ExerciseRecordFactory = Factory.define<ExerciseRecord>(
       id: params.id ?? faker.string.uuid(),
       exerciseDate: params.exerciseDate ?? new Date(),
       exerciseType: params.exerciseType ?? ExerciseType.AEROBIC_EXERCISE,
-      exerciseDurationMinute:
-        params.exerciseDurationMinute ?? faker.number.int({ min: 0 }),
+      exerciseDurationMinute: params.exerciseDurationMinute ?? 30,
       exerciseIntensity: params.exerciseIntensity ?? IntensityType.HIGH,
-      kcaloriesBurned:
-        params.kcaloriesBurned ??
-        faker.number.float({ min: 0, precision: 0.01 }),
+      kcaloriesBurned: params.kcaloriesBurned ?? 198,
       exerciseNote: params.exerciseNote ?? null,
       createdAt: params.createdAt ?? new Date(),
       updatedAt: params.updatedAt ?? new Date(),
