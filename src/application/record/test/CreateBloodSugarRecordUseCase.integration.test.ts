@@ -9,22 +9,23 @@ import {
   CreateBloodSugarRecordRequest,
   CreateBloodSugarRecordUseCase,
 } from '../CreateBloodSugarRecordUseCase'
-import { User, UserRoleType } from '../../../domain/user/User'
+import { UserRoleType } from '../../../domain/user/User'
 import { AuthorizationError } from '../../../infrastructure/error/AuthorizationError'
-import { UuidService } from '../../../infrastructure/utils/UuidService'
-import { GenderType, Patient } from '../../../domain/patient/Patient'
 import { UserFactory } from '../../../domain/user/test/UserFactory'
 import { PatientFactory } from '../../../domain/patient/test/PatientFactory'
 import { UserRepository } from '../../../infrastructure/entities/user/UserRepository'
 import { ValidationError } from '../../../infrastructure/error/ValidationError'
+import { mock } from 'jest-mock-extended'
+import MockDate from 'mockdate'
 
 describe('Integration test: CreateBloodSugarRecordUseCase', () => {
   let database: PostgresDatabase
   let bloodSugarRecordRepo: BloodSugarRecordRepository
   let patientRepo: PatientRepository
-  let uuidService: IUuidService
   let useCase: CreateBloodSugarRecordUseCase
   let userRepo: UserRepository
+  // mock for predfined uuid
+  const mockUuidService = mock<IUuidService>()
 
   beforeAll(async () => {
     // connect to test db
@@ -35,12 +36,12 @@ describe('Integration test: CreateBloodSugarRecordUseCase', () => {
       database.getDataSource()
     )
     patientRepo = new PatientRepository(database.getDataSource())
-    uuidService = new UuidService()
+    userRepo = new UserRepository(database.getDataSource())
 
     useCase = new CreateBloodSugarRecordUseCase(
       bloodSugarRecordRepo,
       patientRepo,
-      uuidService
+      mockUuidService
     )
   }, 300000)
 
@@ -51,6 +52,9 @@ describe('Integration test: CreateBloodSugarRecordUseCase', () => {
     await bloodSugarRecordRepo.clear()
     await patientRepo.clear()
     await userRepo.clear()
+    // reset mock
+    mockUuidService.generateUuid.mockReset()
+    MockDate.reset()
   })
 
   afterAll(async () => {
@@ -58,7 +62,7 @@ describe('Integration test: CreateBloodSugarRecordUseCase', () => {
   })
 
   const mockUser = UserFactory.build({
-    id: '1',
+    id: faker.string.uuid(),
     email: 'test@test.com',
     displayName: 'Test User',
     role: UserRoleType.PATIENT,
@@ -67,115 +71,61 @@ describe('Integration test: CreateBloodSugarRecordUseCase', () => {
     updatedAt: new Date('2023-06-18T13:18:00.155Z'),
   })
 
-  describe('Integration test: CreateBloodSugarRecordUseCase', () => {
-    let database: PostgresDatabase
-    let bloodSugarRecordRepo: BloodSugarRecordRepository
-    let patientRepo: PatientRepository
-    let uuidService: IUuidService
-    let useCase: CreateBloodSugarRecordUseCase
-    let userRepo: UserRepository
+  it('should create correct blood sugar record data', async () => {
+    /**
+     * Prepare data and save into DB
+     */
+    // save mock into DB in the following order: user -> patient
+    await userRepo.save(mockUser)
 
-    beforeAll(async () => {
-      // connect to test db
-      database = new PostgresDatabase()
-      await database.connect()
-      // create repos and service
-      bloodSugarRecordRepo = new BloodSugarRecordRepository(
-        database.getDataSource()
-      )
-      patientRepo = new PatientRepository(database.getDataSource())
-      uuidService = new UuidService()
-
-      useCase = new CreateBloodSugarRecordUseCase(
-        bloodSugarRecordRepo,
-        patientRepo,
-        uuidService
-      )
-
-      userRepo = new UserRepository(database.getDataSource())
-    }, 300000)
-
-    beforeEach(async () => {})
-
-    afterEach(async () => {
-      // clear data in the table which had inserted data in the test
-      await bloodSugarRecordRepo.clear()
-      await patientRepo.clear()
-      await userRepo.clear()
+    const mockPatient = PatientFactory.build({
+      user: mockUser,
     })
+    await patientRepo.save(mockPatient)
 
-    afterAll(async () => {
-      await database.disconnect()
-    })
+    /**
+     * mock neccussary service if needed
+     */
+    const mockTargetBloodSugarRecordId = '65a483ce-b0f7-4825-8054-2aa216b0c7c8'
+    mockUuidService.generateUuid.mockReturnValueOnce(
+      mockTargetBloodSugarRecordId
+    )
+    const mockDateString = '2023-07-02T05:48:55.694Z'
+    MockDate.set(mockDateString)
 
-    const mockUser = UserFactory.build({
-      id: '1',
-      email: 'test@test.com',
-      displayName: 'Test User',
-      role: UserRoleType.PATIENT,
-      hashedPassword: 'hashedPassword',
-      createdAt: new Date('2023-06-18T13:18:00.155Z'),
-      updatedAt: new Date('2023-06-18T13:18:00.155Z'),
-    })
-
-    it('should create correct blood sugar record data', async () => {
-      const uuid = faker.string.uuid()
-      const bloodSugarRecord = BloodSugarRecordFactory.build({
-        id: uuid,
-        bloodSugarDate: new Date('2023-07-01T05:48:55.694Z'),
-        bloodSugarValue: 98,
-        bloodSugarType: BloodSugarType.FAST_PLASMA_GLUCOSE,
-        bloodSugarNote: 'Eat too much bread today.',
-        createdAt: new Date('2023-07-01T05:48:55.694Z'),
-        updatedAt: new Date('2023-07-01T05:48:55.694Z'),
-      })
-      await bloodSugarRecordRepo.save(bloodSugarRecord)
-
-      const mockPatient = PatientFactory.build({
-        id: faker.string.uuid(),
-        avatar: null,
-        firstName: faker.internet.displayName(),
-        lastName: faker.internet.displayName(),
-        birthDate: new Date(),
-        gender: GenderType.FEMALE,
-        medicalHistory: null,
-        allergy: {
-          medicine: null,
-          food: null,
-          other: null,
-        },
-        familyHistory: null,
-        heightValueCm: 180,
-        medicinceUsage: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        user: UserFactory.build(),
-      })
-
-      await patientRepo.save(mockPatient)
-
-      const request: CreateBloodSugarRecordRequest = {
-        user: mockUser,
-        bloodSugarDate: new Date('2023-07-01T05:48:55.694Z'),
-        bloodSugarValue: 98,
-        bloodSugarNote: 'Eat too much bread today.',
-      }
-      const result = await useCase.execute(request)
-      const expected = {
-        id: uuid,
-        bloodSugarDate: new Date('2023-07-01T05:48:55.694Z'),
-        bloodSugarValue: 98,
-        bloodSugarType: BloodSugarType.FAST_PLASMA_GLUCOSE,
-        bloodSugarNote: 'Eat too much bread today.',
-        createdAt: new Date('2023-07-01T05:48:55.694Z'),
-        updatedAt: new Date('2023-07-01T05:48:55.694Z'),
-      }
-      expect(result).toEqual(expected)
-    })
-
-  it('should throw AuthorizationError if no user found in DB', async () => {
+    /**
+     * start execute use case
+     */
     const request: CreateBloodSugarRecordRequest = {
-      user: null,
+      user: mockUser,
+      bloodSugarDate: new Date('2023-07-01T05:48:55.694Z'),
+      bloodSugarValue: 98,
+      bloodSugarNote: 'Eat too much bread today.',
+    }
+    const result = await useCase.execute(request)
+    const expected = {
+      id: mockTargetBloodSugarRecordId,
+      bloodSugarDate: new Date('2023-07-01T05:48:55.694Z'),
+      bloodSugarValue: 98,
+      bloodSugarType: BloodSugarType.FAST_PLASMA_GLUCOSE,
+      bloodSugarNote: 'Eat too much bread today.',
+      createdAt: new Date(mockDateString),
+      updatedAt: new Date(mockDateString),
+    }
+    expect(result).toEqual(expected)
+  })
+
+  it('should throw AuthorizationError if no patient found in DB', async () => {
+    /**
+     * Prepare data and save into DB
+     */
+    await userRepo.save(mockUser)
+
+    /**
+     * start execute use case
+     */
+    const request: CreateBloodSugarRecordRequest = {
+      user: mockUser,
       bloodSugarDate: new Date('2023-07-01T05:48:55.694Z'),
       bloodSugarValue: 98,
       bloodSugarNote: 'Eat too much bread today.',
@@ -184,15 +134,33 @@ describe('Integration test: CreateBloodSugarRecordUseCase', () => {
   })
 
   it('should throw ValidationError if a record in the same day exists', async () => {
+    /**
+     * Prepare data and save into DB
+     */
+    // save mock into DB in the following order: user -> patient - record
+    await userRepo.save(mockUser)
+
+    const mockPatient = PatientFactory.build({
+      user: mockUser,
+    })
+    await patientRepo.save(mockPatient)
+
+    const existingBloodSugarRecord = BloodSugarRecordFactory.build({
+      bloodSugarDate: new Date('2023-07-01T05:48:55.694Z'),
+      patientId: mockPatient.id,
+    })
+    await bloodSugarRecordRepo.save(existingBloodSugarRecord)
+
+    /**
+     * start execute use case
+     */
     const request: CreateBloodSugarRecordRequest = {
       user: mockUser,
-      bloodSugarDate: new Date('2023-07-01T05:48:55.694Z'),
+      bloodSugarDate: new Date('2023-07-01T10:48:55.694Z'),
       bloodSugarValue: 98,
       bloodSugarNote: 'Eat too much bread today.',
     }
-    
-    await expect(useCase.execute(request)).rejects.toThrow(ValidationError)
 
-    // In this case, you can insert a record into DB and request to create a new record in the same day
+    await expect(useCase.execute(request)).rejects.toThrow(ValidationError)
   })
 })

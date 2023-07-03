@@ -215,6 +215,9 @@ export class BloodSugarRecordRepository
     bloodSugarValue: number
     bloodSugarType: BloodSugarType
   } | null> {
+    console.table({
+      date: JSON.stringify(date),
+    })
     try {
       const bloodSugarRawValue = await this.getQuery<
         Array<{
@@ -236,6 +239,7 @@ export class BloodSugarRecordRepository
    `,
         [patientId, date]
       )
+
       return bloodSugarRawValue.length === 0
         ? null
         : {
