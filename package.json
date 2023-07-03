@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon",
     "test:unit": "jest --watch src --coverage",
-    "test:integration": "NODE_ENV=test jest --detectOpenHandles --runInBand --testRegex='.*\\.integration.test\\.ts'",
+    "test:integration": "jest --detectOpenHandles --runInBand --testRegex='.*\\.integration.test\\.ts'",
     "lint": "eslint ./src --ext .ts",
     "prettier": "prettier --check .",
     "build": "rimraf ./build && tsc",
@@ -45,6 +45,7 @@
     "@types/express": "^4.17.17",
     "@types/jest": "^29.5.2",
     "@types/jsonwebtoken": "^9.0.1",
+    "@types/mockdate": "^3.0.0",
     "@types/multer": "^1.4.7",
     "@types/node-schedule": "^2.1.0",
     "@types/passport": "^1.0.12",

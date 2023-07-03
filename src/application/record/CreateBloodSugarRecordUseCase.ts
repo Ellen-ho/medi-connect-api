@@ -38,8 +38,6 @@ export class CreateBloodSugarRecordUseCase {
   ): Promise<CreateBloodSugarRecordResponse> {
     const { user, bloodSugarDate, bloodSugarValue, bloodSugarNote } = request
 
-    console.table(request)
-
     const existingPatient = await this.patientRepository.findByUserId(user.id)
 
     if (existingPatient == null) {
