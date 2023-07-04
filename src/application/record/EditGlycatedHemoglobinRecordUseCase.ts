@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { IGlycatedHemoglobinRecordRepository } from '../../domain/record/interfaces/repositories/IGlycatedHemoglobinRecordRepository'
 import { User } from '../../domain/user/User'
@@ -52,16 +53,22 @@ export class EditGlycatedHemoglobinRecordUseCase {
       throw new NotFoundError('This glycated hemoglobin record does not exist.')
     }
 
-    const depulicatedGlycatedHemoglobinRecord =
-      await this.glycatedHemoglobinRecordRepository.findByPatientIdAndDate(
-        existingPatient.id,
-        glycatedHemoglobinDate
+    if (
+      !dayjs(glycatedHemoglobinDate).isSame(
+        existingGlycatedHemoglobinRecord.glycatedHemoglobinDate,
+        'day'
       )
-
-    if (depulicatedGlycatedHemoglobinRecord !== null) {
-      throw new ValidationError(
-        "This patient's glycatedHemoglobin record date is duplicated."
-      )
+    ) {
+      const duplicatedGlycatedHemoglobinRecord =
+        await this.glycatedHemoglobinRecordRepository.findByPatientIdAndDate(
+          existingPatient.id,
+          glycatedHemoglobinDate
+        )
+      if (duplicatedGlycatedHemoglobinRecord !== null) {
+        throw new ValidationError(
+          'The glycated hemoglobin record date is duplicated.'
+        )
+      }
     }
 
     existingGlycatedHemoglobinRecord.updateData({

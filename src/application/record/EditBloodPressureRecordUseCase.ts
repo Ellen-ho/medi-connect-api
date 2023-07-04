@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { IBloodPressureRecordRepository } from '../../domain/record/interfaces/repositories/IBloodPressureRecordRepository'
 import { User } from '../../domain/user/User'
@@ -61,18 +62,23 @@ export class EditBloodPressureRecordUseCase {
       throw new NotFoundError('This blood pressure record does not exist.')
     }
 
-    const depulicatedBloodPressureRecord =
-      await this.bloodPressureRecordRepository.findByPatientIdAndDate(
-        existingPatient.id,
-        bloodPressureDate
+    if (
+      !dayjs(bloodPressureDate).isSame(
+        existingBloodPressureRecord.bloodPressureDate,
+        'day'
       )
-
-    if (depulicatedBloodPressureRecord !== null) {
-      throw new ValidationError(
-        "This patient's blood pressure record date is duplicated."
-      )
+    ) {
+      const duplicatedBloodPressureRecord =
+        await this.bloodPressureRecordRepository.findByPatientIdAndDate(
+          existingPatient.id,
+          bloodPressureDate
+        )
+      if (duplicatedBloodPressureRecord !== null) {
+        throw new ValidationError(
+          'The blood pressure record date is duplicated.'
+        )
+      }
     }
-
     existingBloodPressureRecord.updateData({
       bloodPressureDate,
       systolicBloodPressure,
