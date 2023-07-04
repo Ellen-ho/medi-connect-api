@@ -47,10 +47,9 @@ export class CreateSleepRecordUseCase {
       throw new AuthorizationError('Patient does not exist.')
     }
 
-    const sleepDurationHour: number = dayjs(wakeUpTime).diff(
-      dayjs(sleepTime),
-      'hour'
-    )
+    const sleepDuration: number =
+      dayjs(wakeUpTime).diff(dayjs(sleepTime), 'minute') / 60
+    const sleepDurationHour: number = Math.round(sleepDuration * 10) / 10
 
     const existingRecord =
       await this.sleepRecordRepository.findByPatientIdAndDate(

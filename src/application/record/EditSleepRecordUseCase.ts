@@ -76,10 +76,9 @@ export class EditSleepRecordUseCase {
       }
     }
 
-    const sleepDurationHour: number = dayjs(wakeUpTime).diff(
-      dayjs(sleepTime),
-      'hour'
-    )
+    const sleepDuration: number =
+      dayjs(wakeUpTime).diff(dayjs(sleepTime), 'minute') / 60
+    const sleepDurationHour: number = Math.round(sleepDuration * 10) / 10
 
     existingSleepRecord.updateData({
       sleepDate,

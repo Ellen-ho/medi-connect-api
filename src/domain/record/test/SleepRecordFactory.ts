@@ -11,7 +11,7 @@ export const SleepRecordFactory = Factory.define<SleepRecord>(({ params }) => {
     sleepQuality: SleepQualityType.FAIR,
     sleepDurationHour:
       params.sleepDurationHour ??
-      faker.number.float({ min: 0, max: 24, precision: 0.01 }),
+      faker.number.float({ min: 0, max: 24, precision: 0.1 }),
     sleepNote: params.sleepNote ?? null,
     createdAt: params.createdAt ?? new Date(),
     updatedAt: params.updatedAt ?? new Date(),
