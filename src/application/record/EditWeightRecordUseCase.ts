@@ -6,7 +6,7 @@ import { AuthorizationError } from '../../infrastructure/error/AuthorizationErro
 import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 import { ValidationError } from '../../infrastructure/error/ValidationError'
 
-interface EditWeightRecordRequest {
+export interface EditWeightRecordRequest {
   user: User
   weightRecordId: string
   weightDate: Date
