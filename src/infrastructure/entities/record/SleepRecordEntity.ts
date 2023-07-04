@@ -31,8 +31,8 @@ export class SleepRecordEntity {
   @Column({
     name: 'sleep_duration_hour',
     type: 'numeric',
-    precision: 5,
-    scale: 2,
+    precision: 3,
+    scale: 1,
   })
   public sleepDurationHour!: number
 
