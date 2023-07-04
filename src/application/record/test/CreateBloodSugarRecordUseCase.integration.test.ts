@@ -83,9 +83,6 @@ describe('Integration test: CreateBloodSugarRecordUseCase', () => {
     })
     await patientRepo.save(mockPatient)
 
-    /**
-     * mock neccussary service if needed
-     */
     const mockTargetBloodSugarRecordId = '65a483ce-b0f7-4825-8054-2aa216b0c7c8'
     mockUuidService.generateUuid.mockReturnValueOnce(
       mockTargetBloodSugarRecordId
