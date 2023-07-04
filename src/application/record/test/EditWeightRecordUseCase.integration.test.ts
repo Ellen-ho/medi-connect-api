@@ -63,6 +63,9 @@ describe('Integration test: EditWeightRecordUseCase', () => {
   const mockExtingWeightRecordId = '7bbad866-41b3-4dbe-81eb-dd8f9222ff10'
 
   it('should edit correct weight record data', async () => {
+    const mockDateString = '2023-07-01T05:48:55.694Z'
+    MockDate.set(mockDateString)
+
     await userRepo.save(mockUser)
     const mockPatient = PatientFactory.build({
       user: mockUser,
@@ -75,23 +78,20 @@ describe('Integration test: EditWeightRecordUseCase', () => {
     })
     await weightRecordRepo.save(mockWeightRecord)
 
-    const mockDateString = '2023-07-01T05:48:55.694Z'
-    MockDate.set(mockDateString)
-
     const request: EditWeightRecordRequest = {
       user: mockUser,
       weightRecordId: mockExtingWeightRecordId,
       weightDate: new Date('2023-07-01T05:48:55.694Z'),
       weightValueKg: 97,
-      weightNote: null,
+      weightNote: 'Keep going.',
     }
 
     const result = await useCase.execute(request)
     const expected = {
       id: mockExtingWeightRecordId,
       weightDate: new Date('2023-07-01T05:48:55.694Z'),
-      weightValueKg: 98,
-      bodyMassIndex: 30.24,
+      weightValueKg: 97,
+      bodyMassIndex: 29.9,
       weightNote: 'Keep going.',
       createdAt: new Date(mockDateString),
       updatedAt: new Date(mockDateString),
@@ -126,7 +126,7 @@ describe('Integration test: EditWeightRecordUseCase', () => {
 
     await expect(useCase.execute(request)).rejects.toThrow(NotFoundError)
   })
-  it('should throw ValidationError if this weight record has already exist', async () => {
+  it('should throw ValidationError if weight date is duplicated', async () => {
     await userRepo.save(mockUser)
     const mockPatient = PatientFactory.build({
       user: mockUser,
@@ -136,12 +136,22 @@ describe('Integration test: EditWeightRecordUseCase', () => {
     const existingWeightRecord = WeightRecordFactory.build({
       id: mockExtingWeightRecordId,
       weightDate: new Date('2023-07-01T05:48:55.694Z'),
-      weightValueKg: 98,
-      bodyMassIndex: 30.24,
+      weightValueKg: 97,
+      bodyMassIndex: 29.94,
       weightNote: 'Keep going.',
       patientId: mockPatient.id,
     })
     await weightRecordRepo.save(existingWeightRecord)
+
+    const duplicatedWeightRecord = WeightRecordFactory.build({
+      id: '04d3f9c3-cd42-41f1-a83c-f3672c2e4e7f',
+      weightDate: new Date('2023-07-02T05:48:55.694Z'),
+      weightValueKg: 97,
+      bodyMassIndex: 29.94,
+      weightNote: null,
+      patientId: mockPatient.id,
+    })
+    await weightRecordRepo.save(duplicatedWeightRecord)
 
     /**
      * start execute use case
@@ -149,8 +159,8 @@ describe('Integration test: EditWeightRecordUseCase', () => {
     const request: EditWeightRecordRequest = {
       user: mockUser,
       weightRecordId: '7bbad866-41b3-4dbe-81eb-dd8f9222ff10',
-      weightDate: new Date('2023-07-01T05:48:55.694Z'),
-      weightValueKg: 98,
+      weightDate: new Date('2023-07-02T05:48:55.694Z'),
+      weightValueKg: 97,
       weightNote: 'Keep going.',
     }
 
