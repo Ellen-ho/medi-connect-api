@@ -36,7 +36,7 @@ export class SleepRecordEntity {
   })
   public sleepDurationHour!: number
 
-  @Column({ name: 'sleep_note', type: 'varchar', length: 250 })
+  @Column({ name: 'sleep_note', type: 'varchar', length: 250, nullable: true })
   public sleepNote!: string | null
 
   @CreateDateColumn({ name: 'created_at' })
