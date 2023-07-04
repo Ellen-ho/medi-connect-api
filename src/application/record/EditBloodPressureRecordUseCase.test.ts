@@ -8,6 +8,7 @@ import { BloodPressureRecord } from '../../domain/record/BloodPressureRecord'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
 import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 import { ValidationError } from '../../infrastructure/error/ValidationError'
+import MockDate from 'mockdate'
 
 describe('Unit test: EditBloodPressureRecordUseCase', () => {
   const mockBloodPressureRecordRepo = mock<IBloodPressureRecordRepository>()
@@ -18,12 +19,13 @@ describe('Unit test: EditBloodPressureRecordUseCase', () => {
     mockPatientRepo
   )
 
-  const mockedDate = new Date('2023-06-18T13:18:00.155Z')
-  jest.spyOn(global, 'Date').mockImplementation(() => mockedDate)
+  MockDate.set('2023-06-18T13:18:00.155Z')
 
   afterEach(() => {
     jest.resetAllMocks()
   })
+
+  const mockedDate = new Date('2023-06-18T13:18:00.155Z')
 
   const mockExistingPatient = new Patient({
     id: '1',
@@ -101,7 +103,6 @@ describe('Unit test: EditBloodPressureRecordUseCase', () => {
     mockBloodPressureRecordRepo.findByIdAndPatientId.mockResolvedValue(
       mockExistingRecord
     )
-    mockBloodPressureRecordRepo.findByPatientIdAndDate.mockResolvedValue(null)
     mockBloodPressureRecordRepo.save.mockResolvedValue(Promise.resolve())
 
     const expectedResponse = {
@@ -124,12 +125,6 @@ describe('Unit test: EditBloodPressureRecordUseCase', () => {
     ).toHaveBeenCalledWith(
       mockExistingPatient.id,
       mockRequest.bloodPressureRecordId
-    )
-    expect(
-      mockBloodPressureRecordRepo.findByPatientIdAndDate
-    ).toHaveBeenCalledWith(
-      mockExistingPatient.id,
-      mockRequest.bloodPressureDate
     )
     expect(mockBloodPressureRecordRepo.save).toHaveBeenCalledWith(
       mockUpdateBloodPressureRecord
@@ -175,12 +170,30 @@ describe('Unit test: EditBloodPressureRecordUseCase', () => {
     ).not.toHaveBeenCalled()
     expect(mockBloodPressureRecordRepo.save).not.toHaveBeenCalled()
   })
-  it("should throw a ValidationError when this patient's blood pressure record date is duplicated.", async () => {
+  it('should throw a ValidationError when the blood pressure record date is duplicated.', async () => {
     mockPatientRepo.findByUserId.mockResolvedValue(mockExistingPatient)
+
+    const mockRequest = {
+      user: new User({
+        id: '1',
+        email: 'test@test.com',
+        displayName: 'Test User',
+        role: UserRoleType.PATIENT,
+        hashedPassword: 'hashedPassword',
+        createdAt: new Date('2023-06-18T13:18:00.155Z'),
+        updatedAt: new Date('2023-06-18T13:18:00.155Z'),
+      }),
+      bloodPressureRecordId: '1',
+      bloodPressureDate: new Date('2023-06-20T13:18:00.155Z'),
+      systolicBloodPressure: 130,
+      diastolicBloodPressure: 80,
+      heartBeat: 70,
+      bloodPressureNote: null,
+    }
 
     const mockDuplicateRecord = new BloodPressureRecord({
       id: 'duplicate-record-id',
-      bloodPressureDate: mockRequest.bloodPressureDate,
+      bloodPressureDate: new Date('2023-06-20T13:18:00.155Z'),
       systolicBloodPressure: 120,
       diastolicBloodPressure: 70,
       heartBeat: 65,
