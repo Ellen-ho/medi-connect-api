@@ -168,43 +168,43 @@ export class RecordRoutes {
         asyncHandler(this.recordController.getSingleWeightRecord)
       )
       .get(
-        '/exercise-records',
+        '/exercise',
         authenticated,
         validator(getExerciseRecordsSchema),
         asyncHandler(this.recordController.getExerciseRecords)
       )
       .get(
-        '/blood-pressure-records',
+        '/blood-pressure',
         authenticated,
         validator(getBloodPressureRecordsSchema),
         asyncHandler(this.recordController.getBloodPressureRecords)
       )
       .get(
-        '/blood-sugar-records',
+        '/blood-sugar',
         authenticated,
         validator(getBloodSugarRecordsSchema),
         asyncHandler(this.recordController.getBloodSugarRecords)
       )
       .get(
-        '/food-records',
+        '/food',
         authenticated,
         validator(getFoodRecordsSchema),
         asyncHandler(this.recordController.getFoodRecords)
       )
       .get(
-        '/glycated-hemoglobin-records',
+        '/glycated-hemoglobin',
         authenticated,
         validator(getGlycatedHemoglobinRecordsSchema),
         asyncHandler(this.recordController.getGlycatedHemoglobinRecords)
       )
       .get(
-        '/sleep-records',
+        '/sleep',
         authenticated,
         validator(getSleepRecordsSchema),
         asyncHandler(this.recordController.getSleepRecords)
       )
       .get(
-        '/weight-records',
+        '/weight',
         authenticated,
         validator(getWeightRecordsSchema),
         asyncHandler(this.recordController.getWeightRecords)
