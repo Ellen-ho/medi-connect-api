@@ -245,7 +245,7 @@ export class BloodPressureRecordRepository
             blood_pressure_records.blood_pressure_date DESC
           LIMIT 1
    `,
-        [patientId, new Date().toISOString()]
+        [patientId, date]
       )
 
       return bloodPressureRawValue.length === 0
