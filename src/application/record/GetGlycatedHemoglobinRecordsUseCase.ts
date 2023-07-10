@@ -23,7 +23,7 @@ interface GetGlycatedHemoglobinRecordsResponse {
     gender: GenderType
   }
   recordsData: Array<{
-    glycatedHemoglobinDate: Date
+    date: Date
     glycatedHemoglobinValuePercent: number
   }>
   pagination: {

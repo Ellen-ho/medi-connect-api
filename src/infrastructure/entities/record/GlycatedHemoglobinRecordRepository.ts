@@ -257,7 +257,7 @@ export class GlycatedHemoglobinRecordRepository
       gender: GenderType
     }
     recordsData: Array<{
-      glycatedHemoglobinDate: Date
+      date: Date
       glycatedHemoglobinValuePercent: number
     }>
   }> {
@@ -289,7 +289,7 @@ export class GlycatedHemoglobinRecordRepository
           gender: result.length > 0 ? result[0].gender : '',
         },
         recordsData: result.map((record) => ({
-          glycatedHemoglobinDate: record.glycatedHemoglobinDate,
+          date: record.glycatedHemoglobinDate,
           glycatedHemoglobinValuePercent: record.glycatedHemoglobinValuePercent,
         })),
       }

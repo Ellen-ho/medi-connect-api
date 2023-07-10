@@ -260,7 +260,7 @@ export class WeightRecordRepository
       gender: GenderType
     }
     recordsData: Array<{
-      weightDate: Date
+      date: Date
       weightValueKg: number
       bodyMassIndex: number
     }>
@@ -294,7 +294,7 @@ export class WeightRecordRepository
           gender: result.length > 0 ? result[0].gender : '',
         },
         recordsData: result.map((record) => ({
-          weightDate: record.weightDate,
+          date: record.weightDate,
           weightValueKg: record.weightValueKg,
           bodyMassIndex: record.bodyMassIndex,
         })),

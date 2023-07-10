@@ -24,7 +24,7 @@ interface GetBloodSugarRecordsResponse {
     gender: GenderType
   }
   recordsData: Array<{
-    bloodSugarDate: Date
+    date: Date
     bloodSugarValue: number // mg/L
     bloodSugarType: BloodSugarType
   }>

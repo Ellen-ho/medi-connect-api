@@ -54,7 +54,7 @@ export interface IWeightRecordRepository extends IBaseRepository<WeightRecord> {
       gender: GenderType
     }
     recordsData: Array<{
-      weightDate: Date
+      date: Date
       weightValueKg: number
       bodyMassIndex: number
     }>

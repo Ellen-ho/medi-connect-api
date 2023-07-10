@@ -132,7 +132,7 @@ describe('Unit test: GetBloodPressureRecordsUseCase', () => {
     },
     recordsData: [
       {
-        bloodPressureDate: new Date('2023-06-18T13:18:00.155Z'),
+        date: new Date('2023-06-18T13:18:00.155Z'),
         systolicBloodPressure: 120,
         diastolicBloodPressure: 80,
       },

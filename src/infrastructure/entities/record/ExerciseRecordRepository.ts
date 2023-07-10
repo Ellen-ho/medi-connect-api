@@ -181,7 +181,7 @@ export class ExerciseRecordRepository
       gender: GenderType
     }
     recordsData: Array<{
-      exerciseDate: Date
+      date: Date
       exerciseType: ExerciseType
     }>
   }> {
@@ -213,7 +213,7 @@ export class ExerciseRecordRepository
           gender: result.length > 0 ? result[0].gender : '',
         },
         recordsData: result.map((record) => ({
-          exerciseDate: record.exerciseDate,
+          date: record.exerciseDate,
           exerciseType: record.exerciseType,
         })),
       }

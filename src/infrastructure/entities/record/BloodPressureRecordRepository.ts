@@ -133,7 +133,7 @@ export class BloodPressureRecordRepository
       gender: GenderType
     }
     recordsData: Array<{
-      bloodPressureDate: Date
+      date: Date
       systolicBloodPressure: number
       diastolicBloodPressure: number
     }>
@@ -166,7 +166,7 @@ export class BloodPressureRecordRepository
         gender: result.length > 0 ? result[0].gender : '',
       },
       recordsData: result.map((record) => ({
-        bloodPressureDate: record.bloodPressureDate,
+        date: record.bloodPressureDate,
         systolicBloodPressure: record.systolicBloodPressure,
         diastolicBloodPressure: record.diastolicBloodPressure,
       })),
