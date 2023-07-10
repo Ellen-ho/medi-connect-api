@@ -10,12 +10,6 @@ import { UserRepository } from '../../../infrastructure/entities/user/UserReposi
 import { DoctorRepository } from '../../../infrastructure/entities/doctor/DoctorRepository'
 import { ConsultAppointmentRepository } from '../../../infrastructure/entities/consultation/ConsultAppointmentRepository'
 import { faker } from '@faker-js/faker'
-import { UserFactory } from '../../../domain/user/test/UserFactory'
-import { UserRoleType } from '../../../domain/user/User'
-import { SleepRecordFactory } from '../../../domain/record/test/SleepRecordFactory'
-import { IUuidService } from '../../../domain/utils/IUuidService'
-import { mock } from 'jest-mock-extended'
-import { PatientFactory } from '../../../domain/patient/test/PatientFactory'
 // import { AuthorizationError } from '../../../infrastructure/error/AuthorizationError'
 // import { NotFoundError } from '../../../infrastructure/error/NotFoundError'
 
