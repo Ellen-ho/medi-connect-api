@@ -16,6 +16,8 @@ import { SleepRecordFactory } from '../../../domain/record/test/SleepRecordFacto
 import { IUuidService } from '../../../domain/utils/IUuidService'
 import { mock } from 'jest-mock-extended'
 import { PatientFactory } from '../../../domain/patient/test/PatientFactory'
+// import { AuthorizationError } from '../../../infrastructure/error/AuthorizationError'
+// import { NotFoundError } from '../../../infrastructure/error/NotFoundError'
 
 describe('Integration test: GetSingleSleepRecordUseCase', () => {
   let database: PostgresDatabase
@@ -32,14 +34,13 @@ describe('Integration test: GetSingleSleepRecordUseCase', () => {
     database = new PostgresDatabase()
     await database.connect()
     // create repos and service
-    sleepRecordRepo = new SleepRecordRepository(database.getDataSource())
+    userRepo = new UserRepository(database.getDataSource())
     patientRepo = new PatientRepository(database.getDataSource())
     doctorRepo = new DoctorRepository(database.getDataSource())
+    sleepRecordRepo = new SleepRecordRepository(database.getDataSource())
     consultAppointmentRepo = new ConsultAppointmentRepository(
       database.getDataSource()
     )
-    userRepo = new UserRepository(database.getDataSource())
-
     useCase = new GetSingleSleepRecordUseCase(
       sleepRecordRepo,
       patientRepo,
@@ -52,8 +53,8 @@ describe('Integration test: GetSingleSleepRecordUseCase', () => {
 
   afterEach(async () => {
     // clear data in the table which had inserted data in the test
-    await sleepRecordRepo.clear()
     await consultAppointmentRepo.clear()
+    await sleepRecordRepo.clear()
     await patientRepo.clear()
     await doctorRepo.clear()
     await userRepo.clear()
@@ -68,7 +69,7 @@ describe('Integration test: GetSingleSleepRecordUseCase', () => {
 
   const mockTargetSleepRecordId = 'ef6cecbe-e490-47de-84ef-547d3655dee3'
   mockUuidService.generateUuid.mockReturnValueOnce(mockTargetSleepRecordId)
-  const mockDateString = '2023-06-18T05:48:55.694Z'
+  const mockDateString = '2023-06-20T05:48:55.694Z'
 
   it('should get correct record data', async () => {
     const mockUser = UserFactory.build({
@@ -90,8 +91,8 @@ describe('Integration test: GetSingleSleepRecordUseCase', () => {
       id: mockTargetSleepRecordId,
       sleepDate: new Date('2023-06-18T13:18:00.155Z'),
       sleepTime: new Date('2023-06-18T23:00:00.155Z'),
-      wakeUpTime: new Date('2023-06-19T08:00:00.155Z'),
-      sleepDurationHour: 9.0,
+      wakeUpTime: new Date('2023-06-19T08:30:00.155Z'),
+      sleepDurationHour: parseFloat('9.5'),
       createdAt: new Date(mockDateString),
       updatedAt: new Date(mockDateString),
       patientId: mockPatient.id,
@@ -102,9 +103,10 @@ describe('Integration test: GetSingleSleepRecordUseCase', () => {
 
     const request: GetSingleSleepRecordRequest = {
       user: mockUser,
-      sleepRecordId: 'ef6cecbe-e490-47de-84ef-547d3655dee3',
+      sleepRecordId: mockTargetSleepRecordId,
     }
     const result = await useCase.execute(request)
+
     const expected = {
       data: {
         sleepDate: mockSleepRecord.sleepDate,
@@ -125,4 +127,28 @@ describe('Integration test: GetSingleSleepRecordUseCase', () => {
     }
     expect(result).toEqual(expected)
   })
+  // it('should throw NotFoundError if this record not  found in DB', async () => {
+  //   const mockUser = UserFactory.build({
+  //     id: faker.string.uuid(),
+  //     email: 'test@test.com',
+  //     displayName: 'Test User',
+  //     role: UserRoleType.PATIENT,
+  //     hashedPassword: 'hashedPassword',
+  //     createdAt: new Date(mockDateString),
+  //     updatedAt: new Date(mockDateString),
+  //   })
+  //   await userRepo.save(mockUser)
+  //   const mockPatient = PatientFactory.build({
+  //     user: mockUser,
+  //   })
+  //   await patientRepo.save(mockPatient)
+
+  //   const request: GetSingleSleepRecordRequest = {
+  //     user: mockUser,
+  //     sleepRecordId: 'e83fbbcf-b326-4e02-b765-9301ad3ba4f9',
+  //   }
+  //   await expect(useCase.execute(request)).rejects.toThrow(NotFoundError)
+  // })
+  //   it('should throw AuthorizationError if current doctor not found in DB', async () => {
+  // })
 })

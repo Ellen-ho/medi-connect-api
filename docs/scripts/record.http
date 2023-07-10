@@ -8,8 +8,8 @@ POST {{usersPath}}/login
 Content-Type: application/json
 
 {
-  "email": "Ellen@gmail.com",
-  "password": "Ellen"
+  "email": "tim@gmail.com",
+  "password": "tim"
 }
 ###
 @accessToken = Bearer {{login.response.body.token}}
@@ -42,7 +42,7 @@ Content-Type: application/json
 }
 ###
 
-### create glycatedHemoglobinRecord record
+### create glycatedHemoglobin record
 POST {{recordsPath}}/glycated-hemoglobin
 Authorization: {{accessToken}}
 Content-Type: application/json
@@ -50,6 +50,20 @@ Content-Type: application/json
 {
   "glycatedHemoglobinDate": "2023-05-29 18:34:38.091",
   "glycatedHemoglobinValuePercent": 5
+}
+###
+
+### create sleep record
+POST {{recordsPath}}/sleep
+Authorization: {{accessToken}}
+Content-Type: application/json
+
+{
+  "sleepDate": "2023-06-18 13:18:00.091",
+  "sleepTime": "2023-06-18 23:00:00.091",
+  "wakeUpTime": "2023-06-19 08:30:00.091",
+  "sleepQuality": "FAIR",
+  "sleepNote": "no"
 }
 ###
 

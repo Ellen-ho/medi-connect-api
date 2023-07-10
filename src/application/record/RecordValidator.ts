@@ -82,7 +82,6 @@ export const creatSleepRecordSchema = {
     sleepQuality: Joi.string()
       .valid(...Object.values(SleepQualityType))
       .required(),
-    sleepDurationHour: Joi.number().required(),
     sleepNote: Joi.string().optional(),
   }),
 }
