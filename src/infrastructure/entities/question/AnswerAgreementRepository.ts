@@ -63,7 +63,8 @@ export class AnswerAgreementRepository
         SELECT COUNT(*) 
         FROM answer_agreements
         WHERE answer_agreements.patient_question_answer_id = $1
-    `,
+        AND answer_agreements.deleted_at IS NULL
+        `,
         [answerId]
       )
 
@@ -90,6 +91,7 @@ export class AnswerAgreementRepository
         FROM answer_agreements
         LEFT JOIN doctors ON answer_agreements.agreed_doctor_id = doctors.id
         WHERE answer_agreements.patient_question_answer_id = $1
+        AND answer_agreements.deleted_at IS NULL
         ORDER BY answer_agreements.created_at DESC
     `,
         [answerId]
