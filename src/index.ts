@@ -609,7 +609,12 @@ async function main(): Promise<void> {
   /**
    * Controllers
    */
-  const userController = new UserController(getUserUseCase, createUserUseCase)
+  const userController = new UserController(
+    getUserUseCase,
+    createUserUseCase,
+    patientRepository,
+    doctorRepository
+  )
   const patientController = new PatientController(
     createPatientProfileUseCase,
     editPatientProfileUseCase
