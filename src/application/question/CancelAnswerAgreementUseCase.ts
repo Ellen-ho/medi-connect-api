@@ -4,7 +4,7 @@ import { User } from '../../domain/user/User'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
 import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 
-interface CancelAnswerAgreementRequest {
+export interface CancelAnswerAgreementRequest {
   user: User
   answerAgreementId: string
 }
