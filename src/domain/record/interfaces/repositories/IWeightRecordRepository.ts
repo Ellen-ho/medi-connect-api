@@ -38,6 +38,7 @@ export interface IWeightRecordRepository extends IBaseRepository<WeightRecord> {
   ) => Promise<{
     weightValueKg: number
     bodyMassIndex: number
+    weightDate: Date
   } | null>
   findById: (id: string) => Promise<WeightRecord | null>
   findByPatientIdAndCountAll: (
@@ -53,7 +54,7 @@ export interface IWeightRecordRepository extends IBaseRepository<WeightRecord> {
       gender: GenderType
     }
     recordsData: Array<{
-      weightDate: Date
+      date: Date
       weightValueKg: number
       bodyMassIndex: number
     }>

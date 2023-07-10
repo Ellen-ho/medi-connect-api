@@ -92,3 +92,34 @@ Important notes:
 - When creating a PR with migrations check if your timestamp is the latest. Otherwise, when outdated migration is merged it will be ignored by `typeorm run` command.
 
 Reference: [Why need to setup typeorm-ts-node-commonjs in typeorm script](https://typeorm.io/using-cli#if-entities-files-are-in-typescript)
+
+### Integration Test
+
+1. Setup test database
+
+Change the following variables in .env:
+
+- POSTGRES_DB_NAME=test_db
+- POSTGRES_PORT=54320
+
+Execute the following command to create test DB:
+
+```shell
+docker-compose --profile test up -d [--build]
+```
+
+2. Apply DB migration to test DB
+
+```
+$ npm run typeorm migration:run
+```
+
+3. Run integration test
+
+This will run all script that has the `.integration.test.ts` suffix:
+
+```
+npm run test:integration
+```
+
+To run individual integration test, you can run `npm run test:integration -- -i <file_name>`

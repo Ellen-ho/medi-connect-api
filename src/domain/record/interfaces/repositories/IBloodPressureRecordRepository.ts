@@ -26,7 +26,7 @@ export interface IBloodPressureRecordRepository
       gender: GenderType
     }
     recordsData: Array<{
-      bloodPressureDate: Date
+      date: Date
       systolicBloodPressure: number
       diastolicBloodPressure: number
     }>

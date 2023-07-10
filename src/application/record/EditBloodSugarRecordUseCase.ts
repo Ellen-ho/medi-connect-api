@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { BloodSugarType } from '../../domain/record/BloodSugarRecord'
 import { IBloodSugarRecordRepository } from '../../domain/record/interfaces/repositories/IBloodSugarRecordRepository'
@@ -60,16 +61,20 @@ export class EditBloodSugarRecordUseCase {
       throw new NotFoundError('This blood sugar record does not exist.')
     }
 
-    const depulicatedBloodSugarRecord =
-      await this.bloodSugarRecordRepository.findByPatientIdAndDate(
-        existingPatient.id,
-        bloodSugarDate
+    if (
+      !dayjs(bloodSugarDate).isSame(
+        existingBloodSugarRecord.bloodSugarDate,
+        'day'
       )
-
-    if (depulicatedBloodSugarRecord !== null) {
-      throw new ValidationError(
-        "This patient's fasting blood sugar record date is duplicated."
-      )
+    ) {
+      const duplicatedBloodSugarRecord =
+        await this.bloodSugarRecordRepository.findByPatientIdAndDate(
+          existingPatient.id,
+          bloodSugarDate
+        )
+      if (duplicatedBloodSugarRecord !== null) {
+        throw new ValidationError('The blood sugar record date is duplicated.')
+      }
     }
 
     existingBloodSugarRecord.updateData({

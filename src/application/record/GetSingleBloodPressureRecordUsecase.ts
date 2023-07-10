@@ -8,7 +8,7 @@ import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/I
 import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
 
-interface GetSingleBloodPressureRecordRequest {
+export interface GetSingleBloodPressureRecordRequest {
   user: User
   bloodPressureRecordId: string
 }

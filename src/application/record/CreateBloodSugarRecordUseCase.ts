@@ -9,7 +9,7 @@ import { IUuidService } from '../../domain/utils/IUuidService'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
 import { ValidationError } from '../../infrastructure/error/ValidationError'
 
-interface CreateBloodSugarRecordRequest {
+export interface CreateBloodSugarRecordRequest {
   user: User
   bloodSugarDate: Date
   bloodSugarValue: number
@@ -43,7 +43,6 @@ export class CreateBloodSugarRecordUseCase {
     if (existingPatient == null) {
       throw new AuthorizationError('Patient does not exist.')
     }
-
     const existingRecord =
       await this.bloodSugarRecordRepository.findByPatientIdAndDate(
         existingPatient.id,

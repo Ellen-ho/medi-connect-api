@@ -40,7 +40,7 @@ export interface ISleepRecordRepository extends IBaseRepository<SleepRecord> {
       gender: GenderType
     }
     recordsData: Array<{
-      sleepDate: Date
+      date: Date
       sleepQuality: SleepQualityType
     }>
   }>

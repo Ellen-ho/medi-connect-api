@@ -207,17 +207,20 @@ export class WeightRecordRepository
   ): Promise<{
     weightValueKg: number
     bodyMassIndex: number
+    weightDate: Date
   } | null> {
     try {
-      const weightAndBodyMassIndexRawValue = await this.getQuery<
+      const result = await this.getQuery<
         Array<{
           weight_value_kg: number
           body_mass_index: number
+          weight_date: Date
         }>
       >(
         `SELECT
              weight_value_kg,
               body_mass_index
+              weight_date
           FROM
               weight_records
           WHERE
@@ -229,11 +232,12 @@ export class WeightRecordRepository
    `,
         [patientId, date]
       )
-      return weightAndBodyMassIndexRawValue.length === 0
+      return result.length === 0
         ? null
         : {
-            weightValueKg: weightAndBodyMassIndexRawValue[0].weight_value_kg,
-            bodyMassIndex: weightAndBodyMassIndexRawValue[0].body_mass_index,
+            weightValueKg: result[0].weight_value_kg,
+            bodyMassIndex: result[0].body_mass_index,
+            weightDate: result[0].weight_date,
           }
     } catch (e) {
       throw new RepositoryError(
@@ -256,7 +260,7 @@ export class WeightRecordRepository
       gender: GenderType
     }
     recordsData: Array<{
-      weightDate: Date
+      date: Date
       weightValueKg: number
       bodyMassIndex: number
     }>
@@ -290,7 +294,7 @@ export class WeightRecordRepository
           gender: result.length > 0 ? result[0].gender : '',
         },
         recordsData: result.map((record) => ({
-          weightDate: record.weightDate,
+          date: record.weightDate,
           weightValueKg: record.weightValueKg,
           bodyMassIndex: record.bodyMassIndex,
         })),

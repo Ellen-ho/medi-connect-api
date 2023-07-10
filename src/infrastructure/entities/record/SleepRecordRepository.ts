@@ -198,7 +198,7 @@ export class SleepRecordRepository
       gender: GenderType
     }
     recordsData: Array<{
-      sleepDate: Date
+      date: Date
       sleepQuality: SleepQualityType
     }>
   }> {
@@ -230,7 +230,7 @@ export class SleepRecordRepository
           gender: result.length > 0 ? result[0].gender : '',
         },
         recordsData: result.map((record) => ({
-          sleepDate: record.sleepDate,
+          date: record.sleepDate,
           sleepQuality: record.sleepQuality,
         })),
       }

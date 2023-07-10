@@ -125,6 +125,14 @@ async function main(): Promise<void> {
   const env = process.env
   const port = env.API_PORT as string
 
+  if (env.NODE_ENV === 'test' && env.POSTGRES_DB_NAME !== 'test_db') {
+    throw new Error(
+      `Running test on a non 'test' db will wipe out your entire db! POSTGRES_DB_NAME is specified as '${
+        env.POSTGRES_DB_NAME as string
+      }'`
+    )
+  }
+
   /**
    * Database Connection
    */

@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { IWeightRecordRepository } from '../../domain/record/interfaces/repositories/IWeightRecordRepository'
 import { User } from '../../domain/user/User'
@@ -6,7 +7,7 @@ import { AuthorizationError } from '../../infrastructure/error/AuthorizationErro
 import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 import { ValidationError } from '../../infrastructure/error/ValidationError'
 
-interface EditWeightRecordRequest {
+export interface EditWeightRecordRequest {
   user: User
   weightRecordId: string
   weightDate: Date
@@ -57,16 +58,15 @@ export class EditWeightRecordUseCase {
       heightValueCm: existingPatient.heightValueCm,
     })
 
-    const depulicatedWeightRecord =
-      await this.weightRecordRepository.findByPatientIdAndDate(
-        existingPatient.id,
-        weightDate
-      )
-
-    if (depulicatedWeightRecord !== null) {
-      throw new ValidationError(
-        "This patient's weight record date is duplicated."
-      )
+    if (!dayjs(weightDate).isSame(existingWeightRecord.weightDate, 'day')) {
+      const duplicatedWeightRecord =
+        await this.weightRecordRepository.findByPatientIdAndDate(
+          existingPatient.id,
+          weightDate
+        )
+      if (duplicatedWeightRecord !== null) {
+        throw new ValidationError('The weight record date is duplicated.')
+      }
     }
 
     existingWeightRecord.updateData({

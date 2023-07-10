@@ -37,7 +37,7 @@ export interface IExerciseRecordRepository
       gender: GenderType
     }
     recordsData: Array<{
-      exerciseDate: Date
+      date: Date
       exerciseType: ExerciseType
     }>
   }>

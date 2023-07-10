@@ -24,7 +24,7 @@ interface GetExerciseRecordsResponse {
     gender: GenderType
   }
   recordsData: Array<{
-    exerciseDate: Date
+    date: Date
     exerciseType: ExerciseType
   }>
   pagination: {

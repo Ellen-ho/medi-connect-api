@@ -8,7 +8,7 @@ import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
 
-interface CreatePatientQuestionRequest {
+export interface CreatePatientQuestionRequest {
   user: User
   content: string
   medicalSpecialty: MedicalSpecialtyType

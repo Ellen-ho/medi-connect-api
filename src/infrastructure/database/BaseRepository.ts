@@ -2,6 +2,10 @@ import { DataSource, EntityTarget, ObjectLiteral, Repository } from 'typeorm'
 import { IBaseRepository } from '../../domain/shared/IBaseRepository'
 import { IEntityMapper } from '../../domain/shared/IEntityMapper'
 import { IExecutor } from '../../domain/shared/IRepositoryTx'
+import dotenv from 'dotenv'
+
+dotenv.config()
+const { NODE_ENV } = process.env
 
 export class BaseRepository<E extends ObjectLiteral, DM>
   implements IBaseRepository<DM>
@@ -54,6 +58,22 @@ export class BaseRepository<E extends ObjectLiteral, DM>
       await executor.save(entities)
     } catch (e) {
       throw new Error('repository saveAll error: ' + (e as Error).message)
+    }
+  }
+
+  public async clear(): Promise<void> {
+    if (NODE_ENV !== 'test') {
+      throw new Error(
+        'Operation not allowed: you can use it under the test environment only'
+      )
+    }
+
+    try {
+      await this.getRepo().delete({})
+    } catch (e) {
+      throw new Error(
+        'Operation not allowed: you can use it under the test environment only'
+      )
     }
   }
 }

@@ -24,7 +24,7 @@ interface GetSleepRecordsResponse {
     gender: GenderType
   }
   recordsData: Array<{
-    sleepDate: Date
+    date: Date
     sleepQuality: SleepQualityType
   }>
   pagination: {

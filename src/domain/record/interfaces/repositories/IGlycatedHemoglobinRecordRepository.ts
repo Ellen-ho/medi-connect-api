@@ -52,7 +52,7 @@ export interface IGlycatedHemoglobinRecordRepository
       gender: GenderType
     }
     recordsData: Array<{
-      glycatedHemoglobinDate: Date
+      date: Date
       glycatedHemoglobinValuePercent: number
     }>
   }>

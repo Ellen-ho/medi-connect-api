@@ -23,6 +23,7 @@ describe('Unit test: GetUserUseCase', () => {
       createdAt: new Date('2023-06-18T13:18:00.155Z'),
       updatedAt: new Date('2023-06-18T13:18:00.155Z'),
     })
+
     const expected = {
       id: '1',
       email: 'test@test.com',

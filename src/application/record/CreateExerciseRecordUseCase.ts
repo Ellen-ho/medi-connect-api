@@ -9,7 +9,7 @@ import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
 
-interface CreateExerciseRecordRequest {
+export interface CreateExerciseRecordRequest {
   user: User
   exerciseDate: Date
   exerciseType: ExerciseType
