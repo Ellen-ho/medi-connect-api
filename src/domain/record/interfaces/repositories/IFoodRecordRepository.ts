@@ -36,7 +36,7 @@ export interface IFoodRecordRepository extends IBaseRepository<FoodRecord> {
       gender: GenderType
     }
     recordsData: Array<{
-      foodTime: Date
+      date: Date
       foodCategory: FoodCategoryType
     }>
   }>

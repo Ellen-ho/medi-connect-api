@@ -24,7 +24,7 @@ interface GetFoodRecordsResponse {
     gender: GenderType
   }
   recordsData: Array<{
-    foodTime: Date
+    date: Date
     foodCategory: FoodCategoryType
   }>
   pagination: {

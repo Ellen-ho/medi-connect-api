@@ -175,7 +175,7 @@ export class FoodRecordRepository
       gender: GenderType
     }
     recordsData: Array<{
-      foodTime: Date
+      date: Date
       foodCategory: FoodCategoryType
     }>
   }> {
@@ -207,7 +207,7 @@ export class FoodRecordRepository
           gender: result.length > 0 ? result[0].gender : '',
         },
         recordsData: result.map((record) => ({
-          foodTime: record.foodTime,
+          date: record.foodTime,
           foodCategory: record.foodCategory,
         })),
       }
