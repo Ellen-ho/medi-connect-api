@@ -29,13 +29,13 @@ export class DoctorTimeSlotRepository
   }
 
   public async findByIdAndDoctorId(
-    doctorTimeSlotId: string,
+    id: string,
     doctorId: string
   ): Promise<DoctorTimeSlot | null> {
     try {
       const entity = await this.getRepo().findOne({
         where: {
-          id: doctorTimeSlotId,
+          id,
           doctor: { id: doctorId },
         },
       })
