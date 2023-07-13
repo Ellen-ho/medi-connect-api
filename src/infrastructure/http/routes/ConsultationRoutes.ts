@@ -17,11 +17,6 @@ export class ConsultationRoutes {
   ) {
     this.routes = Router()
     this.routes
-      .post(
-        '/',
-        validator(createConsultAppointmentSchema),
-        asyncHandler(this.consultationController.createConsultAppointment)
-      )
       .delete(
         '/:id',
         validator(cancelConsultAppointmentSchema),
@@ -41,6 +36,11 @@ export class ConsultationRoutes {
         '/multiple-time-slots',
         validator(createMultipleTimeSlotsSchema),
         asyncHandler(this.consultationController.createMultipleTimeSlots)
+      )
+      .post(
+        '/',
+        validator(createConsultAppointmentSchema),
+        asyncHandler(this.consultationController.createConsultAppointment)
       )
       .get(
         '/patient',

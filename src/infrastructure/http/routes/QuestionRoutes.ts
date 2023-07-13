@@ -20,15 +20,35 @@ export class QuestionRoutes {
     this.routes = Router()
     this.routes
       // patient specific
-      .post(
-        '/',
-        validator(creatPatientQuestionSchema),
-        asyncHandler(this.questionController.createPatientQuestion)
+      .patch(
+        '/answers/appreciations/:id',
+        validator(editAnswerAgreementCommentSchema),
+        asyncHandler(this.questionController.editAnswerAppreciationContent)
+      )
+      .patch(
+        '/answers/agreements/:id',
+        validator(editAnswerAgreementCommentSchema),
+        asyncHandler(this.questionController.editAnswerAgreementComment)
       )
       .patch(
         '/:id',
         validator(editPatientQuestionSchema),
         asyncHandler(this.questionController.editPatientQuestion)
+      )
+      .delete(
+        '/answers/appreciations/:id',
+        validator(cancelAnswerAgreementSchema),
+        asyncHandler(this.questionController.cancelAnswerAppreciation)
+      )
+      .delete(
+        '/answers/agreements/:id',
+        validator(cancelAnswerAgreementSchema),
+        asyncHandler(this.questionController.cancelAnswerAgreement)
+      )
+      .delete(
+        '/answers/:id',
+        validator(cancelPatientQuestionAnswerSchema),
+        asyncHandler(this.questionController.cancelPatientQuestionAnswer)
       )
       .delete(
         '/:id',
@@ -40,17 +60,11 @@ export class QuestionRoutes {
         validator(createAnswerAgreementSchema),
         asyncHandler(this.questionController.createAnswerAppreciation)
       )
-      .patch(
-        '/answers/appreciations/:id',
-        validator(editAnswerAgreementCommentSchema),
-        asyncHandler(this.questionController.editAnswerAppreciationContent)
+      .post(
+        '/answers/:id/agreements',
+        validator(createAnswerAgreementSchema),
+        asyncHandler(this.questionController.createAnswerAgreement)
       )
-      .delete(
-        '/answers/appreciations/:id',
-        validator(cancelAnswerAgreementSchema),
-        asyncHandler(this.questionController.cancelAnswerAppreciation)
-      )
-      // doctor specific
       .post(
         '/:id/answers',
         validator(creatPatientQuestionAnswerSchema),
@@ -62,25 +76,10 @@ export class QuestionRoutes {
       //   validator(editPatientQuestionAnswerSchema),
       //   asyncHandler(this.questionController.editPatientQuestionAnswerContent)
       // )
-      .delete(
-        '/answers/:id',
-        validator(cancelPatientQuestionAnswerSchema),
-        asyncHandler(this.questionController.cancelPatientQuestionAnswer)
-      )
       .post(
-        '/answers/:id/agreements',
-        validator(createAnswerAgreementSchema),
-        asyncHandler(this.questionController.createAnswerAgreement)
-      )
-      .patch(
-        '/answers/agreements/:id',
-        validator(editAnswerAgreementCommentSchema),
-        asyncHandler(this.questionController.editAnswerAgreementComment)
-      )
-      .delete(
-        '/answers/agreements/:id',
-        validator(cancelAnswerAgreementSchema),
-        asyncHandler(this.questionController.cancelAnswerAgreement)
+        '/',
+        validator(creatPatientQuestionSchema),
+        asyncHandler(this.questionController.createPatientQuestion)
       )
       .get(
         '/:id',
