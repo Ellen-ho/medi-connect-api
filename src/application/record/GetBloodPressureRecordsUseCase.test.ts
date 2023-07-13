@@ -14,7 +14,6 @@ import { GenderType, Patient } from '../../domain/patient/Patient'
 import { MedicalSpecialtyType } from '../../domain/question/PatientQuestion'
 import { Doctor } from '../../domain/doctor/Doctor'
 import { DoctorTimeSlot } from '../../domain/consultation/DoctorTimeSlot'
-import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 
 describe('Unit test: GetBloodPressureRecordsUseCase', () => {
   const mockBloodPressureRecordRepo = mock<IBloodPressureRecordRepository>()
@@ -138,37 +137,6 @@ describe('Unit test: GetBloodPressureRecordsUseCase', () => {
       },
     ],
   }
-
-  it('should throw NotFoundError when no record exists', async () => {
-    const mockRequest = {
-      user: new User({
-        id: 'doctor1',
-        email: 'doctor1@gmail.com',
-        displayName: 'Test DOCTOR',
-        role: UserRoleType.DOCTOR,
-        hashedPassword: 'hashedPassword',
-        createdAt: mockedDate,
-        updatedAt: mockedDate,
-      }),
-      targetPatientId: 'patient1',
-    }
-    mockBloodPressureRecordRepo.findByPatientIdAndCountAll.mockResolvedValue({
-      total_counts: 0,
-      patientData: {
-        firstName: 'John',
-        lastName: 'Doe',
-        birthDate: new Date('1990-06-20T09:00:00.000Z'),
-        gender: GenderType.MALE,
-      },
-      recordsData: [],
-    })
-    await expect(
-      getBloodPressureRecordsUseCase.execute(mockRequest)
-    ).rejects.toThrow(NotFoundError)
-    expect(
-      mockBloodPressureRecordRepo.findByPatientIdAndCountAll
-    ).toHaveBeenCalledWith(mockRequest.targetPatientId, 10, 0)
-  })
   it('should throw AuthorizationError when the current doctor does not exist', async () => {
     const mockRequest = {
       user: new User({

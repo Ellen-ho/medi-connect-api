@@ -7,7 +7,6 @@ import { FoodCategoryType } from '../../domain/record/FoodRecord'
 import { IFoodRecordRepository } from '../../domain/record/interfaces/repositories/IFoodRecordRepository'
 import { User, UserRoleType } from '../../domain/user/User'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
-import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 import { getOffset, getPagination } from '../../infrastructure/utils/Pagination'
 
 interface GetFoodRecordsRequest {
@@ -57,10 +56,6 @@ export class GetFoodRecordsUseCase {
         limit,
         offset
       )
-
-    if (existingFoodRecords.recordsData.length === 0) {
-      throw new NotFoundError('No record exists.')
-    }
 
     // 若登入者為doctor
     if (user.role === UserRoleType.DOCTOR) {

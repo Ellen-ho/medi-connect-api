@@ -6,7 +6,6 @@ import { IPatientRepository } from '../../domain/patient/interfaces/repositories
 import { IGlycatedHemoglobinRecordRepository } from '../../domain/record/interfaces/repositories/IGlycatedHemoglobinRecordRepository'
 import { User, UserRoleType } from '../../domain/user/User'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
-import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 import { getOffset, getPagination } from '../../infrastructure/utils/Pagination'
 
 interface GetGlycatedHemoglobinRecordsRequest {
@@ -57,9 +56,6 @@ export class GetGlycatedHemoglobinRecordsUseCase {
         offset
       )
 
-    if (existingGlycatedHemoglobinRecords.recordsData.length === 0) {
-      throw new NotFoundError('No record exists.')
-    }
     // 若登入者為doctor
     if (user.role === UserRoleType.DOCTOR) {
       const currentDoctor = await this.doctorRepository.findByUserId(user.id)
