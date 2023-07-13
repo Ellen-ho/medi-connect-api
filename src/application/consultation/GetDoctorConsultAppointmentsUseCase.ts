@@ -7,7 +7,6 @@ import { AuthorizationError } from '../../infrastructure/error/AuthorizationErro
 export interface ConsultAppointmentDatas {
   status: ConsultAppointmentStatusType
   doctorTimeSlot: {
-    doctorId: string
     startAt: Date
     endAt: Date
   }
@@ -21,7 +20,6 @@ export interface ConsultAppointmentDatas {
 export interface ConsultAppointmentData {
   status: ConsultAppointmentStatusType
   doctorTimeSlot: {
-    doctorId: string
     startAt: Date
     endAt: Date
   }
@@ -87,7 +85,6 @@ export class GetDoctorConsultAppointmentsUseCase {
       const consultAppointmentData: ConsultAppointmentDatas = {
         status: appointment.status,
         doctorTimeSlot: {
-          doctorId: appointment.doctorTimeSlot.doctorId,
           startAt: appointment.doctorTimeSlot.startAt,
           endAt: appointment.doctorTimeSlot.endAt,
         },
@@ -133,7 +130,6 @@ export class GetDoctorConsultAppointmentsUseCase {
     return appointments.map((appointment) => ({
       status: appointment.status,
       doctorTimeSlot: {
-        doctorId: appointment.doctorTimeSlot.doctorId,
         startAt: appointment.doctorTimeSlot.startAt,
         endAt: appointment.doctorTimeSlot.endAt,
       },
