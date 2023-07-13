@@ -7,7 +7,6 @@ import { ExerciseType } from '../../domain/record/ExerciseRecord'
 import { IExerciseRecordRepository } from '../../domain/record/interfaces/repositories/IExerciseRepository'
 import { User, UserRoleType } from '../../domain/user/User'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
-import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 import { getOffset, getPagination } from '../../infrastructure/utils/Pagination'
 
 interface GetExerciseRecordsRequest {
@@ -57,10 +56,6 @@ export class GetExerciseRecordsUseCase {
         limit,
         offset
       )
-
-    if (existingExerciseRecords.recordsData.length === 0) {
-      throw new NotFoundError('No record exists.')
-    }
     // 若登入者為doctor
     if (user.role === UserRoleType.DOCTOR) {
       const currentDoctor = await this.doctorRepository.findByUserId(user.id)

@@ -6,7 +6,6 @@ import { IPatientRepository } from '../../domain/patient/interfaces/repositories
 import { IWeightRecordRepository } from '../../domain/record/interfaces/repositories/IWeightRecordRepository'
 import { User, UserRoleType } from '../../domain/user/User'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
-import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 import { getOffset, getPagination } from '../../infrastructure/utils/Pagination'
 
 interface GetWeightRecordsRequest {
@@ -58,9 +57,6 @@ export class GetWeightRecordsUseCase {
         offset
       )
 
-    if (existingWeightRecords.recordsData.length === 0) {
-      throw new NotFoundError('No record exists.')
-    }
     // 若登入者為doctor
     if (user.role === UserRoleType.DOCTOR) {
       const currentDoctor = await this.doctorRepository.findByUserId(user.id)

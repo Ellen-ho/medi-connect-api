@@ -6,7 +6,6 @@ import { IPatientRepository } from '../../domain/patient/interfaces/repositories
 import { IBloodPressureRecordRepository } from '../../domain/record/interfaces/repositories/IBloodPressureRecordRepository'
 import { User, UserRoleType } from '../../domain/user/User'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
-import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 import { getOffset, getPagination } from '../../infrastructure/utils/Pagination'
 
 interface GetBloodPressureRecordsRequest {
@@ -57,10 +56,6 @@ export class GetBloodPressureRecordsUseCase {
         limit,
         offset
       )
-
-    if (existingBloodPressureRecords.recordsData.length === 0) {
-      throw new NotFoundError('No record exists.')
-    }
 
     // 若登入者為doctor
     if (user.role === UserRoleType.DOCTOR) {

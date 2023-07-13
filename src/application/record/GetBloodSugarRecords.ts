@@ -7,7 +7,6 @@ import { BloodSugarType } from '../../domain/record/BloodSugarRecord'
 import { IBloodSugarRecordRepository } from '../../domain/record/interfaces/repositories/IBloodSugarRecordRepository'
 import { User, UserRoleType } from '../../domain/user/User'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
-import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 import { getOffset, getPagination } from '../../infrastructure/utils/Pagination'
 
 interface GetBloodSugarRecordsRequest {
@@ -58,10 +57,6 @@ export class GetBloodSugarRecordsUseCase {
         limit,
         offset
       )
-
-    if (existingBloodSugarRecords.recordsData.length === 0) {
-      throw new NotFoundError('No record exists.')
-    }
 
     // 若登入者為doctor
     if (user.role === UserRoleType.DOCTOR) {
