@@ -27,6 +27,11 @@ export class DoctorRoutes {
         asyncHandler(this.doctorController.editDoctorProfile)
       )
       .get(
+        '/profile',
+        authenticated,
+        asyncHandler(this.doctorController.getDoctorProfile)
+      )
+      .get(
         '/:id/statistic',
         authenticated,
         validator(getDoctorStatisticSchema),

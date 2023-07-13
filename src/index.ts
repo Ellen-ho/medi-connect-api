@@ -115,6 +115,8 @@ import { HealthGoalCronJob } from './application/cronjob/HealthGoalCronJob'
 import { Scheduler } from './infrastructure/network/Scheduler'
 import { CancelHealthGoalUseCase } from './application/goal/CancelHealthGoalUseCase'
 import { MeetingLinkRepository } from './infrastructure/entities/meeting/MeetingLinkRepository'
+import { GetDoctorProfileUseCase } from './application/doctor/GetDoctorProfleUseCase'
+import { GetPatientProfileUseCase } from './application/patient/GetPatientProfileUseCase'
 // import { RawQueryRepository } from './infrastructure/database/RawRepository'
 
 void main()
@@ -200,6 +202,8 @@ async function main(): Promise<void> {
     doctorRepository
   )
 
+  const getDoctorProfileUseCase = new GetDoctorProfileUseCase(doctorRepository)
+
   /**
    * Patient Domain
    */
@@ -208,6 +212,9 @@ async function main(): Promise<void> {
     uuidService
   )
   const editPatientProfileUseCase = new EditPatientProfileUseCase(
+    patientRepository
+  )
+  const getPatientProfileUseCase = new GetPatientProfileUseCase(
     patientRepository
   )
 
@@ -617,11 +624,13 @@ async function main(): Promise<void> {
   )
   const patientController = new PatientController(
     createPatientProfileUseCase,
-    editPatientProfileUseCase
+    editPatientProfileUseCase,
+    getPatientProfileUseCase
   )
   const doctorController = new DoctorController(
     createDoctorProfileUseCase,
     editDoctorProfileUseCase,
+    getDoctorProfileUseCase,
     getDoctorStatisticUseCase
   )
   const recordController = new RecordController(
