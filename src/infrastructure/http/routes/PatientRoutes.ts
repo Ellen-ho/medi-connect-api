@@ -24,6 +24,11 @@ export class PatientRoutes {
         validator(editPatientProfileSchema),
         asyncHandler(this.patientController.editPatientProfile)
       )
+      .get(
+        '/profile',
+        authenticated,
+        asyncHandler(this.patientController.getPatientProfile)
+      )
   }
 
   public createRouter(): Router {

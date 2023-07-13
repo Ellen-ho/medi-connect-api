@@ -81,7 +81,7 @@ export class ConsultationController implements IConsultationController {
       endAt: req.body.endAt,
       availability: req.body.availability,
       user: req.user as User,
-      doctorTimeSlotId: req.params.id,
+      id: req.params.id,
     }
     const result = await this.editDoctorTimeSlotUseCase.execute(request)
 

@@ -73,7 +73,7 @@ describe('Unit test: EditDoctorTimeSlotUseCase', () => {
       createdAt: mockedDate,
       updatedAt: mockedDate,
     }),
-    doctorTimeSlotId: 'Slot1',
+    id: 'Slot1',
     startAt: new Date('2023-07-21T13:00:00.155Z'),
     endAt: new Date('2023-07-21T13:30:00.155Z'),
   }
@@ -99,7 +99,7 @@ describe('Unit test: EditDoctorTimeSlotUseCase', () => {
       mockRequest.user.id
     )
     expect(mockDoctorTimeSlotRepo.findByIdAndDoctorId).toHaveBeenCalledWith(
-      mockRequest.doctorTimeSlotId,
+      mockRequest.id,
       mockExistingDoctor.id
     )
   })
@@ -129,7 +129,7 @@ describe('Unit test: EditDoctorTimeSlotUseCase', () => {
       mockRequest.user.id
     )
     expect(mockDoctorTimeSlotRepo.findByIdAndDoctorId).toHaveBeenCalledWith(
-      mockRequest.doctorTimeSlotId,
+      mockRequest.id,
       mockExistingDoctor.id
     )
     expect(
@@ -160,7 +160,7 @@ describe('Unit test: EditDoctorTimeSlotUseCase', () => {
       mockRequest.user.id
     )
     expect(mockDoctorTimeSlotRepo.findByIdAndDoctorId).toHaveBeenCalledWith(
-      mockRequest.doctorTimeSlotId,
+      mockRequest.id,
       mockExistingDoctor.id
     )
     expect(
@@ -191,7 +191,7 @@ describe('Unit test: EditDoctorTimeSlotUseCase', () => {
       mockRequest.user.id
     )
     expect(mockDoctorTimeSlotRepo.findByIdAndDoctorId).toHaveBeenCalledWith(
-      mockRequest.doctorTimeSlotId,
+      mockRequest.id,
       mockExistingDoctor.id
     )
     expect(
@@ -222,7 +222,7 @@ describe('Unit test: EditDoctorTimeSlotUseCase', () => {
       mockRequest.user.id
     )
     expect(mockDoctorTimeSlotRepo.findByIdAndDoctorId).toHaveBeenCalledWith(
-      mockRequest.doctorTimeSlotId,
+      mockRequest.id,
       mockExistingDoctor.id
     )
     expect(
@@ -253,7 +253,7 @@ describe('Unit test: EditDoctorTimeSlotUseCase', () => {
       mockRequest.user.id
     )
     expect(mockDoctorTimeSlotRepo.findByIdAndDoctorId).toHaveBeenCalledWith(
-      mockRequest.doctorTimeSlotId,
+      mockRequest.id,
       mockExistingDoctor.id
     )
     expect(
@@ -291,7 +291,7 @@ describe('Unit test: EditDoctorTimeSlotUseCase', () => {
       mockRequest.user.id
     )
     expect(mockDoctorTimeSlotRepo.findByIdAndDoctorId).toHaveBeenCalledWith(
-      mockRequest.doctorTimeSlotId,
+      mockRequest.id,
       mockExistingDoctor.id
     )
     expect(

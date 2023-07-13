@@ -3,7 +3,7 @@ import { DoctorTimeSlot } from '../../DoctorTimeSlot'
 export interface IDoctorTimeSlotRepository {
   findById: (id: string) => Promise<DoctorTimeSlot | null>
   findByIdAndDoctorId: (
-    doctorTimeSlotId: string,
+    id: string,
     doctorId: string
   ) => Promise<DoctorTimeSlot | null>
   findByStartAtAndDoctorId: (

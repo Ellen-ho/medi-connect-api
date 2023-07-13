@@ -8,7 +8,7 @@ import { ValidationError } from '../../infrastructure/error/ValidationError'
 
 interface EditDoctorTimeSlotRequest {
   user: User
-  doctorTimeSlotId: string
+  id: string
   startAt: Date
   endAt: Date
 }
@@ -29,7 +29,7 @@ export class EditDoctorTimeSlotUseCase {
   public async execute(
     request: EditDoctorTimeSlotRequest
   ): Promise<EditDoctorTimeSlotResponse> {
-    const { user, doctorTimeSlotId, startAt, endAt } = request
+    const { user, id, startAt, endAt } = request
 
     const currentDate = dayjs()
     const minimumOfEndAt = dayjs(startAt).add(30, 'minute')
@@ -42,7 +42,7 @@ export class EditDoctorTimeSlotUseCase {
 
     const existingDoctorTimeSlot =
       await this.doctorTimeSlotRepository.findByIdAndDoctorId(
-        doctorTimeSlotId,
+        id,
         existingDoctor.id
       )
 

@@ -18,14 +18,14 @@ export class HealthGoalRoutes {
       asyncHandler(this.HealthGoalController.createHealthGoal)
     )
     this.routes.get(
-      '/',
-      validator(getHealthGoalListSchema),
-      asyncHandler(this.HealthGoalController.getHealthGoalList)
-    )
-    this.routes.get(
       '/:id',
       validator(getHealthGoalSchema),
       asyncHandler(this.HealthGoalController.getHealthGoal)
+    )
+    this.routes.get(
+      '/',
+      validator(getHealthGoalListSchema),
+      asyncHandler(this.HealthGoalController.getHealthGoalList)
     )
     this.routes.patch(
       '/active/:id',
