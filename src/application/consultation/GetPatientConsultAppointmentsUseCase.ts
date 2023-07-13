@@ -18,6 +18,7 @@ export interface ConsultAppointmentDatas {
     specialties: MedicalSpecialtyType[]
   }
   meetingLink: string | null
+  cacelAvailability: boolean
 }
 
 export interface ConsultAppointmentData {
@@ -33,6 +34,7 @@ export interface ConsultAppointmentData {
     specialties: MedicalSpecialtyType[]
   }
   meetingLink: string | null
+  cacelAvailability: boolean
 }
 
 interface GetPatientConsultAppointmentsRequest {
@@ -101,6 +103,7 @@ export class GetPatientConsultAppointmentsUseCase {
           specialties: appointment.doctor.specialties,
         },
         meetingLink: timeDifference > 22 ? null : appointment.meetingLink,
+        cacelAvailability: timeDifference > 24,
       }
 
       upcomingConsultAppointments.push(consultAppointmentData)
@@ -148,6 +151,7 @@ export class GetPatientConsultAppointmentsUseCase {
         specialties: appointment.doctor.specialties,
       },
       meetingLink: null,
+      cacelAvailability: false,
     }))
   }
 }
