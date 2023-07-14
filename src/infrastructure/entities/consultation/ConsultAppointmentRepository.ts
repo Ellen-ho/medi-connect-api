@@ -91,6 +91,7 @@ export class ConsultAppointmentRepository
         specialties: MedicalSpecialtyType[]
       }
       meetingLink: string | null
+      cacelAvailability: boolean
     }>
   > {
     try {
@@ -104,6 +105,7 @@ export class ConsultAppointmentRepository
           start_at: Date
           end_at: Date
           meeting_link: string | null
+          cacel_availability: boolean
         }>
       >(
         `
@@ -140,6 +142,7 @@ export class ConsultAppointmentRepository
           specialties: rawItem.specialties,
         },
         meetingLink: rawItem.meeting_link,
+        cacelAvailability: rawItem.cacel_availability,
       }))
     } catch (e) {
       throw new RepositoryError(

@@ -33,6 +33,7 @@ export interface IConsultAppointmentRepository
         specialties: MedicalSpecialtyType[]
       }
       meetingLink: string | null
+      cacelAvailability: boolean
     }>
   >
   findByDoctorIdAndStatusWithinDateRange: (
