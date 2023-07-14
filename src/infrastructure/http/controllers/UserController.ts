@@ -40,7 +40,7 @@ export class UserController implements IUserController {
     return res.status(200).json({
       token,
       user: { id, createdAt, displayName, role },
-      patintId: loginPatient?.id,
+      patientId: loginPatient?.id,
       doctorId: loginDoctor?.id,
     })
   }
