@@ -73,7 +73,7 @@ export class DoctorController implements IDoctorController {
     const request = {
       limit: Number(req.query.limit),
       page: Number(req.query.page),
-      specialties: req.query.specialties as keyof typeof MedicalSpecialtyType,
+      specialties: req.query.specialties as MedicalSpecialtyType,
     }
     const result = await this.getDoctorListUseCase.execute(request)
     return res.status(200).json(result)

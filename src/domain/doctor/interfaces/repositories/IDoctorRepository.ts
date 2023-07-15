@@ -7,8 +7,8 @@ export interface IDoctorRepository extends IBaseRepository<Doctor> {
   findByUserId: (userId: string) => Promise<Doctor | null>
   findById: (id: string) => Promise<Doctor | null>
   findAndCountBySpecialties: (
-    specialties: MedicalSpecialtyType[],
     limit: number,
-    offset: number
+    offset: number,
+    specialties?: MedicalSpecialtyType
   ) => Promise<{ data: Doctor[]; count: number }>
 }

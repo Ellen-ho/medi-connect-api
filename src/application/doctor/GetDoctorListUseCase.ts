@@ -5,7 +5,7 @@ import { getOffset, getPagination } from '../../infrastructure/utils/Pagination'
 interface GetDoctorListRequest {
   page?: number
   limit?: number
-  specialties?: keyof typeof MedicalSpecialtyType
+  specialties?: MedicalSpecialtyType
 }
 
 export interface IGetDoctorItem {
@@ -34,18 +34,16 @@ export class GetDoctorListUseCase {
   public async execute(
     request: GetDoctorListRequest
   ): Promise<GetDoctorListResponse> {
+    const { specialties } = request
     const page: number = request.page != null ? request.page : 1
     const limit: number = request.limit != null ? request.limit : 10
     const offset: number = getOffset(limit, page)
-    const specialties: MedicalSpecialtyType[] =
-      request.specialties != null
-        ? [MedicalSpecialtyType[request.specialties]]
-        : Object.values(MedicalSpecialtyType)
+
     const existingDoctors =
       await this.doctorRepository.findAndCountBySpecialties(
-        specialties,
         limit,
-        offset
+        offset,
+        specialties
       )
 
     const data: IGetDoctorItem[] = existingDoctors.data.map((doctor) => ({

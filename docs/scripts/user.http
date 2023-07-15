@@ -1,5 +1,4 @@
-@hostname = http://localhost:7000
-
+@hostname = http://localhost:10000
 @usersPath = {{hostname}}/api/users
 
 ### Register new user
@@ -7,9 +6,9 @@ POST {{usersPath}}
 Content-Type: application/json
 
 {
-  "displayName":"Eric",
-  "email": "Eric@gmail.com",
-  "password": "Eric",
+  "displayName":"Amy",
+  "email": "Amy@gmail.com",
+  "password": "Amy",
   "role": "DOCTOR"
 }
 ###
@@ -20,8 +19,8 @@ POST {{usersPath}}/login
 Content-Type: application/json
 
 {
-  "email": "tim@gmail.com",
-  "password": "tim"
+  "email": "Eric@gmail.com",
+  "password": "Eric"
 }
 ###
 @accessToken = Bearer {{login.response.body.token}}
@@ -164,7 +163,7 @@ Content-Type: application/json
   "gender": "FEMALE",
   "aboutMe": "I am a highly skilled doctor with over 10 years of experience in treating various illnesses.",
   "languagesSpoken": ["English", "Spanish", "French"],
-  "specialties": ["Cardiology", "Oncology", "Neurology"],
+  "specialties": ["INTERNAL_MEDICINE"],
   "careerStartDate": "2010-01-01T00:00:00.000Z",
   "officePracticalLocation": {
     "line1": "123 Main St.",
@@ -182,19 +181,19 @@ Content-Type: application/json
 
 ###
 
-### edit new doctor
+### edit doctor
 PATCH {{doctorPath}}/profile
 Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
   "avatar": "https://example.com/avatar.png",
-  "firstName": "Amy",
+  "firstName": "Eric",
   "lastName": "Chen",
-  "gender": "FEMALE",
+  "gender": "MALE",
   "aboutMe": "I am a highly skilled doctor with over 10 years of experience in treating various illnesses.",
   "languagesSpoken": ["English", "Spanish", "French"],
-  "specialties": ["Cardiology", "Oncology", "Neurology"],
+  "specialties": ["INTERNAL_MEDICINE"],
   "careerStartDate": "2010-01-01T00:00:00.000Z",
   "officePracticalLocation": {
     "line1": "123 Main St.",
@@ -217,3 +216,7 @@ GET {{doctorPath}}/{{doctorId}}/statistic
 Authorization: {{accessToken}}
 Content-Type: application/json
 
+### get doctor list
+GET {{doctorPath}}?limit=3&page=1&specialties=INTERNAL_MEDICINE
+Authorization: {{accessToken}}
+Content-Type: application/json
