@@ -1,5 +1,4 @@
 import { IPatientQuestionRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionRepository'
-import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 import { getOffset, getPagination } from '../../infrastructure/utils/Pagination'
 interface GetQuestionsRequest {
   page?: number
@@ -33,10 +32,6 @@ export class GetQuestionsUseCase {
 
     const existingPatientQuestions =
       await this.patientQuestionRepository.findAndCountAll(limit, offset)
-
-    if (existingPatientQuestions == null) {
-      throw new NotFoundError('Questions do not exist.')
-    }
 
     return {
       data: existingPatientQuestions.questions,

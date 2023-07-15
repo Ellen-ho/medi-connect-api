@@ -6,6 +6,7 @@ import { IDoctorRepository } from '../../../domain/doctor/interfaces/repositorie
 import { Doctor } from '../../../domain/doctor/Doctor'
 import { DoctorMapper } from './DoctorMapper'
 import { RepositoryError } from '../../error/RepositoryError'
+import { MedicalSpecialtyType } from '../../../domain/question/PatientQuestion'
 
 export class DoctorRepository
   extends BaseRepository<DoctorEntity, Doctor>
@@ -59,6 +60,42 @@ export class DoctorRepository
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
       throw new RepositoryError('DoctorRepository findById error', e as Error)
+    }
+  }
+
+  public async findAndCountBySpecialties(
+    specialties: MedicalSpecialtyType[],
+    limit: number,
+    offset: number
+  ): Promise<{ data: Doctor[]; count: number }> {
+    try {
+      const specialtiesValues = specialties
+        .map((specialty) => `'${specialty}'`)
+        .join(',')
+
+      const rawData = await this.getQuery<{
+        data: DoctorEntity[]
+        count: string
+      }>(
+        `
+        SELECT *
+        FROM doctors
+        WHERE specialties @> ARRAY[${specialtiesValues}]::varchar[]
+        LIMIT $1
+        OFFSET $2
+      `,
+        [limit, offset]
+      )
+      const doctors: Doctor[] = rawData.data.map((entity) =>
+        this.getMapper().toDomainModel(entity)
+      )
+      const result = { data: doctors, count: parseInt(rawData.count, 10) }
+      return result
+    } catch (e) {
+      throw new RepositoryError(
+        'DoctorRepository findAndCountBySpecialties error',
+        e as Error
+      )
     }
   }
 }
