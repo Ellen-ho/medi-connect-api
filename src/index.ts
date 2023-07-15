@@ -117,6 +117,7 @@ import { CancelHealthGoalUseCase } from './application/goal/CancelHealthGoalUseC
 import { MeetingLinkRepository } from './infrastructure/entities/meeting/MeetingLinkRepository'
 import { GetDoctorProfileUseCase } from './application/doctor/GetDoctorProfleUseCase'
 import { GetPatientProfileUseCase } from './application/patient/GetPatientProfileUseCase'
+import { GetDoctorListUseCase } from './application/doctor/GetDoctorListUseCase'
 // import { RawQueryRepository } from './infrastructure/database/RawRepository'
 
 void main()
@@ -203,6 +204,8 @@ async function main(): Promise<void> {
   )
 
   const getDoctorProfileUseCase = new GetDoctorProfileUseCase(doctorRepository)
+
+  const getDoctorListUseCase = new GetDoctorListUseCase(doctorRepository)
 
   /**
    * Patient Domain
@@ -631,7 +634,8 @@ async function main(): Promise<void> {
     createDoctorProfileUseCase,
     editDoctorProfileUseCase,
     getDoctorProfileUseCase,
-    getDoctorStatisticUseCase
+    getDoctorStatisticUseCase,
+    getDoctorListUseCase
   )
   const recordController = new RecordController(
     createWeightRecordUseCase,

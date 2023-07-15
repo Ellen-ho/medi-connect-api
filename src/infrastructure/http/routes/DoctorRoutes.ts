@@ -37,6 +37,11 @@ export class DoctorRoutes {
         validator(getDoctorStatisticSchema),
         asyncHandler(this.doctorController.getDoctorStatistic)
       )
+      .get(
+        '/',
+        authenticated,
+        asyncHandler(this.doctorController.getDoctorList)
+      )
   }
 
   public createRouter(): Router {
