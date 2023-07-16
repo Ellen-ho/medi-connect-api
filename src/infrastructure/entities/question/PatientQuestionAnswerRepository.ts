@@ -217,16 +217,16 @@ export class PatientQuestionAnswerRepository
     doctorId: string
   ): Promise<number> {
     try {
-      const count = await this.getQuery<number>(
+      const rawCounts = await this.getQuery<Array<{ count: number }>>(
         `
-        SELECT COUNT(DISTINCT patient_question_answers.id)
+        SELECT COUNT(DISTINCT patient_question_answers.id) as count
         FROM patient_question_answers
         JOIN answer_appreciations ON patient_question_answers.id = answer_appreciations.answer_id
         WHERE patient_question_answers.doctor_id = $1
       `,
         [doctorId]
       )
-      return count
+      return Number(rawCounts[0].count)
     } catch (e) {
       throw new RepositoryError(
         'PatientQuestionAnswerRepository countAppreciatedAnswersByDoctorId error',
@@ -237,7 +237,7 @@ export class PatientQuestionAnswerRepository
 
   public async countAgreedAnswersByDoctorId(doctorId: string): Promise<number> {
     try {
-      const count = await this.getQuery<number>(
+      const rawCounts = await this.getQuery<Array<{ count: number }>>(
         `
           SELECT COUNT(*) as count
           FROM patient_question_answers AS patient_question_answer
@@ -246,7 +246,7 @@ export class PatientQuestionAnswerRepository
         `,
         [doctorId]
       )
-      return count
+      return Number(rawCounts[0].count)
     } catch (e) {
       throw new RepositoryError(
         'PatientQuestionAnswerRepository countAgreedAnswersByDoctorId error',

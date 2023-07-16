@@ -3,7 +3,7 @@ import { IPatientQuestionAnswerRepository } from '../../domain/question/interfac
 import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 
 interface GetDoctorStatisticRequest {
-  doctorId: string
+  id: string
 }
 
 interface GetDoctorStatisticResponse {
@@ -22,9 +22,9 @@ export class GetDoctorStatisticUseCase {
   public async execute(
     request: GetDoctorStatisticRequest
   ): Promise<GetDoctorStatisticResponse> {
-    const { doctorId } = request
+    const { id } = request
 
-    const existingDoctor = await this.doctorRepository.findByDoctorId(doctorId)
+    const existingDoctor = await this.doctorRepository.findById(id)
 
     if (existingDoctor == null) {
       throw new NotFoundError('Doctor does not exist.')
