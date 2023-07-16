@@ -63,80 +63,36 @@ export class DoctorRepository
     }
   }
 
-  // public async findAndCountBySpecialties(
-  //   limit: number,
-  //   offset: number,
-  //   specialties?: MedicalSpecialtyType
-  // ): Promise<{ data: Doctor[]; count: number }> {
-  //   try {
-  // const rawData = await this.getQuery<Array<DoctorEntity>>(
-  //   `
-  //   SELECT *, COUNT(*) OVER() AS counts
-  //   FROM doctors
-  //   WHERE ($1 IS NULL OR specialties ? $1)
-  //   LIMIT $2
-  //   OFFSET $3
-  // `,
-  //   [specialties, limit, offset]
-  // )
-  // const queryBuilder = this.getRepo()
-  //   .createQueryBuilder('doctors')
-  //   .select(['doctors.*', 'COUNT(*) OVER() AS totalCounts'])
-  //   .where(
-  //     '(:specialties::text IS NULL OR doctors.specialties ? :specialties)',
-  //     {
-  //       specialties,
-  //     }
-  //   )
-  //   .limit(limit)
-  //   .offset(offset)
-  // const [entities, [{ totalCounts }]] = await queryBuilder.getRawMany()
-
-  // const [entities, totalCounts] = await Promise.all([
-  //   this.getRepo().find({
-  //     where: specialties
-  //       ? { specialties: ArrayContains([specialties]) }
-  //       : {},
-  //     relations: ['users'],
-  //     take: limit,
-  //     skip: offset,
-  //   }),
-  //   this.getRepo().count({
-  //     where: specialties
-  //       ? { specialties: ArrayContains([specialties]) }
-  //       : {},
-  //   }),
-  // ])
-
-  //
   public async findAndCountBySpecialties(
     limit: number,
     offset: number,
-    specialties?: MedicalSpecialtyType
-  ): Promise<{ data: Doctor[]; count: number }> {
+    specialty?: MedicalSpecialtyType
+  ): Promise<{ data: Doctor[]; counts: number }> {
     try {
-      const queryBuilder = this.getRepo()
-        .createQueryBuilder('doctors')
-        .take(limit)
-        .skip(offset)
+      const entities = await this.getQuery<
+        Array<DoctorEntity & { counts: number }>
+      >(
+        `
+          SELECT 
+            *, 
+            ROW_TO_JSON(users.*) AS user,
+            COUNT(*) OVER() AS counts
+          FROM doctors
+          LEFT JOIN users ON doctors.user_id = users.id
+          WHERE ($1::TEXT IS NULL OR specialties ? $1::TEXT)
+          LIMIT $2
+          OFFSET $3
+        `,
+        [specialty, limit, offset]
+      )
 
-      if (specialties) {
-        queryBuilder.andWhere('doctors.specialties @> :specialties', {
-          specialties,
-        })
-      }
-
-      const [entities, totalCounts] = await Promise.all([
-        queryBuilder.getMany(),
-        queryBuilder.getCount(),
-      ])
+      const totalCounts = entities.length === 0 ? 0 : entities[0].counts
 
       const doctors: Doctor[] = entities.map((entity: DoctorEntity) =>
         this.getMapper().toDomainModel(entity)
       )
 
-      const result = { data: doctors, count: totalCounts }
-      return result
+      return { data: doctors, counts: totalCounts }
     } catch (e) {
       throw new RepositoryError(
         'DoctorRepository findAndCountBySpecialties error',

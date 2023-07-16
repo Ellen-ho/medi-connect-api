@@ -1,3 +1,4 @@
+import { GenderType } from '../../domain/doctor/Doctor'
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 import { MedicalSpecialtyType } from '../../domain/question/PatientQuestion'
 import { getOffset, getPagination } from '../../infrastructure/utils/Pagination'
@@ -5,7 +6,7 @@ import { getOffset, getPagination } from '../../infrastructure/utils/Pagination'
 interface GetDoctorListRequest {
   page?: number
   limit?: number
-  specialties?: MedicalSpecialtyType
+  specialty?: MedicalSpecialtyType
 }
 
 export interface IGetDoctorItem {
@@ -14,6 +15,7 @@ export interface IGetDoctorItem {
   firstName: string
   lastName: string
   specialties: MedicalSpecialtyType[]
+  gender: GenderType
 }
 
 interface GetDoctorListResponse {
@@ -34,7 +36,7 @@ export class GetDoctorListUseCase {
   public async execute(
     request: GetDoctorListRequest
   ): Promise<GetDoctorListResponse> {
-    const { specialties } = request
+    const { specialty } = request
     const page: number = request.page != null ? request.page : 1
     const limit: number = request.limit != null ? request.limit : 10
     const offset: number = getOffset(limit, page)
@@ -43,7 +45,7 @@ export class GetDoctorListUseCase {
       await this.doctorRepository.findAndCountBySpecialties(
         limit,
         offset,
-        specialties
+        specialty
       )
 
     const data: IGetDoctorItem[] = existingDoctors.data.map((doctor) => ({
@@ -52,12 +54,13 @@ export class GetDoctorListUseCase {
       firstName: doctor.firstName,
       lastName: doctor.lastName,
       specialties: doctor.specialties,
+      gender: doctor.gender,
     }))
 
     return {
       data,
-      pagination: getPagination(limit, page),
-      totalCounts: existingDoctors.count,
+      pagination: getPagination(limit, page, existingDoctors.counts),
+      totalCounts: existingDoctors.counts,
     }
   }
 }

@@ -9,6 +9,6 @@ export interface IDoctorRepository extends IBaseRepository<Doctor> {
   findAndCountBySpecialties: (
     limit: number,
     offset: number,
-    specialties?: MedicalSpecialtyType
-  ) => Promise<{ data: Doctor[]; count: number }>
+    specialty?: MedicalSpecialtyType
+  ) => Promise<{ data: Doctor[]; counts: number }>
 }
