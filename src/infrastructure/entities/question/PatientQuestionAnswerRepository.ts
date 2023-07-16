@@ -139,8 +139,10 @@ export class PatientQuestionAnswerRepository
     try {
       const rawAnswerDetails = await this.getQuery<
         Array<{
-          agreed_doctor_avatars: Array<string | null>
+          answer_id: string
+          answer_created_at: Date
           answer_content: string
+          doctor_id: string
           doctor_avatar: string | null
           doctor_first_name: string
           doctor_last_name: string
@@ -149,36 +151,58 @@ export class PatientQuestionAnswerRepository
           doctor_agreed_counts: number
           answer_thank_counts: number
           answer_is_thanked: boolean
+          agreedDoctors: Array<{
+            doctorId: string
+            avatar: string | null
+            firstName: string
+            lastName: string
+          }>
         }>
       >(
         `
-          SELECT
-            patient_question_answers.content as "answer_content",
-            doctors.avatar as "doctor_avatar",
-            doctors.first_name as "doctor_first_name",
-            doctors.last_name as "doctor_last_name",
-            doctors.specialties as "doctor_specialties",
-            doctors.career_start_date as "doctor_career_start_date",
-            array_agg(answer_agreements.agreed_doctor_id) as "agreed_doctor_avatars",
-            COUNT(DISTINCT answer_agreements.id) as "answer_agreed_counts",
-            COUNT(DISTINCT answer_appreciations.id) as "answer_thank_counts",
-            EXISTS(
-              SELECT 1
-              FROM answer_appreciations
-              WHERE answer_appreciations.patient_id = $2
-            ) as "answer_is_thanked"
-          FROM patient_question_answers
-          LEFT JOIN answer_agreements ON patient_question_answers.id = answer_agreements.patient_question_answer_id
-          LEFT JOIN answer_appreciations ON patient_question_answers.id = answer_appreciations.answer_id
-          LEFT JOIN doctors ON patient_question_answers.doctor_id = doctors.id
-          WHERE patient_question_answers.patient_question_id = $1 
-          GROUP BY patient_question_answers.id, doctors.id
-        `,
+              SELECT
+          patient_question_answers.content as "answer_content",
+          patient_question_answers.id as "answer_id",
+          patient_question_answers.created_at as "answer_created_at",
+          doctors.id as "doctor_id",
+          doctors.avatar as "doctor_avatar",
+          doctors.first_name as "doctor_first_name",
+          doctors.last_name as "doctor_last_name",
+          doctors.specialties as "doctor_specialties",
+          doctors.career_start_date as "doctor_career_start_date",
+          COUNT(DISTINCT answer_agreements.id) as "answer_agreed_counts",
+          COUNT(DISTINCT answer_appreciations.id) as "answer_thank_counts",
+          EXISTS(
+            SELECT 1
+            FROM answer_appreciations
+            WHERE answer_appreciations.patient_id = $2
+          ) as "answer_is_thanked",
+          (
+            SELECT json_agg(json_build_object(
+              'doctorId', doctors.id,
+              'avatar', doctors.avatar,
+              'firstName', doctors.first_name,
+              'lastName', doctors.last_name
+            ))
+            FROM answer_agreements
+            JOIN doctors ON answer_agreements.agreed_doctor_id = doctors.id
+            WHERE answer_agreements.patient_question_answer_id = patient_question_answers.id
+          ) as "agreedDoctors"
+        FROM patient_question_answers
+        LEFT JOIN answer_agreements ON patient_question_answers.id = answer_agreements.patient_question_answer_id
+        LEFT JOIN answer_appreciations ON patient_question_answers.id = answer_appreciations.answer_id
+        LEFT JOIN doctors ON patient_question_answers.doctor_id = doctors.id
+        WHERE patient_question_answers.patient_question_id = $1
+        GROUP BY patient_question_answers.id, doctors.id;
+      `,
         [questionId, patientId]
       )
 
       const answerDetails = rawAnswerDetails.map((rawDetail) => ({
+        answerId: rawDetail.answer_id,
+        answerCreatedAt: rawDetail.answer_created_at,
         content: rawDetail.answer_content,
+        doctorId: rawDetail.doctor_id,
         avatar: rawDetail.doctor_avatar,
         firstName: rawDetail.doctor_first_name,
         lastName: rawDetail.doctor_last_name,
@@ -187,7 +211,7 @@ export class PatientQuestionAnswerRepository
         agreeCounts: rawDetail.doctor_agreed_counts,
         thankCounts: rawDetail.answer_thank_counts,
         isThanked: rawDetail.answer_is_thanked,
-        doctorAvatars: rawDetail.agreed_doctor_avatars,
+        agreedDoctors: rawDetail.agreedDoctors,
       }))
 
       return answerDetails

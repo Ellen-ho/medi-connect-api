@@ -19,8 +19,10 @@ interface GetSingleQuestionResponse {
 }
 
 export interface IAnswer {
-  doctorAvatars: Array<string | null>
+  answerId: string
+  answerCreatedAt: Date
   content: string
+  doctorId: string
   avatar: string | null
   firstName: string
   lastName: string
@@ -29,6 +31,12 @@ export interface IAnswer {
   agreeCounts: number
   thankCounts: number
   isThanked: boolean
+  agreedDoctors: Array<{
+    doctorId: string
+    avatar: string | null
+    firstName: string
+    lastName: string
+  }>
 }
 
 export class GetSingleQuestionUseCase {
