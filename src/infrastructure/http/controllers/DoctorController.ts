@@ -2,7 +2,6 @@ import { Request, Response } from 'express'
 import { CreateDoctorProfileUseCase } from '../../../application/doctor/CreateDoctorProfileUseCase'
 import { EditDoctorProfileUseCase } from '../../../application/doctor/EditDoctorProfileUseCase'
 import { GetDoctorStatisticUseCase } from '../../../application/doctor/GetDoctorStatisticUseCase'
-import { User } from '../../../domain/user/User'
 import { GetDoctorProfileUseCase } from '../../../application/doctor/GetDoctorProfleUseCase'
 import { GetDoctorListUseCase } from '../../../application/doctor/GetDoctorListUseCase'
 import { MedicalSpecialtyType } from '../../../domain/question/PatientQuestion'
@@ -48,7 +47,7 @@ export class DoctorController implements IDoctorController {
     res: Response
   ): Promise<Response> => {
     const request = {
-      user: req.user as User,
+      id: req.params.id,
     }
     const result = await this.getDoctorProfileUseCase.execute(request)
     return res.status(200).json(result)
@@ -59,8 +58,7 @@ export class DoctorController implements IDoctorController {
     res: Response
   ): Promise<Response> => {
     const request = {
-      user: req.user as User,
-      doctorId: req.params.id,
+      id: req.params.id,
     }
     const result = await this.getDoctorStatisticUseCase.execute(request)
     return res.status(200).json(result)
