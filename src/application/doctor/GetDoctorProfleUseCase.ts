@@ -2,11 +2,10 @@ import { IAddress } from '../../domain/doctor/Doctor'
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 import { GenderType } from '../../domain/patient/Patient'
 import { MedicalSpecialtyType } from '../../domain/question/PatientQuestion'
-import { User } from '../../domain/user/User'
 import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 
 interface GetDoctorProfileRequest {
-  user: User
+  id: string
 }
 
 interface GetDoctorProfileResponse {
@@ -33,14 +32,14 @@ export class GetDoctorProfileUseCase {
   public async execute(
     request: GetDoctorProfileRequest
   ): Promise<GetDoctorProfileResponse> {
-    const { user } = request
+    const { id } = request
 
-    const existingDoctorProfile = await this.doctorRepository.findByUserId(
-      user.id
-    )
+    const existingDoctorProfile = await this.doctorRepository.findById(id)
 
     if (existingDoctorProfile == null) {
-      throw new NotFoundError('The current whose profile does not exist.')
+      throw new NotFoundError(
+        'The current doctor whose profile does not exist.'
+      )
     }
     return {
       id: existingDoctorProfile.id,

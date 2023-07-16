@@ -1,5 +1,4 @@
-@hostname = http://localhost:7000
-
+@hostname = http://localhost:10000
 @usersPath = {{hostname}}/api/users
 
 ### Register new user
@@ -7,9 +6,9 @@ POST {{usersPath}}
 Content-Type: application/json
 
 {
-  "displayName":"Eric",
-  "email": "Eric@gmail.com",
-  "password": "Eric",
+  "displayName":"Amy",
+  "email": "Amy@gmail.com",
+  "password": "Amy",
   "role": "DOCTOR"
 }
 ###
@@ -92,7 +91,7 @@ Content-Type: application/json
 }
 ###
 
-### Edit patient
+### Edit patient profile
 PATCH {{patientPath}}/profile
 Authorization: {{accessToken}}
 Content-Type: application/json
@@ -164,7 +163,7 @@ Content-Type: application/json
   "gender": "FEMALE",
   "aboutMe": "I am a highly skilled doctor with over 10 years of experience in treating various illnesses.",
   "languagesSpoken": ["English", "Spanish", "French"],
-  "specialties": ["Cardiology", "Oncology", "Neurology"],
+  "specialties": ["INTERNAL_MEDICINE"],
   "careerStartDate": "2010-01-01T00:00:00.000Z",
   "officePracticalLocation": {
     "line1": "123 Main St.",
@@ -182,19 +181,19 @@ Content-Type: application/json
 
 ###
 
-### edit new doctor
+### edit doctor profile
 PATCH {{doctorPath}}/profile
 Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
   "avatar": "https://example.com/avatar.png",
-  "firstName": "Amy",
+  "firstName": "Eric",
   "lastName": "Chen",
-  "gender": "FEMALE",
+  "gender": "MALE",
   "aboutMe": "I am a highly skilled doctor with over 10 years of experience in treating various illnesses.",
   "languagesSpoken": ["English", "Spanish", "French"],
-  "specialties": ["Cardiology", "Oncology", "Neurology"],
+  "specialties": ["INTERNAL_MEDICINE"],
   "careerStartDate": "2010-01-01T00:00:00.000Z",
   "officePracticalLocation": {
     "line1": "123 Main St.",
@@ -211,9 +210,19 @@ Content-Type: application/json
 }
 ###
 
+### get a doctor profile
+@Id=
+GET {{doctorPath}}/{{Id}}/profile
+Authorization: {{accessToken}}
+Content-Type: application/json
+
 ### get a doctor statistic
-@doctorId=230b0299-fcd7-4eac-ad72-36cf971032f2
+@doctorId=1fc5d738-43f9-4a77-8e1d-ab4ea15b29e3
 GET {{doctorPath}}/{{doctorId}}/statistic
 Authorization: {{accessToken}}
 Content-Type: application/json
 
+### get doctor list
+GET {{doctorPath}}?limit=3&page=1&specialties=INTERNAL_MEDICINE
+Authorization: {{accessToken}}
+Content-Type: application/json
