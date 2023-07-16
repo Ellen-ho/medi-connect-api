@@ -19,8 +19,8 @@ POST {{usersPath}}/login
 Content-Type: application/json
 
 {
-  "email": "Eric@gmail.com",
-  "password": "Eric"
+  "email": "tim@gmail.com",
+  "password": "tim"
 }
 ###
 @accessToken = Bearer {{login.response.body.token}}
@@ -91,7 +91,7 @@ Content-Type: application/json
 }
 ###
 
-### Edit patient
+### Edit patient profile
 PATCH {{patientPath}}/profile
 Authorization: {{accessToken}}
 Content-Type: application/json
@@ -181,7 +181,7 @@ Content-Type: application/json
 
 ###
 
-### edit doctor
+### edit doctor profile
 PATCH {{doctorPath}}/profile
 Authorization: {{accessToken}}
 Content-Type: application/json
@@ -210,8 +210,14 @@ Content-Type: application/json
 }
 ###
 
+### get a doctor profile
+@Id=
+GET {{doctorPath}}/{{Id}}/profile
+Authorization: {{accessToken}}
+Content-Type: application/json
+
 ### get a doctor statistic
-@doctorId=230b0299-fcd7-4eac-ad72-36cf971032f2
+@doctorId=1fc5d738-43f9-4a77-8e1d-ab4ea15b29e3
 GET {{doctorPath}}/{{doctorId}}/statistic
 Authorization: {{accessToken}}
 Content-Type: application/json

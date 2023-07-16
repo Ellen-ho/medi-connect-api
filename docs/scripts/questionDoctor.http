@@ -1,4 +1,4 @@
-@hostname = http://localhost:7000
+@hostname = http://localhost:10000
 
 @usersPath = {{hostname}}/api/users
 
@@ -29,14 +29,14 @@ Content-Type: application/json
 ###
 
 ### doctor answer a question
-@questionId=f5b3f6c4-44ae-413b-80ca-c9ee02eede2c
+@questionId=5cc23da1-9608-4d48-8bae-3d80e629c353
 
 POST {{questionsPath}}/{{questionId}}/answers
 Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "content": "Eat slowly."
+  "content": "Do not eat too much before sleep."
 }
 ###
 
