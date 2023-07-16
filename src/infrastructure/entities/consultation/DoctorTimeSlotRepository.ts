@@ -67,4 +67,48 @@ export class DoctorTimeSlotRepository
       )
     }
   }
+
+  public async findByDoctorId(doctorId: string): Promise<{
+    doctorId: string
+    timeSlots: Array<{
+      id: string
+      startAt: Date
+      endAt: Date
+      isAvailable: boolean
+    }>
+  }> {
+    try {
+      const entities = await this.getRepo().find({
+        where: {
+          doctor: { id: doctorId },
+        },
+        relations: ['timeSlots'],
+      })
+      if (entities.length === 0) {
+        return {
+          doctorId,
+          timeSlots: [],
+        }
+      }
+      const doctorTimeSlots = entities.map((entity) => {
+        return {
+          doctorId: entity.doctor.id,
+          timeSlots: [
+            {
+              id: entity.id,
+              startAt: entity.startAt,
+              endAt: entity.endAt,
+              isAvailable: entity.availability,
+            },
+          ],
+        }
+      })
+      return doctorTimeSlots[0]
+    } catch (e) {
+      throw new RepositoryError(
+        'DoctorTimeSlotRepository findByDoctorId error',
+        e as Error
+      )
+    }
+  }
 }

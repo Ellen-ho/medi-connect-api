@@ -7,6 +7,7 @@ import { User } from '../../../domain/user/User'
 import { CreateMultipleTimeSlotsUseCase } from '../../../application/consultation/CreateMultipleTimeSlotsUseCase'
 import { GetPatientConsultAppointmentsUseCase } from '../../../application/consultation/GetPatientConsultAppointmentsUseCase'
 import { GetDoctorConsultAppointmentsUseCase } from '../../../application/consultation/GetDoctorConsultAppointmentsUseCase'
+import { GetDoctorTimeSlotsUseCase } from '../../../application/consultation/GetDoctorTimeSlotsUseCase'
 
 export interface IConsultationController {
   createConsultAppointment: (req: Request, res: Response) => Promise<Response>
@@ -22,6 +23,7 @@ export interface IConsultationController {
     req: Request,
     res: Response
   ) => Promise<Response>
+  getDoctorTimeSlots: (req: Request, res: Response) => Promise<Response>
 }
 
 export class ConsultationController implements IConsultationController {
@@ -32,7 +34,8 @@ export class ConsultationController implements IConsultationController {
     private readonly editDoctorTimeSlotUseCase: EditDoctorTimeSlotUseCase,
     private readonly createMultipleTimeSlotsUseCase: CreateMultipleTimeSlotsUseCase,
     private readonly getPatientConsultAppointmentsUseCase: GetPatientConsultAppointmentsUseCase,
-    private readonly getDoctorConsultAppointmentsUseCase: GetDoctorConsultAppointmentsUseCase
+    private readonly getDoctorConsultAppointmentsUseCase: GetDoctorConsultAppointmentsUseCase,
+    private readonly getDoctorTimeSlotsUseCase: GetDoctorTimeSlotsUseCase
   ) {}
 
   public createConsultAppointment = async (
@@ -120,6 +123,27 @@ export class ConsultationController implements IConsultationController {
     const result = await this.getDoctorConsultAppointmentsUseCase.execute(
       request
     )
+    return res.status(200).json(result)
+  }
+
+  public getDoctorTimeSlots = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    const request = {
+      doctorId: req.params.id,
+      starAt:
+        req.query.starAt !== undefined
+          ? new Date(req.query.starAt as string)
+          : undefined,
+      endAt:
+        req.query.endAt !== undefined
+          ? new Date(req.query.endAt as string)
+          : undefined,
+    }
+
+    const result = await this.getDoctorTimeSlotsUseCase.execute(request)
+
     return res.status(200).json(result)
   }
 }

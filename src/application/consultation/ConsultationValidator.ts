@@ -39,3 +39,9 @@ export const createMultipleTimeSlotsSchema = {
     ),
   }),
 }
+
+export const getDoctorTimeSlotsSchema = {
+  params: Joi.object({
+    id: Joi.string().uuid().required(),
+  }),
+}

@@ -11,4 +11,13 @@ export interface IDoctorTimeSlotRepository {
     doctorId: string
   ) => Promise<DoctorTimeSlot | null>
   save: (doctorTimeSlot: DoctorTimeSlot) => Promise<void>
+  findByDoctorId: (doctorId: string) => Promise<{
+    doctorId: string
+    timeSlots: Array<{
+      id: string
+      startAt: Date
+      endAt: Date
+      isAvailable: boolean
+    }>
+  }>
 }
