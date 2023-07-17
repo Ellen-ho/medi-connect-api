@@ -132,14 +132,8 @@ export class ConsultationController implements IConsultationController {
   ): Promise<Response> => {
     const request = {
       doctorId: req.params.id,
-      starAt:
-        req.query.starAt !== undefined
-          ? new Date(req.query.starAt as string)
-          : undefined,
-      endAt:
-        req.query.endAt !== undefined
-          ? new Date(req.query.endAt as string)
-          : undefined,
+      startTime: req.query.startTime as string,
+      endTime: req.query.endTime as string,
     }
 
     const result = await this.getDoctorTimeSlotsUseCase.execute(request)

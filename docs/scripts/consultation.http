@@ -1,4 +1,4 @@
-@hostname = http://localhost:7000
+@hostname = http://localhost:10000
 
 @usersPath = {{hostname}}/api/users
 
@@ -8,8 +8,8 @@ POST {{usersPath}}/login
 Content-Type: application/json
 
 {
-  "email": "Eric@gmail.com",
-  "password": "Eric"
+  "email": "tim@gmail.com",
+  "password": "tim"
 }
 ###
 @accessToken = Bearer {{login.response.body.token}}
@@ -84,5 +84,12 @@ Content-Type: application/json
   "endAt": "2023-07-21 11:30:00.090"
 }]
 }
+### 
+
+### get doctor time slots
+@doctorId=1fc5d738-43f9-4a77-8e1d-ab4ea15b29e3
+GET {{consultationsPath}}/time-slots/doctors/{{doctorId}}?startTime=2023-05-28&endTime=2023-08-30
+Authorization: {{accessToken}}
+Content-Type: application/json
 
 ### 

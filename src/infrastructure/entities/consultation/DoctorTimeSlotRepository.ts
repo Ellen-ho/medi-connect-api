@@ -1,10 +1,11 @@
-import { DataSource } from 'typeorm'
+import { Between, DataSource } from 'typeorm'
 import { IDoctorTimeSlotRepository } from '../../../domain/consultation/interfaces/repositories/IDoctorTimeSlotRepository'
 import { DoctorTimeSlotEntity } from './DoctorTimeSlotEntity'
 import { DoctorTimeSlotMapper } from './DoctorTimeSlotMapper'
 import { DoctorTimeSlot } from '../../../domain/consultation/DoctorTimeSlot'
 import { BaseRepository } from '../../database/BaseRepository'
 import { RepositoryError } from '../../error/RepositoryError'
+import dayjs from 'dayjs'
 
 export class DoctorTimeSlotRepository
   extends BaseRepository<DoctorTimeSlotEntity, DoctorTimeSlot>
@@ -68,7 +69,11 @@ export class DoctorTimeSlotRepository
     }
   }
 
-  public async findByDoctorId(doctorId: string): Promise<{
+  public async findByDoctorIdAndDate(
+    doctorId: string,
+    startTime: string,
+    endTime: string
+  ): Promise<{
     doctorId: string
     timeSlots: Array<{
       id: string
@@ -78,11 +83,15 @@ export class DoctorTimeSlotRepository
     }>
   }> {
     try {
+      const startDate = dayjs(startTime).startOf('day').toDate()
+      const endDate = dayjs(endTime).endOf('day').toDate()
+      console.table({ startDate })
       const entities = await this.getRepo().find({
         where: {
           doctor: { id: doctorId },
+          startAt: Between(startDate, endDate),
         },
-        relations: ['timeSlots'],
+        relations: ['doctor'],
       })
       if (entities.length === 0) {
         return {
@@ -90,23 +99,18 @@ export class DoctorTimeSlotRepository
           timeSlots: [],
         }
       }
-      const doctorTimeSlots = entities.map((entity) => {
-        return {
-          doctorId: entity.doctor.id,
-          timeSlots: [
-            {
-              id: entity.id,
-              startAt: entity.startAt,
-              endAt: entity.endAt,
-              isAvailable: entity.availability,
-            },
-          ],
-        }
-      })
-      return doctorTimeSlots[0]
+      return {
+        doctorId,
+        timeSlots: entities.map((entity) => ({
+          id: entity.id,
+          startAt: entity.startAt,
+          endAt: entity.endAt,
+          isAvailable: entity.availability,
+        })),
+      }
     } catch (e) {
       throw new RepositoryError(
-        'DoctorTimeSlotRepository findByDoctorId error',
+        'DoctorTimeSlotRepository findByDoctorIdAndDate error',
         e as Error
       )
     }

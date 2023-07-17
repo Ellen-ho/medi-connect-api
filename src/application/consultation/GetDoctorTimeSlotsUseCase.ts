@@ -4,8 +4,8 @@ import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 
 interface GetDoctorTimeSlotsRequest {
   doctorId: string
-  starAt?: Date
-  endAt?: Date
+  startTime?: string
+  endTime?: string
 }
 
 interface GetDoctorTimeSlotsResponse {
@@ -27,7 +27,7 @@ export class GetDoctorTimeSlotsUseCase {
   public async execute(
     request: GetDoctorTimeSlotsRequest
   ): Promise<GetDoctorTimeSlotsResponse> {
-    const { doctorId } = request
+    const { doctorId, startTime, endTime } = request
 
     const existingDoctor = await this.doctorRepository.findById(doctorId)
 
@@ -36,7 +36,13 @@ export class GetDoctorTimeSlotsUseCase {
     }
 
     const existingTimeSlots =
-      await this.doctorTimeSlotRepository.findByDoctorId(doctorId)
+      await this.doctorTimeSlotRepository.findByDoctorIdAndDate(
+        doctorId,
+        startTime !== undefined ? startTime : '',
+        endTime !== undefined ? endTime : ''
+      )
+
+    console.table({ existingTimeSlots })
 
     return {
       doctorId: existingTimeSlots.doctorId,
