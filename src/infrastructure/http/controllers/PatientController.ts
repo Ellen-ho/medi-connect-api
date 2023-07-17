@@ -40,6 +40,7 @@ export class PatientController implements IPatientController {
   ): Promise<Response> => {
     const request = {
       user: req.user as User,
+      targetPatientId: req.query.targetPatientId as string,
     }
     const result = await this.getPatientProfileUseCase.execute(request)
     return res.status(200).json(result)

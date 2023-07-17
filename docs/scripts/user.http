@@ -19,8 +19,8 @@ POST {{usersPath}}/login
 Content-Type: application/json
 
 {
-  "email": "tim@gmail.com",
-  "password": "tim"
+  "email": "Amy@gmail.com",
+  "password": "Amy"
 }
 ###
 @accessToken = Bearer {{login.response.body.token}}
@@ -148,6 +148,13 @@ Content-Type: application/json
   ]
 }
 ###
+
+### get patient profile
+GET {{patientPath}}/profile?targetPatientId=df5ff2e5-9d76-42ca-acfb-688267229369
+Authorization: {{accessToken}}
+Content-Type: application/json
+###
+
 
 @doctorPath={{hostname}}/api/doctors
 
