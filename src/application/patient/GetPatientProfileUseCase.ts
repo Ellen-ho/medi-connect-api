@@ -1,3 +1,6 @@
+import { ConsultAppointmentStatusType } from '../../domain/consultation/ConsultAppointment'
+import { IConsultAppointmentRepository } from '../../domain/consultation/interfaces/repositories/IConsultAppointmentRepository'
+import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 import {
   GenderType,
   IAllergy,
@@ -6,11 +9,12 @@ import {
   IMedicinceUsageItem,
 } from '../../domain/patient/Patient'
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
-import { User } from '../../domain/user/User'
-import { NotFoundError } from '../../infrastructure/error/NotFoundError'
+import { User, UserRoleType } from '../../domain/user/User'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
 
 interface GetPatientProfileRequest {
   user: User
+  targetPatientId: string
 }
 
 interface GetPatientProfileResponse {
@@ -30,37 +34,85 @@ interface GetPatientProfileResponse {
 }
 
 export class GetPatientProfileUseCase {
-  constructor(private readonly patientRepository: IPatientRepository) {}
+  constructor(
+    private readonly patientRepository: IPatientRepository,
+    private readonly doctorRepository: IDoctorRepository,
+    private readonly consultAppointmentRepository: IConsultAppointmentRepository
+  ) {}
 
   public async execute(
     request: GetPatientProfileRequest
   ): Promise<GetPatientProfileResponse> {
-    const { user } = request
+    const { user, targetPatientId } = request
+    // 若登入者為doctor
+    if (user.role === UserRoleType.DOCTOR) {
+      const currentDoctor = await this.doctorRepository.findByUserId(user.id)
+      if (currentDoctor == null) {
+        throw new AuthorizationError('The currentDoctor does not exist.')
+      }
+      const upComingAppointments =
+        await this.consultAppointmentRepository.findByPatientIdAndDoctorIdAndStatus(
+          targetPatientId, // profile的擁有患者
+          currentDoctor.id, // 當前登入的醫師
+          [ConsultAppointmentStatusType.UPCOMING] // 預約狀態為upComing
+        )
+      if (upComingAppointments.length === 0) {
+        throw new AuthorizationError(
+          'The current doctor does not be appointed by this patient.'
+        )
+      }
+      const appointmentPatient = await this.patientRepository.findById(
+        targetPatientId
+      )
+      if (appointmentPatient == null) {
+        throw new AuthorizationError(
+          'Patient who made the appointment does not exist.'
+        )
+      }
 
-    const existingPatientProfile = await this.patientRepository.findByUserId(
-      user.id
-    )
+      return {
+        id: appointmentPatient.id,
+        avatar: appointmentPatient.avatar,
+        firstName: appointmentPatient.firstName,
+        lastName: appointmentPatient.lastName,
+        birthDate: appointmentPatient.birthDate,
+        gender: appointmentPatient.gender,
+        medicalHistory: appointmentPatient.medicalHistory,
+        allergy: appointmentPatient.allergy,
+        familyHistory: appointmentPatient.familyHistory,
+        heightValueCm: appointmentPatient.heightValueCm,
+        medicinceUsage: appointmentPatient.medicinceUsage,
+        createdAt: appointmentPatient.createdAt,
+        updatedAt: appointmentPatient.updatedAt,
+      }
+    }
 
-    if (existingPatientProfile == null) {
-      throw new NotFoundError(
-        'The current patient whose profile does not exist.'
+    // 若登入者身分為患者
+    const currentPatient = await this.patientRepository.findByUserId(user.id)
+    if (currentPatient == null) {
+      throw new AuthorizationError('The current patient does not exist.')
+    }
+    // 判斷此record是否屬於當前登入的患者
+    if (currentPatient.id !== targetPatientId) {
+      throw new AuthorizationError(
+        'These records do not belong to the current patient.'
       )
     }
 
     return {
-      id: existingPatientProfile.id,
-      avatar: existingPatientProfile.avatar,
-      firstName: existingPatientProfile.firstName,
-      lastName: existingPatientProfile.lastName,
-      birthDate: existingPatientProfile.birthDate,
-      gender: existingPatientProfile.gender,
-      medicalHistory: existingPatientProfile.medicalHistory,
-      allergy: existingPatientProfile.allergy,
-      familyHistory: existingPatientProfile.familyHistory,
-      heightValueCm: existingPatientProfile.heightValueCm,
-      medicinceUsage: existingPatientProfile.medicinceUsage,
-      createdAt: existingPatientProfile.createdAt,
-      updatedAt: existingPatientProfile.updatedAt,
+      id: currentPatient.id,
+      avatar: currentPatient.avatar,
+      firstName: currentPatient.firstName,
+      lastName: currentPatient.lastName,
+      birthDate: currentPatient.birthDate,
+      gender: currentPatient.gender,
+      medicalHistory: currentPatient.medicalHistory,
+      allergy: currentPatient.allergy,
+      familyHistory: currentPatient.familyHistory,
+      heightValueCm: currentPatient.heightValueCm,
+      medicinceUsage: currentPatient.medicinceUsage,
+      createdAt: currentPatient.createdAt,
+      updatedAt: currentPatient.updatedAt,
     }
   }
 }

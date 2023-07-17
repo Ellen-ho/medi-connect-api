@@ -219,7 +219,9 @@ async function main(): Promise<void> {
     patientRepository
   )
   const getPatientProfileUseCase = new GetPatientProfileUseCase(
-    patientRepository
+    patientRepository,
+    doctorRepository,
+    consultAppointmentRepository
   )
 
   /**

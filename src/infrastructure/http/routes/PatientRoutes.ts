@@ -5,6 +5,7 @@ import { validator } from '../middlewares/Validator'
 import {
   creatPatientProfileSchema,
   editPatientProfileSchema,
+  getPatientProfileSchema,
 } from '../../../application/patient/PatientValidator'
 import { authenticated } from '../middlewares/Auth'
 export class PatientRoutes {
@@ -27,6 +28,7 @@ export class PatientRoutes {
       .get(
         '/profile',
         authenticated,
+        validator(getPatientProfileSchema),
         asyncHandler(this.patientController.getPatientProfile)
       )
   }

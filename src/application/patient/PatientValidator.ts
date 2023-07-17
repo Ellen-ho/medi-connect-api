@@ -70,3 +70,7 @@ export const creatPatientProfileSchema = {
 export const editPatientProfileSchema = {
   ...creatPatientProfileSchema,
 }
+
+export const getPatientProfileSchema = {
+  query: Joi.object({ targetPatientId: Joi.string().uuid().required() }),
+}
