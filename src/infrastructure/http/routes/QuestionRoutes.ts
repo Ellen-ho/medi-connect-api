@@ -13,6 +13,7 @@ import {
   getSingleQuestionSchema,
 } from '../../../application/question/QuestionValidator'
 import { validator } from '../middlewares/Validator'
+import { authenticated } from '../middlewares/Auth'
 
 export class QuestionRoutes {
   private readonly routes: Router
@@ -22,6 +23,7 @@ export class QuestionRoutes {
       // patient specific
       .patch(
         '/answers/appreciations/:id',
+        authenticated,
         validator(editAnswerAgreementCommentSchema),
         asyncHandler(this.questionController.editAnswerAppreciationContent)
       )
@@ -32,41 +34,49 @@ export class QuestionRoutes {
       )
       .patch(
         '/:id',
+        authenticated,
         validator(editPatientQuestionSchema),
         asyncHandler(this.questionController.editPatientQuestion)
       )
       .delete(
         '/answers/appreciations/:id',
+        authenticated,
         validator(cancelAnswerAgreementSchema),
         asyncHandler(this.questionController.cancelAnswerAppreciation)
       )
       .delete(
         '/answers/agreements/:id',
+        authenticated,
         validator(cancelAnswerAgreementSchema),
         asyncHandler(this.questionController.cancelAnswerAgreement)
       )
       .delete(
         '/answers/:id',
+        authenticated,
         validator(cancelPatientQuestionAnswerSchema),
         asyncHandler(this.questionController.cancelPatientQuestionAnswer)
       )
       .delete(
         '/:id',
+        authenticated,
         validator(cancelPatientQuestionSchema),
         asyncHandler(this.questionController.cancelPatientQuestion)
       )
       .post(
         '/answers/:id/appreciations',
+        authenticated,
         validator(createAnswerAgreementSchema),
         asyncHandler(this.questionController.createAnswerAppreciation)
       )
       .post(
         '/answers/:id/agreements',
+        authenticated,
         validator(createAnswerAgreementSchema),
         asyncHandler(this.questionController.createAnswerAgreement)
       )
       .post(
         '/:id/answers',
+        authenticated,
         validator(creatPatientQuestionAnswerSchema),
         asyncHandler(this.questionController.createPatientQuestionAnswer)
       )
@@ -78,15 +88,21 @@ export class QuestionRoutes {
       // )
       .post(
         '/',
+        authenticated,
         validator(creatPatientQuestionSchema),
         asyncHandler(this.questionController.createPatientQuestion)
       )
       .get(
         '/:id',
+        authenticated,
         validator(getSingleQuestionSchema),
         asyncHandler(this.questionController.getSingleQuestion)
       )
-      .get('/', asyncHandler(this.questionController.getQuestions))
+      .get(
+        '/',
+        authenticated,
+        asyncHandler(this.questionController.getQuestions)
+      )
   }
 
   public createRouter(): Router {

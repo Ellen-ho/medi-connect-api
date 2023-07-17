@@ -118,6 +118,7 @@ import { MeetingLinkRepository } from './infrastructure/entities/meeting/Meeting
 import { GetDoctorProfileUseCase } from './application/doctor/GetDoctorProfleUseCase'
 import { GetPatientProfileUseCase } from './application/patient/GetPatientProfileUseCase'
 import { GetDoctorListUseCase } from './application/doctor/GetDoctorListUseCase'
+import { GetDoctorTimeSlotsUseCase } from './application/consultation/GetDoctorTimeSlotsUseCase'
 // import { RawQueryRepository } from './infrastructure/database/RawRepository'
 
 void main()
@@ -530,6 +531,11 @@ async function main(): Promise<void> {
       doctorRepository
     )
 
+  const getDoctorTimeSlotsUseCase = new GetDoctorTimeSlotsUseCase(
+    doctorTimeSlotRepository,
+    doctorRepository
+  )
+
   /**
    * HealthGoal Domain
    */
@@ -691,7 +697,8 @@ async function main(): Promise<void> {
     editDoctorTimeSlotUseCase,
     createMultipleTimeSlotsUseCase,
     getPatientConsultAppointmentsUseCase,
-    getDoctorConsultAppointmentsUseCase
+    getDoctorConsultAppointmentsUseCase,
+    getDoctorTimeSlotsUseCase
   )
 
   const healthGoalController = new HealthGoalController(

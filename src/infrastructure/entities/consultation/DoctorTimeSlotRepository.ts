@@ -1,10 +1,11 @@
-import { DataSource } from 'typeorm'
+import { Between, DataSource } from 'typeorm'
 import { IDoctorTimeSlotRepository } from '../../../domain/consultation/interfaces/repositories/IDoctorTimeSlotRepository'
 import { DoctorTimeSlotEntity } from './DoctorTimeSlotEntity'
 import { DoctorTimeSlotMapper } from './DoctorTimeSlotMapper'
 import { DoctorTimeSlot } from '../../../domain/consultation/DoctorTimeSlot'
 import { BaseRepository } from '../../database/BaseRepository'
 import { RepositoryError } from '../../error/RepositoryError'
+import dayjs from 'dayjs'
 
 export class DoctorTimeSlotRepository
   extends BaseRepository<DoctorTimeSlotEntity, DoctorTimeSlot>
@@ -63,6 +64,53 @@ export class DoctorTimeSlotRepository
     } catch (e) {
       throw new RepositoryError(
         'DoctorTimeSlotRepository findByStartAtAndDoctorId error',
+        e as Error
+      )
+    }
+  }
+
+  public async findByDoctorIdAndDate(
+    doctorId: string,
+    startTime: string,
+    endTime: string
+  ): Promise<{
+    doctorId: string
+    timeSlots: Array<{
+      id: string
+      startAt: Date
+      endAt: Date
+      isAvailable: boolean
+    }>
+  }> {
+    try {
+      const startDate = dayjs(startTime).startOf('day').toDate()
+      const endDate = dayjs(endTime).endOf('day').toDate()
+      console.table({ startDate })
+      const entities = await this.getRepo().find({
+        where: {
+          doctor: { id: doctorId },
+          startAt: Between(startDate, endDate),
+        },
+        relations: ['doctor'],
+      })
+      if (entities.length === 0) {
+        return {
+          doctorId,
+          timeSlots: [],
+        }
+      }
+      return {
+        doctorId,
+        timeSlots: entities.map((entity) => ({
+          id: entity.id,
+          startAt: entity.startAt,
+          endAt: entity.endAt,
+          isAvailable: entity.availability,
+        })),
+      }
+    } catch (e) {
+      throw new RepositoryError(
+        'DoctorTimeSlotRepository findByDoctorIdAndDate error',
         e as Error
       )
     }
