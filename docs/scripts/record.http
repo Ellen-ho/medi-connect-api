@@ -1,4 +1,4 @@
-@hostname = http://localhost:7000
+@hostname = http://localhost:10000
 
 @usersPath = {{hostname}}/api/users
 
@@ -8,8 +8,8 @@ POST {{usersPath}}/login
 Content-Type: application/json
 
 {
-  "email": "tim@gmail.com",
-  "password": "tim"
+  "email": "Eric@gmail.com",
+  "password": "Eric"
 }
 ###
 @accessToken = Bearer {{login.response.body.token}}
@@ -152,7 +152,7 @@ Content-Type: application/json
 ###
 
 ### get a single exercise record
-@exerciseRecordId = 64b7896a-fe64-4b52-a84c-ddff1d44fb9b
+@exerciseRecordId =447a687c-c6f7-4a4a-9a17-1f5b9271f88e
 GET {{recordsPath}}/exercise/{{exerciseRecordId}}
 Authorization: {{accessToken}}
 Content-Type: application/json
