@@ -37,9 +37,8 @@ Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "displayName": "Amy nick name",
-  "email": "AmyNickName@gmail.com",
-  "password": "Amy nick name"
+  "displayName": "Amy am I",
+  "password": "AmyAmy"
 }
 ###
 

@@ -14,9 +14,7 @@ export enum UserRoleType {
 }
 
 interface IUserUpdateData {
-  [key: string]: any
   displayName: string
-  email: string
   password: string
 }
 export class User {
@@ -53,8 +51,6 @@ export class User {
   public updateData(data: IUserUpdateData): void {
     // TODO: improve this
     this.props.displayName = data.displayName
-    this.props.email = data.email
-    this.props.createdAt = data.createdAt
-    this.props.updatedAt = data.updatedAt
+    this.props.hashedPassword = data.password
   }
 }
