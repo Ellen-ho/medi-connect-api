@@ -21,8 +21,7 @@ export const logInUserSchema = {
 
 export const editUserAccountSchema = {
   body: Joi.object({
-    displayName: Joi.string().required(),
-    email: Joi.string().email().required(),
-    password: Joi.string().required(),
+    displayName: Joi.string().optional(),
+    password: Joi.string().optional(),
   }),
 }
