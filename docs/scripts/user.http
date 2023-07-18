@@ -25,10 +25,22 @@ Content-Type: application/json
 ###
 @accessToken = Bearer {{login.response.body.token}}
 
-### get user
-GET {{usersPath}}/me
+### get user account
+GET {{usersPath}}/account
 Authorization: {{accessToken}}
 Content-Type: application/json
+###
+
+### edit user account
+PATCH {{usersPath}}/account
+Authorization: {{accessToken}}
+Content-Type: application/json
+
+{
+  "displayName": "Amy nick name",
+  "email": "AmyNickName@gmail.com",
+  "password": "Amy nick name"
+}
 ###
 
 @patientPath = {{hostname}}/api/patients

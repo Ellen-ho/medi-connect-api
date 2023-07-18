@@ -18,3 +18,11 @@ export const logInUserSchema = {
     password: Joi.string().required(),
   }),
 }
+
+export const editUserAccountSchema = {
+  body: Joi.object({
+    displayName: Joi.string().required(),
+    email: Joi.string().email().required(),
+    password: Joi.string().required(),
+  }),
+}

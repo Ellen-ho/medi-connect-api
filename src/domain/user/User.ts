@@ -13,6 +13,12 @@ export enum UserRoleType {
   DOCTOR = 'DOCTOR',
 }
 
+interface IUserUpdateData {
+  [key: string]: any
+  displayName: string
+  email: string
+  password: string
+}
 export class User {
   constructor(private readonly props: IUserProps) {}
 
@@ -42,5 +48,13 @@ export class User {
 
   public get updatedAt(): Date {
     return this.props.updatedAt
+  }
+
+  public updateData(data: IUserUpdateData): void {
+    // TODO: improve this
+    this.props.displayName = data.displayName
+    this.props.email = data.email
+    this.props.createdAt = data.createdAt
+    this.props.updatedAt = data.updatedAt
   }
 }

@@ -52,4 +52,18 @@ export class UserRepository
       )
     }
   }
+
+  public async findByDisplayName(displayName: string): Promise<User | null> {
+    try {
+      const entity = await this.getRepo().findOne({
+        where: { displayName },
+      })
+      return entity != null ? this.getMapper().toDomainModel(entity) : null
+    } catch (e) {
+      throw new RepositoryError(
+        'UserRepository findByDisplayName error',
+        e as Error
+      )
+    }
+  }
 }
