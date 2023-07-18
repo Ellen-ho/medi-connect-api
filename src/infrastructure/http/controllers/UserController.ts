@@ -1,23 +1,26 @@
 import { Request, Response } from 'express'
 import { CreateUserUseCase } from '../../../application/user/CreateUserUseCase'
-import { GetUserUseCase } from '../../../application/user/GetUserUseCase'
+import { GetUserAccountUseCase } from '../../../application/user/GetUserAccountUseCase'
 import { User, UserRoleType } from '../../../domain/user/User'
 import jwt from 'jsonwebtoken'
 import { PatientRepository } from '../../entities/patient/PatientRepository'
 import { DoctorRepository } from '../../entities/doctor/DoctorRepository'
+import { EditUserAccountUseCase } from '../../../application/user/EditUserAccountUseCase'
 
 export interface IUserController {
   login: (req: Request, res: Response) => Promise<Response>
-  getUserById: (req: Request, res: Response) => Promise<Response>
+  getUserAccount: (req: Request, res: Response) => Promise<Response>
   registerNewUser: (req: Request, res: Response) => Promise<Response>
+  editUserAccount: (req: Request, res: Response) => Promise<Response>
 }
 
 export class UserController implements IUserController {
   constructor(
-    private readonly getUserUseCase: GetUserUseCase,
+    private readonly getUserAccountUseCase: GetUserAccountUseCase,
     private readonly createUserUseCase: CreateUserUseCase,
     private readonly patientRepository: PatientRepository,
-    private readonly doctorRepository: DoctorRepository
+    private readonly doctorRepository: DoctorRepository,
+    private readonly editUserAccountUseCase: EditUserAccountUseCase
   ) {}
 
   public login = async (req: Request, res: Response): Promise<Response> => {
@@ -45,12 +48,12 @@ export class UserController implements IUserController {
     })
   }
 
-  public getUserById = async (
+  public getUserAccount = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    const { id } = req.user as User
-    const user = await this.getUserUseCase.execute({ id })
+    const request = { user: req.user as User }
+    const user = await this.getUserAccountUseCase.execute(request)
 
     return res.status(200).json(user)
   }
@@ -69,5 +72,17 @@ export class UserController implements IUserController {
     })
 
     return res.status(201).json(newUser)
+  }
+
+  public editUserAccount = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    const request = {
+      ...req.body,
+      user: req.user as User,
+    }
+    const user = await this.editUserAccountUseCase.execute(request)
+    return res.status(200).json(user)
   }
 }

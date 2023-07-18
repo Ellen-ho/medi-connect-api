@@ -5,7 +5,7 @@ import cors from 'cors'
 import { PostgresDatabase } from './infrastructure/database/PostgresDatabase'
 import { UuidService } from './infrastructure/utils/UuidService'
 import { UserRepository } from './infrastructure/entities/user/UserRepository'
-import { GetUserUseCase } from './application/user/GetUserUseCase'
+import { GetUserAccountUseCase } from './application/user/GetUserAccountUseCase'
 import { CreateUserUseCase } from './application/user/CreateUserUseCase'
 import { UserController } from './infrastructure/http/controllers/UserController'
 import { UserRoutes } from './infrastructure/http/routes/UserRoutes'
@@ -119,6 +119,7 @@ import { GetDoctorProfileUseCase } from './application/doctor/GetDoctorProfleUse
 import { GetPatientProfileUseCase } from './application/patient/GetPatientProfileUseCase'
 import { GetDoctorListUseCase } from './application/doctor/GetDoctorListUseCase'
 import { GetDoctorTimeSlotsUseCase } from './application/consultation/GetDoctorTimeSlotsUseCase'
+import { EditUserAccountUseCase } from './application/user/EditUserAccountUseCase'
 // import { RawQueryRepository } from './infrastructure/database/RawRepository'
 
 void main()
@@ -186,10 +187,14 @@ async function main(): Promise<void> {
   /**
    * User Domain
    */
-  const getUserUseCase = new GetUserUseCase(userRepository)
+  const getUserAccountUseCase = new GetUserAccountUseCase(userRepository)
   const createUserUseCase = new CreateUserUseCase(
     userRepository,
     uuidService,
+    hashGenerator
+  )
+  const editUserAccountUseCase = new EditUserAccountUseCase(
+    userRepository,
     hashGenerator
   )
 
@@ -628,10 +633,11 @@ async function main(): Promise<void> {
    * Controllers
    */
   const userController = new UserController(
-    getUserUseCase,
+    getUserAccountUseCase,
     createUserUseCase,
     patientRepository,
-    doctorRepository
+    doctorRepository,
+    editUserAccountUseCase
   )
   const patientController = new PatientController(
     createPatientProfileUseCase,

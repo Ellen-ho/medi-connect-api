@@ -9,6 +9,7 @@ import {
 } from '../middlewares/Auth'
 import { validator } from '../middlewares/Validator'
 import {
+  editUserAccountSchema,
   logInUserSchema,
   registerUserSchema,
 } from '../../../application/user/UserValidator'
@@ -25,11 +26,21 @@ export class UserRoutes {
         authenticator,
         asyncHandler(this.userController.login)
       )
-      .get('/me', authenticated, asyncHandler(this.userController.getUserById))
+      .get(
+        '/account',
+        authenticated,
+        asyncHandler(this.userController.getUserAccount)
+      )
       .post(
         '/',
         validator(registerUserSchema),
         asyncHandler(this.userController.registerNewUser)
+      )
+      .patch(
+        '/account',
+        authenticated,
+        validator(editUserAccountSchema),
+        asyncHandler(this.userController.editUserAccount)
       )
   }
 

@@ -1,13 +1,13 @@
 import { mock } from 'jest-mock-extended'
 import { User, UserRoleType } from '../../domain/user/User'
 import { IUserRepository } from '../../domain/user/interfaces/repositories/IUserRepository'
-import { GetUserUseCase } from './GetUserUseCase'
+import { GetUserAccountUseCase } from './GetUserAccountUseCase'
 
 // Initialize the GetUserUseCase with the mock UserRepository
 
-describe('Unit test: GetUserUseCase', () => {
+describe('Unit test:GetUserAccountCase', () => {
   const mockUserRepo = mock<IUserRepository>()
-  const getUserUseCase = new GetUserUseCase(mockUserRepo)
+  const getUserAccountUseCase = new GetUserAccountUseCase(mockUserRepo)
 
   afterEach(() => {
     jest.resetAllMocks()
@@ -32,22 +32,30 @@ describe('Unit test: GetUserUseCase', () => {
       createdAt: new Date('2023-06-18T13:18:00.155Z'),
       updatedAt: new Date('2023-06-18T13:18:00.155Z'),
     }
-    const mockRequest = { id: '1' }
 
-    mockUserRepo.findById.mockResolvedValue(mockUser)
-
-    const response = await getUserUseCase.execute(mockRequest)
+    const response = await getUserAccountUseCase.execute({ user: mockUser })
 
     expect(response).toEqual(expected)
     expect(mockUserRepo.findById).toHaveBeenCalledWith('1')
   })
 
   it('should throw an error when a non-existent id is provided', async () => {
-    const mockRequest = { id: '2' }
+    // Create a request object for a non-existent user
+    const mockRequest = {
+      user: new User({
+        id: '2',
+        email: 'test@test.com',
+        displayName: 'Test User',
+        hashedPassword: 'hashedPassword',
+        role: UserRoleType.PATIENT,
+        createdAt: new Date('2023-06-18T13:18:00.155Z'),
+        updatedAt: new Date('2023-06-18T13:18:00.155Z'),
+      }),
+    }
 
     mockUserRepo.findById.mockResolvedValue(null)
 
-    await expect(getUserUseCase.execute(mockRequest)).rejects.toThrow(
+    await expect(getUserAccountUseCase.execute(mockRequest)).rejects.toThrow(
       'User not found'
     )
     expect(mockUserRepo.findById).toHaveBeenCalledWith('2')
