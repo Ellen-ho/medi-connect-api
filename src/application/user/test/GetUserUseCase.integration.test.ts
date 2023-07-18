@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker'
-import { GetUserRequest, GetUserUseCase } from '../GetUserUseCase'
+import { GetUserRequest, GetUserUseCase } from '../GetUserAccountUseCase'
 import { PostgresDatabase } from '../../../infrastructure/database/PostgresDatabase'
 import { UserRepository } from '../../../infrastructure/entities/user/UserRepository'
 import { UserFactory } from '../../../domain/user/test/UserFactory'

@@ -1,20 +1,29 @@
-import { User } from '../../domain/user/User'
+import { User, UserRoleType } from '../../domain/user/User'
 import { IUserRepository } from '../../domain/user/interfaces/repositories/IUserRepository'
 import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 
-export interface GetUserRequest {
-  id: string
+export interface GetUserAccountRequest {
+  user: User
 }
 
-interface GetUserResponse extends Omit<User, 'hashedPassword'> {}
+interface GetUserAccountResponse {
+  id: string
+  displayName: string
+  email: string
+  role: UserRoleType
+  createdAt: Date
+  updatedAt: Date
+}
 
-export class GetUserUseCase {
+export class GetUserAccountUseCase {
   constructor(private readonly userRepository: IUserRepository) {}
 
-  public async execute(request: GetUserRequest): Promise<GetUserResponse> {
-    const { id } = request
+  public async execute(
+    request: GetUserAccountRequest
+  ): Promise<GetUserAccountResponse> {
+    const { user } = request
 
-    const existingUser = await this.userRepository.findById(id)
+    const existingUser = await this.userRepository.findById(user.id)
 
     if (existingUser == null) {
       throw new NotFoundError('User not found')
