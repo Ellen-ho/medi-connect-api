@@ -113,7 +113,7 @@ export class ConsultAppointmentRepository
         `
         SELECT
           consult_appointments.patient_id,
-          consult_appointments.id As "appointment_id"
+          consult_appointments.id As "appointment_id",
           consult_appointments.status,
           consult_appointments.meeting_link,
           doctors.first_name,
