@@ -74,7 +74,7 @@ export class DoctorRepository
       >(
         `
           SELECT 
-            *, 
+            doctors.*, 
             ROW_TO_JSON(users.*) AS user,
             COUNT(*) OVER() AS counts
           FROM doctors
