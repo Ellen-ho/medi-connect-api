@@ -21,6 +21,7 @@ export interface IConsultAppointmentRepository
     endDate: Date
   ) => Promise<
     Array<{
+      appointmentId: string
       patientId: string
       status: ConsultAppointmentStatusType
       doctorTimeSlot: {
@@ -33,7 +34,7 @@ export interface IConsultAppointmentRepository
         specialties: MedicalSpecialtyType[]
       }
       meetingLink: string | null
-      cacelAvailability: boolean
+      cancelAvailability: boolean
     }>
   >
   findByDoctorIdAndStatusWithinDateRange: (
@@ -43,6 +44,7 @@ export interface IConsultAppointmentRepository
     endDate: Date
   ) => Promise<
     Array<{
+      appointmentId: string
       status: ConsultAppointmentStatusType
       doctorTimeSlot: {
         doctorId: string

@@ -5,6 +5,7 @@ import { User } from '../../domain/user/User'
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
 export interface ConsultAppointmentDatas {
+  appointmentId: string
   status: ConsultAppointmentStatusType
   doctorTimeSlot: {
     startAt: Date
@@ -18,6 +19,7 @@ export interface ConsultAppointmentDatas {
 }
 
 export interface ConsultAppointmentData {
+  appointmentId: string
   status: ConsultAppointmentStatusType
   doctorTimeSlot: {
     startAt: Date
@@ -83,6 +85,7 @@ export class GetDoctorConsultAppointmentsUseCase {
       const timeDifference = startTime.diff(currentDate, 'hour')
 
       const consultAppointmentData: ConsultAppointmentDatas = {
+        appointmentId: appointment.appointmentId,
         status: appointment.status,
         doctorTimeSlot: {
           startAt: appointment.doctorTimeSlot.startAt,
@@ -128,6 +131,7 @@ export class GetDoctorConsultAppointmentsUseCase {
     appointments: ConsultAppointmentData[]
   ): ConsultAppointmentDatas[] {
     return appointments.map((appointment) => ({
+      appointmentId: appointment.appointmentId,
       status: appointment.status,
       doctorTimeSlot: {
         startAt: appointment.doctorTimeSlot.startAt,
