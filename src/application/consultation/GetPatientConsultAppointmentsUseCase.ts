@@ -6,6 +6,7 @@ import { User } from '../../domain/user/User'
 import { MedicalSpecialtyType } from '../../domain/question/PatientQuestion'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
 export interface ConsultAppointmentDatas {
+  appointmentId: string
   patientId: string
   status: ConsultAppointmentStatusType
   doctorTimeSlot: {
@@ -18,10 +19,11 @@ export interface ConsultAppointmentDatas {
     specialties: MedicalSpecialtyType[]
   }
   meetingLink: string | null
-  cacelAvailability: boolean
+  cancelAvailability: boolean
 }
 
 export interface ConsultAppointmentData {
+  appointmentId: string
   patientId: string
   status: ConsultAppointmentStatusType
   doctorTimeSlot: {
@@ -34,7 +36,7 @@ export interface ConsultAppointmentData {
     specialties: MedicalSpecialtyType[]
   }
   meetingLink: string | null
-  cacelAvailability: boolean
+  cancelAvailability: boolean
 }
 
 interface GetPatientConsultAppointmentsRequest {
@@ -91,6 +93,7 @@ export class GetPatientConsultAppointmentsUseCase {
       const timeDifference = startTime.diff(currentDate, 'hour')
 
       const consultAppointmentData: ConsultAppointmentDatas = {
+        appointmentId: appointment.appointmentId,
         patientId: appointment.patientId,
         status: appointment.status,
         doctorTimeSlot: {
@@ -103,7 +106,7 @@ export class GetPatientConsultAppointmentsUseCase {
           specialties: appointment.doctor.specialties,
         },
         meetingLink: timeDifference > 22 ? null : appointment.meetingLink,
-        cacelAvailability: timeDifference > 24,
+        cancelAvailability: timeDifference > 24,
       }
 
       upcomingConsultAppointments.push(consultAppointmentData)
@@ -139,6 +142,7 @@ export class GetPatientConsultAppointmentsUseCase {
     appointments: ConsultAppointmentData[]
   ): ConsultAppointmentDatas[] {
     return appointments.map((appointment) => ({
+      appointmentId: appointment.appointmentId,
       patientId: appointment.patientId,
       status: appointment.status,
       doctorTimeSlot: {
@@ -151,7 +155,7 @@ export class GetPatientConsultAppointmentsUseCase {
         specialties: appointment.doctor.specialties,
       },
       meetingLink: null,
-      cacelAvailability: false,
+      cancelAvailability: false,
     }))
   }
 }

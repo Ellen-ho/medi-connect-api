@@ -42,8 +42,6 @@ export class GetDoctorTimeSlotsUseCase {
         endTime !== undefined ? endTime : ''
       )
 
-    console.table({ existingTimeSlots })
-
     return {
       doctorId: existingTimeSlots.doctorId,
       timeSlots: existingTimeSlots.timeSlots,

@@ -79,6 +79,7 @@ export class ConsultAppointmentRepository
     endDate: Date
   ): Promise<
     Array<{
+      appointmentId: string
       patientId: string
       status: ConsultAppointmentStatusType
       doctorTimeSlot: {
@@ -91,12 +92,13 @@ export class ConsultAppointmentRepository
         specialties: MedicalSpecialtyType[]
       }
       meetingLink: string | null
-      cacelAvailability: boolean
+      cancelAvailability: boolean
     }>
   > {
     try {
       const rawAppointments = await this.getQuery<
         Array<{
+          appointment_id: string
           status: ConsultAppointmentStatusType
           patient_id: string
           first_name: string
@@ -111,6 +113,7 @@ export class ConsultAppointmentRepository
         `
         SELECT
           consult_appointments.patient_id,
+          consult_appointments.id As "appointment_id"
           consult_appointments.status,
           consult_appointments.meeting_link,
           doctors.first_name,
@@ -131,6 +134,7 @@ export class ConsultAppointmentRepository
       )
       return rawAppointments.map((rawItem) => ({
         patientId: rawItem.patient_id,
+        appointmentId: rawItem.appointment_id,
         status: rawItem.status,
         doctorTimeSlot: {
           startAt: rawItem.start_at,
@@ -142,7 +146,7 @@ export class ConsultAppointmentRepository
           specialties: rawItem.specialties,
         },
         meetingLink: rawItem.meeting_link,
-        cacelAvailability: rawItem.cacel_availability,
+        cancelAvailability: rawItem.cacel_availability,
       }))
     } catch (e) {
       throw new RepositoryError(
@@ -159,6 +163,7 @@ export class ConsultAppointmentRepository
     endDate: Date
   ): Promise<
     Array<{
+      appointmentId: string
       status: ConsultAppointmentStatusType
       doctorTimeSlot: {
         doctorId: string
@@ -175,6 +180,7 @@ export class ConsultAppointmentRepository
     try {
       const rawAppointments = await this.getQuery<
         Array<{
+          appointment_id: string
           status: ConsultAppointmentStatusType
           doctor_id: string
           first_name: string
@@ -187,6 +193,7 @@ export class ConsultAppointmentRepository
         `
         SELECT
           doctor_time_slots.doctor_id AS "doctor_id",
+          consult_appointments.id AS "appointment_id",
           consult_appointments.status,
           consult_appointments.meeting_link,
           doctor_time_slots.start_at AS "start_at",
@@ -206,6 +213,7 @@ export class ConsultAppointmentRepository
         [doctorId, status, startDate, endDate]
       )
       return rawAppointments.map((rawItem) => ({
+        appointmentId: rawItem.appointment_id,
         status: rawItem.status,
         doctorTimeSlot: {
           doctorId: rawItem.doctor_id,
