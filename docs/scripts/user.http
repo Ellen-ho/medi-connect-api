@@ -229,7 +229,7 @@ Content-Type: application/json
 ###
 
 ### get a doctor profile
-@Id=
+@Id=1844558f-ed47-46b9-83c8-5616599cc150
 GET {{doctorPath}}/{{Id}}/profile
 Authorization: {{accessToken}}
 Content-Type: application/json
