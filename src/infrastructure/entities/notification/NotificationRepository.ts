@@ -38,7 +38,7 @@ export class NotificationRepository
     }
   }
 
-  public async findByUserIdAndCountAll(
+  public async findByUserIdAndIsNotDeletedAndCountAll(
     userId: string,
     limit: number,
     offset: number
@@ -52,6 +52,7 @@ export class NotificationRepository
       notificationType: NotificationType
       createdAt: Date
       updatedAt: Date
+      deletedAt: Date | null
     }>
   }> {
     try {
@@ -65,6 +66,7 @@ export class NotificationRepository
           notification_type: NotificationType
           created_at: Date
           updated_at: Date
+          deleted_at: Date | null
         }>
       >(
         `
@@ -76,11 +78,12 @@ export class NotificationRepository
             is_read,
             notification_type,
             created_at,
-            updated_at
+            updated_at,
+            deleted_at
           FROM
             notifications
             WHERE
-          user_id = $1
+          user_id = $1 AND deleted_at IS NULL
           ORDER BY created_at DESC
           LIMIT $2
           OFFSET $3
@@ -89,7 +92,8 @@ export class NotificationRepository
       )
 
       return {
-        total_counts: rawNotifications[0].total_counts,
+        total_counts:
+          rawNotifications.length > 0 ? rawNotifications[0].total_counts : 0,
         notifications: rawNotifications.map((notification) => ({
           id: notification.id,
           title: notification.title,
@@ -98,21 +102,25 @@ export class NotificationRepository
           notificationType: notification.notification_type,
           createdAt: notification.created_at,
           updatedAt: notification.updated_at,
+          deletedAt: notification.deleted_at,
         })),
       }
     } catch (e) {
       throw new RepositoryError(
-        'NotificationRepository findAndCountAll error',
+        'NotificationRepository findByUserIdAndIsNotDeletedAndCountAll error',
         e as Error
       )
     }
   }
 
-  public async findUnreadByUserId(userId: string): Promise<boolean> {
+  public async findUnreadAndIsNotDeletedByUserId(
+    userId: string
+  ): Promise<boolean> {
     try {
       const result = await this.getQuery<
         Array<{
           has_unread_notification: boolean
+          deleted_at: string
         }>
       >(
         `SELECT EXISTS (
@@ -120,13 +128,16 @@ export class NotificationRepository
           FROM notifications
           WHERE user_id = $1
             AND is_read = FALSE
+            AND deleted_at IS NULL
           LIMIT 1
         ) AS has_unread_notification
         `,
         [userId]
       )
 
-      return result[0].has_unread_notification
+      return result[0].deleted_at == null
+        ? result[0].has_unread_notification
+        : false
     } catch (e) {
       throw new RepositoryError(
         'NotificationRepository findUnreadByUserId error',
