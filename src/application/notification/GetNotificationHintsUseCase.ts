@@ -1,7 +1,5 @@
 import { INotificationRepository } from '../../domain/notification/interfaces/repositories/INotificationRepository'
 import { User } from '../../domain/user/User'
-import { NotFoundError } from '../../infrastructure/error/NotFoundError'
-
 interface GetNotificationHintsRequest {
   user: User
 }
@@ -22,10 +20,6 @@ export class GetNotificationHintsUseCase {
 
     const hasUnReadNotification =
       await this.notificationRepository.findUnreadByUserId(user.id)
-
-    if (!hasUnReadNotification) {
-      throw new NotFoundError('No unread notification exists.')
-    }
 
     return {
       hasUnReadNotification,

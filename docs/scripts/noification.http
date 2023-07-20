@@ -1,4 +1,4 @@
-@hostname = http://localhost:7000
+@hostname = http://localhost:10000
 
 @usersPath = {{hostname}}/api/users
 
