@@ -1,7 +1,6 @@
 import { NotificationType } from '../../domain/notification/Notification'
 import { INotificationRepository } from '../../domain/notification/interfaces/repositories/INotificationRepository'
 import { User } from '../../domain/user/User'
-import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 import { getOffset, getPagination } from '../../infrastructure/utils/Pagination'
 
 interface GetNotificationListRequest {
@@ -43,15 +42,11 @@ export class GetNotificationListUseCase {
     const offset: number = getOffset(limit, page)
 
     const existingNotificationList =
-      await this.notificationRepository.findByUserIdAndCountAll(
+      await this.notificationRepository.findByUserIdAndIsNotDeletedAndCountAll(
         user.id,
         limit,
         offset
       )
-
-    if (existingNotificationList.notifications.length === 0) {
-      throw new NotFoundError('NotificationList do not exist.')
-    }
 
     return {
       data: existingNotificationList.notifications,

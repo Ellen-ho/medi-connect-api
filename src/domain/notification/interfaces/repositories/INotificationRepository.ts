@@ -6,7 +6,7 @@ export interface INotificationRepository extends IBaseRepository<Notification> {
     notificationId: string,
     userId: string
   ) => Promise<Notification | null>
-  findByUserIdAndCountAll: (
+  findByUserIdAndIsNotDeletedAndCountAll: (
     userId: string,
     limit: number,
     offset: number
@@ -22,7 +22,7 @@ export interface INotificationRepository extends IBaseRepository<Notification> {
       updatedAt: Date
     }>
   }>
-  findUnreadByUserId: (userId: string) => Promise<boolean>
+  findUnreadAndIsNotDeletedByUserId: (userId: string) => Promise<boolean>
   findAllUnreadNotificationsByUserId: (
     userId: string
   ) => Promise<Notification[]>

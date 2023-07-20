@@ -19,7 +19,9 @@ export class GetNotificationHintsUseCase {
     const { user } = request
 
     const hasUnReadNotification =
-      await this.notificationRepository.findUnreadByUserId(user.id)
+      await this.notificationRepository.findUnreadAndIsNotDeletedByUserId(
+        user.id
+      )
 
     return {
       hasUnReadNotification,
