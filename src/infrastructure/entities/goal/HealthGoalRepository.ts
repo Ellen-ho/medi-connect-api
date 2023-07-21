@@ -135,7 +135,7 @@ export class HealthGoalRepository
           endAt: goal.endAt,
           status: goal.status,
           result: goal.result,
-          createdAt: goal.created_at,
+          createdAt: goal.createdAt,
         })),
       }
       return formattedResult

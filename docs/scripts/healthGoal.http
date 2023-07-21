@@ -1,4 +1,4 @@
-@hostname = http://localhost:7000
+@hostname = http://localhost:10000
 
 @usersPath = {{hostname}}/api/users
 
@@ -8,8 +8,8 @@ POST {{usersPath}}/login
 Content-Type: application/json
 
 {
-  "email": "Ellen@gmail.com",
-  "password": "Ellen"
+  "email": "tim@gmail.com",
+  "password": "tim"
 }
 ###
 @accessToken = Bearer {{login.response.body.token}}
@@ -29,7 +29,7 @@ Content-Type: application/json
 ###
 
 ### get health goal list
-Get {{healthGoalsPath}}?limit=3&page=1&targetPatientId=e6b08543-8ef9-47f0-852d-5442830089da
+Get {{healthGoalsPath}}?limit=3&page=1&targetPatientId=df5ff2e5-9d76-42ca-acfb-688267229369
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###
