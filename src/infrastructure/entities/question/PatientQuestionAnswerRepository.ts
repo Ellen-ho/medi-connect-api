@@ -160,7 +160,7 @@ export class PatientQuestionAnswerRepository
         }>
       >(
         `
-              SELECT
+             SELECT
           patient_question_answers.content as "answer_content",
           patient_question_answers.id as "answer_id",
           patient_question_answers.created_at as "answer_created_at",
@@ -177,16 +177,19 @@ export class PatientQuestionAnswerRepository
             FROM answer_appreciations
             WHERE answer_appreciations.patient_id = $2
           ) as "answer_is_thanked",
-          (
-            SELECT json_agg(json_build_object(
-              'doctorId', doctors.id,
-              'avatar', doctors.avatar,
-              'firstName', doctors.first_name,
-              'lastName', doctors.last_name
-            ))
-            FROM answer_agreements
-            JOIN doctors ON answer_agreements.agreed_doctor_id = doctors.id
-            WHERE answer_agreements.patient_question_answer_id = patient_question_answers.id
+          COALESCE(
+            (
+              SELECT json_agg(json_build_object(
+                'doctorId', doctors.id,
+                'avatar', doctors.avatar,
+                'firstName', doctors.first_name,
+                'lastName', doctors.last_name
+              ))
+              FROM answer_agreements
+              JOIN doctors ON answer_agreements.agreed_doctor_id = doctors.id
+              WHERE answer_agreements.patient_question_answer_id = patient_question_answers.id
+            ),
+            '[]'::json
           ) as "agreedDoctors"
         FROM patient_question_answers
         LEFT JOIN answer_agreements ON patient_question_answers.id = answer_agreements.patient_question_answer_id

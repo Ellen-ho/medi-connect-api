@@ -1,5 +1,5 @@
 import { mock } from 'jest-mock-extended'
-import { GetSingleQuestionUseCase } from './GetSingleQuestionUseCase'
+import { GetSingleQuestionUseCase, IAnswer } from './GetSingleQuestionUseCase'
 import { IPatientQuestionRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionRepository'
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { IPatientQuestionAnswerRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionAnswerRepository'
@@ -70,18 +70,37 @@ describe('Unit test: GetSingleQuestionUseCase', () => {
     askerId: 'patient1',
   })
 
-  const mockAnswer = [
+  const mockAnswer: IAnswer[] = [
     {
-      doctorAvatars: ['avatar1', 'avatar2', null],
-      content: 'Example answer',
-      avatar: 'doctorAvatar',
+      answerId: '1',
+      answerCreatedAt: new Date('2023-07-21T12:00:00Z'),
+      content: 'answer',
+      doctorId: 'doctor123',
+      avatar: 'https://example.com/avatar.png',
       firstName: 'John',
       lastName: 'Doe',
-      specialties: [MedicalSpecialtyType.INTERNAL_MEDICINE],
-      careerStartDate: new Date('2010-01-01T09:00:00.000Z'),
+      specialties: [
+        MedicalSpecialtyType.CARDIOLOGY,
+        MedicalSpecialtyType.INTERNAL_MEDICINE,
+      ],
+      careerStartDate: new Date('2005-01-01'),
       agreeCounts: 10,
       thankCounts: 5,
-      isThanked: true,
+      isThanked: false,
+      agreedDoctors: [
+        {
+          doctorId: 'doctor456',
+          avatar: 'https://example.com/avatar2.png',
+          firstName: 'Alice',
+          lastName: 'Smith',
+        },
+        {
+          doctorId: 'doctor789',
+          avatar: null,
+          firstName: 'Bob',
+          lastName: 'Johnson',
+        },
+      ],
     },
   ]
 

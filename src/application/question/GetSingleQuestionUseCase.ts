@@ -72,9 +72,6 @@ export class GetSingleQuestionUseCase {
         asker.id
       )
 
-    if (answerDetails.length === 0) {
-      throw new NotFoundError('No answer for this question.')
-    }
     return {
       question: {
         content: existingPatientQuestion.content,
