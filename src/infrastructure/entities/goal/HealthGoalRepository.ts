@@ -90,20 +90,24 @@ export class HealthGoalRepository
       gender: GenderType
     }
     goalsData: Array<{
+      id: string
       startAt: Date
       endAt: Date
       status: HealthGoalStatus
       result: IHealthGoalResult | null
+      createdAt: Date
     }>
   }> {
     try {
       const result = await this.getRepo()
         .createQueryBuilder('goal')
         .select([
+          'goal.id AS "id"',
           'goal.start_at AS "startAt"',
           'goal.end_at AS "endAt"',
           'goal.status AS "status"',
           'goal.result AS "result"',
+          'goal.created_at AS "createdAt"',
           'patient.first_name AS "firstName"',
           'patient.last_name AS "lastName"',
           'patient.birth_date AS "birthDate"',
@@ -126,10 +130,12 @@ export class HealthGoalRepository
           gender: result.length > 0 ? result[0].gender : '',
         },
         goalsData: result.map((goal) => ({
+          id: goal.id,
           startAt: goal.startAt,
           endAt: goal.endAt,
           status: goal.status,
           result: goal.result,
+          createdAt: goal.created_at,
         })),
       }
       return formattedResult

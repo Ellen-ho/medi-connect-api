@@ -26,10 +26,12 @@ export interface IHealthGoalRepository extends IBaseRepository<HealthGoal> {
       gender: GenderType
     }
     goalsData: Array<{
+      id: string
       startAt: Date
       endAt: Date
       status: HealthGoalStatus
       result: IHealthGoalResult | null
+      createdAt: Date
     }>
   }>
   findByPatientIdAndStatusAndDateEdge: (

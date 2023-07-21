@@ -10,7 +10,6 @@ import { GenderType } from '../../domain/patient/Patient'
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { User, UserRoleType } from '../../domain/user/User'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
-import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 import { getOffset, getPagination } from '../../infrastructure/utils/Pagination'
 
 interface GetHealthGoalListRequest {
@@ -28,10 +27,12 @@ interface GetHealthGoalListResponse {
     gender: GenderType
   }
   goalsData: Array<{
+    id: string
     startAt: Date
     endAt: Date
     status: HealthGoalStatus
     result: IHealthGoalResult | null
+    createdAt: Date
   }>
   pagination: {
     pages: number[]
@@ -66,7 +67,20 @@ export class GetHealthGoalListUseCase {
       )
 
     if (existingHealthGoals.goalsData.length === 0) {
-      throw new NotFoundError('No record exists.')
+      return {
+        patientData: {
+          firstName: existingHealthGoals.patientData.firstName,
+          lastName: existingHealthGoals.patientData.lastName,
+          birthDate: existingHealthGoals.patientData.birthDate,
+          gender: existingHealthGoals.patientData.gender,
+        },
+        goalsData: [],
+        pagination: getPagination(
+          limit,
+          page,
+          existingHealthGoals.total_counts
+        ),
+      }
     }
 
     const filteredGoalsData = existingHealthGoals.goalsData.filter(
