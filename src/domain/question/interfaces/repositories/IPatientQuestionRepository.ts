@@ -14,11 +14,12 @@ export interface IPatientQuestionRepository
     limit: number,
     offset: number
   ) => Promise<{
-    total_counts: number
+    totalCounts: number
     questions: Array<{
       id: string
       content: string
       createdAt: Date
+      answerCounts: number
     }>
   }>
 }

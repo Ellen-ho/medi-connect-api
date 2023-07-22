@@ -5,10 +5,12 @@ interface GetQuestionsRequest {
   limit?: number
 }
 interface GetQuestionsResponse {
+  totalCounts: number
   data: Array<{
     id: string
     content: string
     createdAt: Date
+    answerCounts: number
   }>
   pagination: {
     pages: number[]
@@ -34,11 +36,12 @@ export class GetQuestionsUseCase {
       await this.patientQuestionRepository.findAndCountAll(limit, offset)
 
     return {
+      totalCounts: existingPatientQuestions.totalCounts,
       data: existingPatientQuestions.questions,
       pagination: getPagination(
         limit,
         page,
-        existingPatientQuestions.total_counts
+        existingPatientQuestions.totalCounts
       ),
     }
   }
