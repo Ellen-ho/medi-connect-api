@@ -72,43 +72,41 @@ export class PatientQuestionRepository
     limit: number,
     offset: number
   ): Promise<{
-    total_counts: number
+    totalCounts: number
     questions: Array<{
       id: string
       content: string
       createdAt: Date
+      answerCounts: number
     }>
   }> {
     try {
-      const rawQuestions = await this.getQuery<
-        Array<{
-          total_counts: number
-          id: string
-          content: string
-          created_at: Date
-        }>
-      >(
-        `
-          SELECT
-            (SELECT COUNT(*) FROM patient_questions) as total_counts,
-            id,
-            content,
-            created_at
-          FROM
-            patient_questions
-            ORDER BY patient_questions.created_at DESC
-          LIMIT $1
-          OFFSET $2
-        `,
-        [limit, offset]
-      )
+      const result = await this.getRepo()
+        .createQueryBuilder('question')
+        .select('COUNT(answer.id)', 'answerCounts')
+        .addSelect('question.id', 'id')
+        .addSelect('question.content', 'content')
+        .addSelect('question.created_at', 'createdAt')
+        .leftJoin(
+          'patient_question_answers',
+          'answer',
+          'answer.patient_question_id = question.id'
+        )
+        .groupBy('question.id')
+        .orderBy('question.created_at', 'DESC')
+        .limit(limit)
+        .offset(offset)
+        .getRawMany()
+
+      const totalCounts: number = await this.getRepo().count()
 
       return {
-        total_counts: rawQuestions[0].total_counts,
-        questions: rawQuestions.map((question) => ({
+        totalCounts,
+        questions: result.map((question) => ({
           id: question.id,
           content: question.content,
-          createdAt: question.created_at,
+          createdAt: question.createdAt,
+          answerCounts: parseInt(question.answerCounts),
         })),
       }
     } catch (e) {
