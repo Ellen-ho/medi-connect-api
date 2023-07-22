@@ -109,8 +109,6 @@ export class CreateHealthGoalUseCase {
       return null
     }
 
-    console.table({ checkedBloodPressureRecord })
-
     /**
      *
      */

@@ -301,4 +301,36 @@ export class GlycatedHemoglobinRecordRepository
       )
     }
   }
+
+  public async findByPatientIdAndDateRange(
+    patientId: string,
+    startDate: Date,
+    currentDate: Date
+  ): Promise<Array<{
+    glycatedHemoglobinDate: Date
+    glycatedHemoglobinValuePercent: number
+  }> | null> {
+    try {
+      const result = await this.getRepo()
+        .createQueryBuilder('record')
+        .select([
+          'record.glycatedHemoglobinDate',
+          'record.glycatedHemoglobinValuePercent',
+        ])
+        .where('record.patientId = :patientId', { patientId })
+        .andWhere('record.glycatedHemoglobinDate >= :startDate', { startDate })
+        .andWhere('record.glycatedHemoglobinDate <= :currentDate', {
+          currentDate,
+        })
+        .orderBy('record.glycatedHemoglobinDate', 'DESC')
+        .getRawMany()
+
+      return result
+    } catch (e) {
+      throw new RepositoryError(
+        'GlycatedHemoglobinRecordRepository findByPatientIdAndCountAll error',
+        e as Error
+      )
+    }
+  }
 }

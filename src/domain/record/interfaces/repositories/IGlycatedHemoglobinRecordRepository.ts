@@ -56,4 +56,12 @@ export interface IGlycatedHemoglobinRecordRepository
       glycatedHemoglobinValuePercent: number
     }>
   }>
+  findByPatientIdAndDateRange: (
+    patientId: string,
+    startDate: Date,
+    currentDate: Date
+  ) => Promise<Array<{
+    glycatedHemoglobinDate: Date
+    glycatedHemoglobinValuePercent: number
+  }> | null>
 }
