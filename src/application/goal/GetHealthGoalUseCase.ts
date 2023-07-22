@@ -77,34 +77,47 @@ export class GetHealthGoalUseCase {
       )
     }
 
+    const currentDate = new Date()
+    const previousDate = new Date(currentDate)
+    previousDate.setDate(previousDate.getDate() - 1)
+    const hospitalCheckDaysAgo = 45
+    const startDate = new Date(currentDate)
+    startDate.setDate(startDate.getDate() - hospitalCheckDaysAgo)
+
     const latestBloodPressureRecord =
       await this.bloodPressureRecordRepository.findByPatientIdAndDate(
         existingHealthGoal.patientId,
-        new Date()
+        previousDate
       )
 
     const latestBloodSugarRecord =
       await this.bloodSugarRecordRepository.findByPatientIdAndDate(
         existingHealthGoal.patientId,
-        new Date()
+        previousDate
       )
 
-    const latestGlycatedHemonglobinRecord =
-      await this.glycatedHemonglobinRecordRepository.findByPatientIdAndDate(
+    const glycatedHemoglobinRecords =
+      await this.glycatedHemonglobinRecordRepository.findByPatientIdAndDateRange(
         existingHealthGoal.patientId,
-        new Date()
+        startDate,
+        currentDate
       )
+
+    if (glycatedHemoglobinRecords !== null) {
+      glycatedHemoglobinRecords.sort(
+        (a, b) =>
+          b.glycatedHemoglobinDate.getTime() -
+          a.glycatedHemoglobinDate.getTime()
+      )
+    }
+
+    const latestGlycatedHemonglobinRecord =
+      glycatedHemoglobinRecords !== null ? glycatedHemoglobinRecords[0] : null
 
     const latestWeightRecord =
       await this.weightRecordRepository.findByPatientIdAndDate(
         existingHealthGoal.patientId,
-        new Date()
-      )
-
-    const latestBodyMassIndexRecord =
-      await this.weightRecordRepository.findByPatientIdAndDate(
-        existingHealthGoal.patientId,
-        new Date()
+        previousDate
       )
 
     // 若登入者為doctor
@@ -157,7 +170,12 @@ export class GetHealthGoalUseCase {
                 latestBloodPressureRecord.diastolicBloodPressure,
             }
           : null,
-      bloodPressureTargetValue: existingHealthGoal.bloodPressureTargetValue,
+      bloodPressureTargetValue: {
+        systolicBloodPressure:
+          existingHealthGoal.bloodPressureTargetValue.diastolicBloodPressure,
+        diastolicBloodPressure:
+          existingHealthGoal.bloodPressureTargetValue.diastolicBloodPressure,
+      },
       bloodSugarCurrentValue:
         latestBloodSugarRecord !== null
           ? latestBloodSugarRecord.bloodSugarValue
@@ -178,9 +196,7 @@ export class GetHealthGoalUseCase {
         latestWeightRecord !== null ? latestWeightRecord.weightValueKg : null,
       weightTargetValue: existingHealthGoal.weightTargetValue,
       bodyMassIndexCurrentValue:
-        latestBodyMassIndexRecord !== null
-          ? latestBodyMassIndexRecord.bodyMassIndex
-          : null,
+        latestWeightRecord !== null ? latestWeightRecord.bodyMassIndex : null,
       bodyMassIndexTargetValue: existingHealthGoal.bodyMassIndexTargetValue,
       startAt: existingHealthGoal.startAt,
       result: existingHealthGoal.result,
