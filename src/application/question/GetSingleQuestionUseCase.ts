@@ -155,6 +155,10 @@ export class GetSingleQuestionUseCase {
 
           return {
             ...answer,
+            agreedDoctors:
+              answer.agreedDoctors[0].doctorId == null
+                ? []
+                : answer.agreedDoctors,
             isAgreed: false,
             isThanked,
           }
