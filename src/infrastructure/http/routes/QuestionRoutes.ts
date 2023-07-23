@@ -5,6 +5,7 @@ import {
   cancelAnswerAgreementSchema,
   cancelPatientQuestionAnswerSchema,
   cancelPatientQuestionSchema,
+  creatAnswerAppreciationSchema,
   creatPatientQuestionAnswerSchema,
   creatPatientQuestionSchema,
   createAnswerAgreementSchema,
@@ -65,7 +66,7 @@ export class QuestionRoutes {
       .post(
         '/answers/:id/appreciations',
         authenticated,
-        validator(createAnswerAgreementSchema),
+        validator(creatAnswerAppreciationSchema),
         asyncHandler(this.questionController.createAnswerAppreciation)
       )
       .post(
