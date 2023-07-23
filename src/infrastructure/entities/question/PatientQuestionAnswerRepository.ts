@@ -150,10 +150,10 @@ export class PatientQuestionAnswerRepository
           agreeCounts: number
           thankCounts: number
           agreedDoctors: Array<{
-            agreed_doctor_id: string
-            agreed_doctor_avatar: string | null
-            agreed_doctor_first_name: string
-            agreed_doctor_last_name: string
+            doctorId: string
+            avatar: string | null
+            firstName: string
+            lastName: string
           }>
         }>
       >(
@@ -172,17 +172,17 @@ export class PatientQuestionAnswerRepository
         COUNT(DISTINCT answer_appreciations.id) as "thankCounts",
         ARRAY_AGG(
           JSON_BUILD_OBJECT(
-            'doctorId', doctors2.id,
-            'avatar', doctors2.avatar,
-            'firstName', doctors2.first_name,
-            'lastName', doctors2.last_name
+            'doctorId', agreed_doctors.id,
+            'avatar', agreed_doctors.avatar,
+            'firstName', agreed_doctors.first_name,
+            'lastName', agreed_doctors.last_name
           )
         ) as "agreedDoctors"
       FROM patient_question_answers
       LEFT JOIN answer_agreements ON patient_question_answers.id = answer_agreements.patient_question_answer_id
       LEFT JOIN answer_appreciations ON patient_question_answers.id = answer_appreciations.answer_id
       LEFT JOIN doctors ON patient_question_answers.doctor_id = doctors.id
-      LEFT JOIN doctors as doctors2 ON answer_agreements.agreed_doctor_id = doctors2.id
+      LEFT JOIN doctors as agreed_doctors ON answer_agreements.agreed_doctor_id = agreed_doctors.id
       WHERE patient_question_answers.patient_question_id = $1
       GROUP BY patient_question_answers.id, doctors.id;
   `,

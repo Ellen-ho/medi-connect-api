@@ -125,6 +125,10 @@ export class GetSingleQuestionUseCase {
 
           return {
             ...answer,
+            agreedDoctors:
+              answer.agreedDoctors[0].doctorId == null
+                ? []
+                : answer.agreedDoctors,
             isAgreed,
             isThanked: false,
           }
@@ -143,8 +147,6 @@ export class GetSingleQuestionUseCase {
                 answer.answerId,
                 currentPatient.id
               )
-
-            console.log(answerAppreciation)
 
             if (answerAppreciation != null) {
               isThanked = true

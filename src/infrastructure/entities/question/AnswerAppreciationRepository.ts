@@ -112,16 +112,18 @@ export class AnswerAppreciationRepository
     patientId: string
   ): Promise<AnswerAppreciation | null> {
     try {
-      const appreciation = await this.getRepo()
-        .createQueryBuilder('appreciations')
-        .leftJoinAndSelect('appreciations.patient', 'patient')
-        .where('appreciations.answer_id = :answerId', { answerId })
-        .andWhere('patient.id = :patientId', { patientId })
-        .andWhere('appreciations.deleted_at IS NULL')
+      const appreciationEntity = await this.getRepo()
+        .createQueryBuilder('answer_appreciations')
+        .leftJoinAndSelect('answer_appreciations.patient', 'patient')
+        .leftJoinAndSelect('answer_appreciations.answer', 'answer')
+        .leftJoinAndSelect('patient.user', 'user')
+        .where('answer_appreciations.answer_id = :answerId', { answerId })
+        .andWhere('answer_appreciations.patient_id = :patientId', { patientId })
+        .andWhere('answer_appreciations.deleted_at IS NULL')
         .getOne()
 
-      return appreciation !== null
-        ? this.getMapper().toDomainModel(appreciation)
+      return appreciationEntity != null
+        ? this.getMapper().toDomainModel(appreciationEntity)
         : null
     } catch (e) {
       throw new RepositoryError(

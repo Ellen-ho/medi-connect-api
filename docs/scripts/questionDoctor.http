@@ -8,8 +8,8 @@ POST {{usersPath}}/login
 Content-Type: application/json
 
 {
-  "email": "Eric@gmail.com",
-  "password": "Eric"
+  "email": "doctor2@gmail.com",
+  "password": "doctor2"
 }
 ###
 @accessToken = Bearer {{login.response.body.token}}
@@ -22,14 +22,14 @@ Content-Type: application/json
 ###
 
 ### get a single question
-@getQuestionId =5cc23da1-9608-4d48-8bae-3d80e629c353
+@getQuestionId =e34461ad-7ba0-41e8-ad9f-a48b36390374
 GET {{questionsPath}}/{{getQuestionId}}
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###
 
 ### doctor answer a question
-@questionId=5cc23da1-9608-4d48-8bae-3d80e629c353
+@questionId=53c4e62f-9806-47ba-b3fc-02f66c14e7d8
 
 POST {{questionsPath}}/{{questionId}}/answers
 Authorization: {{accessToken}}
