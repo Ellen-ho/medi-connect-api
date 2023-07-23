@@ -1,4 +1,4 @@
-import { DataSource, In, LessThanOrEqual } from 'typeorm'
+import { DataSource, In, IsNull, LessThanOrEqual } from 'typeorm'
 import { BaseRepository } from '../../database/BaseRepository'
 import { HealthGoalEntity } from './HealthGoalEntity'
 import { HealthGoalMapper } from './HealthGoalMapper'
@@ -22,7 +22,7 @@ export class HealthGoalRepository
   public async findById(id: string): Promise<HealthGoal | null> {
     try {
       const entity = await this.getRepo().findOne({
-        where: { id },
+        where: { id, deletedAt: IsNull() },
       })
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
