@@ -13,6 +13,7 @@ export class AnswerAppreciationMapper
       content: entity.content,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
+      deletedAt: entity.deletedAt,
       answer: new PatientQuestionAnswerMapper().toDomainModel(entity.answer),
       patient: new PatientMapper().toDomainModel(entity.patient),
     })
@@ -27,6 +28,7 @@ export class AnswerAppreciationMapper
     answerAppreciationEntity.content = domainModel.content
     answerAppreciationEntity.createdAt = domainModel.createdAt
     answerAppreciationEntity.updatedAt = domainModel.updatedAt
+    answerAppreciationEntity.deletedAt = domainModel.deletedAt
     answerAppreciationEntity.patient = new PatientMapper().toPersistence(
       domainModel.patient
     )

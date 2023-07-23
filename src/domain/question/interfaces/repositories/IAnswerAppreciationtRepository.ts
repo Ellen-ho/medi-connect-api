@@ -12,4 +12,8 @@ export interface IAnswerAppreciationRepository
   countByAnswerId: (answerId: string) => Promise<number>
   deleteById: (id: string, executor?: IExecutor) => Promise<void>
   deleteAllByAnswerId: (answerId: string, executor?: IExecutor) => Promise<void>
+  findByAnswerIdAndPatientId: (
+    answerId: string,
+    patientId: string
+  ) => Promise<AnswerAppreciation | null>
 }

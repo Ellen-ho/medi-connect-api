@@ -8,8 +8,8 @@ POST {{usersPath}}/login
 Content-Type: application/json
 
 {
-  "email": "Eric@gmail.com",
-  "password": "Eric"
+  "email": "tim@gmail.com",
+  "password": "tim"
 }
 ###
 @accessToken = Bearer {{login.response.body.token}}

@@ -1,4 +1,4 @@
-import { IAnswer } from '../../../../application/question/GetSingleQuestionUseCase'
+import { IAnswerItem } from '../../../../application/question/GetSingleQuestionUseCase'
 import { IBaseRepository } from '../../../shared/IBaseRepository'
 import { IExecutor } from '../../../shared/IRepositoryTx'
 import { PatientQuestionAnswer } from '../../PatientQuestionAnswer'
@@ -20,10 +20,7 @@ export interface IPatientQuestionAnswerRepository
     executor?: IExecutor
   ) => Promise<void>
   deleteById: (id: string, executor?: IExecutor) => Promise<void>
-  findAnswerDetailsByQuestionIdAndPatientId: (
-    questionId: string,
-    patientId: string
-  ) => Promise<IAnswer[]>
+  findAnswerDetailsByQuestionId: (questionId: string) => Promise<IAnswerItem[]>
   countByDoctorId: (doctorId: string) => Promise<number>
   countAppreciatedAnswersByDoctorId: (doctorId: string) => Promise<number>
   countAgreedAnswersByDoctorId: (doctorId: string) => Promise<number>

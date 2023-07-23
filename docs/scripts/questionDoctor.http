@@ -22,7 +22,7 @@ Content-Type: application/json
 ###
 
 ### get a single question
-@getQuestionId =6151ce4b-8111-4f0c-b56a-9b3909e06a36
+@getQuestionId =5cc23da1-9608-4d48-8bae-3d80e629c353
 GET {{questionsPath}}/{{getQuestionId}}
 Authorization: {{accessToken}}
 Content-Type: application/json

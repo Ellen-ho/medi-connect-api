@@ -5,9 +5,9 @@ import { PatientQuestionAnswerMapper } from './PatientQuestionAnswerMapper'
 import { BaseRepository } from '../../database/BaseRepository'
 import { IPatientQuestionAnswerRepository } from '../../../domain/question/interfaces/repositories/IPatientQuestionAnswerRepository'
 import { RepositoryError } from '../../error/RepositoryError'
-import { IAnswer } from '../../../application/question/GetSingleQuestionUseCase'
-import { MedicalSpecialtyType } from '../../../domain/question/PatientQuestion'
+import { IAnswerItem } from '../../../application/question/GetSingleQuestionUseCase'
 import { IExecutor } from '../../../domain/shared/IRepositoryTx'
+import { MedicalSpecialtyType } from '../../../domain/question/PatientQuestion'
 
 export class PatientQuestionAnswerRepository
   extends BaseRepository<PatientQuestionAnswerEntity, PatientQuestionAnswer>
@@ -132,95 +132,86 @@ export class PatientQuestionAnswerRepository
     }
   }
 
-  public async findAnswerDetailsByQuestionIdAndPatientId(
-    questionId: string,
-    patientId: string
-  ): Promise<IAnswer[]> {
+  public async findAnswerDetailsByQuestionId(
+    questionId: string
+  ): Promise<IAnswerItem[]> {
     try {
-      const rawAnswerDetails = await this.getQuery<
+      const rawAnswerItems = await this.getQuery<
         Array<{
-          answer_id: string
-          answer_created_at: Date
-          answer_content: string
-          doctor_id: string
-          doctor_avatar: string | null
-          doctor_first_name: string
-          doctor_last_name: string
-          doctor_specialties: MedicalSpecialtyType[]
-          doctor_career_start_date: Date
-          doctor_agreed_counts: number
-          answer_thank_counts: number
-          answer_is_thanked: boolean
+          answerId: string
+          answerCreatedAt: Date
+          content: string
+          doctorId: string
+          avatar: string | null
+          firstName: string
+          lastName: string
+          specialties: MedicalSpecialtyType[]
+          careerStartDate: Date
+          agreeCounts: number
+          thankCounts: number
           agreedDoctors: Array<{
-            doctorId: string
-            avatar: string | null
-            firstName: string
-            lastName: string
+            agreed_doctor_id: string
+            agreed_doctor_avatar: string | null
+            agreed_doctor_first_name: string
+            agreed_doctor_last_name: string
           }>
         }>
       >(
         `
-             SELECT
-          patient_question_answers.content as "answer_content",
-          patient_question_answers.id as "answer_id",
-          patient_question_answers.created_at as "answer_created_at",
-          doctors.id as "doctor_id",
-          doctors.avatar as "doctor_avatar",
-          doctors.first_name as "doctor_first_name",
-          doctors.last_name as "doctor_last_name",
-          doctors.specialties as "doctor_specialties",
-          doctors.career_start_date as "doctor_career_start_date",
-          COUNT(DISTINCT answer_agreements.id) as "answer_agreed_counts",
-          COUNT(DISTINCT answer_appreciations.id) as "answer_thank_counts",
-          EXISTS(
-            SELECT 1
-            FROM answer_appreciations
-            WHERE answer_appreciations.patient_id = $2
-          ) as "answer_is_thanked",
-          COALESCE(
-            (
-              SELECT json_agg(json_build_object(
-                'doctorId', doctors.id,
-                'avatar', doctors.avatar,
-                'firstName', doctors.first_name,
-                'lastName', doctors.last_name
-              ))
-              FROM answer_agreements
-              JOIN doctors ON answer_agreements.agreed_doctor_id = doctors.id
-              WHERE answer_agreements.patient_question_answer_id = patient_question_answers.id
-            ),
-            '[]'::json
-          ) as "agreedDoctors"
-        FROM patient_question_answers
-        LEFT JOIN answer_agreements ON patient_question_answers.id = answer_agreements.patient_question_answer_id
-        LEFT JOIN answer_appreciations ON patient_question_answers.id = answer_appreciations.answer_id
-        LEFT JOIN doctors ON patient_question_answers.doctor_id = doctors.id
-        WHERE patient_question_answers.patient_question_id = $1
-        GROUP BY patient_question_answers.id, doctors.id;
-      `,
-        [questionId, patientId]
+      SELECT
+        patient_question_answers.id as "answerId",
+        patient_question_answers.created_at as "answerCreatedAt",
+        patient_question_answers.content as "content",
+        doctors.id as "doctorId",
+        doctors.avatar as "avatar",
+        doctors.first_name as "firstName",
+        doctors.last_name as "lastName",
+        doctors.specialties as "specialties",
+        doctors.career_start_date as "careerStartDate",
+        COUNT(DISTINCT answer_agreements.id) as "agreeCounts",
+        COUNT(DISTINCT answer_appreciations.id) as "thankCounts",
+        ARRAY_AGG(
+          JSON_BUILD_OBJECT(
+            'doctorId', doctors2.id,
+            'avatar', doctors2.avatar,
+            'firstName', doctors2.first_name,
+            'lastName', doctors2.last_name
+          )
+        ) as "agreedDoctors"
+      FROM patient_question_answers
+      LEFT JOIN answer_agreements ON patient_question_answers.id = answer_agreements.patient_question_answer_id
+      LEFT JOIN answer_appreciations ON patient_question_answers.id = answer_appreciations.answer_id
+      LEFT JOIN doctors ON patient_question_answers.doctor_id = doctors.id
+      LEFT JOIN doctors as doctors2 ON answer_agreements.agreed_doctor_id = doctors2.id
+      WHERE patient_question_answers.patient_question_id = $1
+      GROUP BY patient_question_answers.id, doctors.id;
+  `,
+        [questionId]
       )
 
-      const answerDetails = rawAnswerDetails.map((rawDetail) => ({
-        answerId: rawDetail.answer_id,
-        answerCreatedAt: rawDetail.answer_created_at,
-        content: rawDetail.answer_content,
-        doctorId: rawDetail.doctor_id,
-        avatar: rawDetail.doctor_avatar,
-        firstName: rawDetail.doctor_first_name,
-        lastName: rawDetail.doctor_last_name,
-        specialties: rawDetail.doctor_specialties,
-        careerStartDate: rawDetail.doctor_career_start_date,
-        agreeCounts: rawDetail.doctor_agreed_counts,
-        thankCounts: rawDetail.answer_thank_counts,
-        isThanked: rawDetail.answer_is_thanked,
-        agreedDoctors: rawDetail.agreedDoctors,
-      }))
+      const answerDetails: IAnswerItem[] = rawAnswerItems.map(
+        (rawAnswerItem) => ({
+          answerId: rawAnswerItem.answerId,
+          answerCreatedAt: rawAnswerItem.answerCreatedAt,
+          content: rawAnswerItem.content,
+          doctorId: rawAnswerItem.doctorId,
+          avatar: rawAnswerItem.avatar,
+          firstName: rawAnswerItem.firstName,
+          lastName: rawAnswerItem.lastName,
+          specialties: rawAnswerItem.specialties,
+          careerStartDate: rawAnswerItem.careerStartDate,
+          agreeCounts: rawAnswerItem.agreeCounts,
+          thankCounts: rawAnswerItem.thankCounts,
+          agreedDoctors: rawAnswerItem.agreedDoctors.map(
+            (agreedDoctor: any) => agreedDoctor
+          ),
+        })
+      )
 
       return answerDetails
     } catch (e) {
       throw new RepositoryError(
-        'PatientQuestionAnswerRepository findAnswerDetailsByQuestionIdAndPatientId error',
+        'PatientQuestionAnswerRepository findAnswerDetailsByQuestionId 錯誤',
         e as Error
       )
     }

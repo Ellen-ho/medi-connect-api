@@ -221,6 +221,7 @@ export class QuestionController implements IQuestionController {
   ): Promise<Response> => {
     const request = {
       patientQuestionId: req.params.id,
+      user: req.user as User,
     }
     const result = await this.getSingleQuestionUseCase.execute(request)
     return res.status(200).json(result)

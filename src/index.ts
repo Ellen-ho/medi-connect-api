@@ -318,7 +318,9 @@ async function main(): Promise<void> {
   const getSingleQuestionUseCase = new GetSingleQuestionUseCase(
     patientQuestionRepository,
     patientRepository,
-    patientQuestionAnswerRepository
+    patientQuestionAnswerRepository,
+    doctorRepository,
+    answerAppreciationRepository
   )
 
   const getQuestionsUseCase = new GetQuestionsUseCase(patientQuestionRepository)

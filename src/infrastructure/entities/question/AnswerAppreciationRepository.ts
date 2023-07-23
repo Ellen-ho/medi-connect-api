@@ -60,7 +60,7 @@ export class AnswerAppreciationRepository
         .where('answer_appreciations.id = :answerAppreciationId', {
           answerAppreciationId,
         })
-        .andWhere('patients.id = :patientId', { patientId })
+        .andWhere('patient.id = :patientId', { patientId })
         .getOne()
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
@@ -106,4 +106,51 @@ export class AnswerAppreciationRepository
       )
     }
   }
+
+  public async findByAnswerIdAndPatientId(
+    answerId: string,
+    patientId: string
+  ): Promise<AnswerAppreciation | null> {
+    try {
+      const appreciation = await this.getRepo()
+        .createQueryBuilder('appreciations')
+        .leftJoinAndSelect('appreciations.patient', 'patient')
+        .where('appreciations.answer_id = :answerId', { answerId })
+        .andWhere('patient.id = :patientId', { patientId })
+        .andWhere('appreciations.deleted_at IS NULL')
+        .getOne()
+
+      return appreciation !== null
+        ? this.getMapper().toDomainModel(appreciation)
+        : null
+    } catch (e) {
+      throw new RepositoryError(
+        'AnswerAppreciationRepository findByAnswerIdAndPatientId error',
+        e as Error
+      )
+    }
+  }
+  // public async findByAnswerIdAndPatientId(
+  //   answerId: string,
+  //   patientId: string
+  // ): Promise<AnswerAppreciation | null> {
+  //   try {
+  //     const entity = await this.getQuery<AnswerAppreciation | null>(
+  //       `
+  //     SELECT *
+  //     FROM answer_appreciations AS appreciation
+  //     LEFT JOIN patients AS patient ON appreciation.patient_id = patient.id
+  //     WHERE appreciation.answer_id = $1 AND patient.id = $2
+  //   `,
+  //       [answerId, patientId]
+  //     )
+
+  //     return entity !== null ? this.getMapper().toDomainModel(entity) : null
+  //   } catch (e) {
+  //     throw new RepositoryError(
+  //       'AnswerAppreciationRepository findByAnswerIdAndPatientId error',
+  //       e as Error
+  //     )
+  //   }
+  // }
 }
