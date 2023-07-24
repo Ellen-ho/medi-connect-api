@@ -3,7 +3,7 @@ import { DataSource } from 'typeorm'
 import { BaseRepository } from '../../database/BaseRepository'
 import { DoctorEntity } from './DoctorEntity'
 import { IDoctorRepository } from '../../../domain/doctor/interfaces/repositories/IDoctorRepository'
-import { Doctor } from '../../../domain/doctor/Doctor'
+import { Doctor, GenderType } from '../../../domain/doctor/Doctor'
 import { DoctorMapper } from './DoctorMapper'
 import { RepositoryError } from '../../error/RepositoryError'
 import { MedicalSpecialtyType } from '../../../domain/question/PatientQuestion'
@@ -67,32 +67,59 @@ export class DoctorRepository
     limit: number,
     offset: number,
     specialty?: MedicalSpecialtyType
-  ): Promise<{ data: Doctor[]; counts: number }> {
+  ): Promise<{
+    data: Array<{
+      id: string
+      avatar: string
+      firstName: string
+      lastName: string
+      specialties: MedicalSpecialtyType[]
+      gender: GenderType
+    }>
+    counts: number
+  }> {
     try {
       const entities = await this.getQuery<
-        Array<DoctorEntity & { counts: number }>
+        Array<{
+          id: string
+          avatar: string
+          first_name: string
+          last_name: string
+          specialties: MedicalSpecialtyType[]
+          gender: GenderType
+          counts: number
+        }>
       >(
         `
-          SELECT 
-            doctors.*, 
-            ROW_TO_JSON(users.*) AS user,
-            COUNT(*) OVER() AS counts
-          FROM doctors
-          LEFT JOIN users ON doctors.user_id = users.id
-          WHERE ($1::TEXT IS NULL OR specialties ? $1::TEXT)
-          LIMIT $2
-          OFFSET $3
-        `,
+        SELECT 
+          doctors.id,
+          doctors.avatar,
+          doctors.first_name,
+          doctors.last_name,
+          doctors.specialties,
+          doctors.gender,
+          COUNT(*) OVER() AS counts
+        FROM doctors
+        LEFT JOIN users ON doctors.user_id = users.id
+        WHERE ($1::TEXT IS NULL OR specialties ? $1::TEXT)
+        LIMIT $2
+        OFFSET $3
+      `,
         [specialty, limit, offset]
       )
 
-      const totalCounts = entities.length === 0 ? 0 : entities[0].counts
+      const totalCounts = entities.length > 0 ? entities[0].counts : 0
 
-      const doctors: Doctor[] = entities.map((entity: DoctorEntity) =>
-        this.getMapper().toDomainModel(entity)
-      )
+      const mappedData = entities.map((entity) => ({
+        id: entity.id,
+        avatar: entity.avatar,
+        firstName: entity.first_name,
+        lastName: entity.last_name,
+        specialties: entity.specialties,
+        gender: entity.gender,
+      }))
 
-      return { data: doctors, counts: totalCounts }
+      return { data: mappedData, counts: totalCounts }
     } catch (e) {
       throw new RepositoryError(
         'DoctorRepository findAndCountBySpecialties error',
@@ -100,4 +127,20 @@ export class DoctorRepository
       )
     }
   }
+
+  //       const totalCounts = entities.length === 0 ? 0 : entities[0].counts
+
+  //       const doctors: Doctor[] = entities.map((entity: DoctorEntity) =>
+  //         this.getMapper().toDomainModel(entity)
+  //       )
+
+  //       return { data: doctors, counts: totalCounts }
+  //     } catch (e) {
+  //       throw new RepositoryError(
+  //         'DoctorRepository findAndCountBySpecialties error',
+  //         e as Error
+  //       )
+  //     }
+  //   }
+  // }
 }
