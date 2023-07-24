@@ -9,17 +9,15 @@ interface GetDoctorListRequest {
   specialty?: MedicalSpecialtyType
 }
 
-export interface IGetDoctorItem {
-  id: string
-  avatar: string | null
-  firstName: string
-  lastName: string
-  specialties: MedicalSpecialtyType[]
-  gender: GenderType
-}
-
 interface GetDoctorListResponse {
-  data: IGetDoctorItem[]
+  data: Array<{
+    id: string
+    avatar: string | null
+    firstName: string
+    lastName: string
+    specialties: MedicalSpecialtyType[]
+    gender: GenderType
+  }>
   pagination: {
     pages: number[]
     totalPage: number
@@ -48,17 +46,8 @@ export class GetDoctorListUseCase {
         specialty
       )
 
-    const data: IGetDoctorItem[] = existingDoctors.data.map((doctor) => ({
-      id: doctor.id,
-      avatar: doctor.avatar,
-      firstName: doctor.firstName,
-      lastName: doctor.lastName,
-      specialties: doctor.specialties,
-      gender: doctor.gender,
-    }))
-
     return {
-      data,
+      data: existingDoctors.data,
       pagination: getPagination(limit, page, existingDoctors.counts),
       totalCounts: existingDoctors.counts,
     }

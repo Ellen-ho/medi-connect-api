@@ -127,20 +127,4 @@ export class DoctorRepository
       )
     }
   }
-
-  //       const totalCounts = entities.length === 0 ? 0 : entities[0].counts
-
-  //       const doctors: Doctor[] = entities.map((entity: DoctorEntity) =>
-  //         this.getMapper().toDomainModel(entity)
-  //       )
-
-  //       return { data: doctors, counts: totalCounts }
-  //     } catch (e) {
-  //       throw new RepositoryError(
-  //         'DoctorRepository findAndCountBySpecialties error',
-  //         e as Error
-  //       )
-  //     }
-  //   }
-  // }
 }
