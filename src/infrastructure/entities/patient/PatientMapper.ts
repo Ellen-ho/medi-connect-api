@@ -7,7 +7,7 @@ export class PatientMapper implements IEntityMapper<PatientEntity, Patient> {
   public toDomainModel(entity: PatientEntity): Patient {
     const patient = new Patient({
       id: entity.id,
-      avatar: entity.avatar,
+      avatar: entity.avatar === 'null' ? null : entity.avatar,
       firstName: entity.firstName,
       lastName: entity.lastName,
       birthDate: entity.birthDate,

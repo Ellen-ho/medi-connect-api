@@ -8,7 +8,7 @@ POST {{usersPath}}/login
 Content-Type: application/json
 
 {
-  "email": "tim@gmail.com",
+  "email": "Eric@gmail.com",
   "password": "tim"
 }
 ###

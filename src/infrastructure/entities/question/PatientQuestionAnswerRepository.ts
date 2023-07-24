@@ -195,7 +195,7 @@ export class PatientQuestionAnswerRepository
           answerCreatedAt: rawAnswerItem.answerCreatedAt,
           content: rawAnswerItem.content,
           doctorId: rawAnswerItem.doctorId,
-          avatar: rawAnswerItem.avatar,
+          avatar: rawAnswerItem.avatar !== 'null' ? rawAnswerItem.avatar : null,
           firstName: rawAnswerItem.firstName,
           lastName: rawAnswerItem.lastName,
           specialties: rawAnswerItem.specialties,
@@ -203,15 +203,20 @@ export class PatientQuestionAnswerRepository
           agreeCounts: rawAnswerItem.agreeCounts,
           thankCounts: rawAnswerItem.thankCounts,
           agreedDoctors: rawAnswerItem.agreedDoctors.map(
-            (agreedDoctor: any) => agreedDoctor
+            (agreedDoctor: any) => ({
+              doctorId: agreedDoctor.doctorId,
+              avatar:
+                agreedDoctor.avatar === 'null' ? null : agreedDoctor.avatar,
+              firstName: agreedDoctor.firstName,
+              lastName: agreedDoctor.lastName,
+            })
           ),
         })
       )
-
       return answerDetails
     } catch (e) {
       throw new RepositoryError(
-        'PatientQuestionAnswerRepository findAnswerDetailsByQuestionId 錯誤',
+        'PatientQuestionAnswerRepository findAnswerDetailsByQuestionId error',
         e as Error
       )
     }
