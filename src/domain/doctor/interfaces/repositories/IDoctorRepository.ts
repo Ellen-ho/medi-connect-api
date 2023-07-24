@@ -13,7 +13,7 @@ export interface IDoctorRepository extends IBaseRepository<Doctor> {
   ) => Promise<{
     data: Array<{
       id: string
-      avatar: string
+      avatar: string | null
       firstName: string
       lastName: string
       specialties: MedicalSpecialtyType[]

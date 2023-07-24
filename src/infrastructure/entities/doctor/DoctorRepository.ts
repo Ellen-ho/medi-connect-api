@@ -70,7 +70,7 @@ export class DoctorRepository
   ): Promise<{
     data: Array<{
       id: string
-      avatar: string
+      avatar: string | null
       firstName: string
       lastName: string
       specialties: MedicalSpecialtyType[]
@@ -82,7 +82,7 @@ export class DoctorRepository
       const entities = await this.getQuery<
         Array<{
           id: string
-          avatar: string
+          avatar: string | null
           first_name: string
           last_name: string
           specialties: MedicalSpecialtyType[]
@@ -108,11 +108,11 @@ export class DoctorRepository
         [specialty, limit, offset]
       )
 
-      const totalCounts = entities.length > 0 ? entities[0].counts : 0
+      const totalCounts = entities.length > 0 ? Number(entities[0].counts) : 0
 
       const mappedData = entities.map((entity) => ({
         id: entity.id,
-        avatar: entity.avatar,
+        avatar: entity.avatar !== 'null' ? entity.avatar : null,
         firstName: entity.first_name,
         lastName: entity.last_name,
         specialties: entity.specialties,
