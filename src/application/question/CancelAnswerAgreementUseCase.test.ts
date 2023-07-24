@@ -10,14 +10,18 @@ import { MedicalSpecialtyType } from '../../domain/question/PatientQuestion'
 import { Doctor } from '../../domain/doctor/Doctor'
 import { AnswerAgreement } from '../../domain/question/AnswerAgreement'
 import { NotFoundError } from '../../infrastructure/error/NotFoundError'
+import { IPatientQuestionAnswerRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionAnswerRepository'
+import { PatientQuestionAnswer } from '../../domain/question/PatientQuestionAnswer'
 
 describe('Unit test: CancelAnswerAppreciationUseCase', () => {
   const mockAnswerAgreementRepo = mock<IAnswerAgreementRepository>()
   const mockDoctorRepo = mock<IDoctorRepository>()
+  const mockPatientQuestionAnswerRepo = mock<IPatientQuestionAnswerRepository>()
 
   const cancelAnswerAppreciationUseCase = new CancelAnswerAgreementUseCase(
     mockAnswerAgreementRepo,
-    mockDoctorRepo
+    mockDoctorRepo,
+    mockPatientQuestionAnswerRepo
   )
 
   MockDate.set('2023-06-18T13:18:00.155Z')
@@ -82,38 +86,63 @@ describe('Unit test: CancelAnswerAppreciationUseCase', () => {
       createdAt: mockedDate,
       updatedAt: mockedDate,
     }),
-    answerAgreementId: 'Agreement1',
+    answerId: 'A1',
   }
 
+  const mockAnswer = new PatientQuestionAnswer({
+    id: 'A1',
+    content: 'This is a mock answer.',
+    patientQuestionId: 'question123',
+    doctorId: 'doctor456',
+    createdAt: mockedDate,
+    updatedAt: mockedDate,
+  })
+
+  it('should throw NotFoundError when the answer does not exist', async () => {
+    mockPatientQuestionAnswerRepo.findById.mockResolvedValue(null)
+    await expect(
+      cancelAnswerAppreciationUseCase.execute(mockRequest)
+    ).rejects.toThrow(NotFoundError)
+  })
+
   it('should throw AuthorizationError when the doctor does not exist', async () => {
+    mockPatientQuestionAnswerRepo.findById.mockResolvedValue(mockAnswer)
     mockDoctorRepo.findByUserId.mockResolvedValue(null)
 
     await expect(
       cancelAnswerAppreciationUseCase.execute(mockRequest)
     ).rejects.toThrow(AuthorizationError)
+    expect(mockPatientQuestionAnswerRepo).toHaveBeenCalledWith(
+      mockRequest.answerId
+    )
     expect(mockDoctorRepo.findByUserId).toHaveBeenCalledWith(
       mockRequest.user.id
     )
   })
 
   it('should throw NotFoundError when the agreement does not exist', async () => {
+    mockPatientQuestionAnswerRepo.findById.mockResolvedValue(mockAnswer)
     mockDoctorRepo.findByUserId.mockResolvedValue(mockExistingDoctor)
     mockAnswerAgreementRepo.findByIdAndAgreedDoctorId.mockResolvedValue(null)
 
     await expect(
       cancelAnswerAppreciationUseCase.execute(mockRequest)
     ).rejects.toThrow(NotFoundError)
+    expect(mockPatientQuestionAnswerRepo).toHaveBeenCalledWith(
+      mockRequest.answerId
+    )
     expect(mockDoctorRepo.findByUserId).toHaveBeenCalledWith(
       mockRequest.user.id
     )
     expect(
       mockAnswerAgreementRepo.findByIdAndAgreedDoctorId
-    ).toHaveBeenCalledWith(mockRequest.answerAgreementId, mockRequest.user.id)
+    ).toHaveBeenCalledWith(mockRequest.answerId, mockRequest.user.id)
   })
 
   it('should delete the agreement when valid request is provided', async () => {
     const totalAgreedDoctorCounts = 1
     const agreedDoctorAvatars = ['Avatar1']
+    mockPatientQuestionAnswerRepo.findById.mockResolvedValue(mockAnswer)
     mockDoctorRepo.findByUserId.mockResolvedValue(mockExistingDoctor)
     mockAnswerAgreementRepo.findByIdAndAgreedDoctorId.mockResolvedValue(
       mockAgreement
@@ -134,12 +163,15 @@ describe('Unit test: CancelAnswerAppreciationUseCase', () => {
     const response = await cancelAnswerAppreciationUseCase.execute(mockRequest)
 
     expect(response).toEqual(expectedResponse)
+    expect(mockPatientQuestionAnswerRepo).toHaveBeenCalledWith(
+      mockRequest.answerId
+    )
     expect(mockDoctorRepo.findByUserId).toHaveBeenCalledWith(
       mockRequest.user.id
     )
     expect(
       mockAnswerAgreementRepo.findByIdAndAgreedDoctorId
-    ).toHaveBeenCalledWith(mockRequest.answerAgreementId, mockRequest.user.id)
+    ).toHaveBeenCalledWith(mockRequest.answerId, mockRequest.user.id)
     expect(mockAnswerAgreementRepo.deleteById).toHaveBeenCalled()
     expect(mockAnswerAgreementRepo.countsByAnswerId).toHaveBeenCalledWith(
       mockAgreement.answerId

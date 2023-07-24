@@ -182,7 +182,7 @@ export class QuestionController implements IQuestionController {
     res: Response
   ): Promise<Response> => {
     const request = {
-      answerAgreementId: req.params.id,
+      answerId: req.params.id,
       user: req.user as User,
     }
     const result = await this.cancelAnswerAgreementUseCase.execute(request)
