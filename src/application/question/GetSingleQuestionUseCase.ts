@@ -54,6 +54,7 @@ export interface IAnswer {
   careerStartDate: Date
   agreeCounts: number
   thankCounts: number
+  isAnswerByMe: boolean
   isThanked: boolean
   isAgreed: boolean
   agreedDoctors: Array<{
@@ -111,13 +112,18 @@ export class GetSingleQuestionUseCase {
     let answers: IAnswer[] = []
 
     if (user.role === UserRoleType.DOCTOR) {
-      const currentDoctor = await this.doctorRepository.findById(user.id)
+      const currentDoctor = await this.doctorRepository.findByUserId(user.id)
 
       answers = await Promise.all(
         answerDetails.map(async (answer) => {
           let isAgreed = false
+          let isAnswerByMe = false
+
+          console.table({ currentDoctor: JSON.stringify(currentDoctor) })
 
           if (currentDoctor !== null) {
+            isAnswerByMe = answer.doctorId === currentDoctor.id
+
             isAgreed = answer.agreedDoctors.some(
               (doctorItem) => doctorItem.doctorId === currentDoctor.id
             )
@@ -129,6 +135,7 @@ export class GetSingleQuestionUseCase {
               answer.agreedDoctors[0].doctorId == null
                 ? []
                 : answer.agreedDoctors,
+            isAnswerByMe,
             isAgreed,
             isThanked: false,
           }
@@ -159,6 +166,7 @@ export class GetSingleQuestionUseCase {
               answer.agreedDoctors[0].doctorId == null
                 ? []
                 : answer.agreedDoctors,
+            isAnswerByMe: false,
             isAgreed: false,
             isThanked,
           }
