@@ -8,6 +8,7 @@ export interface IAnswerAppreciationProps {
   answer: PatientQuestionAnswer
   createdAt: Date
   updatedAt: Date
+  deletedAt?: Date
 }
 
 export class AnswerAppreciation {
@@ -35,6 +36,10 @@ export class AnswerAppreciation {
 
   public get updatedAt(): Date {
     return this.props.updatedAt
+  }
+
+  public get deletedAt(): Date | undefined {
+    return this.props.deletedAt
   }
 
   public updateContent(content: string): void {

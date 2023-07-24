@@ -68,10 +68,7 @@ export class GetHealthGoalUseCase {
       throw new NotFoundError('HealthGoal does not exist.')
     }
 
-    if (
-      existingHealthGoal.status === 'REJECTED' ||
-      existingHealthGoal.status === 'PENDING'
-    ) {
+    if (existingHealthGoal.status === 'REJECTED') {
       throw new ValidationError(
         'The health goal becomes invalid after being rejected by the patient or can not be accessed when being pending.'
       )

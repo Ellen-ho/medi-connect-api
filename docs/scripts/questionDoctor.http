@@ -22,14 +22,14 @@ Content-Type: application/json
 ###
 
 ### get a single question
-@getQuestionId =6151ce4b-8111-4f0c-b56a-9b3909e06a36
+@getQuestionId =5cc23da1-9608-4d48-8bae-3d80e629c353
 GET {{questionsPath}}/{{getQuestionId}}
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###
 
 ### doctor answer a question
-@questionId=5cc23da1-9608-4d48-8bae-3d80e629c353
+@questionId=53c4e62f-9806-47ba-b3fc-02f66c14e7d8
 
 POST {{questionsPath}}/{{questionId}}/answers
 Authorization: {{accessToken}}
@@ -52,7 +52,7 @@ Content-Type: application/json
 ###
 
 ### doctor agree with a answer of another doctor
-@doctorAgreedAnswerId=9101cee2-4551-46f2-ba7c-3354b89ab856
+@doctorAgreedAnswerId=b274c5fa-0b64-49f0-9227-802fd9a80460
 POST {{questionsPath}}/answers/{{doctorAgreedAnswerId}}/agreements
 Authorization: {{accessToken}}
 Content-Type: application/json
@@ -81,7 +81,7 @@ Content-Type: application/json
 ###
 
 ### doctor cancel a agreement to an answer
-@doctorCancelAgreementanswerId=6f2c1f74-3e5f-48f5-8414-15e6a3736cad
+@doctorCancelAgreementanswerId=b274c5fa-0b64-49f0-9227-802fd9a80460
 DELETE {{questionsPath}}/answers/agreements/{{doctorCancelAgreementanswerId}}
 Authorization: {{accessToken}}
 Content-Type: application/json

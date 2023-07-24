@@ -255,7 +255,8 @@ async function main(): Promise<void> {
     )
   const cancelAnswerAgreementUseCase = new CancelAnswerAgreementUseCase(
     answerAgreementRepository,
-    doctorRepository
+    doctorRepository,
+    patientQuestionAnswerRepository
   )
 
   const createAnswerAppreciationUseCase = new CreateAnswerAppreciationUseCase(
@@ -318,7 +319,9 @@ async function main(): Promise<void> {
   const getSingleQuestionUseCase = new GetSingleQuestionUseCase(
     patientQuestionRepository,
     patientRepository,
-    patientQuestionAnswerRepository
+    patientQuestionAnswerRepository,
+    doctorRepository,
+    answerAppreciationRepository
   )
 
   const getQuestionsUseCase = new GetQuestionsUseCase(patientQuestionRepository)

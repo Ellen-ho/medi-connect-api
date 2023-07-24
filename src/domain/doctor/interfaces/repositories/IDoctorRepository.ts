@@ -1,6 +1,6 @@
 import { MedicalSpecialtyType } from '../../../question/PatientQuestion'
 import { IBaseRepository } from '../../../shared/IBaseRepository'
-import { Doctor } from '../../Doctor'
+import { Doctor, GenderType } from '../../Doctor'
 
 export interface IDoctorRepository extends IBaseRepository<Doctor> {
   findByDoctorId: (doctorId: string) => Promise<Doctor | null>
@@ -10,5 +10,15 @@ export interface IDoctorRepository extends IBaseRepository<Doctor> {
     limit: number,
     offset: number,
     specialty?: MedicalSpecialtyType
-  ) => Promise<{ data: Doctor[]; counts: number }>
+  ) => Promise<{
+    data: Array<{
+      id: string
+      avatar: string
+      firstName: string
+      lastName: string
+      specialties: MedicalSpecialtyType[]
+      gender: GenderType
+    }>
+    counts: number
+  }>
 }

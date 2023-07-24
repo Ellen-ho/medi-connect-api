@@ -52,7 +52,7 @@ Content-Type: application/json
 ###
 
 ### patient thank a doctor's answer
-@answerId = 9101cee2-4551-46f2-ba7c-3354b89ab856
+@answerId = b274c5fa-0b64-49f0-9227-802fd9a80460
 POST {{questionsPath}}/answers/{{answerId}}/appreciations
 Authorization: {{accessToken}}
 Content-Type: application/json
@@ -91,9 +91,9 @@ Content-Type: application/json
 }
 ###
 
-### patient cancel appreciation content to an answer
-@appreciationId = uuid
-DELETE {{questionsPath}}/answers/appreciations/{{appreciationId}}
+### patient cancel appreciation to an answer
+@cancelAppreciationId =d1f5c2b5-3237-4716-83aa-e94fc17bc882
+DELETE {{questionsPath}}/answers/appreciations/{{cancelAppreciationId}}
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###

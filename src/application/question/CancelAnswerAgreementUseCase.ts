@@ -1,12 +1,13 @@
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 import { IAnswerAgreementRepository } from '../../domain/question/interfaces/repositories/IAnswerAgreementRepository'
+import { IPatientQuestionAnswerRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionAnswerRepository'
 import { User } from '../../domain/user/User'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
 import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 
 export interface CancelAnswerAgreementRequest {
   user: User
-  answerAgreementId: string
+  answerId: string
 }
 
 interface CancelAnswerAgreementResponse {
@@ -17,14 +18,21 @@ interface CancelAnswerAgreementResponse {
 export class CancelAnswerAgreementUseCase {
   constructor(
     private readonly answerAgreementRepository: IAnswerAgreementRepository,
-    private readonly doctorRepository: IDoctorRepository
+    private readonly doctorRepository: IDoctorRepository,
+    private readonly patientQuestionAnswerRepository: IPatientQuestionAnswerRepository
   ) {}
 
   public async execute(
     request: CancelAnswerAgreementRequest
   ): Promise<CancelAnswerAgreementResponse> {
-    const { user, answerAgreementId } = request
+    const { user, answerId } = request
 
+    const existingAnswer = await this.patientQuestionAnswerRepository.findById(
+      answerId
+    )
+    if (existingAnswer == null) {
+      throw new NotFoundError('Answer does not exist.')
+    }
     const existingDoctor = await this.doctorRepository.findByUserId(user.id)
 
     if (existingDoctor == null) {
@@ -32,8 +40,8 @@ export class CancelAnswerAgreementUseCase {
     }
 
     const existingAnswerAgreement =
-      await this.answerAgreementRepository.findByIdAndAgreedDoctorId(
-        answerAgreementId,
+      await this.answerAgreementRepository.findByAnswerIdAndAgreedDoctorId(
+        existingAnswer.id,
         existingDoctor.id
       )
     if (existingAnswerAgreement == null) {
