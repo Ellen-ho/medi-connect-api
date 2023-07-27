@@ -16,6 +16,7 @@ interface GetSingleExerciseRecordRequest {
 
 interface GetSingleExerciseRecordResponse {
   data: {
+    id: string
     exerciseDate: Date
     exerciseType: ExerciseType
     exerciseDurationMinute: number
@@ -100,6 +101,7 @@ export class GetSingleExerciseRecordUseCase {
       }
       return {
         data: {
+          id: existingRecord.id,
           exerciseDate: existingRecord.exerciseDate,
           exerciseType: existingRecord.exerciseType,
           exerciseDurationMinute: existingRecord.exerciseDurationMinute,
@@ -138,6 +140,7 @@ export class GetSingleExerciseRecordUseCase {
 
     return {
       data: {
+        id: recordWithOwner.id,
         exerciseDate: recordWithOwner.exerciseDate,
         exerciseType: recordWithOwner.exerciseType,
         exerciseDurationMinute: recordWithOwner.exerciseDurationMinute,

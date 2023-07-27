@@ -15,6 +15,7 @@ export interface GetSingleBloodPressureRecordRequest {
 
 interface GetSingleBloodPressureRecordResponse {
   data: {
+    id: string
     bloodPressureDate: Date
     systolicBloodPressure: number
     diastolicBloodPressure: number
@@ -97,6 +98,7 @@ export class GetSingleBloodPressureRecordUseCase {
       }
       return {
         data: {
+          id: existingRecord.id,
           bloodPressureDate: existingRecord.bloodPressureDate,
           systolicBloodPressure: existingRecord.systolicBloodPressure,
           diastolicBloodPressure: existingRecord.diastolicBloodPressure,
@@ -134,6 +136,7 @@ export class GetSingleBloodPressureRecordUseCase {
 
     return {
       data: {
+        id: recordWithOwner.id,
         bloodPressureDate: recordWithOwner.bloodPressureDate,
         systolicBloodPressure: recordWithOwner.systolicBloodPressure,
         diastolicBloodPressure: recordWithOwner.diastolicBloodPressure,

@@ -15,6 +15,7 @@ interface GetSingleGlycatedHemoglobinRecordRequest {
 
 interface GetSingleGlycatedHemoglobinRecordResponse {
   data: {
+    id: string
     glycatedHemoglobinDate: Date
     glycatedHemoglobinValuePercent: number
     createdAt: Date
@@ -91,6 +92,7 @@ export class GetSingleGlycatedHemoglobinRecordUseCase {
       }
       return {
         data: {
+          id: existingRecord.id,
           glycatedHemoglobinDate: existingRecord.glycatedHemoglobinDate,
           glycatedHemoglobinValuePercent:
             existingRecord.glycatedHemoglobinValuePercent,
@@ -126,6 +128,7 @@ export class GetSingleGlycatedHemoglobinRecordUseCase {
 
     return {
       data: {
+        id: recordWithOwner.id,
         glycatedHemoglobinDate: recordWithOwner.glycatedHemoglobinDate,
         glycatedHemoglobinValuePercent:
           recordWithOwner.glycatedHemoglobinValuePercent,

@@ -15,6 +15,7 @@ interface GetSingleWeightRecordRequest {
 
 interface GetSingleWeightRecordResponse {
   data: {
+    id: string
     weightDate: Date
     weightValueKg: number
     bodyMassIndex: number
@@ -95,6 +96,7 @@ export class GetSingleWeightRecordUseCase {
       }
       return {
         data: {
+          id: existingRecord.id,
           weightDate: existingRecord.weightDate,
           weightValueKg: existingRecord.weightValueKg,
           bodyMassIndex: existingRecord.bodyMassIndex,
@@ -129,6 +131,7 @@ export class GetSingleWeightRecordUseCase {
     }
     return {
       data: {
+        id: recordWithOwner.id,
         weightDate: recordWithOwner.weightDate,
         weightValueKg: recordWithOwner.weightValueKg,
         bodyMassIndex: recordWithOwner.bodyMassIndex,
