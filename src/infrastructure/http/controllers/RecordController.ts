@@ -272,6 +272,7 @@ export class RecordController implements IRecordController {
     const request = {
       user: req.user as User,
       exerciseRecordId: req.params.id,
+      targetPatientId: req.query.targetPatientId as string,
     }
     const record = await this.getSingleExerciseRecordUseCase.execute(request)
     return res.status(200).json(record)
@@ -284,6 +285,7 @@ export class RecordController implements IRecordController {
     const request = {
       user: req.user as User,
       bloodPressureRecordId: req.params.id,
+      targetPatientId: req.query.targetPatientId as string,
     }
     const record = await this.getSingleBloodPressureRecordUseCase.execute(
       request
@@ -298,6 +300,7 @@ export class RecordController implements IRecordController {
     const request = {
       user: req.user as User,
       bloodSugarRecordId: req.params.id,
+      targetPatientId: req.query.targetPatientId as string,
     }
     const record = await this.getSingleBloodSugarRecordUseCase.execute(request)
     return res.status(200).json(record)
@@ -310,6 +313,7 @@ export class RecordController implements IRecordController {
     const request = {
       user: req.user as User,
       foodRecordId: req.params.id,
+      targetPatientId: req.query.targetPatientId as string,
     }
     const record = await this.getSingleFoodRecordUseCase.execute(request)
     return res.status(200).json(record)
@@ -322,6 +326,7 @@ export class RecordController implements IRecordController {
     const request = {
       user: req.user as User,
       glycatedHemoglobinRecordId: req.params.id,
+      targetPatientId: req.query.targetPatientId as string,
     }
     const record = await this.getSingleGlycatedHemoglobinRecordUseCase.execute(
       request
@@ -336,6 +341,7 @@ export class RecordController implements IRecordController {
     const request = {
       user: req.user as User,
       sleepRecordId: req.params.id,
+      targetPatientId: req.query.targetPatientId as string,
     }
     const record = await this.getSingleSleepRecordUseCase.execute(request)
     return res.status(200).json(record)
@@ -348,6 +354,7 @@ export class RecordController implements IRecordController {
     const request = {
       user: req.user as User,
       weightRecordId: req.params.id,
+      targetPatientId: req.query.targetPatientId as string,
     }
     const record = await this.getSingleWeightRecordUseCase.execute(request)
     return res.status(200).json(record)

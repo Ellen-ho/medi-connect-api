@@ -11,6 +11,7 @@ import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 interface GetSingleGlycatedHemoglobinRecordRequest {
   user: User
   glycatedHemoglobinRecordId: string
+  targetPatientId: string
 }
 
 interface GetSingleGlycatedHemoglobinRecordResponse {

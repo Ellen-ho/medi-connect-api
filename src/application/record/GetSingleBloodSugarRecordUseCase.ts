@@ -12,6 +12,7 @@ import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 interface GetSingleBloodSugarRecordRequest {
   user: User
   bloodSugarRecordId: string
+  targetPatientId: string
 }
 
 interface GetSingleBloodSugarRecordResponse {

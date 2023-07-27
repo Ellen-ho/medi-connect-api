@@ -12,6 +12,7 @@ import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 export interface GetSingleSleepRecordRequest {
   user: User
   sleepRecordId: string
+  targetPatientId: string
 }
 
 interface GetSingleSleepRecordResponse {

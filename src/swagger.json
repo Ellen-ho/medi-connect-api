@@ -1101,6 +1101,15 @@
         "description": "Get doctors list",
         "parameters": [
           {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
             "name": "page",
             "in": "query",
             "schema": {
@@ -1147,6 +1156,7 @@
                         "properties": {
                           "id": {
                             "type": "string",
+                            "format": "uuid",
                             "example": "100001"
                           },
                           "avatar": {
@@ -1178,206 +1188,512 @@
                   }
                 }
               }
+            }
+          }
+        }
+      }
+    },
+    "/records/weight": {
+      "post": {
+        "tags": ["record"],
+        "summary": "Create single weight record.",
+        "description": "Create single weight record.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
             },
-            "components": {
-              "schemas": {
-                "User": {
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "weightDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-06-18T05:23:25.231Z"
+                  },
+                  "weightValueKg": {
+                    "type": "number",
+                    "format": "double",
+                    "example": 65.5
+                  },
+                  "weightNote": {
+                    "type": "string",
+                    "example": "Weight note."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful create single weight record.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
                   "properties": {
                     "id": {
                       "type": "string",
                       "format": "uuid",
-                      "example": "df5ff2e5-9d76-42ca-acfb-688267229369"
+                      "example": "79ed933e-22c2-4e9a-bf71-16086f54f3f2"
                     },
-                    "displayName": {
+                    "weightDate": {
                       "type": "string",
-                      "example": "Jimmy"
+                      "format": "date-time",
+                      "example": "2023-07-27T12:34:56Z"
                     },
-                    "email": {
-                      "type": "string",
-                      "example": "test@test.com"
-                    },
-                    "role": {
-                      "type": "string",
-                      "enum": ["PATIENT", "DOCTOR"],
-                      "example": "PATIENT"
-                    }
-                  },
-                  "required": ["id", "email", "displayName", "role"]
-                },
-                "UserInput": {
-                  "properties": {
-                    "email": {
-                      "type": "string",
-                      "example": "test@test.com"
-                    },
-                    "password": {
-                      "type": "string",
-                      "example": "test"
-                    }
-                  },
-                  "required": ["email", "password"]
-                },
-                "MedicalHistoryItem": {
-                  "type": "object",
-                  "properties": {
-                    "diagnosis": {
-                      "type": "string",
-                      "enum": [
-                        "HYPERTENSION",
-                        "DIABETES",
-                        "HYPERLIPIDEMIA",
-                        "CANCER",
-                        "SURGERY",
-                        "OTHER"
-                      ],
-                      "example": "HYPERTENSION"
-                    },
-                    "diagnosisDetails": {
-                      "type": "string",
-                      "example": "Details about the diagnosis"
-                    }
-                  }
-                },
-                "FamilyHistoryItem": {
-                  "type": "object",
-                  "properties": {
-                    "relationship": {
-                      "type": "string",
-                      "example": "Mother"
-                    },
-                    "diagnosis": {
-                      "type": "string",
-                      "enum": [
-                        "HYPERTENSION",
-                        "DIABETES",
-                        "HYPERLIPIDEMIA",
-                        "CANCER",
-                        "OTHER"
-                      ],
-                      "example": "HYPERTENSION"
-                    },
-                    "diagnosisDetails": {
-                      "type": "string",
-                      "example": "Details about the diagnosis"
-                    }
-                  }
-                },
-                "Allergy": {
-                  "type": "object",
-                  "properties": {
-                    "medicine": {
-                      "type": "string",
-                      "nullable": true,
-                      "example": "Penicillin"
-                    },
-                    "food": {
-                      "type": "string",
-                      "nullable": true,
-                      "example": "Peanuts"
-                    },
-                    "other": {
-                      "type": "string",
-                      "nullable": true,
-                      "example": "Dust"
-                    }
-                  }
-                },
-                "MedicinceUsageItem": {
-                  "type": "object",
-                  "properties": {
-                    "medicineName": {
-                      "type": "string",
-                      "example": "Aspirin"
-                    },
-                    "medicineDosage": {
+                    "weightValueKg": {
                       "type": "number",
-                      "example": 500
+                      "format": "double",
+                      "example": 65.5
                     },
-                    "medicineUnit": {
-                      "type": "string",
-                      "enum": ["MILLIGRAM", "MILLILITER"],
-                      "example": "MILLIGRAM"
+                    "bodyMassIndex": {
+                      "type": "number",
+                      "format": "double",
+                      "example": 24.7
                     },
-                    "medicineFrequency": {
+                    "weightNote": {
                       "type": "string",
-                      "enum": [
-                        "ONCE_DAILY",
-                        "TWICE_DAILY",
-                        "THREE_TIMES_A_DAY",
-                        "FOUR_TIMES_A_DAY",
-                        "OTHER"
-                      ],
-                      "example": "ONCE_DAILY"
+                      "nullable": true,
+                      "example": "This is a weight note."
                     },
-                    "medicineTime": {
+                    "createdAt": {
                       "type": "string",
-                      "enum": ["BEFORE_MEAL", "AFTER_MEAL", "OTHER"],
-                      "example": "BEFORE_MEAL"
+                      "format": "date-time",
+                      "example": "2023-07-27T08:12:34Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T14:56:12Z"
                     }
                   }
-                },
-                "Address": {
-                  "type": "object",
-                  "properties": {
-                    "line1": {
-                      "type": "string",
-                      "example": "123 Main Street"
-                    },
-                    "line2": {
-                      "type": "string",
-                      "example": "Apartment 4B"
-                    },
-                    "city": {
-                      "type": "string",
-                      "example": "New York"
-                    },
-                    "stateProvince": {
-                      "type": "string",
-                      "example": "NY"
-                    },
-                    "postalCode": {
-                      "type": "string",
-                      "example": "10001"
-                    },
-                    "country": {
-                      "type": "string",
-                      "example": "United States"
-                    },
-                    "countryCode": {
-                      "type": "string",
-                      "example": "US"
-                    }
-                  },
-                  "required": ["line1", "city", "country"]
-                },
-                "MedicalSpecialtyType": {
-                  "type": "string",
-                  "enum": [
-                    "INTERNAL_MEDICINE",
-                    "SURGERY",
-                    "OBSTETRICS_AND_GYNECOLOGY",
-                    "PEDIATRICS",
-                    "OPHTHALMOLOGY",
-                    "OTORHINOLARYNGOLOGY",
-                    "DERMATOLOGY",
-                    "PSYCHIATRY",
-                    "DENTISTRY",
-                    "ORTHOPEDICS",
-                    "UROLOGY",
-                    "NEUROLOGY",
-                    "NEUROSURGERY",
-                    "CARDIOLOGY",
-                    "CARDIOTHORACIC_SURGERY",
-                    "ONCOLOGY",
-                    "NEPHROLOGY",
-                    "PULMONOLOGY",
-                    "GASTROENTEROLOGY",
-                    "PULMONARY_MEDICINE"
-                  ],
-                  "example": ["INTERNAL_MEDICINE", "SURGERY"]
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/records/weight/{id}": {
+      "patch": {
+        "tags": ["record"],
+        "summary": "Edit the specific weight record.",
+        "description": "Edit the specific weight record.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "weight record id for the request",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "79ed933e-22c2-4e9a-bf71-16086f54f3f2"
+                  },
+                  "weightDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-07-27T12:34:56Z"
+                  },
+                  "weightValueKg": {
+                    "type": "number",
+                    "format": "double",
+                    "example": 65.5
+                  },
+                  "weightNote": {
+                    "type": "string",
+                    "nullable": true,
+                    "example": "This is a weight note."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful create single weight record.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "79ed933e-22c2-4e9a-bf71-16086f54f3f2"
+                    },
+                    "weightDate": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T12:34:56Z"
+                    },
+                    "weightValueKg": {
+                      "type": "number",
+                      "format": "double",
+                      "example": 65.5
+                    },
+                    "bodyMassIndex": {
+                      "type": "number",
+                      "format": "double",
+                      "example": 24.7
+                    },
+                    "weightNote": {
+                      "type": "string",
+                      "nullable": true,
+                      "example": "This is a weight note."
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T08:12:34Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T14:56:12Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["record"],
+        "summary": "Get the specific weight record.",
+        "description": "Get the specific weight record.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "weight record id for the request",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "targetPatientId",
+            "in": "query",
+            "description": "patient id for the requested profile",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful get single weight record.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "example": "df5ff2e5-9d76-42ca-acfb-688267229369"
+                        },
+                        "weightDate": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-07-27T12:34:56Z"
+                        },
+                        "weightValueKg": {
+                          "type": "number",
+                          "format": "double",
+                          "example": 65.5
+                        },
+                        "bodyMassIndex": {
+                          "type": "number",
+                          "format": "double",
+                          "example": 24.7
+                        },
+                        "weightNote": {
+                          "type": "string",
+                          "nullable": true,
+                          "example": "This is a weight note."
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-07-27T08:12:34Z"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-07-27T14:56:12Z"
+                        }
+                      }
+                    },
+                    "recordOwner": {
+                      "type": "object",
+                      "properties": {
+                        "firstName": {
+                          "type": "string",
+                          "example": "John"
+                        },
+                        "lastName": {
+                          "type": "string",
+                          "example": "Doe"
+                        },
+                        "birthDate": {
+                          "type": "string",
+                          "format": "date",
+                          "example": "1990-01-01"
+                        },
+                        "gender": {
+                          "type": "string",
+                          "enum": ["Male", "Female", "Other"],
+                          "example": "Male"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "components": {
+        "schemas": {
+          "User": {
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid",
+                "example": "df5ff2e5-9d76-42ca-acfb-688267229369"
+              },
+              "displayName": {
+                "type": "string",
+                "example": "Jimmy"
+              },
+              "email": {
+                "type": "string",
+                "example": "test@test.com"
+              },
+              "role": {
+                "type": "string",
+                "enum": ["PATIENT", "DOCTOR"],
+                "example": "PATIENT"
+              }
+            },
+            "required": ["id", "email", "displayName", "role"]
+          },
+          "UserInput": {
+            "properties": {
+              "email": {
+                "type": "string",
+                "example": "test@test.com"
+              },
+              "password": {
+                "type": "string",
+                "example": "test"
+              }
+            },
+            "required": ["email", "password"]
+          },
+          "MedicalHistoryItem": {
+            "type": "object",
+            "properties": {
+              "diagnosis": {
+                "type": "string",
+                "enum": [
+                  "HYPERTENSION",
+                  "DIABETES",
+                  "HYPERLIPIDEMIA",
+                  "CANCER",
+                  "SURGERY",
+                  "OTHER"
+                ],
+                "example": "HYPERTENSION"
+              },
+              "diagnosisDetails": {
+                "type": "string",
+                "example": "Details about the diagnosis"
+              }
+            }
+          },
+          "FamilyHistoryItem": {
+            "type": "object",
+            "properties": {
+              "relationship": {
+                "type": "string",
+                "example": "Mother"
+              },
+              "diagnosis": {
+                "type": "string",
+                "enum": [
+                  "HYPERTENSION",
+                  "DIABETES",
+                  "HYPERLIPIDEMIA",
+                  "CANCER",
+                  "OTHER"
+                ],
+                "example": "HYPERTENSION"
+              },
+              "diagnosisDetails": {
+                "type": "string",
+                "example": "Details about the diagnosis"
+              }
+            }
+          },
+          "Allergy": {
+            "type": "object",
+            "properties": {
+              "medicine": {
+                "type": "string",
+                "nullable": true,
+                "example": "Penicillin"
+              },
+              "food": {
+                "type": "string",
+                "nullable": true,
+                "example": "Peanuts"
+              },
+              "other": {
+                "type": "string",
+                "nullable": true,
+                "example": "Dust"
+              }
+            }
+          },
+          "MedicinceUsageItem": {
+            "type": "object",
+            "properties": {
+              "medicineName": {
+                "type": "string",
+                "example": "Aspirin"
+              },
+              "medicineDosage": {
+                "type": "number",
+                "example": 500
+              },
+              "medicineUnit": {
+                "type": "string",
+                "enum": ["MILLIGRAM", "MILLILITER"],
+                "example": "MILLIGRAM"
+              },
+              "medicineFrequency": {
+                "type": "string",
+                "enum": [
+                  "ONCE_DAILY",
+                  "TWICE_DAILY",
+                  "THREE_TIMES_A_DAY",
+                  "FOUR_TIMES_A_DAY",
+                  "OTHER"
+                ],
+                "example": "ONCE_DAILY"
+              },
+              "medicineTime": {
+                "type": "string",
+                "enum": ["BEFORE_MEAL", "AFTER_MEAL", "OTHER"],
+                "example": "BEFORE_MEAL"
+              }
+            }
+          },
+          "Address": {
+            "type": "object",
+            "properties": {
+              "line1": {
+                "type": "string",
+                "example": "123 Main Street"
+              },
+              "line2": {
+                "type": "string",
+                "example": "Apartment 4B"
+              },
+              "city": {
+                "type": "string",
+                "example": "New York"
+              },
+              "stateProvince": {
+                "type": "string",
+                "example": "NY"
+              },
+              "postalCode": {
+                "type": "string",
+                "example": "10001"
+              },
+              "country": {
+                "type": "string",
+                "example": "United States"
+              },
+              "countryCode": {
+                "type": "string",
+                "example": "US"
+              }
+            },
+            "required": ["line1", "city", "country"]
+          },
+          "MedicalSpecialtyType": {
+            "type": "string",
+            "enum": [
+              "INTERNAL_MEDICINE",
+              "SURGERY",
+              "OBSTETRICS_AND_GYNECOLOGY",
+              "PEDIATRICS",
+              "OPHTHALMOLOGY",
+              "OTORHINOLARYNGOLOGY",
+              "DERMATOLOGY",
+              "PSYCHIATRY",
+              "DENTISTRY",
+              "ORTHOPEDICS",
+              "UROLOGY",
+              "NEUROLOGY",
+              "NEUROSURGERY",
+              "CARDIOLOGY",
+              "CARDIOTHORACIC_SURGERY",
+              "ONCOLOGY",
+              "NEPHROLOGY",
+              "PULMONOLOGY",
+              "GASTROENTEROLOGY",
+              "PULMONARY_MEDICINE"
+            ],
+            "example": ["INTERNAL_MEDICINE", "SURGERY"]
           }
         }
       }

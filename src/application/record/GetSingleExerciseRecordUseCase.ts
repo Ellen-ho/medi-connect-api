@@ -12,6 +12,7 @@ import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 interface GetSingleExerciseRecordRequest {
   user: User
   exerciseRecordId: string
+  targetPatientId: string
 }
 
 interface GetSingleExerciseRecordResponse {

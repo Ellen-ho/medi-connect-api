@@ -11,6 +11,7 @@ import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 interface GetSingleWeightRecordRequest {
   user: User
   weightRecordId: string
+  targetPatientId: string
 }
 
 interface GetSingleWeightRecordResponse {

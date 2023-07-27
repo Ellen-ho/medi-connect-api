@@ -11,6 +11,7 @@ import { AuthorizationError } from '../../infrastructure/error/AuthorizationErro
 export interface GetSingleBloodPressureRecordRequest {
   user: User
   bloodPressureRecordId: string
+  targetPatientId: string
 }
 
 interface GetSingleBloodPressureRecordResponse {
