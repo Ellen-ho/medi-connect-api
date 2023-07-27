@@ -133,6 +133,7 @@ export class BloodPressureRecordRepository
       gender: GenderType
     }
     recordsData: Array<{
+      id: string
       date: Date
       systolicBloodPressure: number
       diastolicBloodPressure: number
@@ -141,6 +142,7 @@ export class BloodPressureRecordRepository
     const result = await this.getRepo()
       .createQueryBuilder('record')
       .select([
+        'record.id AS "id"',
         'record.blood_pressure_date AS "bloodPressureDate"',
         'record.systolic_blood_pressure AS "systolicBloodPressure"',
         'record.diastolic_blood_pressure AS "diastolicBloodPressure"',
@@ -166,6 +168,7 @@ export class BloodPressureRecordRepository
         gender: result.length > 0 ? result[0].gender : '',
       },
       recordsData: result.map((record) => ({
+        id: record.id,
         date: record.bloodPressureDate,
         systolicBloodPressure: record.systolicBloodPressure,
         diastolicBloodPressure: record.diastolicBloodPressure,

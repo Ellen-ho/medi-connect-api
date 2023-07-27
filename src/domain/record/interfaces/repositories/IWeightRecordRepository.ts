@@ -12,16 +12,6 @@ export interface IWeightRecordRepository extends IBaseRepository<WeightRecord> {
     recordId: string,
     patientId: string
   ) => Promise<IWeightRecordWithOwner | null>
-  findAndCountAll: (
-    limit: number,
-    offset: number
-  ) => Promise<{
-    total_counts: number
-    records: Array<{
-      weightDate: Date
-      weightValueKg: number
-    }>
-  }>
   weightCountByPatientId: (
     patientId: string,
     daysAgo: number
@@ -54,6 +44,7 @@ export interface IWeightRecordRepository extends IBaseRepository<WeightRecord> {
       gender: GenderType
     }
     recordsData: Array<{
+      id: string
       date: Date
       weightValueKg: number
       bodyMassIndex: number

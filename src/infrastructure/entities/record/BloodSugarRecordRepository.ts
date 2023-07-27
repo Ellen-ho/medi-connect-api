@@ -114,57 +114,6 @@ export class BloodSugarRecordRepository
     }
   }
 
-  public async findAndCountAll(
-    limit: number,
-    offset: number
-  ): Promise<{
-    total_counts: number
-    records: Array<{
-      bloodSugarDate: Date
-      bloodSugarValue: number
-      bloodSugarType: BloodSugarType
-    }>
-  }> {
-    try {
-      const rawRecords = await this.getQuery<
-        Array<{
-          total_counts: number
-          blood_sugar_date: Date
-          blood_sugar_value: number
-          blood_sugar_type: BloodSugarType
-        }>
-      >(
-        `
-          SELECT
-            (SELECT COUNT(*) FROM blood_sugar_records) as total_counts,
-            blood_sugar_date,
-            blood_sugar_value,
-            blood_sugar_type
-          FROM
-            blood_sugar_records
-            ORDER BY blood_sugar_date DESC
-          LIMIT $1
-          OFFSET $2
-        `,
-        [limit, offset]
-      )
-
-      return {
-        total_counts: rawRecords[0].total_counts,
-        records: rawRecords.map((record) => ({
-          bloodSugarDate: record.blood_sugar_date,
-          bloodSugarValue: record.blood_sugar_value,
-          bloodSugarType: record.blood_sugar_type,
-        })),
-      }
-    } catch (e) {
-      throw new RepositoryError(
-        'BloodSugarRecordRepository findAndCountAll error',
-        e as Error
-      )
-    }
-  }
-
   public async bloodSugarCountByPatientId(
     patientId: string,
     daysAgo: number
@@ -267,6 +216,7 @@ export class BloodSugarRecordRepository
       gender: GenderType
     }
     recordsData: Array<{
+      id: string
       date: Date
       bloodSugarValue: number // mg/L
       bloodSugarType: BloodSugarType
@@ -276,6 +226,7 @@ export class BloodSugarRecordRepository
       const result = await this.getRepo()
         .createQueryBuilder('record')
         .select([
+          'record.id AS "id"',
           'record.blood_sugar_date AS "bloodSugarDate"',
           'record.blood_sugar_value AS "bloodSugarValue"',
           'record.blood_sugar_type AS "bloodSugarType"',
@@ -301,6 +252,7 @@ export class BloodSugarRecordRepository
           gender: result.length > 0 ? result[0].gender : '',
         },
         recordsData: result.map((record) => ({
+          id: record.id,
           date: record.bloodSugarDate,
           bloodSugarValue: record.bloodSugarValue,
           bloodSugarType: record.bloodSugarType,

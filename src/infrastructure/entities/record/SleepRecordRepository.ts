@@ -198,6 +198,7 @@ export class SleepRecordRepository
       gender: GenderType
     }
     recordsData: Array<{
+      id: string
       date: Date
       sleepQuality: SleepQualityType
     }>
@@ -206,6 +207,7 @@ export class SleepRecordRepository
       const result = await this.getRepo()
         .createQueryBuilder('record')
         .select([
+          'record.id AS "id"',
           'record.sleep_date AS "sleepDate"',
           'record.sleep_quality AS "sleepQuality"',
           'patient.first_name AS "firstName"',
@@ -230,6 +232,7 @@ export class SleepRecordRepository
           gender: result.length > 0 ? result[0].gender : '',
         },
         recordsData: result.map((record) => ({
+          id: record.id,
           date: record.sleepDate,
           sleepQuality: record.sleepQuality,
         })),

@@ -22,6 +22,7 @@ interface GetWeightRecordsResponse {
     gender: GenderType
   }
   recordsData: Array<{
+    id: string
     date: Date
     weightValueKg: number
     bodyMassIndex: number

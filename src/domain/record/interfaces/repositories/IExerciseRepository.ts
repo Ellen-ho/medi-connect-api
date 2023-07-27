@@ -14,16 +14,6 @@ export interface IExerciseRecordRepository
     recordId: string,
     patientId: string
   ) => Promise<IExerciseRecordWithOwner | null>
-  findAndCountAll: (
-    limit: number,
-    offset: number
-  ) => Promise<{
-    total_counts: number
-    records: Array<{
-      exerciseDate: Date
-      exerciseType: ExerciseType
-    }>
-  }>
   findByPatientIdAndCountAll: (
     patientId: string,
     limit: number,
@@ -37,6 +27,7 @@ export interface IExerciseRecordRepository
       gender: GenderType
     }
     recordsData: Array<{
+      id: string
       date: Date
       exerciseType: ExerciseType
     }>

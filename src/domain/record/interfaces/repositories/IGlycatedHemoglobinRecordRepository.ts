@@ -13,16 +13,6 @@ export interface IGlycatedHemoglobinRecordRepository
     recordId: string,
     patientId: string
   ) => Promise<IGlycatedHemoglobinRecordWithOwner | null>
-  findAndCountAll: (
-    limit: number,
-    offset: number
-  ) => Promise<{
-    total_counts: number
-    records: Array<{
-      glycatedHemoglobinDate: Date
-      glycatedHemoglobinValuePercent: number
-    }>
-  }>
   findByPatientId: (
     patientId: string,
     hospitalCheckDaysAgo: number

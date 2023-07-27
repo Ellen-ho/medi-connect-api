@@ -12,16 +12,6 @@ export interface IFoodRecordRepository extends IBaseRepository<FoodRecord> {
     recordId: string,
     patientId: string
   ) => Promise<IFoodRecordWithOwner | null>
-  findAndCountAll: (
-    limit: number,
-    offset: number
-  ) => Promise<{
-    total_counts: number
-    records: Array<{
-      foodTime: Date
-      foodCategory: FoodCategoryType
-    }>
-  }>
   findById: (id: string) => Promise<FoodRecord | null>
   findByPatientIdAndCountAll: (
     patientId: string,

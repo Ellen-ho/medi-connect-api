@@ -111,53 +111,6 @@ export class WeightRecordRepository
     }
   }
 
-  public async findAndCountAll(
-    limit: number,
-    offset: number
-  ): Promise<{
-    total_counts: number
-    records: Array<{
-      weightDate: Date
-      weightValueKg: number
-    }>
-  }> {
-    try {
-      const rawRecords = await this.getQuery<
-        Array<{
-          total_counts: number
-          weight_date: Date
-          weight_value_kg: number
-        }>
-      >(
-        `
-          SELECT
-            (SELECT COUNT(*) FROM weight_records) as total_counts,
-            weight_date,
-            weight_value_kg
-          FROM
-            weight_records
-          ORDER BY weight_date DESC
-          LIMIT $1
-          OFFSET $2
-        `,
-        [limit, offset]
-      )
-
-      return {
-        total_counts: rawRecords[0].total_counts,
-        records: rawRecords.map((record) => ({
-          weightDate: record.weight_date,
-          weightValueKg: record.weight_value_kg,
-        })),
-      }
-    } catch (e) {
-      throw new RepositoryError(
-        'WeightRecordRepository findAndCountAll error',
-        e as Error
-      )
-    }
-  }
-
   public async weightCountByPatientId(
     patientId: string,
     daysAgo: number
@@ -260,6 +213,7 @@ export class WeightRecordRepository
       gender: GenderType
     }
     recordsData: Array<{
+      id: string
       date: Date
       weightValueKg: number
       bodyMassIndex: number
@@ -269,6 +223,7 @@ export class WeightRecordRepository
       const result = await this.getRepo()
         .createQueryBuilder('record')
         .select([
+          'record.id AS "id"',
           'record.weight_date AS "weightDate"',
           'record.weight_value_kg AS "weightValueKg"',
           'record.body_mass_index AS "bodyMassIndex"',
@@ -294,6 +249,7 @@ export class WeightRecordRepository
           gender: result.length > 0 ? result[0].gender : '',
         },
         recordsData: result.map((record) => ({
+          id: record.id,
           date: record.weightDate,
           weightValueKg: record.weightValueKg,
           bodyMassIndex: record.bodyMassIndex,
