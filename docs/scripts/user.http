@@ -6,9 +6,9 @@ POST {{usersPath}}
 Content-Type: application/json
 
 {
-  "displayName":"Amy",
-  "email": "Amy@gmail.com",
-  "password": "Amy",
+  "displayName":"Tina",
+  "email": "Tina@gmail.com",
+  "password": "Tina",
   "role": "DOCTOR"
 }
 ###
@@ -37,8 +37,8 @@ Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "displayName": "Amy am I",
-  "password": "AmyAmy"
+  "displayName": "tim2",
+  "password": "tim2"
 }
 ###
 

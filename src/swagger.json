@@ -1,0 +1,732 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "User API",
+    "description": "Simple RESTful API in Node.js with TypeScript",
+    "version": "0.0.1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:10000/api",
+      "description": "Local server"
+    }
+  ],
+  "paths": {
+    "/users": {
+      "post": {
+        "summary": "Create a new user.",
+        "description": "Create a new user.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "displayName": {
+                    "type": "string",
+                    "example": "test"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "test@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "test"
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": ["PATIENT", "DOCTOR"],
+                    "example": "PATIENT"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success create user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "summary": "An existing user login.",
+        "description": "An existing user login.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User successfully login.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "example": "token"
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "example": "79ed933e-22c2-4e9a-bf71-16086f54f3f2"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2023-06-18T05:23:25.231Z"
+                        },
+                        "displayName": {
+                          "type": "string",
+                          "example": "Jim"
+                        },
+                        "role": {
+                          "type": "string",
+                          "enum": ["PATIENT", "DOCTOR"],
+                          "example": "PATIENT"
+                        }
+                      }
+                    },
+                    "patientId": {
+                      "type": "string",
+                      "example": "df5ff2e5-9d76-42ca-acfb-688267229369"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/account": {
+      "get": {
+        "summary": "Get a user account.",
+        "description": "Get a user account.",
+        "responses": {
+          "200": {
+            "description": "Success get a user account.",
+            "parameters": [
+              {
+                "in": "header",
+                "name": "Authorization",
+                "schema": {
+                  "type": "string",
+                  "example": "__JWT_TOKEN__"
+                },
+                "required": true
+              }
+            ],
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "3eacbc28-9d7d-4fae-bf6b-bbf5c96876e6"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "test@gmail.com"
+                    },
+                    "displayName": {
+                      "type": "string",
+                      "example": "test"
+                    },
+                    "role": {
+                      "type": "string",
+                      "enum": ["PATIENT", "DOCTOR"],
+                      "example": "PATIENT"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2023-06-18T05:23:25.231Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2023-06-18T05:23:25.231Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update the specific user account.",
+        "description": "Update the specific user account.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "displayName": {
+                    "type": "string",
+                    "example": "tim"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "test"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success update the specific user account.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "79ed933e-22c2-4e9a-bf71-16086f54f3f2"
+                    },
+                    "displayName": {
+                      "type": "string",
+                      "example": "tim2"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/patients/profile": {
+      "post": {
+        "summary": "Create a new patient profile.",
+        "description": "Create a new patient profile.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "avatar": {
+                    "type": "string",
+                    "nullable": true,
+                    "example": "avatar.jpg"
+                  },
+                  "firstName": {
+                    "type": "string",
+                    "example": "tim"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "example": "Wang"
+                  },
+                  "birthDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "1995-12-31T00:00:00.000Z"
+                  },
+                  "gender": {
+                    "type": "string",
+                    "enum": ["MALE", "FEMALE", "NON_BINARY"],
+                    "example": "MALE"
+                  },
+                  "medicalHistory": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/MedicalHistoryItem"
+                    },
+                    "nullable": true
+                  },
+                  "allergy": {
+                    "$ref": "#/components/schemas/Allergy"
+                  },
+                  "familyHistory": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/FamilyHistoryItem"
+                    },
+                    "nullable": true
+                  },
+                  "heightValueCm": {
+                    "type": "number",
+                    "example": 170
+                  },
+                  "medicinceUsage": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/MedicinceUsageItem"
+                    },
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success create a new patient profile.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "df5ff2e5-9d76-42ca-acfb-688267229369"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-06-18T05:23:25.231Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update the specific patient profile.",
+        "description": "Update the specific patient profile.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "avatar": {
+                    "type": "string",
+                    "nullable": true,
+                    "example": "avatar.jpg"
+                  },
+                  "firstName": {
+                    "type": "string",
+                    "example": "tim"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "example": "Wang"
+                  },
+                  "birthDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "1995-12-31T00:00:00.000Z"
+                  },
+                  "gender": {
+                    "type": "string",
+                    "enum": ["MALE", "FEMALE", "NON_BINARY"],
+                    "example": "MALE"
+                  },
+                  "medicalHistory": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/MedicalHistoryItem"
+                    },
+                    "nullable": true
+                  },
+                  "allergy": {
+                    "$ref": "#/components/schemas/Allergy"
+                  },
+                  "familyHistory": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/FamilyHistoryItem"
+                    },
+                    "nullable": true
+                  },
+                  "heightValueCm": {
+                    "type": "number",
+                    "example": 170
+                  },
+                  "medicinceUsage": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/MedicinceUsageItem"
+                    },
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success create a new patient profile.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "avatar": {
+                      "type": "string",
+                      "nullable": true,
+                      "example": "avatar.jpg"
+                    },
+                    "firstName": {
+                      "type": "string",
+                      "example": "tim"
+                    },
+                    "lastName": {
+                      "type": "string",
+                      "example": "Wang"
+                    },
+                    "birthDate": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "1995-12-31T00:00:00.000Z"
+                    },
+                    "gender": {
+                      "type": "string",
+                      "enum": ["MALE", "FEMALE", "NON_BINARY"],
+                      "example": "MALE"
+                    },
+                    "medicalHistory": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MedicalHistoryItem"
+                      },
+                      "nullable": true
+                    },
+                    "allergy": {
+                      "$ref": "#/components/schemas/Allergy"
+                    },
+                    "familyHistory": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/FamilyHistoryItem"
+                      },
+                      "nullable": true
+                    },
+                    "heightValueCm": {
+                      "type": "number",
+                      "example": 170
+                    },
+                    "medicinceUsage": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MedicinceUsageItem"
+                      },
+                      "nullable": true
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-06-18T05:23:25.231Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-06-18T05:23:25.231Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Update the specific patient profile.",
+        "description": "Update the specific patient profile.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "targetPatientId",
+            "in": "query",
+            "description": "patient id for the requested profile",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success create a new patient profile.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "avatar": {
+                      "type": "string",
+                      "nullable": true,
+                      "example": "avatar.jpg"
+                    },
+                    "firstName": {
+                      "type": "string",
+                      "example": "tim"
+                    },
+                    "lastName": {
+                      "type": "string",
+                      "example": "Wang"
+                    },
+                    "birthDate": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "1995-12-31T00:00:00.000Z"
+                    },
+                    "gender": {
+                      "type": "string",
+                      "enum": ["MALE", "FEMALE", "NON_BINARY"],
+                      "example": "MALE"
+                    },
+                    "medicalHistory": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MedicalHistoryItem"
+                      },
+                      "nullable": true
+                    },
+                    "allergy": {
+                      "$ref": "#/components/schemas/Allergy"
+                    },
+                    "familyHistory": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/FamilyHistoryItem"
+                      },
+                      "nullable": true
+                    },
+                    "heightValueCm": {
+                      "type": "number",
+                      "example": 170
+                    },
+                    "medicinceUsage": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MedicinceUsageItem"
+                      },
+                      "nullable": true
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-06-18T05:23:25.231Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-06-18T05:23:25.231Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "User": {
+          "properties": {
+            "id": {
+              "type": "string",
+              "format": "uuid",
+              "example": "df5ff2e5-9d76-42ca-acfb-688267229369"
+            },
+            "displayName": {
+              "type": "string",
+              "example": "Jimmy"
+            },
+            "email": {
+              "type": "string",
+              "example": "test@test.com"
+            },
+            "role": {
+              "type": "string",
+              "enum": ["PATIENT", "DOCTOR"],
+              "example": "PATIENT"
+            }
+          },
+          "required": ["id", "email", "displayName", "role"]
+        },
+        "UserInput": {
+          "properties": {
+            "email": {
+              "type": "string",
+              "example": "test@test.com"
+            },
+            "password": {
+              "type": "string",
+              "example": "test"
+            }
+          },
+          "required": ["email", "password"]
+        },
+        "MedicalHistoryItem": {
+          "type": "object",
+          "properties": {
+            "diagnosis": {
+              "type": "string",
+              "enum": [
+                "HYPERTENSION",
+                "DIABETES",
+                "HYPERLIPIDEMIA",
+                "CANCER",
+                "SURGERY",
+                "OTHER"
+              ],
+              "example": "HYPERTENSION"
+            },
+            "diagnosisDetails": {
+              "type": "string",
+              "example": "Details about the diagnosis"
+            }
+          }
+        },
+        "FamilyHistoryItem": {
+          "type": "object",
+          "properties": {
+            "relationship": {
+              "type": "string",
+              "example": "Mother"
+            },
+            "diagnosis": {
+              "type": "string",
+              "enum": [
+                "HYPERTENSION",
+                "DIABETES",
+                "HYPERLIPIDEMIA",
+                "CANCER",
+                "OTHER"
+              ],
+              "example": "HYPERTENSION"
+            },
+            "diagnosisDetails": {
+              "type": "string",
+              "example": "Details about the diagnosis"
+            }
+          }
+        },
+        "Allergy": {
+          "type": "object",
+          "properties": {
+            "medicine": {
+              "type": "string",
+              "nullable": true,
+              "example": "Penicillin"
+            },
+            "food": {
+              "type": "string",
+              "nullable": true,
+              "example": "Peanuts"
+            },
+            "other": {
+              "type": "string",
+              "nullable": true,
+              "example": "Dust"
+            }
+          }
+        },
+        "MedicinceUsageItem": {
+          "type": "object",
+          "properties": {
+            "medicineName": {
+              "type": "string",
+              "example": "Aspirin"
+            },
+            "medicineDosage": {
+              "type": "number",
+              "example": 500
+            },
+            "medicineUnit": {
+              "type": "string",
+              "enum": ["MILLIGRAM", "MILLILITER"],
+              "example": "MILLIGRAM"
+            },
+            "medicineFrequency": {
+              "type": "string",
+              "enum": [
+                "ONCE_DAILY",
+                "TWICE_DAILY",
+                "THREE_TIMES_A_DAY",
+                "FOUR_TIMES_A_DAY",
+                "OTHER"
+              ],
+              "example": "ONCE_DAILY"
+            },
+            "medicineTime": {
+              "type": "string",
+              "enum": ["BEFORE_MEAL", "AFTER_MEAL", "OTHER"],
+              "example": "BEFORE_MEAL"
+            }
+          }
+        }
+      }
+    }
+  }
+}
