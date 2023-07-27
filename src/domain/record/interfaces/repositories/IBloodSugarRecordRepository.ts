@@ -13,17 +13,6 @@ export interface IBloodSugarRecordRepository
     recordId: string,
     patientId: string
   ) => Promise<IBloodSugarRecordWithOwner | null>
-  findAndCountAll: (
-    limit: number,
-    offset: number
-  ) => Promise<{
-    total_counts: number
-    records: Array<{
-      bloodSugarDate: Date
-      bloodSugarValue: number
-      bloodSugarType: BloodSugarType
-    }>
-  }>
   bloodSugarCountByPatientId: (
     patientId: string,
     daysAgo: number
@@ -55,6 +44,7 @@ export interface IBloodSugarRecordRepository
       gender: GenderType
     }
     recordsData: Array<{
+      id: string
       date: Date
       bloodSugarValue: number
       bloodSugarType: BloodSugarType

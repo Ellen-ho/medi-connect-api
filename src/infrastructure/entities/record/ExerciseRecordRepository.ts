@@ -121,53 +121,6 @@ export class ExerciseRecordRepository
     }
   }
 
-  public async findAndCountAll(
-    limit: number,
-    offset: number
-  ): Promise<{
-    total_counts: number
-    records: Array<{
-      exerciseDate: Date
-      exerciseType: ExerciseType
-    }>
-  }> {
-    try {
-      const rawRecords = await this.getQuery<
-        Array<{
-          total_counts: number
-          exercise_date: Date
-          exercise_type: ExerciseType
-        }>
-      >(
-        `
-          SELECT
-            (SELECT COUNT(*) FROM exercise_records) as total_counts,
-            exercise_date,
-            exercise_type
-          FROM
-            exercise_records
-          ORDER BY exercise_date DESC, exercise_records.update_at DESC
-          LIMIT $1
-          OFFSET $2
-        `,
-        [limit, offset]
-      )
-
-      return {
-        total_counts: rawRecords[0].total_counts,
-        records: rawRecords.map((record) => ({
-          exerciseDate: record.exercise_date,
-          exerciseType: record.exercise_type,
-        })),
-      }
-    } catch (e) {
-      throw new RepositoryError(
-        'ExerciseRecordRepository findAndCountAll error',
-        e as Error
-      )
-    }
-  }
-
   public async findByPatientIdAndCountAll(
     targetPatientId: string,
     limit: number,
@@ -181,6 +134,7 @@ export class ExerciseRecordRepository
       gender: GenderType
     }
     recordsData: Array<{
+      id: string
       date: Date
       exerciseType: ExerciseType
     }>
@@ -189,6 +143,7 @@ export class ExerciseRecordRepository
       const result = await this.getRepo()
         .createQueryBuilder('record')
         .select([
+          'record.id AS "id"',
           'record.exercise_date AS "exerciseDate"',
           'record.exercise_type AS "exerciseType"',
           'patient.first_name AS "firstName"',
@@ -213,6 +168,7 @@ export class ExerciseRecordRepository
           gender: result.length > 0 ? result[0].gender : '',
         },
         recordsData: result.map((record) => ({
+          id: record.id,
           date: record.exerciseDate,
           exerciseType: record.exerciseType,
         })),

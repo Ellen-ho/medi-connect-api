@@ -115,53 +115,6 @@ export class FoodRecordRepository
     }
   }
 
-  public async findAndCountAll(
-    limit: number,
-    offset: number
-  ): Promise<{
-    total_counts: number
-    records: Array<{
-      foodTime: Date
-      foodCategory: FoodCategoryType
-    }>
-  }> {
-    try {
-      const rawRecords = await this.getQuery<
-        Array<{
-          total_counts: number
-          food_time: Date
-          food_category: FoodCategoryType
-        }>
-      >(
-        `
-          SELECT
-            (SELECT COUNT(*) FROM food_records) as total_counts,
-            food_time,
-            food_category
-          FROM
-            food_records
-          ORDER BY food_date DESC, food_records.update_at DESC
-          LIMIT $1
-          OFFSET $2
-        `,
-        [limit, offset]
-      )
-
-      return {
-        total_counts: rawRecords[0].total_counts,
-        records: rawRecords.map((record) => ({
-          foodTime: record.food_time,
-          foodCategory: record.food_category,
-        })),
-      }
-    } catch (e) {
-      throw new RepositoryError(
-        'FoodRecordRepository findAndCountAll error',
-        e as Error
-      )
-    }
-  }
-
   public async findByPatientIdAndCountAll(
     targetPatientId: string,
     limit: number,
@@ -175,6 +128,7 @@ export class FoodRecordRepository
       gender: GenderType
     }
     recordsData: Array<{
+      id: string
       date: Date
       foodCategory: FoodCategoryType
     }>
@@ -183,6 +137,7 @@ export class FoodRecordRepository
       const result = await this.getRepo()
         .createQueryBuilder('record')
         .select([
+          'record.id AS "id"',
           'record.food_time AS "foodTime"',
           'record.food_category AS "foodCategory"',
           'patient.first_name AS "firstName"',
@@ -207,6 +162,7 @@ export class FoodRecordRepository
           gender: result.length > 0 ? result[0].gender : '',
         },
         recordsData: result.map((record) => ({
+          id: record.id,
           date: record.foodTime,
           foodCategory: record.foodCategory,
         })),

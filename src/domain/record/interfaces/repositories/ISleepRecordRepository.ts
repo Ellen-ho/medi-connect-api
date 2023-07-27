@@ -12,16 +12,6 @@ export interface ISleepRecordRepository extends IBaseRepository<SleepRecord> {
     recordId: string,
     patientId: string
   ) => Promise<ISleepRecordWithOwner | null>
-  findAndCountAll: (
-    limit: number,
-    offset: number
-  ) => Promise<{
-    total_counts: number
-    records: Array<{
-      sleepDate: Date
-      sleepQuality: SleepQualityType
-    }>
-  }>
   findByPatientIdAndDate: (
     patientId: string,
     sleepDate: Date

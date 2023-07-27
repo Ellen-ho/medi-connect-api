@@ -117,54 +117,6 @@ export class GlycatedHemoglobinRecordRepository
     }
   }
 
-  public async findAndCountAll(
-    limit: number,
-    offset: number
-  ): Promise<{
-    total_counts: number
-    records: Array<{
-      glycatedHemoglobinDate: Date
-      glycatedHemoglobinValuePercent: number
-    }>
-  }> {
-    try {
-      const rawRecords = await this.getQuery<
-        Array<{
-          total_counts: number
-          glycated_hemoglobin_date: Date
-          glycated_hemoglobin_value_percent: number
-        }>
-      >(
-        `
-          SELECT
-            (SELECT COUNT(*) FROM glycated_hemoglobin_records) as total_counts,
-            glycated_hemoglobin_date,
-            glycated_hemoglobin_value_percent
-          FROM
-            glycated_hemoglobin_records
-          ORDER BY glycated_hemoglobin_date DESC
-          LIMIT $1
-          OFFSET $2
-        `,
-        [limit, offset]
-      )
-
-      return {
-        total_counts: rawRecords[0].total_counts,
-        records: rawRecords.map((record) => ({
-          glycatedHemoglobinDate: record.glycated_hemoglobin_date,
-          glycatedHemoglobinValuePercent:
-            record.glycated_hemoglobin_value_percent,
-        })),
-      }
-    } catch (e) {
-      throw new RepositoryError(
-        'GlycatedHemoglobinRecordRepository findAndCountAll error',
-        e as Error
-      )
-    }
-  }
-
   public async findByPatientId(
     patientId: string,
     hospitalCheckDaysAgo: number
@@ -257,6 +209,7 @@ export class GlycatedHemoglobinRecordRepository
       gender: GenderType
     }
     recordsData: Array<{
+      id: string
       date: Date
       glycatedHemoglobinValuePercent: number
     }>
@@ -265,6 +218,7 @@ export class GlycatedHemoglobinRecordRepository
       const result = await this.getRepo()
         .createQueryBuilder('record')
         .select([
+          'record.id AS "id"',
           'record.glycated_hemoglobin_date AS "glycatedHemoglobinDate"',
           'record.glycated_hemoglobin_value_percent AS "glycatedHemoglobinValuePercent"',
           'patient.first_name AS "firstName"',
@@ -289,6 +243,7 @@ export class GlycatedHemoglobinRecordRepository
           gender: result.length > 0 ? result[0].gender : '',
         },
         recordsData: result.map((record) => ({
+          id: record.id,
           date: record.glycatedHemoglobinDate,
           glycatedHemoglobinValuePercent: record.glycatedHemoglobinValuePercent,
         })),
