@@ -12,10 +12,12 @@ import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 interface GetSingleBloodSugarRecordRequest {
   user: User
   bloodSugarRecordId: string
+  targetPatientId: string
 }
 
 interface GetSingleBloodSugarRecordResponse {
   data: {
+    id: string
     bloodSugarDate: Date
     bloodSugarValue: number
     bloodSugarType: BloodSugarType
@@ -96,6 +98,7 @@ export class GetSingleBloodSugarRecordUseCase {
       }
       return {
         data: {
+          id: existingRecord.id,
           bloodSugarDate: existingRecord.bloodSugarDate,
           bloodSugarValue: existingRecord.bloodSugarValue,
           bloodSugarType: existingRecord.bloodSugarType,
@@ -132,6 +135,7 @@ export class GetSingleBloodSugarRecordUseCase {
 
     return {
       data: {
+        id: recordWithOwner.id,
         bloodSugarDate: recordWithOwner.bloodSugarDate,
         bloodSugarValue: recordWithOwner.bloodSugarValue,
         bloodSugarType: recordWithOwner.bloodSugarType,

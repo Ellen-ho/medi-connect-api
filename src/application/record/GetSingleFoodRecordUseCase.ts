@@ -12,10 +12,12 @@ import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 interface GetSingleFoodRecordRequest {
   user: User
   foodRecordId: string
+  targetPatientId: string
 }
 
 interface GetSingleFoodRecordResponse {
   data: {
+    id: string
     foodTime: Date
     foodCategory: FoodCategoryType
     foodAmount: number
@@ -98,6 +100,7 @@ export class GetSingleFoodRecordUseCase {
       }
       return {
         data: {
+          id: existingRecord.id,
           foodTime: existingRecord.foodTime,
           foodCategory: existingRecord.foodCategory,
           foodAmount: existingRecord.foodAmount,
@@ -135,6 +138,7 @@ export class GetSingleFoodRecordUseCase {
 
     return {
       data: {
+        id: recordWithOwner.id,
         foodTime: recordWithOwner.foodTime,
         foodCategory: recordWithOwner.foodCategory,
         foodAmount: recordWithOwner.foodAmount,

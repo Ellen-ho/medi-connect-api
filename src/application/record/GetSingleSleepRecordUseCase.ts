@@ -12,10 +12,12 @@ import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 export interface GetSingleSleepRecordRequest {
   user: User
   sleepRecordId: string
+  targetPatientId: string
 }
 
 interface GetSingleSleepRecordResponse {
   data: {
+    id: string
     sleepDate: Date
     sleepTime: Date
     wakeUpTime: Date
@@ -100,6 +102,7 @@ export class GetSingleSleepRecordUseCase {
       }
       return {
         data: {
+          id: existingRecord.id,
           sleepDate: existingRecord.sleepDate,
           sleepTime: existingRecord.sleepTime,
           wakeUpTime: existingRecord.wakeUpTime,
@@ -137,6 +140,7 @@ export class GetSingleSleepRecordUseCase {
 
     return {
       data: {
+        id: recordWithOwner.id,
         sleepDate: recordWithOwner.sleepDate,
         sleepTime: recordWithOwner.sleepTime,
         wakeUpTime: recordWithOwner.wakeUpTime,

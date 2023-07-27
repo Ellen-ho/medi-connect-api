@@ -120,6 +120,10 @@ import { GetPatientProfileUseCase } from './application/patient/GetPatientProfil
 import { GetDoctorListUseCase } from './application/doctor/GetDoctorListUseCase'
 import { GetDoctorTimeSlotsUseCase } from './application/consultation/GetDoctorTimeSlotsUseCase'
 import { EditUserAccountUseCase } from './application/user/EditUserAccountUseCase'
+import swaggerUi from 'swagger-ui-express'
+
+import swaggerDocument from './swagger.json'
+
 // import { RawQueryRepository } from './infrastructure/database/RawRepository'
 
 void main()
@@ -763,6 +767,7 @@ async function main(): Promise<void> {
   }
   app.use(cors(corsOptions))
   app.use('/api', mainRoutes.createRouter())
+  app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
   app.use(errorHandler)
 

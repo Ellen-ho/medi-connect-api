@@ -106,42 +106,49 @@ export const getSingleExerciseRecordSchema = {
   params: Joi.object({
     id: Joi.string().uuid().required(),
   }),
+  query: Joi.object({ targetPatientId: Joi.string().uuid().required() }),
 }
 
 export const getSingleBloodPressureRecordSchema = {
   params: Joi.object({
     id: Joi.string().uuid().required(),
   }),
+  query: Joi.object({ targetPatientId: Joi.string().uuid().required() }),
 }
 
 export const getSingleBloodSugarRecordSchema = {
   params: Joi.object({
     id: Joi.string().uuid().required(),
   }),
+  query: Joi.object({ targetPatientId: Joi.string().uuid().required() }),
 }
 
 export const getSingleFoodRecordSchema = {
   params: Joi.object({
     id: Joi.string().uuid().required(),
   }),
+  query: Joi.object({ targetPatientId: Joi.string().uuid().required() }),
 }
 
 export const getSingleGlycatedHemoglobinRecordSchema = {
   params: Joi.object({
     id: Joi.string().uuid().required(),
   }),
+  query: Joi.object({ targetPatientId: Joi.string().uuid().required() }),
 }
 
 export const getSingleSleepRecordSchema = {
   params: Joi.object({
     id: Joi.string().uuid().required(),
   }),
+  query: Joi.object({ targetPatientId: Joi.string().uuid().required() }),
 }
 
 export const getSingleWeightRecordSchema = {
   params: Joi.object({
     id: Joi.string().uuid().required(),
   }),
+  query: Joi.object({ targetPatientId: Joi.string().uuid().required() }),
 }
 
 export const getBloodPressureRecordsSchema = {
