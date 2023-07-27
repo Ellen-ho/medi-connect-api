@@ -14,6 +14,7 @@
   "paths": {
     "/users": {
       "post": {
+        "tags": ["user"],
         "summary": "Create a new user.",
         "description": "Create a new user.",
         "requestBody": {
@@ -61,6 +62,7 @@
     },
     "/users/login": {
       "post": {
+        "tags": ["user"],
         "summary": "An existing user login.",
         "description": "An existing user login.",
         "requestBody": {
@@ -122,6 +124,7 @@
     },
     "/users/account": {
       "get": {
+        "tags": ["user"],
         "summary": "Get a user account.",
         "description": "Get a user account.",
         "responses": {
@@ -163,10 +166,12 @@
                     },
                     "createdAt": {
                       "type": "string",
+                      "format": "date-time",
                       "example": "2023-06-18T05:23:25.231Z"
                     },
                     "updatedAt": {
                       "type": "string",
+                      "format": "date-time",
                       "example": "2023-06-18T05:23:25.231Z"
                     }
                   }
@@ -177,6 +182,7 @@
         }
       },
       "patch": {
+        "tags": ["user"],
         "summary": "Update the specific user account.",
         "description": "Update the specific user account.",
         "parameters": [
@@ -237,6 +243,7 @@
     },
     "/patients/profile": {
       "post": {
+        "tags": ["user"],
         "summary": "Create a new patient profile.",
         "description": "Create a new patient profile.",
         "parameters": [
@@ -339,6 +346,7 @@
         }
       },
       "patch": {
+        "tags": ["user"],
         "summary": "Update the specific patient profile.",
         "description": "Update the specific patient profile.",
         "parameters": [
@@ -492,8 +500,9 @@
         }
       },
       "get": {
-        "summary": "Update the specific patient profile.",
-        "description": "Update the specific patient profile.",
+        "tags": ["user"],
+        "summary": "Get the specific patient profile.",
+        "description": "Get the specific patient profile.",
         "parameters": [
           {
             "in": "header",
@@ -514,7 +523,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success create a new patient profile.",
+            "description": "Success get the specific patient profile.",
             "content": {
               "application/json": {
                 "schema": {
@@ -589,140 +598,785 @@
         }
       }
     },
-    "components": {
-      "schemas": {
-        "User": {
-          "properties": {
-            "id": {
+    "/doctors/profile": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Create a new doctor profile.",
+        "description": "Create a new doctor profile.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
               "type": "string",
-              "format": "uuid",
-              "example": "df5ff2e5-9d76-42ca-acfb-688267229369"
+              "example": "__JWT_TOKEN__"
             },
-            "displayName": {
-              "type": "string",
-              "example": "Jimmy"
-            },
-            "email": {
-              "type": "string",
-              "example": "test@test.com"
-            },
-            "role": {
-              "type": "string",
-              "enum": ["PATIENT", "DOCTOR"],
-              "example": "PATIENT"
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "avatar": {
+                    "type": "string",
+                    "nullable": true,
+                    "example": "avatar.jpg"
+                  },
+                  "firstName": {
+                    "type": "string",
+                    "example": "tim"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "example": "Wang"
+                  },
+                  "gender": {
+                    "type": "string",
+                    "enum": ["MALE", "FEMALE", "NON_BINARY"],
+                    "example": "MALE"
+                  },
+                  "aboutMe": {
+                    "type": "string",
+                    "example": "I am a highly skilled doctor with over 10 years of experience in treating various illnesses."
+                  },
+                  "languagesSpoken": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "example": ["English", "Chinese"]
+                  },
+                  "specialties": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/MedicalSpecialtyType"
+                    }
+                  },
+                  "careerStartDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-07-27T10:30:00Z"
+                  },
+                  "officePracticalLocation": {
+                    "$ref": "#/components/schemas/Address"
+                  },
+                  "education": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "example": ["Medical School A", "Medical School B"]
+                  },
+                  "awards": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "nullable": true,
+                    "example": [
+                      "Best Doctor Award 2020",
+                      "Research Excellence Award"
+                    ]
+                  },
+                  "affiliations": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "nullable": true,
+                    "example": ["Medical Association X", "Hospital Y"]
+                  }
+                }
+              }
             }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success create a new doctor profile.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "df5ff2e5-9d76-42ca-acfb-688267229369"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2023-06-18T05:23:25.231Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["user"],
+        "summary": "Update the specific doctor profile.",
+        "description": "Update the specific doctor profile.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "avatar": {
+                    "type": "string",
+                    "nullable": true,
+                    "example": "avatar.jpg"
+                  },
+                  "firstName": {
+                    "type": "string",
+                    "example": "tim"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "example": "Wang"
+                  },
+                  "gender": {
+                    "type": "string",
+                    "enum": ["MALE", "FEMALE", "NON_BINARY"],
+                    "example": "MALE"
+                  },
+                  "aboutMe": {
+                    "type": "string",
+                    "example": "I am a highly skilled doctor with over 10 years of experience in treating various illnesses."
+                  },
+                  "languagesSpoken": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "example": ["English", "Chinese"]
+                  },
+                  "specialties": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/MedicalSpecialtyType"
+                    }
+                  },
+                  "careerStartDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-07-27T10:30:00Z"
+                  },
+                  "officePracticalLocation": {
+                    "$ref": "#/components/schemas/Address"
+                  },
+                  "education": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "example": ["Medical School A", "Medical School B"]
+                  },
+                  "awards": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "nullable": true,
+                    "example": [
+                      "Best Doctor Award 2020",
+                      "Research Excellence Award"
+                    ]
+                  },
+                  "affiliations": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "nullable": true,
+                    "example": ["Medical Association X", "Hospital Y"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success update the specific doctor profile.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "10001"
+                    },
+                    "avatar": {
+                      "type": "string",
+                      "nullable": true,
+                      "example": "avatar.jpg"
+                    },
+                    "firstName": {
+                      "type": "string",
+                      "example": "tim"
+                    },
+                    "lastName": {
+                      "type": "string",
+                      "example": "Wang"
+                    },
+                    "gender": {
+                      "type": "string",
+                      "enum": ["MALE", "FEMALE", "NON_BINARY"],
+                      "example": "MALE"
+                    },
+                    "aboutMe": {
+                      "type": "string",
+                      "example": "I am a highly skilled doctor with over 10 years of experience in treating various illnesses."
+                    },
+                    "languagesSpoken": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "example": ["English", "Chinese"]
+                    },
+                    "specialties": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MedicalSpecialtyType"
+                      }
+                    },
+                    "careerStartDate": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T10:30:00Z"
+                    },
+                    "officePracticalLocation": {
+                      "$ref": "#/components/schemas/Address"
+                    },
+                    "education": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "example": ["Medical School A", "Medical School B"]
+                    },
+                    "awards": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "nullable": true,
+                      "example": [
+                        "Best Doctor Award 2020",
+                        "Research Excellence Award"
+                      ]
+                    },
+                    "affiliations": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "nullable": true,
+                      "example": ["Medical Association X", "Hospital Y"]
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-06-18T05:23:25.231Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-06-18T05:23:25.231Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/doctors/{id}/profile": {
+      "get": {
+        "tags": ["user"],
+        "summary": "Get the specific doctor profile.",
+        "description": "Get the specific doctor profile.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
           },
-          "required": ["id", "email", "displayName", "role"]
-        },
-        "UserInput": {
-          "properties": {
-            "email": {
-              "type": "string",
-              "example": "test@test.com"
-            },
-            "password": {
-              "type": "string",
-              "example": "test"
+          {
+            "name": "id",
+            "in": "path",
+            "description": "doctor id for the requested profile",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get the specific doctor profile.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "10001"
+                    },
+                    "avatar": {
+                      "type": "string",
+                      "nullable": true,
+                      "example": "avatar.jpg"
+                    },
+                    "firstName": {
+                      "type": "string",
+                      "example": "tim"
+                    },
+                    "lastName": {
+                      "type": "string",
+                      "example": "Wang"
+                    },
+                    "gender": {
+                      "type": "string",
+                      "enum": ["MALE", "FEMALE", "NON_BINARY"],
+                      "example": "MALE"
+                    },
+                    "aboutMe": {
+                      "type": "string",
+                      "example": "I am a highly skilled doctor with over 10 years of experience in treating various illnesses."
+                    },
+                    "languagesSpoken": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "example": ["English", "Chinese"]
+                    },
+                    "specialties": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MedicalSpecialtyType"
+                      }
+                    },
+                    "careerStartDate": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T10:30:00Z"
+                    },
+                    "officePracticalLocation": {
+                      "$ref": "#/components/schemas/Address"
+                    },
+                    "education": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "example": ["Medical School A", "Medical School B"]
+                    },
+                    "awards": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "nullable": true,
+                      "example": [
+                        "Best Doctor Award 2020",
+                        "Research Excellence Award"
+                      ]
+                    },
+                    "affiliations": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "nullable": true,
+                      "example": ["Medical Association X", "Hospital Y"]
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-06-18T05:23:25.231Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-06-18T05:23:25.231Z"
+                    }
+                  }
+                }
+              }
             }
+          }
+        }
+      }
+    },
+    "/doctors/{id}/statistic": {
+      "get": {
+        "tags": ["user"],
+        "summary": "Get the specific doctor statistic.",
+        "description": "Get the specific doctor statistic.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
           },
-          "required": ["email", "password"]
-        },
-        "MedicalHistoryItem": {
-          "type": "object",
-          "properties": {
-            "diagnosis": {
-              "type": "string",
-              "enum": [
-                "HYPERTENSION",
-                "DIABETES",
-                "HYPERLIPIDEMIA",
-                "CANCER",
-                "SURGERY",
-                "OTHER"
-              ],
-              "example": "HYPERTENSION"
-            },
-            "diagnosisDetails": {
-              "type": "string",
-              "example": "Details about the diagnosis"
+          {
+            "name": "id",
+            "in": "path",
+            "description": "doctor id for the requested profile",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get the specific doctor statistic.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "100001"
+                    },
+                    "answerCounts": {
+                      "type": "integer",
+                      "example": 10
+                    },
+                    "thankedCounts": {
+                      "type": "integer",
+                      "example": 5
+                    },
+                    "beAgreedCounts": {
+                      "type": "integer",
+                      "example": 3
+                    }
+                  }
+                }
+              }
             }
           }
-        },
-        "FamilyHistoryItem": {
-          "type": "object",
-          "properties": {
-            "relationship": {
-              "type": "string",
-              "example": "Mother"
+        }
+      }
+    },
+    "/doctors": {
+      "get": {
+        "tags": ["user"],
+        "summary": "Get doctors list.",
+        "description": "Get doctors list",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "example": 1
             },
-            "diagnosis": {
-              "type": "string",
-              "enum": [
-                "HYPERTENSION",
-                "DIABETES",
-                "HYPERLIPIDEMIA",
-                "CANCER",
-                "OTHER"
-              ],
-              "example": "HYPERTENSION"
+            "description": "Page number for pagination.",
+            "required": false
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "example": 10
             },
-            "diagnosisDetails": {
-              "type": "string",
-              "example": "Details about the diagnosis"
-            }
+            "description": "Number of items to return per page.",
+            "required": false
+          },
+          {
+            "name": "specialty",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/MedicalSpecialtyType"
+            },
+            "description": "Filter doctors by medical specialty.",
+            "required": false
           }
-        },
-        "Allergy": {
-          "type": "object",
-          "properties": {
-            "medicine": {
-              "type": "string",
-              "nullable": true,
-              "example": "Penicillin"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful get the doctors list.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "example": "100001"
+                          },
+                          "avatar": {
+                            "type": "string",
+                            "nullable": true,
+                            "example": "avatar.jpg"
+                          },
+                          "firstName": {
+                            "type": "string",
+                            "example": "John"
+                          },
+                          "lastName": {
+                            "type": "string",
+                            "example": "Doe"
+                          },
+                          "specialties": {
+                            "type": "array",
+                            "items": {
+                              "$ref": "#/components/schemas/MedicalSpecialtyType"
+                            },
+                            "example": ["INTERNAL_MEDICINE", "SURGERY"]
+                          },
+                          "gender": {
+                            "$ref": "#/components/schemas/GenderType"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             },
-            "food": {
-              "type": "string",
-              "nullable": true,
-              "example": "Peanuts"
-            },
-            "other": {
-              "type": "string",
-              "nullable": true,
-              "example": "Dust"
-            }
-          }
-        },
-        "MedicinceUsageItem": {
-          "type": "object",
-          "properties": {
-            "medicineName": {
-              "type": "string",
-              "example": "Aspirin"
-            },
-            "medicineDosage": {
-              "type": "number",
-              "example": 500
-            },
-            "medicineUnit": {
-              "type": "string",
-              "enum": ["MILLIGRAM", "MILLILITER"],
-              "example": "MILLIGRAM"
-            },
-            "medicineFrequency": {
-              "type": "string",
-              "enum": [
-                "ONCE_DAILY",
-                "TWICE_DAILY",
-                "THREE_TIMES_A_DAY",
-                "FOUR_TIMES_A_DAY",
-                "OTHER"
-              ],
-              "example": "ONCE_DAILY"
-            },
-            "medicineTime": {
-              "type": "string",
-              "enum": ["BEFORE_MEAL", "AFTER_MEAL", "OTHER"],
-              "example": "BEFORE_MEAL"
+            "components": {
+              "schemas": {
+                "User": {
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "df5ff2e5-9d76-42ca-acfb-688267229369"
+                    },
+                    "displayName": {
+                      "type": "string",
+                      "example": "Jimmy"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "test@test.com"
+                    },
+                    "role": {
+                      "type": "string",
+                      "enum": ["PATIENT", "DOCTOR"],
+                      "example": "PATIENT"
+                    }
+                  },
+                  "required": ["id", "email", "displayName", "role"]
+                },
+                "UserInput": {
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "example": "test@test.com"
+                    },
+                    "password": {
+                      "type": "string",
+                      "example": "test"
+                    }
+                  },
+                  "required": ["email", "password"]
+                },
+                "MedicalHistoryItem": {
+                  "type": "object",
+                  "properties": {
+                    "diagnosis": {
+                      "type": "string",
+                      "enum": [
+                        "HYPERTENSION",
+                        "DIABETES",
+                        "HYPERLIPIDEMIA",
+                        "CANCER",
+                        "SURGERY",
+                        "OTHER"
+                      ],
+                      "example": "HYPERTENSION"
+                    },
+                    "diagnosisDetails": {
+                      "type": "string",
+                      "example": "Details about the diagnosis"
+                    }
+                  }
+                },
+                "FamilyHistoryItem": {
+                  "type": "object",
+                  "properties": {
+                    "relationship": {
+                      "type": "string",
+                      "example": "Mother"
+                    },
+                    "diagnosis": {
+                      "type": "string",
+                      "enum": [
+                        "HYPERTENSION",
+                        "DIABETES",
+                        "HYPERLIPIDEMIA",
+                        "CANCER",
+                        "OTHER"
+                      ],
+                      "example": "HYPERTENSION"
+                    },
+                    "diagnosisDetails": {
+                      "type": "string",
+                      "example": "Details about the diagnosis"
+                    }
+                  }
+                },
+                "Allergy": {
+                  "type": "object",
+                  "properties": {
+                    "medicine": {
+                      "type": "string",
+                      "nullable": true,
+                      "example": "Penicillin"
+                    },
+                    "food": {
+                      "type": "string",
+                      "nullable": true,
+                      "example": "Peanuts"
+                    },
+                    "other": {
+                      "type": "string",
+                      "nullable": true,
+                      "example": "Dust"
+                    }
+                  }
+                },
+                "MedicinceUsageItem": {
+                  "type": "object",
+                  "properties": {
+                    "medicineName": {
+                      "type": "string",
+                      "example": "Aspirin"
+                    },
+                    "medicineDosage": {
+                      "type": "number",
+                      "example": 500
+                    },
+                    "medicineUnit": {
+                      "type": "string",
+                      "enum": ["MILLIGRAM", "MILLILITER"],
+                      "example": "MILLIGRAM"
+                    },
+                    "medicineFrequency": {
+                      "type": "string",
+                      "enum": [
+                        "ONCE_DAILY",
+                        "TWICE_DAILY",
+                        "THREE_TIMES_A_DAY",
+                        "FOUR_TIMES_A_DAY",
+                        "OTHER"
+                      ],
+                      "example": "ONCE_DAILY"
+                    },
+                    "medicineTime": {
+                      "type": "string",
+                      "enum": ["BEFORE_MEAL", "AFTER_MEAL", "OTHER"],
+                      "example": "BEFORE_MEAL"
+                    }
+                  }
+                },
+                "Address": {
+                  "type": "object",
+                  "properties": {
+                    "line1": {
+                      "type": "string",
+                      "example": "123 Main Street"
+                    },
+                    "line2": {
+                      "type": "string",
+                      "example": "Apartment 4B"
+                    },
+                    "city": {
+                      "type": "string",
+                      "example": "New York"
+                    },
+                    "stateProvince": {
+                      "type": "string",
+                      "example": "NY"
+                    },
+                    "postalCode": {
+                      "type": "string",
+                      "example": "10001"
+                    },
+                    "country": {
+                      "type": "string",
+                      "example": "United States"
+                    },
+                    "countryCode": {
+                      "type": "string",
+                      "example": "US"
+                    }
+                  },
+                  "required": ["line1", "city", "country"]
+                },
+                "MedicalSpecialtyType": {
+                  "type": "string",
+                  "enum": [
+                    "INTERNAL_MEDICINE",
+                    "SURGERY",
+                    "OBSTETRICS_AND_GYNECOLOGY",
+                    "PEDIATRICS",
+                    "OPHTHALMOLOGY",
+                    "OTORHINOLARYNGOLOGY",
+                    "DERMATOLOGY",
+                    "PSYCHIATRY",
+                    "DENTISTRY",
+                    "ORTHOPEDICS",
+                    "UROLOGY",
+                    "NEUROLOGY",
+                    "NEUROSURGERY",
+                    "CARDIOLOGY",
+                    "CARDIOTHORACIC_SURGERY",
+                    "ONCOLOGY",
+                    "NEPHROLOGY",
+                    "PULMONOLOGY",
+                    "GASTROENTEROLOGY",
+                    "PULMONARY_MEDICINE"
+                  ],
+                  "example": ["INTERNAL_MEDICINE", "SURGERY"]
+                }
+              }
             }
           }
         }
