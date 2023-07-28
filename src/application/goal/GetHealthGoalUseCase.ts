@@ -100,7 +100,7 @@ export class GetHealthGoalUseCase {
         currentDate
       )
 
-    if (glycatedHemoglobinRecords !== null) {
+    if (glycatedHemoglobinRecords.length > 0) {
       glycatedHemoglobinRecords.sort(
         (a, b) =>
           b.glycatedHemoglobinDate.getTime() -
@@ -108,8 +108,12 @@ export class GetHealthGoalUseCase {
       )
     }
 
-    const latestGlycatedHemonglobinRecord =
-      glycatedHemoglobinRecords !== null ? glycatedHemoglobinRecords[0] : null
+    console.table({ glycatedHemoglobinRecords })
+
+    const latestGlycatedHemonglobinValue =
+      glycatedHemoglobinRecords.length > 0
+        ? glycatedHemoglobinRecords[0].glycatedHemoglobinValuePercent
+        : null
 
     const latestWeightRecord =
       await this.weightRecordRepository.findByPatientIdAndDate(
@@ -169,7 +173,7 @@ export class GetHealthGoalUseCase {
           : null,
       bloodPressureTargetValue: {
         systolicBloodPressure:
-          existingHealthGoal.bloodPressureTargetValue.diastolicBloodPressure,
+          existingHealthGoal.bloodPressureTargetValue.systolicBloodPressure,
         diastolicBloodPressure:
           existingHealthGoal.bloodPressureTargetValue.diastolicBloodPressure,
       },
@@ -183,10 +187,7 @@ export class GetHealthGoalUseCase {
           : null,
       bloodSugarTargetValue: existingHealthGoal.bloodSugarTargetValue,
       bloodSugarTargetType: existingHealthGoal.bloodSugarTargetType,
-      glycatedHemonglobinCurrentValue:
-        latestGlycatedHemonglobinRecord !== null
-          ? latestGlycatedHemonglobinRecord.glycatedHemoglobinValuePercent
-          : null,
+      glycatedHemonglobinCurrentValue: latestGlycatedHemonglobinValue,
       glycatedHemonglobinTargetValue:
         existingHealthGoal.glycatedHemonglobinTargetValue,
       weightCurrentValue:

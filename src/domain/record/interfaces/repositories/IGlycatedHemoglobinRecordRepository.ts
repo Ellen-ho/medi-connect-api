@@ -50,8 +50,10 @@ export interface IGlycatedHemoglobinRecordRepository
     patientId: string,
     startDate: Date,
     currentDate: Date
-  ) => Promise<Array<{
-    glycatedHemoglobinDate: Date
-    glycatedHemoglobinValuePercent: number
-  }> | null>
+  ) => Promise<
+    Array<{
+      glycatedHemoglobinDate: Date
+      glycatedHemoglobinValuePercent: number
+    }>
+  >
 }

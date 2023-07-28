@@ -22,7 +22,7 @@ Content-Type: application/json
 ###
 
 ### get a health goal
-@healthGoalId=f5ae1de0-880b-422c-9577-a78a1cf83ebb
+@healthGoalId=a742ca7c-9351-42ba-a7f2-1ee67f2f0c90
 Get {{healthGoalsPath}}/{{healthGoalId}}
 Authorization: {{accessToken}}
 Content-Type: application/json
@@ -35,15 +35,15 @@ Content-Type: application/json
 ###
 
 ### patient activate a health goal
-@healthGoalId=f5ae1de0-880b-422c-9577-a78a1cf83ebb
-PATCH {{healthGoalsPath}}/active/{{healthGoalId}}
+@activateHealthGoalId=f5ae1de0-880b-422c-9577-a78a1cf83ebb
+PATCH {{healthGoalsPath}}/active/{{activateHealthGoalId}}
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###
 
 ### patient reject a health goal
-@healthGoalId=f5ae1de0-880b-422c-9577-a78a1cf83ebb
-PATCH {{healthGoalsPath}}/reject/{{healthGoalId}}
+@rejectHealthGoalId=f5ae1de0-880b-422c-9577-a78a1cf83ebb
+PATCH {{healthGoalsPath}}/reject/{{rejectHealthGoalId}}
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###
