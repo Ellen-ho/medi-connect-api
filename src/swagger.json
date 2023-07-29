@@ -2349,6 +2349,222 @@
         }
       }
     },
+    "/records/blood-sugar/{id}": {
+      "patch": {
+        "tags": ["record"],
+        "summary": "Edit the specific blood sugar record.",
+        "description": "Edit the specific blood sugar record.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Blood sugar record id for the request",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "55ge933e-22c2-4e9a-bf71-16086f54f3f2"
+                  },
+                  "bloodSugarDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-07-27T12:34:56Z"
+                  },
+                  "bloodSugarValue": {
+                    "type": "number",
+                    "format": "double",
+                    "example": 100.0
+                  },
+                  "bloodSugarNote": {
+                    "type": "string",
+                    "example": "Blood sugar note."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful edit single blood sugar record.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "55ge933e-22c2-4e9a-bf71-16086f54f3f2"
+                    },
+                    "bloodSugarDate": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T12:34:56Z"
+                    },
+                    "bloodSugarValue": {
+                      "type": "number",
+                      "format": "double",
+                      "example": 100.0
+                    },
+                    "bloodSugarType": {
+                      "type": "string",
+                      "enum": [
+                        "FAST_PLASMA_GLUCOSE",
+                        "POSTPRANDIAL_PLASMA_GLUCOS"
+                      ],
+                      "example": "FAST_PLASMA_GLUCOSE"
+                    },
+                    "bloodSugarNote": {
+                      "type": "string",
+                      "example": "Blood sugar note."
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T08:12:34Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T14:56:12Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["record"],
+        "summary": "Get the specific blood sugar record.",
+        "description": "Get the specific blood sugar record.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Blood sugar record id for the request",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "targetPatientId",
+            "in": "query",
+            "description": "patient id for the requested profile",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful get single blood sugar record.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "example": "55ge933e-22c2-4e9a-bf71-16086f54f3f2"
+                        },
+                        "bloodSugarDate": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-07-27T12:34:56Z"
+                        },
+                        "bloodSugarValue": {
+                          "type": "number",
+                          "format": "double",
+                          "example": 100.0
+                        },
+                        "bloodSugarType": {
+                          "type": "string",
+                          "enum": [
+                            "FAST_PLASMA_GLUCOSE",
+                            "POSTPRANDIAL_PLASMA_GLUCOS"
+                          ],
+                          "example": "FAST_PLASMA_GLUCOSE"
+                        },
+                        "bloodSugarNote": {
+                          "type": "string",
+                          "example": "Blood sugar note."
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-07-27T08:12:34Z"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-07-27T14:56:12Z"
+                        }
+                      }
+                    },
+                    "recordOwner": {
+                      "type": "object",
+                      "properties": {
+                        "firstName": {
+                          "type": "string",
+                          "example": "John"
+                        },
+                        "lastName": {
+                          "type": "string",
+                          "example": "Doe"
+                        },
+                        "birthDate": {
+                          "type": "string",
+                          "format": "date",
+                          "example": "1990-01-01"
+                        },
+                        "gender": {
+                          "type": "string",
+                          "enum": ["Male", "Female", "Other"],
+                          "example": "Male"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/consultations": {
       "post": {
         "tags": ["consultation"],
