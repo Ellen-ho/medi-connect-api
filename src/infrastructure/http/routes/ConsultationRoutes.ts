@@ -7,6 +7,7 @@ import {
   createConsultAppointmentSchema,
   createDoctorTimeSlotSchema,
   createMultipleTimeSlotsSchema,
+  deleteDoctorTimeSlotSchema,
   editDoctorTimeSlotSchema,
   getDoctorTimeSlotsSchema,
 } from '../../../application/consultation/ConsultationValidator'
@@ -36,6 +37,12 @@ export class ConsultationRoutes {
         authenticated,
         validator(editDoctorTimeSlotSchema),
         asyncHandler(this.consultationController.editDoctorTimeSlot)
+      )
+      .delete(
+        '/time-slot/:id',
+        authenticated,
+        validator(deleteDoctorTimeSlotSchema),
+        asyncHandler(this.consultationController.deleteDoctorTimeSlot)
       )
       .post(
         '/multiple-time-slots',

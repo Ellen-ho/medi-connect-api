@@ -124,6 +124,7 @@ export class CreateDoctorTimeSlotUseCase {
       availability: true, // after creating availability will be availability
       createdAt: new Date(),
       updatedAt: new Date(),
+      deletedAt: null,
     })
     await this.doctorTimeSlotRepository.save(doctorTimeSlot)
 

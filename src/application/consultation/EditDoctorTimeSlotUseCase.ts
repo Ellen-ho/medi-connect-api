@@ -102,7 +102,7 @@ export class EditDoctorTimeSlotUseCase {
       )
     ) {
       throw new ValidationError(
-        'Doctor can only create time slots of next month before 28th of this month.'
+        'Doctor can only edit time slots of next month before 28th of this month.'
       )
     }
 
@@ -118,7 +118,7 @@ export class EditDoctorTimeSlotUseCase {
       )
     ) {
       throw new ValidationError(
-        'During 28th of this month to 27th of next month, doctor can only create time slots of next next month.'
+        'During 28th of this month to 27th of next month, doctor can only edit time slots of next next month.'
       )
     }
 

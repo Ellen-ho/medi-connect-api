@@ -123,6 +123,7 @@ export class CreateMultipleTimeSlotsUseCase {
         availability: true,
         createdAt: new Date(),
         updatedAt: new Date(),
+        deletedAt: null,
       })
 
       await this.doctorTimeSlotRepository.save(createdSingleTimeSlot)

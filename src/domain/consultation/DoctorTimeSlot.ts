@@ -5,6 +5,7 @@ export interface IDoctorTimeSlotProps {
   endAt: Date
   createdAt: Date
   updatedAt: Date
+  deletedAt: Date | null
   availability: boolean
 }
 
@@ -43,6 +44,10 @@ export class DoctorTimeSlot {
 
   public get updatedAt(): Date {
     return this.props.updatedAt
+  }
+
+  public get deletedAt(): Date | null {
+    return this.props.deletedAt
   }
 
   public updateAvailability(availability: boolean): void {

@@ -12,6 +12,7 @@ export class DoctorTimeSlotMapper
       endAt: entity.endAt,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
+      deletedAt: entity.deletedAt,
       doctorId: entity.doctorId,
       availability: entity.availability,
     })
@@ -25,6 +26,7 @@ export class DoctorTimeSlotMapper
     doctorTimeSlotEntity.endAt = domainModel.endAt
     doctorTimeSlotEntity.createdAt = domainModel.createdAt
     doctorTimeSlotEntity.updatedAt = domainModel.updatedAt
+    doctorTimeSlotEntity.deletedAt = domainModel.deletedAt
     doctorTimeSlotEntity.doctorId = domainModel.doctorId
     doctorTimeSlotEntity.availability = domainModel.availability
 

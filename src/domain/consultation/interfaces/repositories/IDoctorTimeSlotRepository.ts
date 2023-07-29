@@ -1,3 +1,4 @@
+import { IExecutor } from '../../../shared/IRepositoryTx'
 import { DoctorTimeSlot } from '../../DoctorTimeSlot'
 
 export interface IDoctorTimeSlotRepository {
@@ -24,4 +25,5 @@ export interface IDoctorTimeSlotRepository {
       isAvailable: boolean
     }>
   }>
+  deleteById: (id: string, executo?: IExecutor) => Promise<void>
 }
