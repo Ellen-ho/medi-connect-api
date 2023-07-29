@@ -122,15 +122,12 @@ export class DoctorTimeSlotRepository
     executor: IExecutor = this.getRepo()
   ): Promise<void> {
     try {
-      console.log('Executing delete query for id:', id)
       await executor
         .createQueryBuilder('doctor_time_slots')
         .softDelete()
         .where('id = :id', { id })
         .execute()
-      console.log('Delete query executed successfully.')
     } catch (e) {
-      console.error('Error executing delete query:', e)
       throw new RepositoryError(
         'DoctorTimeSlotRepository deleteById error',
         e as Error
