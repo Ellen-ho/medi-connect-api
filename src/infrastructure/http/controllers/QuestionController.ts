@@ -92,7 +92,11 @@ export class QuestionController implements IQuestionController {
     req: Request,
     res: Response
   ): Promise<Response> => {
-    const request = { ...req.body, user: req.user }
+    const request = {
+      content: req.body.content,
+      user: req.user as User,
+      answerId: req.params.id,
+    }
     const result = await this.createAnswerAppreciationUseCase.execute(request)
     return res.status(200).json(result)
   }
@@ -146,7 +150,7 @@ export class QuestionController implements IQuestionController {
     req: Request,
     res: Response
   ): Promise<Response> => {
-    const request = { ...req.body, user: req.user }
+    const request = { ...req.body, user: req.user as User }
     const result = await this.createPatientQuestionUseCase.execute(request)
     return res.status(200).json(result)
   }
@@ -170,7 +174,7 @@ export class QuestionController implements IQuestionController {
     res: Response
   ): Promise<Response> => {
     const request = {
-      answerAppreciationId: req.params.id,
+      answerId: req.params.id,
       user: req.user as User,
     }
     const result = await this.cancelAnswerAppreciationUseCase.execute(request)
