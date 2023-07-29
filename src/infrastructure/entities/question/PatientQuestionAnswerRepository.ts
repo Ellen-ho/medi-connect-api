@@ -179,8 +179,8 @@ export class PatientQuestionAnswerRepository
           )
         ) as "agreedDoctors"
       FROM patient_question_answers
-      LEFT JOIN answer_agreements ON patient_question_answers.id = answer_agreements.patient_question_answer_id
-      LEFT JOIN answer_appreciations ON patient_question_answers.id = answer_appreciations.answer_id
+      LEFT JOIN answer_agreements ON patient_question_answers.id = answer_agreements.patient_question_answer_id AND answer_agreements.deleted_at IS NULL
+      LEFT JOIN answer_appreciations ON patient_question_answers.id = answer_appreciations.answer_id AND answer_appreciations.deleted_at IS NULL
       LEFT JOIN doctors ON patient_question_answers.doctor_id = doctors.id
       LEFT JOIN doctors as agreed_doctors ON answer_agreements.agreed_doctor_id = agreed_doctors.id
       WHERE patient_question_answers.patient_question_id = $1

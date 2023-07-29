@@ -119,8 +119,6 @@ export class GetSingleQuestionUseCase {
           let isAgreed = false
           let isAnswerByMe = false
 
-          console.table({ currentDoctor: JSON.stringify(currentDoctor) })
-
           if (currentDoctor !== null) {
             isAnswerByMe = answer.doctorId === currentDoctor.id
 
