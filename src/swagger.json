@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "User API",
-    "description": "Simple RESTful API in Node.js with TypeScript",
+    "title": "medi-connect API",
+    "description": "RESTful API in Node.js with TypeScript",
     "version": "0.0.1"
   },
   "servers": [
@@ -2384,6 +2384,79 @@
                       "format": "uuid",
                       "example": "ca901c4c-27f7-439d-bd4a-290af3d2db74"
                     }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/consultations/time-slot": {
+      "post": {
+        "tags": ["consultation"],
+        "summary": "Create a doctor time slot.",
+        "description": "Create a doctor time slot.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "startAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-07-27T12:30:56Z"
+                  },
+                  "endAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-07-27T13:00:56Z"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Doctor successfully create a doctor time slot.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "ca901c4c-27f7-439d-bd4a-290af3d2db74"
+                  },
+                  "doctorId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "75c5f3ea-3935-4d66-be06-d5f830a13b7f"
+                  },
+                  "startAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-07-27T12:30:56Z"
+                  },
+                  "endAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-07-27T13:00:56Z"
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-06-18T05:23:25.231Z"
+                  },
+                  "updatedAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-06-18T05:23:25.231Z"
                   }
                 }
               }
