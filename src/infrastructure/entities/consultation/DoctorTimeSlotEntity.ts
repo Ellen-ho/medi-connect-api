@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -29,6 +30,9 @@ export class DoctorTimeSlotEntity {
 
   @UpdateDateColumn({ name: 'updated_at' })
   public updatedAt!: Date
+
+  @DeleteDateColumn({ name: 'deleted_at' })
+  public deletedAt!: Date | null
 
   @ManyToOne(() => DoctorEntity)
   @JoinColumn({ name: 'doctor_id' })

@@ -8,6 +8,7 @@ import { CreateMultipleTimeSlotsUseCase } from '../../../application/consultatio
 import { GetPatientConsultAppointmentsUseCase } from '../../../application/consultation/GetPatientConsultAppointmentsUseCase'
 import { GetDoctorConsultAppointmentsUseCase } from '../../../application/consultation/GetDoctorConsultAppointmentsUseCase'
 import { GetDoctorTimeSlotsUseCase } from '../../../application/consultation/GetDoctorTimeSlotsUseCase'
+import { DeleteDoctorTimeSlotUseCase } from '../../../application/consultation/DeleteDoctorTimeSlotUseCase'
 
 export interface IConsultationController {
   createConsultAppointment: (req: Request, res: Response) => Promise<Response>
@@ -24,6 +25,7 @@ export interface IConsultationController {
     res: Response
   ) => Promise<Response>
   getDoctorTimeSlots: (req: Request, res: Response) => Promise<Response>
+  deleteDoctorTimeSlot: (req: Request, res: Response) => Promise<Response>
 }
 
 export class ConsultationController implements IConsultationController {
@@ -35,7 +37,8 @@ export class ConsultationController implements IConsultationController {
     private readonly createMultipleTimeSlotsUseCase: CreateMultipleTimeSlotsUseCase,
     private readonly getPatientConsultAppointmentsUseCase: GetPatientConsultAppointmentsUseCase,
     private readonly getDoctorConsultAppointmentsUseCase: GetDoctorConsultAppointmentsUseCase,
-    private readonly getDoctorTimeSlotsUseCase: GetDoctorTimeSlotsUseCase
+    private readonly getDoctorTimeSlotsUseCase: GetDoctorTimeSlotsUseCase,
+    private readonly deleteDoctorTimeSlotUseCase: DeleteDoctorTimeSlotUseCase
   ) {}
 
   public createConsultAppointment = async (
@@ -137,6 +140,19 @@ export class ConsultationController implements IConsultationController {
     }
 
     const result = await this.getDoctorTimeSlotsUseCase.execute(request)
+
+    return res.status(200).json(result)
+  }
+
+  public deleteDoctorTimeSlot = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    const request = {
+      user: req.user as User,
+      doctorTimeSlotId: req.params.id,
+    }
+    const result = await this.deleteDoctorTimeSlotUseCase.execute(request)
 
     return res.status(200).json(result)
   }

@@ -123,6 +123,7 @@ import { EditUserAccountUseCase } from './application/user/EditUserAccountUseCas
 import swaggerUi from 'swagger-ui-express'
 
 import swaggerDocument from './swagger.json'
+import { DeleteDoctorTimeSlotUseCase } from './application/consultation/DeleteDoctorTimeSlotUseCase'
 
 // import { RawQueryRepository } from './infrastructure/database/RawRepository'
 
@@ -550,6 +551,11 @@ async function main(): Promise<void> {
     doctorRepository
   )
 
+  const deleteDoctorTimeSlotUseCase = new DeleteDoctorTimeSlotUseCase(
+    doctorTimeSlotRepository,
+    doctorRepository
+  )
+
   /**
    * HealthGoal Domain
    */
@@ -713,7 +719,8 @@ async function main(): Promise<void> {
     createMultipleTimeSlotsUseCase,
     getPatientConsultAppointmentsUseCase,
     getDoctorConsultAppointmentsUseCase,
-    getDoctorTimeSlotsUseCase
+    getDoctorTimeSlotsUseCase,
+    deleteDoctorTimeSlotUseCase
   )
 
   const healthGoalController = new HealthGoalController(

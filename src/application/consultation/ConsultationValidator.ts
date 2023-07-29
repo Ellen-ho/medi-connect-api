@@ -45,3 +45,9 @@ export const getDoctorTimeSlotsSchema = {
     id: Joi.string().uuid().required(),
   }),
 }
+
+export const deleteDoctorTimeSlotSchema = {
+  params: Joi.object({
+    id: Joi.string().uuid().required(),
+  }),
+}

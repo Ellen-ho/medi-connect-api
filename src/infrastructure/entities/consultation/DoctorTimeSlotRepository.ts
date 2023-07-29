@@ -6,6 +6,7 @@ import { DoctorTimeSlot } from '../../../domain/consultation/DoctorTimeSlot'
 import { BaseRepository } from '../../database/BaseRepository'
 import { RepositoryError } from '../../error/RepositoryError'
 import dayjs from 'dayjs'
+import { IExecutor } from '../../../domain/shared/IRepositoryTx'
 
 export class DoctorTimeSlotRepository
   extends BaseRepository<DoctorTimeSlotEntity, DoctorTimeSlot>
@@ -111,6 +112,24 @@ export class DoctorTimeSlotRepository
     } catch (e) {
       throw new RepositoryError(
         'DoctorTimeSlotRepository findByDoctorIdAndDate error',
+        e as Error
+      )
+    }
+  }
+
+  public async deleteById(
+    id: string,
+    executor: IExecutor = this.getRepo()
+  ): Promise<void> {
+    try {
+      await executor
+        .createQueryBuilder('doctor_time_slots')
+        .softDelete()
+        .where('id = :id', { id })
+        .execute()
+    } catch (e) {
+      throw new RepositoryError(
+        'DoctorTimeSlotRepository deleteById error',
         e as Error
       )
     }

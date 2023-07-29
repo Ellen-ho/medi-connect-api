@@ -9,7 +9,7 @@ Content-Type: application/json
 
 {
   "email": "Eric@gmail.com",
-  "password": "tim"
+  "password": "Eric"
 }
 ###
 @accessToken = Bearer {{login.response.body.token}}
@@ -68,6 +68,16 @@ Content-Type: application/json
   "startAt": "2023-08-22 11:10:00.09",
   "endAt": "2023-08-22 11:30:00.09"
 }
+### 
+
+### Doctor delete a doctor time slot
+@DoctorDeleteTimeSlotId =e6dda0fd-52be-4708-9299-561b3132ac4d
+DELETE {{consultationsPath}}/time-slot/{{DoctorDeleteTimeSlotId}}
+Authorization: {{accessToken}}
+Content-Type: application/json
+
+### 
+
 
 ### Doctor create multiple time slots
 POST {{consultationsPath}}/multiple-time-slots
