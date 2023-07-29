@@ -8,6 +8,7 @@ import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
 import { NotFoundError } from '../../infrastructure/error/NotFoundError'
+import { ValidationError } from '../../infrastructure/error/ValidationError'
 import { INotificationHelper } from '../notification/NotificationHelper'
 
 interface CreateAnswerAppreciationRequest {
@@ -50,6 +51,15 @@ export class CreateAnswerAppreciationUseCase {
 
     if (existingPatient == null) {
       throw new AuthorizationError('Patient does not exist.')
+    }
+
+    const existingAppreciation =
+      await this.answerAppreciationRepository.findByAnswerIdAndPatientId(
+        answerId,
+        existingPatient.id
+      )
+    if (existingAppreciation !== null) {
+      throw new ValidationError('You have already thank to this doctor.')
     }
     const beAppreciatedDoctorId = existingAnswer.doctorId
     const beAppreciatedDoctor = await this.doctorRepository.findById(

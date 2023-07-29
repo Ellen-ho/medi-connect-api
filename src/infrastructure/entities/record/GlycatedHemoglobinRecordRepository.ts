@@ -261,10 +261,12 @@ export class GlycatedHemoglobinRecordRepository
     patientId: string,
     startDate: Date,
     currentDate: Date
-  ): Promise<Array<{
-    glycatedHemoglobinDate: Date
-    glycatedHemoglobinValuePercent: number
-  }> | null> {
+  ): Promise<
+    Array<{
+      glycatedHemoglobinDate: Date
+      glycatedHemoglobinValuePercent: number
+    }>
+  > {
     try {
       const result = await this.getRepo()
         .createQueryBuilder('record')
@@ -280,7 +282,7 @@ export class GlycatedHemoglobinRecordRepository
         .orderBy('record.glycatedHemoglobinDate', 'DESC')
         .getRawMany()
 
-      return result
+      return result.length > 0 ? result : []
     } catch (e) {
       throw new RepositoryError(
         'GlycatedHemoglobinRecordRepository findByPatientIdAndCountAll error',

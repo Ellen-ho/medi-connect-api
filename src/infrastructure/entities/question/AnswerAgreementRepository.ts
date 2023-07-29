@@ -120,6 +120,7 @@ export class AnswerAgreementRepository
             id: agreedDoctorId,
           },
         },
+        relations: ['answer', 'agreedDoctor'],
       })
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {

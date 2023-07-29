@@ -6,7 +6,7 @@ import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 
 interface CancelAnswerAppreciationRequest {
   user: User
-  answerAppreciationId: string
+  answerId: string
 }
 
 interface CancelAnswerAppreciationResponse {
@@ -22,7 +22,7 @@ export class CancelAnswerAppreciationUseCase {
   public async execute(
     request: CancelAnswerAppreciationRequest
   ): Promise<CancelAnswerAppreciationResponse> {
-    const { user, answerAppreciationId } = request
+    const { user, answerId } = request
 
     const existingPatient = await this.patientRepository.findByUserId(user.id)
 
@@ -31,8 +31,8 @@ export class CancelAnswerAppreciationUseCase {
     }
 
     const existingAnswerAppreciation =
-      await this.answerAppreciationRepository.findByIdAndPatientId(
-        answerAppreciationId,
+      await this.answerAppreciationRepository.findByAnswerIdAndPatientId(
+        answerId,
         existingPatient.id
       )
     if (existingAnswerAppreciation == null) {

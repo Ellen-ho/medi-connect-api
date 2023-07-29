@@ -132,27 +132,4 @@ export class AnswerAppreciationRepository
       )
     }
   }
-  // public async findByAnswerIdAndPatientId(
-  //   answerId: string,
-  //   patientId: string
-  // ): Promise<AnswerAppreciation | null> {
-  //   try {
-  //     const entity = await this.getQuery<AnswerAppreciation | null>(
-  //       `
-  //     SELECT *
-  //     FROM answer_appreciations AS appreciation
-  //     LEFT JOIN patients AS patient ON appreciation.patient_id = patient.id
-  //     WHERE appreciation.answer_id = $1 AND patient.id = $2
-  //   `,
-  //       [answerId, patientId]
-  //     )
-
-  //     return entity !== null ? this.getMapper().toDomainModel(entity) : null
-  //   } catch (e) {
-  //     throw new RepositoryError(
-  //       'AnswerAppreciationRepository findByAnswerIdAndPatientId error',
-  //       e as Error
-  //     )
-  //   }
-  // }
 }

@@ -109,20 +109,6 @@ Content-Type: application/json
 ###
 
 ### edit blood pressure record
-POST {{recordsPath}}/blood-pressure
-Authorization: {{accessToken}}
-Content-Type: application/json
-
-{
-  "bloodPressureDate": "1686393000",
-  "systolicBloodPressure": 150,
-  "diastolicBloodPressure": 80,
-  "heartBeat": 70,
-  "bloodPressureNote": "nervouse"
-}
-###
-
-### edit blood pressure record
 @bloodPressureRecordId=7ee5ef35-91ec-4b7d-810e-d2c45df7c745
 PATCH {{recordsPath}}/blood-pressure/{{bloodPressureRecordId}}
 Authorization: {{accessToken}}

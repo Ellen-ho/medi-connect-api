@@ -23,13 +23,13 @@ export class QuestionRoutes {
     this.routes
       // patient specific
       .patch(
-        '/answers/appreciations/:id',
+        '/answers/:id/appreciation',
         authenticated,
         validator(editAnswerAgreementCommentSchema),
         asyncHandler(this.questionController.editAnswerAppreciationContent)
       )
       .patch(
-        '/answers/agreements/:id',
+        '/answers/:id/agreement',
         validator(editAnswerAgreementCommentSchema),
         asyncHandler(this.questionController.editAnswerAgreementComment)
       )
