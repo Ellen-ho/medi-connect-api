@@ -91,12 +91,12 @@ export class CreateConsultAppointmentUseCase {
         (wantedAppointmentTime.isAfter(currentDate, 'day') &&
           wantedAppointmentTime.isBefore(currentMonthEndDate, 'day')) ||
         wantedAppointmentTime.isSame(currentMonthEndDate, 'day')
-    }
 
-    if (!isWithinCurrentMonthRange) {
-      throw new ValidationError(
-        'Appointment is not within the current month range.'
-      )
+      if (!isWithinCurrentMonthRange) {
+        throw new ValidationError(
+          'Appointment is not within the current month range.'
+        )
+      }
     }
     // 28號以後預約(含28號當天)，28,29,30,31,範圍:當月28號後到當月底，下月整月到下月底
     if (currentDateDay >= 28) {
