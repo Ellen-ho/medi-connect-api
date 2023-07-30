@@ -51,7 +51,7 @@ Content-Type: application/json
 # }
 ###
 
-### doctor agree with a answer of another doctor
+### doctor agree with an answer of another doctor
 @doctorAgreedAnswerId=b274c5fa-0b64-49f0-9227-802fd9a80460
 POST {{questionsPath}}/answers/{{doctorAgreedAnswerId}}/agreements
 Authorization: {{accessToken}}
@@ -63,8 +63,8 @@ Content-Type: application/json
 ###
 
 ### doctor edit comment in a agreement
-@agreementId=b76c156f-b8b7-4045-8c27-c13dda47e506
-PATCH {{questionsPath}}/answers/agreements/{{agreementId}}
+@Id=b76c156f-b8b7-4045-8c27-c13dda47e506
+PATCH {{questionsPath}}/answers/{{Id}}/agreements
 Authorization: {{accessToken}}
 Content-Type: application/json
 
@@ -82,7 +82,7 @@ Content-Type: application/json
 
 ### doctor cancel a agreement to an answer
 @doctorCancelAgreementanswerId=b274c5fa-0b64-49f0-9227-802fd9a80460
-DELETE {{questionsPath}}/answers/agreements/{{doctorCancelAgreementanswerId}}
+DELETE {{questionsPath}}/answers/{{doctorCancelAgreementanswerId}}/agreements
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###

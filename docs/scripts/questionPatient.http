@@ -69,20 +69,9 @@ Authorization: {{accessToken}}
 Content-Type: application/json
 ###
 
-### patient create appreciation to an answer
-@answerCreateId = uuid
-POST {{questionsPath}}/answers/{{answerCreateId}}/appreciations
-Authorization: {{accessToken}}
-Content-Type: application/json
-
-{
-  "content": "Like your reply"
-}
-###
-
 ### patient edit appreciation content to an answer
-@appreciationId = uuid
-POST {{questionsPath}}/answers/appreciations/{{appreciationId}}
+@id = uuid
+POST {{questionsPath}}/answers/{{id}}/appreciations
 Authorization: {{accessToken}}
 Content-Type: application/json
 
@@ -93,7 +82,7 @@ Content-Type: application/json
 
 ### patient cancel appreciation to an answer
 @answerCancelId=b274c5fa-0b64-49f0-9227-802fd9a80460
-DELETE {{questionsPath}}/answers/appreciations/{{answerCancelId}}
+DELETE {{questionsPath}}/answers/{{answerCancelId}}/appreciations
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###
