@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "User API",
-    "description": "Simple RESTful API in Node.js with TypeScript",
+    "title": "medi-connect API",
+    "description": "RESTful API in Node.js with TypeScript",
     "version": "0.0.1"
   },
   "servers": [
@@ -1284,6 +1284,158 @@
             }
           }
         }
+      },
+      "get": {
+        "tags": ["record"],
+        "summary": "Get weight records list.",
+        "description": "Get weight records list.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "example": 1
+            },
+            "description": "Page number for pagination.",
+            "required": false
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "example": 10
+            },
+            "description": "Number of items to return per page.",
+            "required": false
+          },
+          {
+            "name": "targetPatientId",
+            "in": "query",
+            "description": "patient id for the requested profile",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get the weight records list.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "patientData": {
+                          "type": "object",
+                          "properties": {
+                            "firstName": {
+                              "type": "string",
+                              "example": "John"
+                            },
+                            "lastName": {
+                              "type": "string",
+                              "example": "Doe"
+                            },
+                            "birthDate": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "1990-01-01"
+                            },
+                            "gender": {
+                              "type": "string",
+                              "enum": ["MALE", "FEMALE", "OTHER"],
+                              "example": "MALE"
+                            }
+                          }
+                        },
+                        "recordsData": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "format": "uuid",
+                                "example": "12345"
+                              },
+                              "date": {
+                                "type": "string",
+                                "format": "date-time",
+                                "example": "2023-07-28"
+                              },
+                              "weightValueKg": {
+                                "type": "number",
+                                "format": "double",
+                                "example": 75.5
+                              },
+                              "bodyMassIndex": {
+                                "type": "number",
+                                "format": "double",
+                                "example": 23.1
+                              }
+                            }
+                          },
+                          "example": [
+                            {
+                              "id": "12345",
+                              "date": "2023-07-28",
+                              "weightValueKg": 75.5,
+                              "bodyMassIndex": 23.1
+                            }
+                          ]
+                        },
+                        "pagination": {
+                          "type": "object",
+                          "properties": {
+                            "pages": {
+                              "type": "array",
+                              "items": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "example": [1, 2, 3]
+                            },
+                            "totalPage": {
+                              "type": "integer",
+                              "example": 5
+                            },
+                            "currentPage": {
+                              "type": "integer",
+                              "example": 2
+                            },
+                            "prev": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "next": {
+                              "type": "integer",
+                              "example": 3
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/records/weight/{id}": {
@@ -1408,7 +1560,7 @@
           {
             "name": "id",
             "in": "path",
-            "description": "weight record id for the request",
+            "description": "Weight record id for the request",
             "required": true,
             "type": "string"
           },
@@ -1497,204 +1649,1379 @@
             }
           }
         }
-      },
-      "components": {
-        "schemas": {
-          "User": {
-            "properties": {
-              "id": {
-                "type": "string",
-                "format": "uuid",
-                "example": "df5ff2e5-9d76-42ca-acfb-688267229369"
-              },
-              "displayName": {
-                "type": "string",
-                "example": "Jimmy"
-              },
-              "email": {
-                "type": "string",
-                "example": "test@test.com"
-              },
-              "role": {
-                "type": "string",
-                "enum": ["PATIENT", "DOCTOR"],
-                "example": "PATIENT"
-              }
+      }
+    },
+    "/records/blood-pressure": {
+      "post": {
+        "tags": ["record"],
+        "summary": "Create single blood pressure record.",
+        "description": "Create single blood pressure record.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
             },
-            "required": ["id", "email", "displayName", "role"]
-          },
-          "UserInput": {
-            "properties": {
-              "email": {
-                "type": "string",
-                "example": "test@test.com"
-              },
-              "password": {
-                "type": "string",
-                "example": "test"
-              }
-            },
-            "required": ["email", "password"]
-          },
-          "MedicalHistoryItem": {
-            "type": "object",
-            "properties": {
-              "diagnosis": {
-                "type": "string",
-                "enum": [
-                  "HYPERTENSION",
-                  "DIABETES",
-                  "HYPERLIPIDEMIA",
-                  "CANCER",
-                  "SURGERY",
-                  "OTHER"
-                ],
-                "example": "HYPERTENSION"
-              },
-              "diagnosisDetails": {
-                "type": "string",
-                "example": "Details about the diagnosis"
-              }
-            }
-          },
-          "FamilyHistoryItem": {
-            "type": "object",
-            "properties": {
-              "relationship": {
-                "type": "string",
-                "example": "Mother"
-              },
-              "diagnosis": {
-                "type": "string",
-                "enum": [
-                  "HYPERTENSION",
-                  "DIABETES",
-                  "HYPERLIPIDEMIA",
-                  "CANCER",
-                  "OTHER"
-                ],
-                "example": "HYPERTENSION"
-              },
-              "diagnosisDetails": {
-                "type": "string",
-                "example": "Details about the diagnosis"
-              }
-            }
-          },
-          "Allergy": {
-            "type": "object",
-            "properties": {
-              "medicine": {
-                "type": "string",
-                "nullable": true,
-                "example": "Penicillin"
-              },
-              "food": {
-                "type": "string",
-                "nullable": true,
-                "example": "Peanuts"
-              },
-              "other": {
-                "type": "string",
-                "nullable": true,
-                "example": "Dust"
-              }
-            }
-          },
-          "MedicinceUsageItem": {
-            "type": "object",
-            "properties": {
-              "medicineName": {
-                "type": "string",
-                "example": "Aspirin"
-              },
-              "medicineDosage": {
-                "type": "number",
-                "example": 500
-              },
-              "medicineUnit": {
-                "type": "string",
-                "enum": ["MILLIGRAM", "MILLILITER"],
-                "example": "MILLIGRAM"
-              },
-              "medicineFrequency": {
-                "type": "string",
-                "enum": [
-                  "ONCE_DAILY",
-                  "TWICE_DAILY",
-                  "THREE_TIMES_A_DAY",
-                  "FOUR_TIMES_A_DAY",
-                  "OTHER"
-                ],
-                "example": "ONCE_DAILY"
-              },
-              "medicineTime": {
-                "type": "string",
-                "enum": ["BEFORE_MEAL", "AFTER_MEAL", "OTHER"],
-                "example": "BEFORE_MEAL"
-              }
-            }
-          },
-          "Address": {
-            "type": "object",
-            "properties": {
-              "line1": {
-                "type": "string",
-                "example": "123 Main Street"
-              },
-              "line2": {
-                "type": "string",
-                "example": "Apartment 4B"
-              },
-              "city": {
-                "type": "string",
-                "example": "New York"
-              },
-              "stateProvince": {
-                "type": "string",
-                "example": "NY"
-              },
-              "postalCode": {
-                "type": "string",
-                "example": "10001"
-              },
-              "country": {
-                "type": "string",
-                "example": "United States"
-              },
-              "countryCode": {
-                "type": "string",
-                "example": "US"
-              }
-            },
-            "required": ["line1", "city", "country"]
-          },
-          "MedicalSpecialtyType": {
-            "type": "string",
-            "enum": [
-              "INTERNAL_MEDICINE",
-              "SURGERY",
-              "OBSTETRICS_AND_GYNECOLOGY",
-              "PEDIATRICS",
-              "OPHTHALMOLOGY",
-              "OTORHINOLARYNGOLOGY",
-              "DERMATOLOGY",
-              "PSYCHIATRY",
-              "DENTISTRY",
-              "ORTHOPEDICS",
-              "UROLOGY",
-              "NEUROLOGY",
-              "NEUROSURGERY",
-              "CARDIOLOGY",
-              "CARDIOTHORACIC_SURGERY",
-              "ONCOLOGY",
-              "NEPHROLOGY",
-              "PULMONOLOGY",
-              "GASTROENTEROLOGY",
-              "PULMONARY_MEDICINE"
-            ],
-            "example": ["INTERNAL_MEDICINE", "SURGERY"]
+            "required": true
           }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "bloodPressureDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-06-18T05:23:25.231Z"
+                  },
+                  "systolicBloodPressure": {
+                    "type": "integer",
+                    "example": 138
+                  },
+                  "diastolicBloodPressure": {
+                    "type": "integer",
+                    "example": 90
+                  },
+                  "heartBeat": {
+                    "type": "integer",
+                    "example": 78
+                  },
+                  "bloodPressureNote": {
+                    "type": "string",
+                    "example": "Blood pressure note."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful create single blood pressure record.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "88ed933e-22c2-4e9a-bf71-16086f54f3f2"
+                    },
+                    "bloodPressureDate": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T12:34:56Z"
+                    },
+                    "systolicBloodPressure": {
+                      "type": "integer",
+                      "example": 138
+                    },
+                    "diastolicBloodPressure": {
+                      "type": "integer",
+                      "example": 90
+                    },
+                    "heartBeat": {
+                      "type": "integer",
+                      "example": 78
+                    },
+                    "bloodPressureNote": {
+                      "type": "string",
+                      "example": "Blood pressure note."
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T08:12:34Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T14:56:12Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["record"],
+        "summary": "Get blood pressure records list.",
+        "description": "Get blood pressure records list.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "example": 1
+            },
+            "description": "Page number for pagination.",
+            "required": false
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "example": 10
+            },
+            "description": "Number of items to return per page.",
+            "required": false
+          },
+          {
+            "name": "targetPatientId",
+            "in": "query",
+            "description": "patient id for the requested profile",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get blood pressure records list.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "patientData": {
+                          "type": "object",
+                          "properties": {
+                            "firstName": {
+                              "type": "string",
+                              "example": "John"
+                            },
+                            "lastName": {
+                              "type": "string",
+                              "example": "Doe"
+                            },
+                            "birthDate": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "1990-01-01"
+                            },
+                            "gender": {
+                              "type": "string",
+                              "enum": ["MALE", "FEMALE", "OTHER"],
+                              "example": "MALE"
+                            }
+                          }
+                        },
+                        "recordsData": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "format": "uuid",
+                                "example": "12345"
+                              },
+                              "date": {
+                                "type": "string",
+                                "format": "date-time",
+                                "example": "2023-07-28"
+                              },
+                              "systolicBloodPressure": {
+                                "type": "integer",
+                                "example": 130
+                              },
+                              "diastolicBloodPressure": {
+                                "type": "integer",
+                                "example": 90
+                              }
+                            }
+                          }
+                        },
+                        "pagination": {
+                          "type": "object",
+                          "properties": {
+                            "pages": {
+                              "type": "array",
+                              "items": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "example": [1, 2, 3]
+                            },
+                            "totalPage": {
+                              "type": "integer",
+                              "example": 5
+                            },
+                            "currentPage": {
+                              "type": "integer",
+                              "example": 2
+                            },
+                            "prev": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "next": {
+                              "type": "integer",
+                              "example": 3
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/records/blood-pressure/{id}": {
+      "patch": {
+        "tags": ["record"],
+        "summary": "Edit the specific blood pressure record.",
+        "description": "Edit the specific blood pressure record.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Blood pressure record id for the request",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "88ed933e-22c2-4e9a-bf71-16086f54f3f2"
+                  },
+                  "bloodPressureDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-07-27T12:34:56Z"
+                  },
+                  "systolicBloodPressure": {
+                    "type": "integer",
+                    "example": 138
+                  },
+                  "diastolicBloodPressure": {
+                    "type": "integer",
+                    "example": 90
+                  },
+                  "heartBeat": {
+                    "type": "integer",
+                    "example": 78
+                  },
+                  "bloodPressureNote": {
+                    "type": "string",
+                    "example": "Blood pressure note."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful edit single blood pressure record.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "88ed933e-22c2-4e9a-bf71-16086f54f3f2"
+                    },
+                    "bloodPressureDate": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T12:34:56Z"
+                    },
+                    "systolicBloodPressure": {
+                      "type": "integer",
+                      "example": 138
+                    },
+                    "diastolicBloodPressure": {
+                      "type": "integer",
+                      "example": 90
+                    },
+                    "heartBeat": {
+                      "type": "integer",
+                      "example": 78
+                    },
+                    "bloodPressureNote": {
+                      "type": "string",
+                      "example": "Blood pressure note."
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T08:12:34Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T14:56:12Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["record"],
+        "summary": "Get the specific blood pressure record.",
+        "description": "Get the specific blood pressure record.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Weight record id for the request",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "targetPatientId",
+            "in": "query",
+            "description": "patient id for the requested profile",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful get single blood pressure record.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "example": "eb5ff2e5-9d76-42ca-acfb-688267229369"
+                        },
+                        "bloodPressureDate": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-07-27T12:34:56Z"
+                        },
+                        "systolicBloodPressure": {
+                          "type": "integer",
+                          "example": 138
+                        },
+                        "diastolicBloodPressure": {
+                          "type": "integer",
+                          "example": 90
+                        },
+                        "heartBeat": {
+                          "type": "integer",
+                          "example": 78
+                        },
+                        "bloodPressureNote": {
+                          "type": "string",
+                          "example": "Blood pressure note."
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-07-27T08:12:34Z"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-07-27T14:56:12Z"
+                        }
+                      }
+                    },
+                    "recordOwner": {
+                      "type": "object",
+                      "properties": {
+                        "firstName": {
+                          "type": "string",
+                          "example": "John"
+                        },
+                        "lastName": {
+                          "type": "string",
+                          "example": "Doe"
+                        },
+                        "birthDate": {
+                          "type": "string",
+                          "format": "date",
+                          "example": "1990-01-01"
+                        },
+                        "gender": {
+                          "type": "string",
+                          "enum": ["Male", "Female", "Other"],
+                          "example": "Male"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/records/blood-sugar": {
+      "post": {
+        "tags": ["record"],
+        "summary": "Create single blood sugar record.",
+        "description": "Create single blood sugar record.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "bloodSugarDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-06-18T05:23:25.231Z"
+                  },
+                  "bloodSugarValue": {
+                    "type": "number",
+                    "format": "double",
+                    "example": 100.0
+                  },
+                  "bloodSugarNote": {
+                    "type": "string",
+                    "example": "Blood pressure note."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful create single blood sugar record.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "ffed933e-22c2-4e9a-bf71-16086f54f3f2"
+                    },
+                    "bloodSugarDate": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T12:34:56Z"
+                    },
+                    "bloodSugarValue": {
+                      "type": "number",
+                      "format": "double",
+                      "example": 100.0
+                    },
+                    "bloodSugarNote": {
+                      "type": "string",
+                      "example": "Blood pressure note."
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T08:12:34Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T14:56:12Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["record"],
+        "summary": "Get blood sugar records list.",
+        "description": "Get blood sugar records list.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "example": 1
+            },
+            "description": "Page number for pagination.",
+            "required": false
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "example": 10
+            },
+            "description": "Number of items to return per page.",
+            "required": false
+          },
+          {
+            "name": "targetPatientId",
+            "in": "query",
+            "description": "patient id for the requested profile",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get blood sugar records list.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "patientData": {
+                          "type": "object",
+                          "properties": {
+                            "firstName": {
+                              "type": "string",
+                              "example": "John"
+                            },
+                            "lastName": {
+                              "type": "string",
+                              "example": "Doe"
+                            },
+                            "birthDate": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "1990-01-01"
+                            },
+                            "gender": {
+                              "type": "string",
+                              "enum": ["MALE", "FEMALE", "OTHER"],
+                              "example": "MALE"
+                            }
+                          }
+                        },
+                        "recordsData": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "format": "uuid",
+                                "example": "12345"
+                              },
+                              "date": {
+                                "type": "string",
+                                "format": "date-time",
+                                "example": "2023-07-28"
+                              },
+                              "bloodSugarValue": {
+                                "type": "number",
+                                "format": "double",
+                                "example": 100.0
+                              },
+                              "bloodSugarType": {
+                                "type": "string",
+                                "enum": [
+                                  "FAST_PLASMA_GLUCOSE",
+                                  "POSTPRANDIAL_PLASMA_GLUCOS"
+                                ],
+                                "example": "FAST_PLASMA_GLUCOSE"
+                              }
+                            }
+                          }
+                        },
+                        "pagination": {
+                          "type": "object",
+                          "properties": {
+                            "pages": {
+                              "type": "array",
+                              "items": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "example": [1, 2, 3]
+                            },
+                            "totalPage": {
+                              "type": "integer",
+                              "example": 5
+                            },
+                            "currentPage": {
+                              "type": "integer",
+                              "example": 2
+                            },
+                            "prev": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "next": {
+                              "type": "integer",
+                              "example": 3
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/records/blood-sugar/{id}": {
+      "patch": {
+        "tags": ["record"],
+        "summary": "Edit the specific blood sugar record.",
+        "description": "Edit the specific blood sugar record.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Blood sugar record id for the request",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "55ge933e-22c2-4e9a-bf71-16086f54f3f2"
+                  },
+                  "bloodSugarDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-07-27T12:34:56Z"
+                  },
+                  "bloodSugarValue": {
+                    "type": "number",
+                    "format": "double",
+                    "example": 100.0
+                  },
+                  "bloodSugarNote": {
+                    "type": "string",
+                    "example": "Blood sugar note."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful edit single blood sugar record.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "55ge933e-22c2-4e9a-bf71-16086f54f3f2"
+                    },
+                    "bloodSugarDate": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T12:34:56Z"
+                    },
+                    "bloodSugarValue": {
+                      "type": "number",
+                      "format": "double",
+                      "example": 100.0
+                    },
+                    "bloodSugarType": {
+                      "type": "string",
+                      "enum": [
+                        "FAST_PLASMA_GLUCOSE",
+                        "POSTPRANDIAL_PLASMA_GLUCOS"
+                      ],
+                      "example": "FAST_PLASMA_GLUCOSE"
+                    },
+                    "bloodSugarNote": {
+                      "type": "string",
+                      "example": "Blood sugar note."
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T08:12:34Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T14:56:12Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["record"],
+        "summary": "Get the specific blood sugar record.",
+        "description": "Get the specific blood sugar record.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Blood sugar record id for the request",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "targetPatientId",
+            "in": "query",
+            "description": "patient id for the requested profile",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful get single blood sugar record.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "example": "55ge933e-22c2-4e9a-bf71-16086f54f3f2"
+                        },
+                        "bloodSugarDate": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-07-27T12:34:56Z"
+                        },
+                        "bloodSugarValue": {
+                          "type": "number",
+                          "format": "double",
+                          "example": 100.0
+                        },
+                        "bloodSugarType": {
+                          "type": "string",
+                          "enum": [
+                            "FAST_PLASMA_GLUCOSE",
+                            "POSTPRANDIAL_PLASMA_GLUCOS"
+                          ],
+                          "example": "FAST_PLASMA_GLUCOSE"
+                        },
+                        "bloodSugarNote": {
+                          "type": "string",
+                          "example": "Blood sugar note."
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-07-27T08:12:34Z"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-07-27T14:56:12Z"
+                        }
+                      }
+                    },
+                    "recordOwner": {
+                      "type": "object",
+                      "properties": {
+                        "firstName": {
+                          "type": "string",
+                          "example": "John"
+                        },
+                        "lastName": {
+                          "type": "string",
+                          "example": "Doe"
+                        },
+                        "birthDate": {
+                          "type": "string",
+                          "format": "date",
+                          "example": "1990-01-01"
+                        },
+                        "gender": {
+                          "type": "string",
+                          "enum": ["Male", "Female", "Other"],
+                          "example": "Male"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/consultations": {
+      "post": {
+        "tags": ["consultation"],
+        "summary": "Create a consult appointment.",
+        "description": "Create a consult appointment.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "doctorTimeSlotId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "ca901c4c-27f7-439d-bd4a-290af3d2db74"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Patient successfully create a consult appointment.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "ca901c4c-27f7-439d-bd4a-290af3d2db74"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/consultations/time-slot": {
+      "post": {
+        "tags": ["consultation"],
+        "summary": "Create a doctor time slot.",
+        "description": "Create a doctor time slot.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "startAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-07-27T12:30:56Z"
+                  },
+                  "endAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-07-27T13:00:56Z"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Doctor successfully create a doctor time slot.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "ca901c4c-27f7-439d-bd4a-290af3d2db74"
+                  },
+                  "doctorId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "75c5f3ea-3935-4d66-be06-d5f830a13b7f"
+                  },
+                  "startAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-07-27T12:30:56Z"
+                  },
+                  "endAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-07-27T13:00:56Z"
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-06-18T05:23:25.231Z"
+                  },
+                  "updatedAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-06-18T05:23:25.231Z"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/consultations/time-slot/{id}": {
+      "patch": {
+        "tags": ["consultation"],
+        "summary": "Doctor edits own time-slot.",
+        "description": "Doctor edits own time-slot.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Time slot id for the request",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "79ed933e-22c2-4e9a-bf71-16086f54f3f2"
+                  },
+                  "startAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-07-27T12:30:56Z"
+                  },
+                  "endAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-07-27T13:00:56Z"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Doctor successfully edits own time-slot.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "79ed933e-22c2-4e9a-bf71-16086f54f3f2"
+                    },
+                    "startAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-28T12:34:56Z"
+                    },
+                    "endAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-28T13:04:56Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T14:56:12Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["consultation"],
+        "summary": "Doctor deletes own time-slot.",
+        "description": "Doctor deletes own time-slot.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Time slot id for the request",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "79ed933e-22c2-4e9a-bf71-16086f54f3f2"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Doctor successfully deletes own time-slot.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "deletedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T14:56:12Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "User": {
+          "properties": {
+            "id": {
+              "type": "string",
+              "format": "uuid",
+              "example": "df5ff2e5-9d76-42ca-acfb-688267229369"
+            },
+            "displayName": {
+              "type": "string",
+              "example": "Jimmy"
+            },
+            "email": {
+              "type": "string",
+              "example": "test@test.com"
+            },
+            "role": {
+              "type": "string",
+              "enum": ["PATIENT", "DOCTOR"],
+              "example": "PATIENT"
+            }
+          },
+          "required": ["id", "email", "displayName", "role"]
+        },
+        "UserInput": {
+          "properties": {
+            "email": {
+              "type": "string",
+              "example": "test@test.com"
+            },
+            "password": {
+              "type": "string",
+              "example": "test"
+            }
+          },
+          "required": ["email", "password"]
+        },
+        "MedicalHistoryItem": {
+          "type": "object",
+          "properties": {
+            "diagnosis": {
+              "type": "string",
+              "enum": [
+                "HYPERTENSION",
+                "DIABETES",
+                "HYPERLIPIDEMIA",
+                "CANCER",
+                "SURGERY",
+                "OTHER"
+              ],
+              "example": "HYPERTENSION"
+            },
+            "diagnosisDetails": {
+              "type": "string",
+              "example": "Details about the diagnosis"
+            }
+          }
+        },
+        "FamilyHistoryItem": {
+          "type": "object",
+          "properties": {
+            "relationship": {
+              "type": "string",
+              "example": "Mother"
+            },
+            "diagnosis": {
+              "type": "string",
+              "enum": [
+                "HYPERTENSION",
+                "DIABETES",
+                "HYPERLIPIDEMIA",
+                "CANCER",
+                "OTHER"
+              ],
+              "example": "HYPERTENSION"
+            },
+            "diagnosisDetails": {
+              "type": "string",
+              "example": "Details about the diagnosis"
+            }
+          }
+        },
+        "Allergy": {
+          "type": "object",
+          "properties": {
+            "medicine": {
+              "type": "string",
+              "nullable": true,
+              "example": "Penicillin"
+            },
+            "food": {
+              "type": "string",
+              "nullable": true,
+              "example": "Peanuts"
+            },
+            "other": {
+              "type": "string",
+              "nullable": true,
+              "example": "Dust"
+            }
+          }
+        },
+        "MedicinceUsageItem": {
+          "type": "object",
+          "properties": {
+            "medicineName": {
+              "type": "string",
+              "example": "Aspirin"
+            },
+            "medicineDosage": {
+              "type": "number",
+              "example": 500
+            },
+            "medicineUnit": {
+              "type": "string",
+              "enum": ["MILLIGRAM", "MILLILITER"],
+              "example": "MILLIGRAM"
+            },
+            "medicineFrequency": {
+              "type": "string",
+              "enum": [
+                "ONCE_DAILY",
+                "TWICE_DAILY",
+                "THREE_TIMES_A_DAY",
+                "FOUR_TIMES_A_DAY",
+                "OTHER"
+              ],
+              "example": "ONCE_DAILY"
+            },
+            "medicineTime": {
+              "type": "string",
+              "enum": ["BEFORE_MEAL", "AFTER_MEAL", "OTHER"],
+              "example": "BEFORE_MEAL"
+            }
+          }
+        },
+        "Address": {
+          "type": "object",
+          "properties": {
+            "line1": {
+              "type": "string",
+              "example": "123 Main Street"
+            },
+            "line2": {
+              "type": "string",
+              "example": "Apartment 4B"
+            },
+            "city": {
+              "type": "string",
+              "example": "New York"
+            },
+            "stateProvince": {
+              "type": "string",
+              "example": "NY"
+            },
+            "postalCode": {
+              "type": "string",
+              "example": "10001"
+            },
+            "country": {
+              "type": "string",
+              "example": "United States"
+            },
+            "countryCode": {
+              "type": "string",
+              "example": "US"
+            }
+          },
+          "required": ["line1", "city", "country"]
+        },
+        "MedicalSpecialtyType": {
+          "type": "string",
+          "enum": [
+            "INTERNAL_MEDICINE",
+            "SURGERY",
+            "OBSTETRICS_AND_GYNECOLOGY",
+            "PEDIATRICS",
+            "OPHTHALMOLOGY",
+            "OTORHINOLARYNGOLOGY",
+            "DERMATOLOGY",
+            "PSYCHIATRY",
+            "DENTISTRY",
+            "ORTHOPEDICS",
+            "UROLOGY",
+            "NEUROLOGY",
+            "NEUROSURGERY",
+            "CARDIOLOGY",
+            "CARDIOTHORACIC_SURGERY",
+            "ONCOLOGY",
+            "NEPHROLOGY",
+            "PULMONOLOGY",
+            "GASTROENTEROLOGY",
+            "PULMONARY_MEDICINE"
+          ],
+          "example": ["INTERNAL_MEDICINE", "SURGERY"]
         }
       }
     }
