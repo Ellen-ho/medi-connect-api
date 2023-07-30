@@ -10,6 +10,7 @@ import {
   creatPatientQuestionSchema,
   createAnswerAgreementSchema,
   editAnswerAgreementCommentSchema,
+  editAnswerAppreciationContentSchema,
   editPatientQuestionSchema,
   getSingleQuestionSchema,
 } from '../../../application/question/QuestionValidator'
@@ -23,13 +24,13 @@ export class QuestionRoutes {
     this.routes
       // patient specific
       .patch(
-        '/answers/:id/appreciation',
+        '/answers/:id/appreciations',
         authenticated,
-        validator(editAnswerAgreementCommentSchema),
+        validator(editAnswerAppreciationContentSchema),
         asyncHandler(this.questionController.editAnswerAppreciationContent)
       )
       .patch(
-        '/answers/:id/agreement',
+        '/answers/:id/agreements',
         validator(editAnswerAgreementCommentSchema),
         asyncHandler(this.questionController.editAnswerAgreementComment)
       )
@@ -40,13 +41,13 @@ export class QuestionRoutes {
         asyncHandler(this.questionController.editPatientQuestion)
       )
       .delete(
-        '/answers/appreciations/:id',
+        '/answers/:id/appreciations',
         authenticated,
         validator(cancelAnswerAgreementSchema),
         asyncHandler(this.questionController.cancelAnswerAppreciation)
       )
       .delete(
-        '/answers/agreements/:id',
+        '/answers/:id/agreements',
         authenticated,
         validator(cancelAnswerAgreementSchema),
         asyncHandler(this.questionController.cancelAnswerAgreement)
