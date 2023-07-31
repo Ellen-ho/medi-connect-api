@@ -11,7 +11,7 @@ export interface IPatientProps {
   allergy: IAllergy
   familyHistory: IFamilyHistoryItem[] | null
   heightValueCm: number
-  medicinceUsage: IMedicinceUsageItem[] | null
+  medicineUsage: IMedicineUsageItem[] | null
   createdAt: Date
   updatedAt: Date
   user: User
@@ -57,7 +57,7 @@ export interface IAllergy {
   other: string | null
 }
 
-export interface IMedicinceUsageItem {
+export interface IMedicineUsageItem {
   medicineName: string
   medicineDosage: number
   medicineUnit: MedicineUnitType
@@ -96,7 +96,7 @@ interface IPatientProfileUpdateData {
   allergy: IAllergy
   familyHistory: IFamilyHistoryItem[] | null
   heightValueCm: number
-  medicinceUsage: IMedicinceUsageItem[] | null
+  medicineUsage: IMedicineUsageItem[] | null
 }
 
 export class Patient {
@@ -142,8 +142,8 @@ export class Patient {
     return this.props.heightValueCm
   }
 
-  public get medicinceUsage(): IMedicinceUsageItem[] | null {
-    return this.props.medicinceUsage
+  public get medicineUsage(): IMedicineUsageItem[] | null {
+    return this.props.medicineUsage
   }
 
   public get createdAt(): Date {
@@ -169,6 +169,6 @@ export class Patient {
     this.props.allergy = data.allergy
     this.props.familyHistory = data.familyHistory
     this.props.heightValueCm = data.heightValueCm
-    this.props.medicinceUsage = data.medicinceUsage
+    this.props.medicineUsage = data.medicineUsage
   }
 }

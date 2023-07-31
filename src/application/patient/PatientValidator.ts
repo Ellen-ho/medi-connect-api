@@ -45,7 +45,7 @@ export const creatPatientProfileSchema = {
       ),
       Joi.valid(null)
     ),
-    medicinceUsage: Joi.alternatives().try(
+    medicineUsage: Joi.alternatives().try(
       Joi.array().items(
         Joi.object({
           medicineName: Joi.string().required(),

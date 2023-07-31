@@ -3,7 +3,7 @@ import {
   IAllergy,
   IFamilyHistoryItem,
   IMedicalHistoryItem,
-  IMedicinceUsageItem,
+  IMedicineUsageItem,
 } from '../../domain/patient/Patient'
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { User } from '../../domain/user/User'
@@ -19,7 +19,7 @@ interface EditPatientProfileRequest {
   allergy: IAllergy
   familyHistory: IFamilyHistoryItem[] | null
   heightValueCm: number
-  medicinceUsage: IMedicinceUsageItem[] | null
+  medicineUsage: IMedicineUsageItem[] | null
   user: User
 }
 
@@ -34,7 +34,7 @@ interface EditPatientProfileResponse {
   allergy: IAllergy
   familyHistory: IFamilyHistoryItem[] | null
   heightValueCm: number
-  medicinceUsage: IMedicinceUsageItem[] | null
+  medicineUsage: IMedicineUsageItem[] | null
   createdAt: Date
   updatedAt: Date
 }
@@ -56,7 +56,7 @@ export class EditPatientProfileUseCase {
       allergy,
       familyHistory,
       heightValueCm,
-      medicinceUsage,
+      medicineUsage,
     } = request
 
     const existingPatientProfile = await this.patientRepository.findByUserId(
@@ -77,7 +77,7 @@ export class EditPatientProfileUseCase {
       allergy,
       familyHistory,
       heightValueCm,
-      medicinceUsage,
+      medicineUsage,
     })
 
     await this.patientRepository.save(existingPatientProfile)
@@ -93,7 +93,7 @@ export class EditPatientProfileUseCase {
       allergy: existingPatientProfile.allergy,
       familyHistory: existingPatientProfile.familyHistory,
       heightValueCm: existingPatientProfile.heightValueCm,
-      medicinceUsage: existingPatientProfile.medicinceUsage,
+      medicineUsage: existingPatientProfile.medicineUsage,
       createdAt: existingPatientProfile.createdAt,
       updatedAt: existingPatientProfile.updatedAt,
     }

@@ -83,7 +83,7 @@ Content-Type: application/json
     }
   ],
   "heightValueCm": 180,
-  "medicinceUsage": [
+  "medicineUsage": [
     {
       "medicineName": "Aspirin",
       "medicineDosage": 100,
@@ -141,7 +141,7 @@ Content-Type: application/json
     }
   ],
   "heightValueCm": 180,
-  "medicinceUsage": [
+  "medicineUsage": [
     {
       "medicineName": "Aspirin",
       "medicineDosage": 100,

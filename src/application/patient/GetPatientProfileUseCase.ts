@@ -6,7 +6,7 @@ import {
   IAllergy,
   IFamilyHistoryItem,
   IMedicalHistoryItem,
-  IMedicinceUsageItem,
+  IMedicineUsageItem,
 } from '../../domain/patient/Patient'
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { User, UserRoleType } from '../../domain/user/User'
@@ -28,7 +28,7 @@ interface GetPatientProfileResponse {
   allergy: IAllergy
   familyHistory: IFamilyHistoryItem[] | null
   heightValueCm: number
-  medicinceUsage: IMedicinceUsageItem[] | null
+  medicineUsage: IMedicineUsageItem[] | null
   createdAt: Date
   updatedAt: Date
 }
@@ -81,7 +81,7 @@ export class GetPatientProfileUseCase {
         allergy: appointmentPatient.allergy,
         familyHistory: appointmentPatient.familyHistory,
         heightValueCm: appointmentPatient.heightValueCm,
-        medicinceUsage: appointmentPatient.medicinceUsage,
+        medicineUsage: appointmentPatient.medicineUsage,
         createdAt: appointmentPatient.createdAt,
         updatedAt: appointmentPatient.updatedAt,
       }
@@ -110,7 +110,7 @@ export class GetPatientProfileUseCase {
       allergy: currentPatient.allergy,
       familyHistory: currentPatient.familyHistory,
       heightValueCm: currentPatient.heightValueCm,
-      medicinceUsage: currentPatient.medicinceUsage,
+      medicineUsage: currentPatient.medicineUsage,
       createdAt: currentPatient.createdAt,
       updatedAt: currentPatient.updatedAt,
     }

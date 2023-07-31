@@ -16,7 +16,7 @@ export class PatientMapper implements IEntityMapper<PatientEntity, Patient> {
       allergy: entity.allergy,
       familyHistory: entity.familyHistory,
       heightValueCm: entity.heightValueCm,
-      medicinceUsage: entity.medicinceUsage,
+      medicineUsage: entity.medicineUsage,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
       user: new UserMapper().toDomainModel(entity.user),
@@ -36,7 +36,7 @@ export class PatientMapper implements IEntityMapper<PatientEntity, Patient> {
     patientEntity.allergy = domainModel.allergy
     patientEntity.familyHistory = domainModel.familyHistory
     patientEntity.heightValueCm = domainModel.heightValueCm
-    patientEntity.medicinceUsage = domainModel.medicinceUsage
+    patientEntity.medicineUsage = domainModel.medicineUsage
     patientEntity.createdAt = domainModel.createdAt
     patientEntity.updatedAt = domainModel.updatedAt
     patientEntity.user = new UserMapper().toPersistence(domainModel.user)

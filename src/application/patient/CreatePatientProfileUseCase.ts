@@ -3,7 +3,7 @@ import {
   IAllergy,
   IFamilyHistoryItem,
   IMedicalHistoryItem,
-  IMedicinceUsageItem,
+  IMedicineUsageItem,
   Patient,
 } from '../../domain/patient/Patient'
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
@@ -22,7 +22,7 @@ interface CreatePatientProfileRequest {
   allergy: IAllergy
   familyHistory: IFamilyHistoryItem[] | null
   heightValueCm: number
-  medicinceUsage: IMedicinceUsageItem[] | null
+  medicineUsage: IMedicineUsageItem[] | null
 }
 
 interface CreatePatientProfileResponse {
@@ -50,7 +50,7 @@ export class CreatePatientProfileUseCase {
       allergy,
       familyHistory,
       heightValueCm,
-      medicinceUsage,
+      medicineUsage,
     } = request
 
     const existingPatientProfile = await this.patientRepository.findByUserId(
@@ -72,7 +72,7 @@ export class CreatePatientProfileUseCase {
       allergy,
       familyHistory,
       heightValueCm,
-      medicinceUsage,
+      medicineUsage,
       createdAt: new Date(),
       updatedAt: new Date(),
       user,
