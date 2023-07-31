@@ -12,7 +12,7 @@ import {
   IAllergy,
   IFamilyHistoryItem,
   IMedicalHistoryItem,
-  IMedicinceUsageItem,
+  IMedicineUsageItem,
 } from '../../../domain/patient/Patient'
 import { UserEntity } from '../user/UserEntity'
 
@@ -54,8 +54,8 @@ export class PatientEntity {
   })
   public heightValueCm!: number
 
-  @Column({ name: 'medicince_usage', type: 'jsonb', nullable: true })
-  public medicinceUsage!: IMedicinceUsageItem[] | null
+  @Column({ name: 'medicine_usage', type: 'jsonb', nullable: true })
+  public medicineUsage!: IMedicineUsageItem[] | null
 
   @CreateDateColumn({ name: 'created_at' })
   public createdAt!: Date
