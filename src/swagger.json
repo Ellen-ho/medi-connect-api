@@ -308,10 +308,10 @@
                     "type": "number",
                     "example": 170
                   },
-                  "medicinceUsage": {
+                  "medicineUsage": {
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/MedicinceUsageItem"
+                      "$ref": "#/components/schemas/MedicineUsageItem"
                     },
                     "nullable": true
                   }
@@ -411,10 +411,10 @@
                     "type": "number",
                     "example": 170
                   },
-                  "medicinceUsage": {
+                  "medicineUsage": {
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/MedicinceUsageItem"
+                      "$ref": "#/components/schemas/MedicineUsageItem"
                     },
                     "nullable": true
                   }
@@ -475,10 +475,10 @@
                       "type": "number",
                       "example": 170
                     },
-                    "medicinceUsage": {
+                    "medicineUsage": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/MedicinceUsageItem"
+                        "$ref": "#/components/schemas/MedicineUsageItem"
                       },
                       "nullable": true
                     },
@@ -573,10 +573,10 @@
                       "type": "number",
                       "example": 170
                     },
-                    "medicinceUsage": {
+                    "medicineUsage": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/MedicinceUsageItem"
+                        "$ref": "#/components/schemas/MedicineUsageItem"
                       },
                       "nullable": true
                     },
@@ -2929,7 +2929,7 @@
             }
           }
         },
-        "MedicinceUsageItem": {
+        "MedicineUsageItem": {
           "type": "object",
           "properties": {
             "medicineName": {

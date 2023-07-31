@@ -42,7 +42,7 @@ describe('Unit test: CancelAnswerAppreciationUseCase', () => {
     },
     familyHistory: null,
     heightValueCm: 180,
-    medicinceUsage: null,
+    medicineUsage: null,
     createdAt: mockedDate,
     updatedAt: mockedDate,
     user: new User({
@@ -75,7 +75,7 @@ describe('Unit test: CancelAnswerAppreciationUseCase', () => {
       createdAt: mockedDate,
       updatedAt: mockedDate,
     }),
-    answerAppreciationId: 'Appreciation1',
+    answerId: 'A1',
   }
 
   const mockAppreciation = new AnswerAppreciation({
@@ -109,10 +109,7 @@ describe('Unit test: CancelAnswerAppreciationUseCase', () => {
     )
     expect(
       mockAnswerAppreciationRepo.findByIdAndPatientId
-    ).toHaveBeenCalledWith(
-      mockRequest.answerAppreciationId,
-      mockRequest.user.id
-    )
+    ).toHaveBeenCalledWith(mockRequest.answerId, mockRequest.user.id)
   })
 
   it('should delete the appreciation when valid request is provided', async () => {
@@ -139,10 +136,7 @@ describe('Unit test: CancelAnswerAppreciationUseCase', () => {
     )
     expect(
       mockAnswerAppreciationRepo.findByIdAndPatientId
-    ).toHaveBeenCalledWith(
-      mockRequest.answerAppreciationId,
-      mockRequest.user.id
-    )
+    ).toHaveBeenCalledWith(mockRequest.answerId, mockRequest.user.id)
     expect(mockAnswerAppreciationRepo.deleteById).toHaveBeenCalled()
     expect(mockAnswerAppreciationRepo.countByAnswerId).toHaveBeenCalledWith(
       mockAppreciation.answer.id

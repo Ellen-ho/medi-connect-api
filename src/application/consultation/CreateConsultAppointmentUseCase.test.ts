@@ -66,7 +66,7 @@ describe('Unit test: CreateConsultAppointmentUseCase', () => {
     },
     familyHistory: null,
     heightValueCm: 180,
-    medicinceUsage: null,
+    medicineUsage: null,
     createdAt: mockedDate,
     updatedAt: mockedDate,
     user: new User({
@@ -184,6 +184,7 @@ describe('Unit test: CreateConsultAppointmentUseCase', () => {
       endAt: new Date('2023-06-30T13:30:00.155Z'),
       createdAt: mockedDate,
       updatedAt: mockedDate,
+      deletedAt: null,
       availability: true,
     })
 
@@ -257,6 +258,7 @@ describe('Unit test: CreateConsultAppointmentUseCase', () => {
       endAt: new Date('2023-06-18T19:30:00.155Z'),
       createdAt: mockedDate,
       updatedAt: mockedDate,
+      deletedAt: null,
       availability: true,
     })
 
@@ -296,6 +298,7 @@ describe('Unit test: CreateConsultAppointmentUseCase', () => {
       endAt: new Date('2023-07-18T20:30:00.155Z'),
       createdAt: mockedDate,
       updatedAt: mockedDate,
+      deletedAt: null,
       availability: true,
     })
 
@@ -337,6 +340,7 @@ describe('Unit test: CreateConsultAppointmentUseCase', () => {
       endAt: new Date('2023-08-18T20:30:00.155Z'),
       createdAt: mockCurrentDate,
       updatedAt: mockCurrentDate,
+      deletedAt: null,
       availability: true,
     })
 
@@ -376,6 +380,7 @@ describe('Unit test: CreateConsultAppointmentUseCase', () => {
       endAt: new Date('2023-06-30T13:30:00.155Z'),
       createdAt: new Date('2023-05-18T13:00:00.155Z'),
       updatedAt: new Date('2023-05-18T13:00:00.155Z'),
+      deletedAt: null,
       availability: true,
     })
     const mockGeneratedUuid = 'generatedUuid'

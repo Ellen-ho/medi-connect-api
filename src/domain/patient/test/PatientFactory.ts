@@ -20,7 +20,7 @@ export const PatientFactory = Factory.define<Patient>(({ params }) => {
     },
     familyHistory: params.familyHistory ?? null,
     heightValueCm: params.heightValueCm ?? 180,
-    medicinceUsage: params.medicinceUsage ?? null,
+    medicineUsage: params.medicineUsage ?? null,
     createdAt: params.createdAt ?? new Date(),
     updatedAt: params.createdAt ?? new Date(),
     user: (params.user as User) ?? UserFactory.build(),

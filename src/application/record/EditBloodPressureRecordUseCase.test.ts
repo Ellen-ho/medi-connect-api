@@ -42,7 +42,7 @@ describe('Unit test: EditBloodPressureRecordUseCase', () => {
     },
     familyHistory: null,
     heightValueCm: 180,
-    medicinceUsage: null,
+    medicineUsage: null,
     createdAt: new Date('2023-06-18T13:18:00.155Z'),
     updatedAt: new Date('2023-06-18T13:18:00.155Z'),
     user: new User({
