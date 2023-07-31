@@ -66,7 +66,7 @@ describe('Unit test: CancelConsultAppointmentUseCase', () => {
     },
     familyHistory: null,
     heightValueCm: 180,
-    medicinceUsage: null,
+    medicineUsage: null,
     createdAt: mockedDate,
     updatedAt: mockedDate,
     user: new User({
@@ -91,6 +91,7 @@ describe('Unit test: CancelConsultAppointmentUseCase', () => {
       endAt: new Date('2023-06-20T11:00:00'),
       createdAt: new Date('2023-05-27T09:00:00'),
       updatedAt: new Date('2023-05-27T09:00:00'),
+      deletedAt: null,
       availability: false,
     }),
     status: ConsultAppointmentStatusType.UPCOMING,

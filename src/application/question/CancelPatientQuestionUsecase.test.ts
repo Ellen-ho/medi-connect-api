@@ -57,7 +57,7 @@ describe('Unit test: CancelPatientQuestionUseCase', () => {
     },
     familyHistory: null,
     heightValueCm: 180,
-    medicinceUsage: null,
+    medicineUsage: null,
     createdAt: mockedDate,
     updatedAt: mockedDate,
     user: new User({

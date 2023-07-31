@@ -67,7 +67,7 @@ describe('Unit test: CreatePatientQuestionAnswerUseCase', () => {
     },
     familyHistory: null,
     heightValueCm: 180,
-    medicinceUsage: null,
+    medicineUsage: null,
     createdAt: mockedDate,
     updatedAt: mockedDate,
     user: new User({
@@ -170,7 +170,7 @@ describe('Unit test: CreatePatientQuestionAnswerUseCase', () => {
       },
       familyHistory: null,
       heightValueCm: 180,
-      medicinceUsage: null,
+      medicineUsage: null,
       createdAt: mockedDate,
       updatedAt: mockedDate,
       user: new User({

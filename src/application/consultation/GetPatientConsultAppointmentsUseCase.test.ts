@@ -44,7 +44,7 @@ describe('Unit test: GetPatientConsultAppointmentsUseCase', () => {
     },
     familyHistory: null,
     heightValueCm: 180,
-    medicinceUsage: null,
+    medicineUsage: null,
     createdAt: mockedDate,
     updatedAt: mockedDate,
     user: new User({
@@ -96,6 +96,7 @@ describe('Unit test: GetPatientConsultAppointmentsUseCase', () => {
     }
     const mockUpcomingAppointments = [
       {
+        appointmentId: '1000001',
         patientId: 'patient1',
         status: ConsultAppointmentStatusType.UPCOMING,
         doctorTimeSlot: {
@@ -108,10 +109,12 @@ describe('Unit test: GetPatientConsultAppointmentsUseCase', () => {
           specialties: [MedicalSpecialtyType.CARDIOLOGY],
         },
         meetingLink: 'https://example.com/meeting1',
+        cancelAvailability: true,
       },
     ]
     const mockCompletedAppointments = [
       {
+        appointmentId: '10001',
         patientId: 'patient2',
         status: ConsultAppointmentStatusType.COMPLETED,
         doctorTimeSlot: {
@@ -124,10 +127,12 @@ describe('Unit test: GetPatientConsultAppointmentsUseCase', () => {
           specialties: [MedicalSpecialtyType.DERMATOLOGY],
         },
         meetingLink: null,
+        cancelAvailability: false,
       },
     ]
     const mockCanceledAppointments = [
       {
+        appointmentId: '1001',
         patientId: 'patient3',
         status: ConsultAppointmentStatusType.PATIENT_CANCELED,
         doctorTimeSlot: {
@@ -140,6 +145,7 @@ describe('Unit test: GetPatientConsultAppointmentsUseCase', () => {
           specialties: [MedicalSpecialtyType.INTERNAL_MEDICINE],
         },
         meetingLink: null,
+        cancelAvailability: false,
       },
     ]
     mockPatientRepo.findByUserId.mockResolvedValue(mockExistingPatient)

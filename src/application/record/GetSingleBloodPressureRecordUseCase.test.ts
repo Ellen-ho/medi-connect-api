@@ -88,7 +88,7 @@ describe('Unit test: GetSingleBloodPressureRecordUseCase', () => {
     },
     familyHistory: null,
     heightValueCm: 180,
-    medicinceUsage: null,
+    medicineUsage: null,
     createdAt: mockedDate,
     updatedAt: mockedDate,
     user: new User({
@@ -109,6 +109,7 @@ describe('Unit test: GetSingleBloodPressureRecordUseCase', () => {
     endAt: new Date('2023-06-20T10:00:00.000Z'),
     createdAt: new Date('2023-05-20T10:00:00.000Z'),
     updatedAt: new Date('2023-05-20T10:00:00.000Z'),
+    deletedAt: null,
     availability: false,
   })
 
@@ -148,6 +149,7 @@ describe('Unit test: GetSingleBloodPressureRecordUseCase', () => {
         updatedAt: mockedDate,
       }),
       bloodPressureRecordId: 'record2',
+      targetPatientId: 'p1',
     }
     mockBloodPressureRecordRepo.findById.mockResolvedValue(null)
     await expect(
@@ -170,6 +172,7 @@ describe('Unit test: GetSingleBloodPressureRecordUseCase', () => {
         updatedAt: mockedDate,
       }),
       bloodPressureRecordId: 'record1',
+      targetPatientId: 'p1',
     }
     mockBloodPressureRecordRepo.findById.mockResolvedValue(
       mockBloodPressureRecord
@@ -197,6 +200,7 @@ describe('Unit test: GetSingleBloodPressureRecordUseCase', () => {
         updatedAt: mockedDate,
       }),
       bloodPressureRecordId: 'record1',
+      targetPatientId: 'p1',
     }
     mockBloodPressureRecordRepo.findById.mockResolvedValue(
       mockBloodPressureRecord
@@ -267,6 +271,7 @@ describe('Unit test: GetSingleBloodPressureRecordUseCase', () => {
         updatedAt: mockedDate,
       }),
       bloodPressureRecordId: 'record1',
+      targetPatientId: 'p1',
     }
     mockBloodPressureRecordRepo.findById.mockResolvedValue(
       mockBloodPressureRecord
@@ -304,6 +309,7 @@ describe('Unit test: GetSingleBloodPressureRecordUseCase', () => {
         updatedAt: mockedDate,
       }),
       bloodPressureRecordId: 'record1',
+      targetPatientId: 'p1',
     }
     mockBloodPressureRecordRepo.findById.mockResolvedValue(
       mockBloodPressureRecord
