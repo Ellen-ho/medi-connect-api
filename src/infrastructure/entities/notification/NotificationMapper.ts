@@ -13,7 +13,7 @@ export class NotificationMapper
       title: entity.title,
       content: entity.content,
       notificationType: entity.notificationType,
-      referenceId: entity.referenceId,
+      referenceId: entity.referenceId === 'null' ? null : entity.referenceId,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
       user: new UserMapper().toDomainModel(entity.user),

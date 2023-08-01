@@ -50,6 +50,7 @@ export class NotificationRepository
       content: string
       isRead: boolean
       notificationType: NotificationType
+      referenceId: string
       createdAt: Date
       updatedAt: Date
       deletedAt: Date | null
@@ -64,6 +65,7 @@ export class NotificationRepository
           content: string
           is_read: boolean
           notification_type: NotificationType
+          reference_id: string
           created_at: Date
           updated_at: Date
           deleted_at: Date | null
@@ -77,6 +79,7 @@ export class NotificationRepository
             content,
             is_read,
             notification_type,
+            reference_id,
             created_at,
             updated_at,
             deleted_at
@@ -100,6 +103,7 @@ export class NotificationRepository
           content: notification.content,
           isRead: notification.is_read,
           notificationType: notification.notification_type,
+          referenceId: notification.reference_id,
           createdAt: notification.created_at,
           updatedAt: notification.updated_at,
           deletedAt: notification.deleted_at,
