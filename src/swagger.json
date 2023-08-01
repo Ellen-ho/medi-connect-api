@@ -290,30 +290,113 @@
                   "medicalHistory": {
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/MedicalHistoryItem"
-                    },
-                    "nullable": true
+                      "type": "object",
+                      "properties": {
+                        "diagnosis": {
+                          "type": "string",
+                          "enum": [
+                            "HYPERTENSION",
+                            "DIABETES",
+                            "HYPERLIPIDEMIA",
+                            "CANCER",
+                            "SURGERY",
+                            "OTHER"
+                          ],
+                          "example": "HYPERTENSION"
+                        },
+                        "diagnosisDetails": {
+                          "type": "string",
+                          "example": "Details about the diagnosis"
+                        }
+                      },
+                      "nullable": true
+                    }
                   },
                   "allergy": {
-                    "$ref": "#/components/schemas/Allergy"
+                    "type": "object",
+                    "properties": {
+                      "medicine": {
+                        "type": "string",
+                        "nullable": true,
+                        "example": "Penicillin"
+                      },
+                      "food": {
+                        "type": "string",
+                        "nullable": true,
+                        "example": "Peanuts"
+                      },
+                      "other": {
+                        "type": "string",
+                        "nullable": true,
+                        "example": "Dust"
+                      }
+                    }
                   },
                   "familyHistory": {
-                    "type": "array",
+                    "type": "array,null",
                     "items": {
-                      "$ref": "#/components/schemas/FamilyHistoryItem"
-                    },
-                    "nullable": true
-                  },
-                  "heightValueCm": {
-                    "type": "number",
-                    "example": 170
+                      "type": "object",
+                      "properties": {
+                        "relationship": {
+                          "type": "string",
+                          "example": "Mother"
+                        },
+                        "diagnosis": {
+                          "type": "string",
+                          "enum": [
+                            "HYPERTENSION",
+                            "DIABETES",
+                            "HYPERLIPIDEMIA",
+                            "CANCER",
+                            "OTHER"
+                          ],
+                          "example": "HYPERTENSION"
+                        },
+                        "diagnosisDetails": {
+                          "type": "string",
+                          "example": "Details about the diagnosis"
+                        }
+                      },
+                      "nullable": true
+                    }
                   },
                   "medicineUsage": {
-                    "type": "array",
+                    "type": "array,null",
                     "items": {
-                      "$ref": "#/components/schemas/MedicineUsageItem"
-                    },
-                    "nullable": true
+                      "type": "object",
+                      "properties": {
+                        "medicineName": {
+                          "type": "string",
+                          "example": "Aspirin"
+                        },
+                        "medicineDosage": {
+                          "type": "number",
+                          "example": 500
+                        },
+                        "medicineUnit": {
+                          "type": "string",
+                          "enum": ["MILLIGRAM", "MILLILITER"],
+                          "example": "MILLIGRAM"
+                        },
+                        "medicineFrequency": {
+                          "type": "string",
+                          "enum": [
+                            "ONCE_DAILY",
+                            "TWICE_DAILY",
+                            "THREE_TIMES_A_DAY",
+                            "FOUR_TIMES_A_DAY",
+                            "OTHER"
+                          ],
+                          "example": "ONCE_DAILY"
+                        },
+                        "medicineTime": {
+                          "type": "string",
+                          "enum": ["BEFORE_MEAL", "AFTER_MEAL", "OTHER"],
+                          "example": "BEFORE_MEAL"
+                        }
+                      },
+                      "nullable": true
+                    }
                   }
                 }
               }
@@ -393,30 +476,113 @@
                   "medicalHistory": {
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/MedicalHistoryItem"
-                    },
-                    "nullable": true
+                      "type": "object",
+                      "properties": {
+                        "diagnosis": {
+                          "type": "string",
+                          "enum": [
+                            "HYPERTENSION",
+                            "DIABETES",
+                            "HYPERLIPIDEMIA",
+                            "CANCER",
+                            "SURGERY",
+                            "OTHER"
+                          ],
+                          "example": "HYPERTENSION"
+                        },
+                        "diagnosisDetails": {
+                          "type": "string",
+                          "example": "Details about the diagnosis"
+                        }
+                      },
+                      "nullable": true
+                    }
                   },
                   "allergy": {
-                    "$ref": "#/components/schemas/Allergy"
+                    "type": "object",
+                    "properties": {
+                      "medicine": {
+                        "type": "string",
+                        "nullable": true,
+                        "example": "Penicillin"
+                      },
+                      "food": {
+                        "type": "string",
+                        "nullable": true,
+                        "example": "Peanuts"
+                      },
+                      "other": {
+                        "type": "string",
+                        "nullable": true,
+                        "example": "Dust"
+                      }
+                    }
                   },
                   "familyHistory": {
-                    "type": "array",
+                    "type": "array,null",
                     "items": {
-                      "$ref": "#/components/schemas/FamilyHistoryItem"
-                    },
-                    "nullable": true
-                  },
-                  "heightValueCm": {
-                    "type": "number",
-                    "example": 170
+                      "type": "object",
+                      "properties": {
+                        "relationship": {
+                          "type": "string",
+                          "example": "Mother"
+                        },
+                        "diagnosis": {
+                          "type": "string",
+                          "enum": [
+                            "HYPERTENSION",
+                            "DIABETES",
+                            "HYPERLIPIDEMIA",
+                            "CANCER",
+                            "OTHER"
+                          ],
+                          "example": "HYPERTENSION"
+                        },
+                        "diagnosisDetails": {
+                          "type": "string",
+                          "example": "Details about the diagnosis"
+                        }
+                      },
+                      "nullable": true
+                    }
                   },
                   "medicineUsage": {
-                    "type": "array",
+                    "type": "array,null",
                     "items": {
-                      "$ref": "#/components/schemas/MedicineUsageItem"
-                    },
-                    "nullable": true
+                      "type": "object",
+                      "properties": {
+                        "medicineName": {
+                          "type": "string",
+                          "example": "Aspirin"
+                        },
+                        "medicineDosage": {
+                          "type": "number",
+                          "example": 500
+                        },
+                        "medicineUnit": {
+                          "type": "string",
+                          "enum": ["MILLIGRAM", "MILLILITER"],
+                          "example": "MILLIGRAM"
+                        },
+                        "medicineFrequency": {
+                          "type": "string",
+                          "enum": [
+                            "ONCE_DAILY",
+                            "TWICE_DAILY",
+                            "THREE_TIMES_A_DAY",
+                            "FOUR_TIMES_A_DAY",
+                            "OTHER"
+                          ],
+                          "example": "ONCE_DAILY"
+                        },
+                        "medicineTime": {
+                          "type": "string",
+                          "enum": ["BEFORE_MEAL", "AFTER_MEAL", "OTHER"],
+                          "example": "BEFORE_MEAL"
+                        }
+                      },
+                      "nullable": true
+                    }
                   }
                 }
               }
@@ -457,30 +623,113 @@
                     "medicalHistory": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/MedicalHistoryItem"
-                      },
-                      "nullable": true
+                        "type": "object",
+                        "properties": {
+                          "diagnosis": {
+                            "type": "string",
+                            "enum": [
+                              "HYPERTENSION",
+                              "DIABETES",
+                              "HYPERLIPIDEMIA",
+                              "CANCER",
+                              "SURGERY",
+                              "OTHER"
+                            ],
+                            "example": "HYPERTENSION"
+                          },
+                          "diagnosisDetails": {
+                            "type": "string",
+                            "example": "Details about the diagnosis"
+                          }
+                        },
+                        "nullable": true
+                      }
                     },
                     "allergy": {
-                      "$ref": "#/components/schemas/Allergy"
+                      "type": "object",
+                      "properties": {
+                        "medicine": {
+                          "type": "string",
+                          "nullable": true,
+                          "example": "Penicillin"
+                        },
+                        "food": {
+                          "type": "string",
+                          "nullable": true,
+                          "example": "Peanuts"
+                        },
+                        "other": {
+                          "type": "string",
+                          "nullable": true,
+                          "example": "Dust"
+                        }
+                      }
                     },
                     "familyHistory": {
-                      "type": "array",
+                      "type": "array,null",
                       "items": {
-                        "$ref": "#/components/schemas/FamilyHistoryItem"
-                      },
-                      "nullable": true
-                    },
-                    "heightValueCm": {
-                      "type": "number",
-                      "example": 170
+                        "type": "object",
+                        "properties": {
+                          "relationship": {
+                            "type": "string",
+                            "example": "Mother"
+                          },
+                          "diagnosis": {
+                            "type": "string",
+                            "enum": [
+                              "HYPERTENSION",
+                              "DIABETES",
+                              "HYPERLIPIDEMIA",
+                              "CANCER",
+                              "OTHER"
+                            ],
+                            "example": "HYPERTENSION"
+                          },
+                          "diagnosisDetails": {
+                            "type": "string",
+                            "example": "Details about the diagnosis"
+                          }
+                        },
+                        "nullable": true
+                      }
                     },
                     "medicineUsage": {
-                      "type": "array",
+                      "type": "array,null",
                       "items": {
-                        "$ref": "#/components/schemas/MedicineUsageItem"
-                      },
-                      "nullable": true
+                        "type": "object",
+                        "properties": {
+                          "medicineName": {
+                            "type": "string",
+                            "example": "Aspirin"
+                          },
+                          "medicineDosage": {
+                            "type": "number",
+                            "example": 500
+                          },
+                          "medicineUnit": {
+                            "type": "string",
+                            "enum": ["MILLIGRAM", "MILLILITER"],
+                            "example": "MILLIGRAM"
+                          },
+                          "medicineFrequency": {
+                            "type": "string",
+                            "enum": [
+                              "ONCE_DAILY",
+                              "TWICE_DAILY",
+                              "THREE_TIMES_A_DAY",
+                              "FOUR_TIMES_A_DAY",
+                              "OTHER"
+                            ],
+                            "example": "ONCE_DAILY"
+                          },
+                          "medicineTime": {
+                            "type": "string",
+                            "enum": ["BEFORE_MEAL", "AFTER_MEAL", "OTHER"],
+                            "example": "BEFORE_MEAL"
+                          }
+                        },
+                        "nullable": true
+                      }
                     },
                     "createdAt": {
                       "type": "string",
@@ -555,30 +804,113 @@
                     "medicalHistory": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/MedicalHistoryItem"
-                      },
-                      "nullable": true
+                        "type": "object",
+                        "properties": {
+                          "diagnosis": {
+                            "type": "string",
+                            "enum": [
+                              "HYPERTENSION",
+                              "DIABETES",
+                              "HYPERLIPIDEMIA",
+                              "CANCER",
+                              "SURGERY",
+                              "OTHER"
+                            ],
+                            "example": "HYPERTENSION"
+                          },
+                          "diagnosisDetails": {
+                            "type": "string",
+                            "example": "Details about the diagnosis"
+                          }
+                        },
+                        "nullable": true
+                      }
                     },
                     "allergy": {
-                      "$ref": "#/components/schemas/Allergy"
+                      "type": "object",
+                      "properties": {
+                        "medicine": {
+                          "type": "string",
+                          "nullable": true,
+                          "example": "Penicillin"
+                        },
+                        "food": {
+                          "type": "string",
+                          "nullable": true,
+                          "example": "Peanuts"
+                        },
+                        "other": {
+                          "type": "string",
+                          "nullable": true,
+                          "example": "Dust"
+                        }
+                      }
                     },
                     "familyHistory": {
-                      "type": "array",
+                      "type": "array,null",
                       "items": {
-                        "$ref": "#/components/schemas/FamilyHistoryItem"
-                      },
-                      "nullable": true
-                    },
-                    "heightValueCm": {
-                      "type": "number",
-                      "example": 170
+                        "type": "object",
+                        "properties": {
+                          "relationship": {
+                            "type": "string",
+                            "example": "Mother"
+                          },
+                          "diagnosis": {
+                            "type": "string",
+                            "enum": [
+                              "HYPERTENSION",
+                              "DIABETES",
+                              "HYPERLIPIDEMIA",
+                              "CANCER",
+                              "OTHER"
+                            ],
+                            "example": "HYPERTENSION"
+                          },
+                          "diagnosisDetails": {
+                            "type": "string",
+                            "example": "Details about the diagnosis"
+                          }
+                        },
+                        "nullable": true
+                      }
                     },
                     "medicineUsage": {
-                      "type": "array",
+                      "type": "array,null",
                       "items": {
-                        "$ref": "#/components/schemas/MedicineUsageItem"
-                      },
-                      "nullable": true
+                        "type": "object",
+                        "properties": {
+                          "medicineName": {
+                            "type": "string",
+                            "example": "Aspirin"
+                          },
+                          "medicineDosage": {
+                            "type": "number",
+                            "example": 500
+                          },
+                          "medicineUnit": {
+                            "type": "string",
+                            "enum": ["MILLIGRAM", "MILLILITER"],
+                            "example": "MILLIGRAM"
+                          },
+                          "medicineFrequency": {
+                            "type": "string",
+                            "enum": [
+                              "ONCE_DAILY",
+                              "TWICE_DAILY",
+                              "THREE_TIMES_A_DAY",
+                              "FOUR_TIMES_A_DAY",
+                              "OTHER"
+                            ],
+                            "example": "ONCE_DAILY"
+                          },
+                          "medicineTime": {
+                            "type": "string",
+                            "enum": ["BEFORE_MEAL", "AFTER_MEAL", "OTHER"],
+                            "example": "BEFORE_MEAL"
+                          }
+                        },
+                        "nullable": true
+                      }
                     },
                     "createdAt": {
                       "type": "string",
@@ -653,7 +985,30 @@
                   "specialties": {
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/MedicalSpecialtyType"
+                      "type": "string",
+                      "enum": [
+                        "INTERNAL_MEDICINE",
+                        "SURGERY",
+                        "OBSTETRICS_AND_GYNECOLOGY",
+                        "PEDIATRICS",
+                        "OPHTHALMOLOGY",
+                        "OTORHINOLARYNGOLOGY",
+                        "DERMATOLOGY",
+                        "PSYCHIATRY",
+                        "DENTISTRY",
+                        "ORTHOPEDICS",
+                        "UROLOGY",
+                        "NEUROLOGY",
+                        "NEUROSURGERY",
+                        "CARDIOLOGY",
+                        "CARDIOTHORACIC_SURGERY",
+                        "ONCOLOGY",
+                        "NEPHROLOGY",
+                        "PULMONOLOGY",
+                        "GASTROENTEROLOGY",
+                        "PULMONARY_MEDICINE"
+                      ],
+                      "example": ["INTERNAL_MEDICINE", "SURGERY"]
                     }
                   },
                   "careerStartDate": {
@@ -662,7 +1017,37 @@
                     "example": "2023-07-27T10:30:00Z"
                   },
                   "officePracticalLocation": {
-                    "$ref": "#/components/schemas/Address"
+                    "type": "object",
+                    "properties": {
+                      "line1": {
+                        "type": "string",
+                        "example": "123 Main Street"
+                      },
+                      "line2": {
+                        "type": "string",
+                        "example": "Apartment 4B"
+                      },
+                      "city": {
+                        "type": "string",
+                        "example": "New York"
+                      },
+                      "stateProvince": {
+                        "type": "string",
+                        "example": "NY"
+                      },
+                      "postalCode": {
+                        "type": "string",
+                        "example": "10001"
+                      },
+                      "country": {
+                        "type": "string",
+                        "example": "United States"
+                      },
+                      "countryCode": {
+                        "type": "string",
+                        "example": "US"
+                      }
+                    }
                   },
                   "education": {
                     "type": "array",
@@ -773,7 +1158,30 @@
                   "specialties": {
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/MedicalSpecialtyType"
+                      "type": "string",
+                      "enum": [
+                        "INTERNAL_MEDICINE",
+                        "SURGERY",
+                        "OBSTETRICS_AND_GYNECOLOGY",
+                        "PEDIATRICS",
+                        "OPHTHALMOLOGY",
+                        "OTORHINOLARYNGOLOGY",
+                        "DERMATOLOGY",
+                        "PSYCHIATRY",
+                        "DENTISTRY",
+                        "ORTHOPEDICS",
+                        "UROLOGY",
+                        "NEUROLOGY",
+                        "NEUROSURGERY",
+                        "CARDIOLOGY",
+                        "CARDIOTHORACIC_SURGERY",
+                        "ONCOLOGY",
+                        "NEPHROLOGY",
+                        "PULMONOLOGY",
+                        "GASTROENTEROLOGY",
+                        "PULMONARY_MEDICINE"
+                      ],
+                      "example": ["INTERNAL_MEDICINE", "SURGERY"]
                     }
                   },
                   "careerStartDate": {
@@ -782,7 +1190,37 @@
                     "example": "2023-07-27T10:30:00Z"
                   },
                   "officePracticalLocation": {
-                    "$ref": "#/components/schemas/Address"
+                    "type": "object",
+                    "properties": {
+                      "line1": {
+                        "type": "string",
+                        "example": "123 Main Street"
+                      },
+                      "line2": {
+                        "type": "string",
+                        "example": "Apartment 4B"
+                      },
+                      "city": {
+                        "type": "string",
+                        "example": "New York"
+                      },
+                      "stateProvince": {
+                        "type": "string",
+                        "example": "NY"
+                      },
+                      "postalCode": {
+                        "type": "string",
+                        "example": "10001"
+                      },
+                      "country": {
+                        "type": "string",
+                        "example": "United States"
+                      },
+                      "countryCode": {
+                        "type": "string",
+                        "example": "US"
+                      }
+                    }
                   },
                   "education": {
                     "type": "array",
@@ -860,7 +1298,30 @@
                     "specialties": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/MedicalSpecialtyType"
+                        "type": "string",
+                        "enum": [
+                          "INTERNAL_MEDICINE",
+                          "SURGERY",
+                          "OBSTETRICS_AND_GYNECOLOGY",
+                          "PEDIATRICS",
+                          "OPHTHALMOLOGY",
+                          "OTORHINOLARYNGOLOGY",
+                          "DERMATOLOGY",
+                          "PSYCHIATRY",
+                          "DENTISTRY",
+                          "ORTHOPEDICS",
+                          "UROLOGY",
+                          "NEUROLOGY",
+                          "NEUROSURGERY",
+                          "CARDIOLOGY",
+                          "CARDIOTHORACIC_SURGERY",
+                          "ONCOLOGY",
+                          "NEPHROLOGY",
+                          "PULMONOLOGY",
+                          "GASTROENTEROLOGY",
+                          "PULMONARY_MEDICINE"
+                        ],
+                        "example": ["INTERNAL_MEDICINE", "SURGERY"]
                       }
                     },
                     "careerStartDate": {
@@ -869,7 +1330,37 @@
                       "example": "2023-07-27T10:30:00Z"
                     },
                     "officePracticalLocation": {
-                      "$ref": "#/components/schemas/Address"
+                      "type": "object",
+                      "properties": {
+                        "line1": {
+                          "type": "string",
+                          "example": "123 Main Street"
+                        },
+                        "line2": {
+                          "type": "string",
+                          "example": "Apartment 4B"
+                        },
+                        "city": {
+                          "type": "string",
+                          "example": "New York"
+                        },
+                        "stateProvince": {
+                          "type": "string",
+                          "example": "NY"
+                        },
+                        "postalCode": {
+                          "type": "string",
+                          "example": "10001"
+                        },
+                        "country": {
+                          "type": "string",
+                          "example": "United States"
+                        },
+                        "countryCode": {
+                          "type": "string",
+                          "example": "US"
+                        }
+                      }
                     },
                     "education": {
                       "type": "array",
@@ -983,7 +1474,30 @@
                     "specialties": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/MedicalSpecialtyType"
+                        "type": "string",
+                        "enum": [
+                          "INTERNAL_MEDICINE",
+                          "SURGERY",
+                          "OBSTETRICS_AND_GYNECOLOGY",
+                          "PEDIATRICS",
+                          "OPHTHALMOLOGY",
+                          "OTORHINOLARYNGOLOGY",
+                          "DERMATOLOGY",
+                          "PSYCHIATRY",
+                          "DENTISTRY",
+                          "ORTHOPEDICS",
+                          "UROLOGY",
+                          "NEUROLOGY",
+                          "NEUROSURGERY",
+                          "CARDIOLOGY",
+                          "CARDIOTHORACIC_SURGERY",
+                          "ONCOLOGY",
+                          "NEPHROLOGY",
+                          "PULMONOLOGY",
+                          "GASTROENTEROLOGY",
+                          "PULMONARY_MEDICINE"
+                        ],
+                        "example": ["INTERNAL_MEDICINE", "SURGERY"]
                       }
                     },
                     "careerStartDate": {
@@ -992,7 +1506,37 @@
                       "example": "2023-07-27T10:30:00Z"
                     },
                     "officePracticalLocation": {
-                      "$ref": "#/components/schemas/Address"
+                      "type": "object",
+                      "properties": {
+                        "line1": {
+                          "type": "string",
+                          "example": "123 Main Street"
+                        },
+                        "line2": {
+                          "type": "string",
+                          "example": "Apartment 4B"
+                        },
+                        "city": {
+                          "type": "string",
+                          "example": "New York"
+                        },
+                        "stateProvince": {
+                          "type": "string",
+                          "example": "NY"
+                        },
+                        "postalCode": {
+                          "type": "string",
+                          "example": "10001"
+                        },
+                        "country": {
+                          "type": "string",
+                          "example": "United States"
+                        },
+                        "countryCode": {
+                          "type": "string",
+                          "example": "US"
+                        }
+                      }
                     },
                     "education": {
                       "type": "array",
@@ -1175,12 +1719,36 @@
                           "specialties": {
                             "type": "array",
                             "items": {
-                              "$ref": "#/components/schemas/MedicalSpecialtyType"
-                            },
-                            "example": ["INTERNAL_MEDICINE", "SURGERY"]
+                              "type": "string",
+                              "enum": [
+                                "INTERNAL_MEDICINE",
+                                "SURGERY",
+                                "OBSTETRICS_AND_GYNECOLOGY",
+                                "PEDIATRICS",
+                                "OPHTHALMOLOGY",
+                                "OTORHINOLARYNGOLOGY",
+                                "DERMATOLOGY",
+                                "PSYCHIATRY",
+                                "DENTISTRY",
+                                "ORTHOPEDICS",
+                                "UROLOGY",
+                                "NEUROLOGY",
+                                "NEUROSURGERY",
+                                "CARDIOLOGY",
+                                "CARDIOTHORACIC_SURGERY",
+                                "ONCOLOGY",
+                                "NEPHROLOGY",
+                                "PULMONOLOGY",
+                                "GASTROENTEROLOGY",
+                                "PULMONARY_MEDICINE"
+                              ],
+                              "example": ["INTERNAL_MEDICINE", "SURGERY"]
+                            }
                           },
                           "gender": {
-                            "$ref": "#/components/schemas/GenderType"
+                            "type": "string",
+                            "enum": ["MALE", "FEMALE", "NON_BINARY"],
+                            "example": "MALE"
                           }
                         }
                       }
@@ -2863,165 +3431,6 @@
             }
           },
           "required": ["email", "password"]
-        },
-        "MedicalHistoryItem": {
-          "type": "object",
-          "properties": {
-            "diagnosis": {
-              "type": "string",
-              "enum": [
-                "HYPERTENSION",
-                "DIABETES",
-                "HYPERLIPIDEMIA",
-                "CANCER",
-                "SURGERY",
-                "OTHER"
-              ],
-              "example": "HYPERTENSION"
-            },
-            "diagnosisDetails": {
-              "type": "string",
-              "example": "Details about the diagnosis"
-            }
-          }
-        },
-        "FamilyHistoryItem": {
-          "type": "object",
-          "properties": {
-            "relationship": {
-              "type": "string",
-              "example": "Mother"
-            },
-            "diagnosis": {
-              "type": "string",
-              "enum": [
-                "HYPERTENSION",
-                "DIABETES",
-                "HYPERLIPIDEMIA",
-                "CANCER",
-                "OTHER"
-              ],
-              "example": "HYPERTENSION"
-            },
-            "diagnosisDetails": {
-              "type": "string",
-              "example": "Details about the diagnosis"
-            }
-          }
-        },
-        "Allergy": {
-          "type": "object",
-          "properties": {
-            "medicine": {
-              "type": "string",
-              "nullable": true,
-              "example": "Penicillin"
-            },
-            "food": {
-              "type": "string",
-              "nullable": true,
-              "example": "Peanuts"
-            },
-            "other": {
-              "type": "string",
-              "nullable": true,
-              "example": "Dust"
-            }
-          }
-        },
-        "MedicineUsageItem": {
-          "type": "object",
-          "properties": {
-            "medicineName": {
-              "type": "string",
-              "example": "Aspirin"
-            },
-            "medicineDosage": {
-              "type": "number",
-              "example": 500
-            },
-            "medicineUnit": {
-              "type": "string",
-              "enum": ["MILLIGRAM", "MILLILITER"],
-              "example": "MILLIGRAM"
-            },
-            "medicineFrequency": {
-              "type": "string",
-              "enum": [
-                "ONCE_DAILY",
-                "TWICE_DAILY",
-                "THREE_TIMES_A_DAY",
-                "FOUR_TIMES_A_DAY",
-                "OTHER"
-              ],
-              "example": "ONCE_DAILY"
-            },
-            "medicineTime": {
-              "type": "string",
-              "enum": ["BEFORE_MEAL", "AFTER_MEAL", "OTHER"],
-              "example": "BEFORE_MEAL"
-            }
-          }
-        },
-        "Address": {
-          "type": "object",
-          "properties": {
-            "line1": {
-              "type": "string",
-              "example": "123 Main Street"
-            },
-            "line2": {
-              "type": "string",
-              "example": "Apartment 4B"
-            },
-            "city": {
-              "type": "string",
-              "example": "New York"
-            },
-            "stateProvince": {
-              "type": "string",
-              "example": "NY"
-            },
-            "postalCode": {
-              "type": "string",
-              "example": "10001"
-            },
-            "country": {
-              "type": "string",
-              "example": "United States"
-            },
-            "countryCode": {
-              "type": "string",
-              "example": "US"
-            }
-          },
-          "required": ["line1", "city", "country"]
-        },
-        "MedicalSpecialtyType": {
-          "type": "string",
-          "enum": [
-            "INTERNAL_MEDICINE",
-            "SURGERY",
-            "OBSTETRICS_AND_GYNECOLOGY",
-            "PEDIATRICS",
-            "OPHTHALMOLOGY",
-            "OTORHINOLARYNGOLOGY",
-            "DERMATOLOGY",
-            "PSYCHIATRY",
-            "DENTISTRY",
-            "ORTHOPEDICS",
-            "UROLOGY",
-            "NEUROLOGY",
-            "NEUROSURGERY",
-            "CARDIOLOGY",
-            "CARDIOTHORACIC_SURGERY",
-            "ONCOLOGY",
-            "NEPHROLOGY",
-            "PULMONOLOGY",
-            "GASTROENTEROLOGY",
-            "PULMONARY_MEDICINE"
-          ],
-          "example": ["INTERNAL_MEDICINE", "SURGERY"]
         }
       }
     }
