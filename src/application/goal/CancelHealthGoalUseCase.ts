@@ -51,15 +51,15 @@ export class CancelHealthGoalUseCase {
 
     for (const healthGoal of overThreeDaysPendingHealthGoals) {
       await this.healthGoalRepository.deleteById(healthGoal.id)
+      await this.notifictionHelper.createNotification({
+        title: 'One of your appointments has been canceled.',
+        content:
+          'One of your appointments has been canceled.Please take a moment to review and confirm your appointment schedule.',
+        notificationType: NotificationType.CANCEL_OVERTIME_PENDING_GOAL,
+        referenceId: healthGoal.id,
+        user: existingPatient.user,
+      })
     }
-
-    await this.notifictionHelper.createNotification({
-      title: 'One of your appointments has been canceled.',
-      content:
-        'One of your appointments has been canceled.Please take a moment to review and confirm your appointment schedule.',
-      notificationType: NotificationType.CANCEL_OVERTIME_PENDING_GOAL,
-      user: existingPatient.user,
-    })
 
     return { deletedAt: new Date() }
   }
