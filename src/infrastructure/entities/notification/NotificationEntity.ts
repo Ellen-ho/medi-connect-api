@@ -29,8 +29,8 @@ export class NotificationEntity {
   @Column({ name: 'notification_type', type: 'varchar', length: 255 })
   public notificationType!: NotificationType
 
-  @Column({ name: 'reference_id', length: 36, nullable: true })
-  public referenceId!: string
+  @Column({ name: 'reference_id', type: 'uuid', nullable: true })
+  public referenceId!: string | null
 
   @CreateDateColumn({ name: 'created_at' })
   public createdAt!: Date
