@@ -48,7 +48,7 @@ export class Notification {
 
   // The reference_id contains different ids based on the notification type
 
-  public get referenceId(): string {
+  public get referenceId(): string | null {
     return this.props.referenceId
   }
 
