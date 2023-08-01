@@ -12,6 +12,7 @@ export interface ConsultAppointmentDatas {
     endAt: Date
   }
   patient: {
+    id: string
     firstName: string
     lastName: string
   }
@@ -26,6 +27,7 @@ export interface ConsultAppointmentData {
     endAt: Date
   }
   patient: {
+    id: string
     firstName: string
     lastName: string
   }
@@ -92,6 +94,7 @@ export class GetDoctorConsultAppointmentsUseCase {
           endAt: appointment.doctorTimeSlot.endAt,
         },
         patient: {
+          id: appointment.patient.id,
           firstName: appointment.patient.firstName,
           lastName: appointment.patient.lastName,
         },
@@ -138,6 +141,7 @@ export class GetDoctorConsultAppointmentsUseCase {
         endAt: appointment.doctorTimeSlot.endAt,
       },
       patient: {
+        id: appointment.patient.id,
         firstName: appointment.patient.firstName,
         lastName: appointment.patient.lastName,
       },

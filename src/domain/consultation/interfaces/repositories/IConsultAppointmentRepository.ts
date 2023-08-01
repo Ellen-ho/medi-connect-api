@@ -52,6 +52,7 @@ export interface IConsultAppointmentRepository
         endAt: Date
       }
       patient: {
+        id: string
         firstName: string
         lastName: string
       }
