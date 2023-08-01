@@ -6,6 +6,7 @@ export interface INotificationProps {
   title: string
   content: string
   notificationType: NotificationType
+  referenceId: string
   createdAt: Date
   updatedAt: Date
   user: User // 自己才可以看到自己的通知
@@ -43,6 +44,10 @@ export class Notification {
 
   public get notificationType(): NotificationType {
     return this.props.notificationType
+  }
+
+  public get referenceId(): string {
+    return this.props.referenceId
   }
 
   public get createdAt(): Date {
