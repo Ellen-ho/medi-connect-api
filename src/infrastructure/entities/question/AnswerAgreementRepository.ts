@@ -207,4 +207,50 @@ export class AnswerAgreementRepository
       )
     }
   }
+
+  public async findByAnswerId(answerId: string): Promise<
+    Array<{
+      comment: string | null
+      agreedDoctorId: string
+      agreedDoctorFirstName: string
+      agreedDoctorLastName: string
+      createdAt: Date
+    }>
+  > {
+    try {
+      const agreementData = await this.getRepo()
+        .createQueryBuilder('answer_agreements')
+        .leftJoinAndSelect('answer_agreements.agreedDoctor', 'doctor')
+        .where('answer_agreements.answerId = :answerId', { answerId })
+        .select([
+          'answer_agreements.comment',
+          'doctor.id AS agreedDoctorId',
+          'doctor.first_name AS agreedDoctorFirstName',
+          'doctor.last_name AS agreedDoctorLastName',
+          'answer_agreements.created_at',
+        ])
+        .getMany()
+
+      if (agreementData.length === 0) {
+        return []
+      }
+
+      const result = agreementData.map((data) => {
+        return {
+          comment: data.comment,
+          agreedDoctorId: data.agreedDoctorId,
+          agreedDoctorFirstName: data.agreedDoctor.firstName,
+          agreedDoctorLastName: data.agreedDoctor.lastName,
+          createdAt: data.createdAt,
+        }
+      })
+
+      return result
+    } catch (e) {
+      throw new RepositoryError(
+        'AnswerAgreementRepository findByAnswerId error',
+        e as Error
+      )
+    }
+  }
 }

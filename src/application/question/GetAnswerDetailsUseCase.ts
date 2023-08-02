@@ -3,7 +3,10 @@ import { IPatientQuestionAnswerRepository } from '../../domain/question/interfac
 import { IPatientQuestionRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionRepository'
 import { User } from '../../domain/user/User'
 import { DoctorRepository } from '../../infrastructure/entities/doctor/DoctorRepository'
+import { AnswerAgreementRepository } from '../../infrastructure/entities/question/AnswerAgreementRepository'
 import { AnswerAppreciationRepository } from '../../infrastructure/entities/question/AnswerAppreciationRepository'
+import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 
 interface GetAnswerDetailsRequest {
   user: User
@@ -35,12 +38,29 @@ export class GetAnswerDetailsUseCase {
     private readonly patientRepository: IPatientRepository,
     private readonly patientQuestionAnswerRepository: IPatientQuestionAnswerRepository,
     private readonly doctorRepository: DoctorRepository,
-    private readonly answerAppreciationRepository: AnswerAppreciationRepository
+    private readonly answerAppreciationRepository: AnswerAppreciationRepository,
+    private readonly answerAgreementRepository:AnswerAgreementRepository
   ) {}
 
   public async execute(
     request: GetAnswerDetailsRequest
   ): Promise<GetAnswerDetailsResponse> {
     const { user, answerId } = request
-    const  existingAnswer = ''
+    const existingDoctor = await this.doctorRepository.findById(user.id)
+    if(existingDoctor == null){
+      throw new AuthorizationError('Doctor does not exist.')
+    }
+
+    const existingAnswer = await this.patientQuestionAnswerRepository.findByIdAndDoctorId(answerId,existingDoctor.id)
+    if(existingAnswer == null){
+      throw new NotFoundError('This Doctor does not have any answer.')
+    }
+
+    const thisAnswerAppreciations = await this.answerAppreciationRepository.findByAnswerId(existingAnswer.id)
+
+    const thisAnswerAgreements = await this.answerAgreementRepository.findByAnswerId(existingAnswer.id)
+  
+
+
+
   }
