@@ -114,6 +114,7 @@ export class CancelConsultAppointmentUseCase {
         content:
           'One of your appointments has been canceled.Please take a moment to review and confirm your appointment schedule.',
         notificationType: NotificationType.CANCEL_APPOINTMENT,
+        referenceId: existingConsultAppointment.id,
         user: appointmentDoctor.user,
       })
 

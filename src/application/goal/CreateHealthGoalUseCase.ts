@@ -191,6 +191,7 @@ export class CreateHealthGoalUseCase {
       content:
         "You're doing great! You have recorded your health data for 14 consecutive days. We have noticed some values in your records that deviate from the standard range.Goog",
       notificationType: NotificationType.HEALTH_GOAL_NOTIFICATION,
+      referenceId: healthGoal.id,
       user: existingPatient.user,
     })
 

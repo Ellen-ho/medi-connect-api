@@ -6,20 +6,21 @@ export interface INotificationProps {
   title: string
   content: string
   notificationType: NotificationType
+  referenceId: string | null
   createdAt: Date
   updatedAt: Date
   user: User // 自己才可以看到自己的通知
 }
 
 export enum NotificationType {
-  UPCOMING_APPOINTMENT = 'UPCOMING_APPOINTMENT',
-  CANCEL_APPOINTMENT = 'CANCEL_APPOINTMENT',
-  CREATE_APPOINTMENT = 'CREATE_APPOINTMENT',
-  HEALTH_GOAL_NOTIFICATION = 'HEALTH_GOAL_NOTIFICATION',
-  GET_ANSWER_NOTIFICATION = 'GET_ANSWER_NOTIFICATION',
-  THANK_YOU_NOTIFICATION = 'THANK_YOU_NOTIFICATION',
-  AGREED_NOTIFICATION = 'AGREED_NOTIFICATION',
-  CANCEL_OVERTIME_PENDING_GOAL = 'CANCEL_OVERTIME_PENDING_GOAL',
+  UPCOMING_APPOINTMENT = 'UPCOMING_APPOINTMENT', // reference_id = appointment ID
+  CANCEL_APPOINTMENT = 'CANCEL_APPOINTMENT', // reference_id = appointment ID
+  CREATE_APPOINTMENT = 'CREATE_APPOINTMENT', // reference_id = appointment ID
+  HEALTH_GOAL_NOTIFICATION = 'HEALTH_GOAL_NOTIFICATION', // reference_id = health goal ID
+  GET_ANSWER_NOTIFICATION = 'GET_ANSWER_NOTIFICATION', // reference_id = question ID
+  THANK_YOU_NOTIFICATION = 'THANK_YOU_NOTIFICATION', // reference_id = answer ID
+  AGREED_NOTIFICATION = 'AGREED_NOTIFICATION', // reference_id = answer ID
+  CANCEL_OVERTIME_PENDING_GOAL = 'CANCEL_OVERTIME_PENDING_GOAL', // reference_id = health goal ID
 }
 
 export class Notification {
@@ -43,6 +44,12 @@ export class Notification {
 
   public get notificationType(): NotificationType {
     return this.props.notificationType
+  }
+
+  // The reference_id contains different ids based on the notification type
+
+  public get referenceId(): string | null {
+    return this.props.referenceId
   }
 
   public get createdAt(): Date {

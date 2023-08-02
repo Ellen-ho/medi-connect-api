@@ -149,6 +149,7 @@ export class CreateConsultAppointmentUseCase {
       content:
         "You have an appointment. Please proceed to view your appointment records. Your permission to access the patient's health records has been enabled.",
       notificationType: NotificationType.CREATE_APPOINTMENT,
+      referenceId: consultAppointment.id,
       user: appointmentDoctor.user,
     })
 
@@ -164,12 +165,14 @@ export class CreateConsultAppointmentUseCase {
           title: 'Appointment Reminder!',
           content: 'Your appointment is coming up soon.',
           notificationType: NotificationType.UPCOMING_APPOINTMENT,
+          referenceId: consultAppointment.id,
           user: appointmentDoctor.user,
         })
         await this.notifictionHelper.createNotification({
           title: 'Appointment Reminder!',
           content: 'Your appointment is coming up soon.',
           notificationType: NotificationType.UPCOMING_APPOINTMENT,
+          referenceId: consultAppointment.id,
           user: existingPatient.user,
         })
 

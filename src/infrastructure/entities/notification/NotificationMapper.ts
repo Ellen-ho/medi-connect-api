@@ -13,6 +13,7 @@ export class NotificationMapper
       title: entity.title,
       content: entity.content,
       notificationType: entity.notificationType,
+      referenceId: entity.referenceId === 'null' ? null : entity.referenceId,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
       user: new UserMapper().toDomainModel(entity.user),
@@ -27,6 +28,7 @@ export class NotificationMapper
     notificationEntity.title = domainModel.title
     notificationEntity.content = domainModel.content
     notificationEntity.notificationType = domainModel.notificationType
+    notificationEntity.referenceId = domainModel.referenceId
     notificationEntity.createdAt = domainModel.createdAt
     notificationEntity.updatedAt = domainModel.updatedAt
     notificationEntity.user = new UserMapper().toPersistence(domainModel.user)

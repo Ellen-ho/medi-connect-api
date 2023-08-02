@@ -18,6 +18,7 @@ export interface INotificationRepository extends IBaseRepository<Notification> {
       content: string
       isRead: boolean
       notificationType: NotificationType
+      referenceId: string
       createdAt: Date
       updatedAt: Date
     }>

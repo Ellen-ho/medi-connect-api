@@ -13,6 +13,7 @@ interface GetNotificationDetailsResponse {
   isRead: boolean
   title: string
   notificationType: NotificationType
+  referenceId: string | null
   content: string
   createdAt: Date
   updatedAt: Date
@@ -47,6 +48,10 @@ export class GetNotificationDetailsUseCase {
       isRead: existingNotification.isRead,
       title: existingNotification.title,
       notificationType: existingNotification.notificationType,
+      referenceId:
+        existingNotification.referenceId !== null
+          ? existingNotification.referenceId
+          : null,
       content: existingNotification.content,
       createdAt: existingNotification.createdAt,
       updatedAt: existingNotification.updatedAt,

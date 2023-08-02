@@ -86,6 +86,7 @@ export class CreatePatientQuestionAnswerUseCase {
       content:
         'Thank you for your question. A professional doctor has provided an answer to your inquiry.',
       notificationType: NotificationType.GET_ANSWER_NOTIFICATION,
+      referenceId: existingPatientQuestion.id,
       user: patientWhoAsk.user,
     })
 

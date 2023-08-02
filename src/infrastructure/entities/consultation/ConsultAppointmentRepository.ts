@@ -171,6 +171,7 @@ export class ConsultAppointmentRepository
         endAt: Date
       }
       patient: {
+        id: string
         firstName: string
         lastName: string
       }
@@ -183,6 +184,7 @@ export class ConsultAppointmentRepository
           appointment_id: string
           status: ConsultAppointmentStatusType
           doctor_id: string
+          id: string
           first_name: string
           last_name: string
           start_at: Date
@@ -198,6 +200,7 @@ export class ConsultAppointmentRepository
           consult_appointments.meeting_link,
           doctor_time_slots.start_at AS "start_at",
           doctor_time_slots.end_at AS "end_at",
+          patients.id AS "id",
           patients.first_name AS "first_name",
           patients.last_name AS "last_name"
         FROM consult_appointments
@@ -221,6 +224,7 @@ export class ConsultAppointmentRepository
           endAt: rawItem.end_at,
         },
         patient: {
+          id: rawItem.id,
           firstName: rawItem.first_name,
           lastName: rawItem.last_name,
         },

@@ -86,6 +86,7 @@ export class CreateAnswerAppreciationUseCase {
       content:
         'Thank you for your professional and detailed response. The patient expressed gratitude upon receiving your answer.',
       notificationType: NotificationType.THANK_YOU_NOTIFICATION,
+      referenceId: existingAnswer.id,
       user: beAppreciatedDoctor.user,
     })
 

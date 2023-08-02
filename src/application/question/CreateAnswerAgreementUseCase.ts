@@ -88,6 +88,7 @@ export class CreateAnswerAgreementUseCase {
       content:
         'Thank you for your professional response. Your answer has received recognition from other doctors. Congratulations!',
       notificationType: NotificationType.AGREED_NOTIFICATION,
+      referenceId: existingAnswer.id,
       user: beAgreedDoctor.user,
     })
 

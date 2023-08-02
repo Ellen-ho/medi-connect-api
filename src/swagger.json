@@ -2605,7 +2605,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful get single blood pressure record.",
+            "description": "Successfully get single blood pressure record.",
             "content": {
               "application/json": {
                 "schema": {
@@ -3376,6 +3376,350 @@
         "responses": {
           "200": {
             "description": "Doctor successfully deletes own time-slot.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "deletedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T14:56:12Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notifications": {
+      "get": {
+        "tags": ["notification"],
+        "summary": "Get notification list.",
+        "description": "Get notification list.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "example": 1
+            },
+            "description": "Page number for pagination.",
+            "required": false
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "example": 10
+            },
+            "description": "Number of items to return per page.",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully get notification list.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "example": "notification_id_123"
+                          },
+                          "title": {
+                            "type": "string",
+                            "example": "New Notification"
+                          },
+                          "isRead": {
+                            "type": "boolean",
+                            "example": true
+                          },
+                          "content": {
+                            "type": "string",
+                            "example": "This is the content of the notification."
+                          },
+                          "notificationType": {
+                            "type": "string",
+                            "enum": [
+                              "UPCOMING_APPOINTMENT",
+                              "CANCEL_APPOINTMENT",
+                              "CREATE_APPOINTMENT",
+                              "HEALTH_GOAL_NOTIFICATION",
+                              "GET_ANSWER_NOTIFICATION",
+                              "THANK_YOU_NOTIFICATION",
+                              "AGREED_NOTIFICATION",
+                              "CANCEL_OVERTIME_PENDING_GOAL"
+                            ],
+                            "example": "UPCOMING_APPOINTMENT"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2023-08-02T12:34:56Z"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2023-08-02T12:34:56Z"
+                          }
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "pages": {
+                          "type": "array",
+                          "items": {
+                            "type": "number",
+                            "example": 1
+                          }
+                        },
+                        "totalPage": {
+                          "type": "number",
+                          "example": 5
+                        },
+                        "currentPage": {
+                          "type": "number",
+                          "example": 2
+                        },
+                        "prev": {
+                          "type": "number",
+                          "example": 1
+                        },
+                        "next": {
+                          "type": "number",
+                          "example": 3
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notifications/hints": {
+      "get": {
+        "tags": ["notification"],
+        "summary": "Get notification hints.",
+        "description": "Get notification hints.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully get notification hints.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "hasUnReadNotification": {
+                      "type": "boolean",
+                      "example": false
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notifications/read-all": {
+      "patch": {
+        "tags": ["notification"],
+        "summary": "Read all notifications.",
+        "description": "Read all notifications.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully read all notifications.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "updatedNotifications": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "example": "notification_id_123"
+                          },
+                          "title": {
+                            "type": "string",
+                            "example": "New Notification"
+                          },
+                          "content": {
+                            "type": "string",
+                            "example": "This is the content of the notification."
+                          },
+                          "isRead": {
+                            "type": "boolean",
+                            "example": true
+                          },
+                          "notificationType": {
+                            "type": "string",
+                            "enum": [
+                              "UPCOMING_APPOINTMENT",
+                              "CANCEL_APPOINTMENT",
+                              "CREATE_APPOINTMENT",
+                              "HEALTH_GOAL_NOTIFICATION",
+                              "GET_ANSWER_NOTIFICATION",
+                              "THANK_YOU_NOTIFICATION",
+                              "AGREED_NOTIFICATION",
+                              "CANCEL_OVERTIME_PENDING_GOAL"
+                            ],
+                            "example": "UPCOMING_APPOINTMENT"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2023-08-02T12:34:56Z"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2023-08-02T12:34:56Z"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notifications/all": {
+      "delete": {
+        "tags": ["notification"],
+        "summary": "Delete all notifications.",
+        "description": "Delete all notifications.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully delete all notifications.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "deletedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T14:56:12Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notifications/{id}": {
+      "delete": {
+        "tags": ["notification"],
+        "summary": "Delete a notification.",
+        "description": "Delete a notification.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Notification id for the request",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "notificationId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "79ed933e-22c2-4e9a-bf71-16086f54f3f2"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully delete a notification.",
             "content": {
               "application/json": {
                 "schema": {
