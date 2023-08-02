@@ -2037,7 +2037,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful get single blood pressure record.",
+            "description": "Successfully get single blood pressure record.",
             "content": {
               "application/json": {
                 "schema": {

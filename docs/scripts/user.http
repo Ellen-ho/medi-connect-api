@@ -1,4 +1,4 @@
-@hostname = http://localhost:10000
+@hostname = http://localhost:7000
 @usersPath = {{hostname}}/api/users
 
 ### Register new user
@@ -176,8 +176,8 @@ Content-Type: application/json
 
 {
   "avatar": "null",
-  "firstName": "Amy",
-  "lastName": "Chen",
+  "firstName": "Tina",
+  "lastName": "Lin",
   "gender": "FEMALE",
   "aboutMe": "I am a highly skilled doctor with over 10 years of experience in treating various illnesses.",
   "languagesSpoken": ["English", "Spanish", "French"],
