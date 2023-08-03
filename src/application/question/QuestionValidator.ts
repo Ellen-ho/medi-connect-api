@@ -105,3 +105,9 @@ export const getSingleQuestionSchema = {
     id: Joi.string().uuid().required(),
   }),
 }
+
+export const getAnswerDetailsSchema = {
+  params: Joi.object({
+    id: Joi.string().uuid().required(),
+  }),
+}

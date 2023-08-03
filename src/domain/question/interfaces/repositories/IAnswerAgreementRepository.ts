@@ -5,7 +5,7 @@ import { AnswerAgreement } from '../../AnswerAgreement'
 export interface IAnswerAgreementRepository
   extends IBaseRepository<AnswerAgreement> {
   findById: (id: string) => Promise<AnswerAgreement | null>
-  findAllByAnswerId: (id: string, take?: number) => Promise<AnswerAgreement[]>
+  findAllByAnswerId: (id: string, take?: number) => Promise<AnswerAgreement[]> // not use
   findByIdAndAgreedDoctorId: (
     answerAgreementId: string,
     agreedDoctorId: string
@@ -21,4 +21,13 @@ export interface IAnswerAgreementRepository
   deleteById: (id: string, executor?: IExecutor) => Promise<void>
   deleteAllByAnswerId: (answerId: string, executor?: IExecutor) => Promise<void>
   findByDoctorId: (doctorId: string) => Promise<AnswerAgreement[]>
+  findByAnswerId: (answerId: string) => Promise<
+    Array<{
+      comment: string | null
+      agreedDoctorId: string
+      agreedDoctorFirstName: string
+      agreedDoctorLastName: string
+      createdAt: Date
+    }>
+  >
 }

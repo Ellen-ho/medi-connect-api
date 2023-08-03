@@ -1,4 +1,4 @@
-@hostname = http://localhost:7000
+@hostname = http://localhost:10000
 @usersPath = {{hostname}}/api/users
 
 ### Register new user
@@ -19,8 +19,8 @@ POST {{usersPath}}/login
 Content-Type: application/json
 
 {
-  "email": "tim@gmail.com",
-  "password": "tim"
+  "email": "Eric@gmail.com",
+  "password": "Eric"
 }
 ###
 @accessToken = Bearer {{login.response.body.token}}

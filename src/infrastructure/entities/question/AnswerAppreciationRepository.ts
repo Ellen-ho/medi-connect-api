@@ -143,16 +143,18 @@ export class AnswerAppreciationRepository
   > {
     try {
       const appreciationData = await this.getRepo()
-        .createQueryBuilder('answer_appreciations')
-        .leftJoinAndSelect('answer_appreciations.patient', 'patient')
-        .where('answer_appreciations.id = :answerId', { answerId })
+        .createQueryBuilder('answer_appreciation')
         .select([
-          'answer_appreciations.content',
-          'patient.id',
-          'patient.birth_date',
-          'answer_appreciations.created_at',
+          'answer_appreciation.content AS "content"',
+          'answer_appreciation.patient_id AS "patientId"',
+          'patient.birth_date AS "patientBirthDate"',
+          'answer_appreciation.created_at AS "createdAt"',
         ])
-        .getMany()
+        .leftJoin('answer_appreciation.patient', 'patient')
+        .where('answer_appreciation.answer_id = :answerId', {
+          answerId,
+        })
+        .getRawMany()
 
       if (appreciationData.length === 0) {
         return []
@@ -160,12 +162,12 @@ export class AnswerAppreciationRepository
 
       const today = new Date()
       const appreciationDataWithPatientAge = appreciationData.map((data) => {
-        const ageDiff = today.getTime() - data.patient.birthDate.getTime()
+        const ageDiff = today.getTime() - data.patientBirthDate.getTime()
         const ageDate = new Date(ageDiff)
         const patientAge = Math.abs(ageDate.getUTCFullYear() - 1970)
         return {
           content: data.content,
-          patientId: data.patient.id,
+          patientId: data.patientId,
           patientAge,
           createdAt: data.createdAt,
         }

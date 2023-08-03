@@ -1,6 +1,4 @@
-import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { IPatientQuestionAnswerRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionAnswerRepository'
-import { IPatientQuestionRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionRepository'
 import { User } from '../../domain/user/User'
 import { DoctorRepository } from '../../infrastructure/entities/doctor/DoctorRepository'
 import { AnswerAgreementRepository } from '../../infrastructure/entities/question/AnswerAgreementRepository'
@@ -10,7 +8,7 @@ import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 
 interface GetAnswerDetailsRequest {
   user: User
-  answerId:string
+  answerId: string
 }
 
 interface GetAnswerDetailsResponse {
@@ -34,33 +32,44 @@ interface GetAnswerDetailsResponse {
 
 export class GetAnswerDetailsUseCase {
   constructor(
-    private readonly patientQuestionRepository: IPatientQuestionRepository,
-    private readonly patientRepository: IPatientRepository,
     private readonly patientQuestionAnswerRepository: IPatientQuestionAnswerRepository,
     private readonly doctorRepository: DoctorRepository,
     private readonly answerAppreciationRepository: AnswerAppreciationRepository,
-    private readonly answerAgreementRepository:AnswerAgreementRepository
+    private readonly answerAgreementRepository: AnswerAgreementRepository
   ) {}
 
   public async execute(
     request: GetAnswerDetailsRequest
   ): Promise<GetAnswerDetailsResponse> {
     const { user, answerId } = request
-    const existingDoctor = await this.doctorRepository.findById(user.id)
-    if(existingDoctor == null){
+    const existingDoctor = await this.doctorRepository.findByUserId(user.id)
+    if (existingDoctor == null) {
       throw new AuthorizationError('Doctor does not exist.')
     }
 
-    const existingAnswer = await this.patientQuestionAnswerRepository.findByIdAndDoctorId(answerId,existingDoctor.id)
-    if(existingAnswer == null){
+    const existingAnswer =
+      await this.patientQuestionAnswerRepository.findByIdAndDoctorId(
+        answerId,
+        existingDoctor.id
+      )
+    if (existingAnswer == null) {
       throw new NotFoundError('This Doctor does not have any answer.')
     }
 
-    const thisAnswerAppreciations = await this.answerAppreciationRepository.findByAnswerId(existingAnswer.id)
+    const thisAnswerAppreciations =
+      await this.answerAppreciationRepository.findByAnswerId(existingAnswer.id)
 
-    const thisAnswerAgreements = await this.answerAgreementRepository.findByAnswerId(existingAnswer.id)
-  
+    const thisAnswerAgreements =
+      await this.answerAgreementRepository.findByAnswerId(existingAnswer.id)
 
-
-
+    return {
+      questionId: existingAnswer.patientQuestionId,
+      answerId: existingAnswer.id,
+      answerContent: existingAnswer.content,
+      appreciationData:
+        thisAnswerAppreciations.length !== 0 ? thisAnswerAppreciations : [],
+      agreementData:
+        thisAnswerAgreements.length !== 0 ? thisAnswerAgreements : [],
+    }
   }
+}
