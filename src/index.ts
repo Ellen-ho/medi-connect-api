@@ -124,6 +124,8 @@ import swaggerUi from 'swagger-ui-express'
 
 import swaggerDocument from './swagger.json'
 import { DeleteDoctorTimeSlotUseCase } from './application/consultation/DeleteDoctorTimeSlotUseCase'
+import { GetAnswerDetailsUseCase } from './application/question/GetAnswerDetailsUseCase'
+import { GetAnswerListUseCase } from './application/question/GetAnswerListUseCase'
 
 // import { RawQueryRepository } from './infrastructure/database/RawRepository'
 
@@ -331,6 +333,17 @@ async function main(): Promise<void> {
 
   const getQuestionsUseCase = new GetQuestionsUseCase(patientQuestionRepository)
 
+  const getAnswerDetailsUseCase = new GetAnswerDetailsUseCase(
+    patientQuestionAnswerRepository,
+    doctorRepository,
+    answerAppreciationRepository,
+    answerAgreementRepository
+  )
+
+  const getAnswerListUseCase = new GetAnswerListUseCase(
+    patientQuestionAnswerRepository,
+    doctorRepository
+  )
   /**
    * Cross domain usecase
    */
@@ -708,7 +721,9 @@ async function main(): Promise<void> {
     cancelAnswerAgreementUseCase,
     cancelPatientQuestionUseCase,
     getSingleQuestionUseCase,
-    getQuestionsUseCase
+    getQuestionsUseCase,
+    getAnswerDetailsUseCase,
+    getAnswerListUseCase
   )
 
   const consultationController = new ConsultationController(

@@ -16,4 +16,12 @@ export interface IAnswerAppreciationRepository
     answerId: string,
     patientId: string
   ) => Promise<AnswerAppreciation | null>
+  findByAnswerId: (answerId: string) => Promise<
+    Array<{
+      content: string | null
+      patientId: string
+      patientAge: number
+      createdAt: Date
+    }>
+  >
 }

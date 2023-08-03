@@ -207,4 +207,56 @@ export class AnswerAgreementRepository
       )
     }
   }
+
+  public async findByAnswerId(answerId: string): Promise<
+    Array<{
+      comment: string | null
+      agreedDoctorId: string
+      agreedDoctorFirstName: string
+      agreedDoctorLastName: string
+      createdAt: Date
+    }>
+  > {
+    try {
+      const agreementData = await this.getRepo()
+        .createQueryBuilder('answer_agreement')
+        .select([
+          'answer_agreement.comment',
+          'answer_agreement.agreed_doctor_id',
+        ])
+        .select([
+          'answer_agreement.comment AS "comment"',
+          'answer_agreement.agreed_doctor_id AS "agreedDoctorId"',
+          'agreedDoctor.first_name AS "agreedDoctorFirstName"',
+          'agreedDoctor.last_name AS "agreedDoctorLastName"',
+          'answer_agreement.created_at AS "createdAt"',
+        ])
+        .leftJoin('answer_agreement.agreedDoctor', 'agreedDoctor')
+        .where('answer_agreement.patient_question_answer_id = :answerId', {
+          answerId,
+        })
+        .getRawMany()
+
+      if (agreementData.length === 0) {
+        return []
+      }
+
+      const result = agreementData.map((data) => {
+        return {
+          comment: data.comment,
+          agreedDoctorId: data.agreedDoctorId,
+          agreedDoctorFirstName: data.agreedDoctorFirstName,
+          agreedDoctorLastName: data.agreedDoctorLastName,
+          createdAt: data.createdAt,
+        }
+      })
+
+      return result
+    } catch (e) {
+      throw new RepositoryError(
+        'AnswerAgreementRepository findByAnswerId error',
+        e as Error
+      )
+    }
+  }
 }

@@ -52,7 +52,7 @@ Content-Type: application/json
 ###
 
 ### patient thank a doctor's answer
-@answerId =b274c5fa-0b64-49f0-9227-802fd9a80460
+@answerId =ebdf2978-83ac-4d23-804e-a1184bc7b699
 POST {{questionsPath}}/answers/{{answerId}}/appreciations
 Authorization: {{accessToken}}
 Content-Type: application/json

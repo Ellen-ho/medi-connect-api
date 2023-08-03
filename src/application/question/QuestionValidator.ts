@@ -105,3 +105,16 @@ export const getSingleQuestionSchema = {
     id: Joi.string().uuid().required(),
   }),
 }
+
+export const getAnswerDetailsSchema = {
+  params: Joi.object({
+    id: Joi.string().uuid().required(),
+  }),
+}
+
+export const getAnswerListSchema = {
+  query: Joi.object({
+    limit: Joi.number().optional(),
+    page: Joi.number().optional(),
+  }),
+}

@@ -132,4 +132,53 @@ export class AnswerAppreciationRepository
       )
     }
   }
+
+  public async findByAnswerId(answerId: string): Promise<
+    Array<{
+      content: string | null
+      patientId: string
+      patientAge: number
+      createdAt: Date
+    }>
+  > {
+    try {
+      const appreciationData = await this.getRepo()
+        .createQueryBuilder('answer_appreciation')
+        .select([
+          'answer_appreciation.content AS "content"',
+          'answer_appreciation.patient_id AS "patientId"',
+          'patient.birth_date AS "patientBirthDate"',
+          'answer_appreciation.created_at AS "createdAt"',
+        ])
+        .leftJoin('answer_appreciation.patient', 'patient')
+        .where('answer_appreciation.answer_id = :answerId', {
+          answerId,
+        })
+        .getRawMany()
+
+      if (appreciationData.length === 0) {
+        return []
+      }
+
+      const today = new Date()
+      const appreciationDataWithPatientAge = appreciationData.map((data) => {
+        const ageDiff = today.getTime() - data.patientBirthDate.getTime()
+        const ageDate = new Date(ageDiff)
+        const patientAge = Math.abs(ageDate.getUTCFullYear() - 1970)
+        return {
+          content: data.content,
+          patientId: data.patientId,
+          patientAge,
+          createdAt: data.createdAt,
+        }
+      })
+
+      return appreciationDataWithPatientAge
+    } catch (e) {
+      throw new RepositoryError(
+        'AnswerAppreciationRepository findByAnswerId error',
+        e as Error
+      )
+    }
+  }
 }

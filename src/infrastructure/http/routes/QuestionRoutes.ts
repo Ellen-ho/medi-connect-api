@@ -12,6 +12,8 @@ import {
   editAnswerAgreementCommentSchema,
   editAnswerAppreciationContentSchema,
   editPatientQuestionSchema,
+  getAnswerDetailsSchema,
+  getAnswerListSchema,
   getSingleQuestionSchema,
 } from '../../../application/question/QuestionValidator'
 import { validator } from '../middlewares/Validator'
@@ -93,6 +95,18 @@ export class QuestionRoutes {
         authenticated,
         validator(creatPatientQuestionSchema),
         asyncHandler(this.questionController.createPatientQuestion)
+      )
+      .get(
+        '/answers/:id',
+        authenticated,
+        validator(getAnswerDetailsSchema),
+        asyncHandler(this.questionController.getAnswerDetails)
+      )
+      .get(
+        '/answers',
+        authenticated,
+        validator(getAnswerListSchema),
+        asyncHandler(this.questionController.getAnswerList)
       )
       .get(
         '/:id',
