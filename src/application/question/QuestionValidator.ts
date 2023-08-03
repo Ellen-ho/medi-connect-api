@@ -111,3 +111,10 @@ export const getAnswerDetailsSchema = {
     id: Joi.string().uuid().required(),
   }),
 }
+
+export const getAnswerListSchema = {
+  query: Joi.object({
+    limit: Joi.number().optional(),
+    page: Joi.number().optional(),
+  }),
+}

@@ -86,3 +86,9 @@ GET {{questionsPath}}/answers/{{doctorAnswerId}}
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###
+
+### doctor get answer list
+GET {{questionsPath}}/answers?limit=3&page=1
+Authorization: {{accessToken}}
+Content-Type: application/json
+###

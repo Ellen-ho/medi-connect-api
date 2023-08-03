@@ -15,6 +15,7 @@ import { User } from '../../../domain/user/User'
 import { GetSingleQuestionUseCase } from '../../../application/question/GetSingleQuestionUseCase'
 import { GetQuestionsUseCase } from '../../../application/question/GetQuestionsUsecase'
 import { GetAnswerDetailsUseCase } from '../../../application/question/GetAnswerDetailsUseCase'
+import { GetAnswerListUseCase } from '../../../application/question/GetAnswerListUseCase'
 
 export interface IQuestionController {
   createAnswerAgreement: (req: Request, res: Response) => Promise<Response>
@@ -44,6 +45,7 @@ export interface IQuestionController {
   getSingleQuestion: (req: Request, res: Response) => Promise<Response>
   getQuestions: (req: Request, res: Response) => Promise<Response>
   getAnswerDetails: (req: Request, res: Response) => Promise<Response>
+  getAnswerList: (req: Request, res: Response) => Promise<Response>
 }
 
 export class QuestionController implements IQuestionController {
@@ -62,7 +64,8 @@ export class QuestionController implements IQuestionController {
     private readonly cancelPatientQuestionUseCase: CancelPatientQuestionUseCase,
     private readonly getSingleQuestionUseCase: GetSingleQuestionUseCase,
     private readonly getQuestionsUseCase: GetQuestionsUseCase,
-    private readonly getAnswerDetailsUseCase: GetAnswerDetailsUseCase
+    private readonly getAnswerDetailsUseCase: GetAnswerDetailsUseCase,
+    private readonly getAnswerListUseCase: GetAnswerListUseCase
   ) {}
 
   public createAnswerAgreement = async (
@@ -255,6 +258,19 @@ export class QuestionController implements IQuestionController {
       answerId: req.params.id,
     }
     const result = await this.getAnswerDetailsUseCase.execute(request)
+    return res.status(200).json(result)
+  }
+
+  public getAnswerList = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    const request = {
+      user: req.user as User,
+      limit: Number(req.query.limit),
+      page: Number(req.query.page),
+    }
+    const result = await this.getAnswerListUseCase.execute(request)
     return res.status(200).json(result)
   }
 }
