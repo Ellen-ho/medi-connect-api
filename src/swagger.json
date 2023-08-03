@@ -3738,6 +3738,228 @@
         }
       }
     },
+    "/questions/answers/{id}": {
+      "get": {
+        "tags": ["question"],
+        "summary": "Get an answer's details.",
+        "description": "Get an answer's details.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Answer id for the request",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Doctor successfully get an answer's details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "questionId": {
+                      "type": "string",
+                      "example": "12345"
+                    },
+                    "answerId": {
+                      "type": "string",
+                      "example": "67890"
+                    },
+                    "answerContent": {
+                      "type": "string",
+                      "example": "This is the answer content."
+                    },
+                    "appreciationData": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string",
+                            "nullable": true,
+                            "example": "Thank you for the answer!"
+                          },
+                          "patientId": {
+                            "type": "string",
+                            "example": "abc123"
+                          },
+                          "patientAge": {
+                            "type": "integer",
+                            "example": 30
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2023-08-03T12:34:56Z"
+                          }
+                        }
+                      }
+                    },
+                    "agreementData": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "comment": {
+                            "type": "string",
+                            "nullable": true,
+                            "example": "I agree with this answer."
+                          },
+                          "agreedDoctorId": {
+                            "type": "string",
+                            "example": "xyz789"
+                          },
+                          "agreedDoctorFirstName": {
+                            "type": "string",
+                            "example": "John"
+                          },
+                          "agreedDoctorLastName": {
+                            "type": "string",
+                            "example": "Doe"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2023-08-03T12:45:00Z"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/questions/answers": {
+      "get": {
+        "tags": ["question"],
+        "summary": "Get answers list.",
+        "description": "Get answers list.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "example": 1
+            },
+            "description": "Page number for pagination.",
+            "required": false
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "example": 10
+            },
+            "description": "Number of items to return per page.",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Doctor successfully get answers list.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "totalAnswerCounts": {
+                      "type": "number",
+                      "example": 10
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "example": "12345"
+                          },
+                          "content": {
+                            "type": "string",
+                            "example": "This is the answer content."
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2023-08-03T12:34:56Z"
+                          },
+                          "thankCounts": {
+                            "type": "number",
+                            "example": 5
+                          },
+                          "agreeCounts": {
+                            "type": "number",
+                            "example": 3
+                          }
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "pages": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          },
+                          "example": [1, 2, 3]
+                        },
+                        "totalPage": {
+                          "type": "number",
+                          "example": 3
+                        },
+                        "currentPage": {
+                          "type": "number",
+                          "example": 2
+                        },
+                        "prev": {
+                          "type": "number",
+                          "example": 1
+                        },
+                        "next": {
+                          "type": "number",
+                          "example": 3
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "components": {
       "schemas": {
         "User": {
