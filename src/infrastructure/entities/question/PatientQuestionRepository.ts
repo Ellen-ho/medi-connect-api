@@ -50,19 +50,16 @@ export class PatientQuestionRepository
     }
   }
 
-  public async deleteById(
-    id: string,
+  public async delete(
+    question: PatientQuestion,
     executor: IExecutor = this.getRepo()
   ): Promise<void> {
     try {
-      await executor
-        .createQueryBuilder('patient_questions')
-        .softDelete()
-        .where('id = :id', { id })
-        .execute()
+      const entity = this.getMapper().toPersistence(question)
+      await executor.softRemove(entity)
     } catch (e) {
       throw new RepositoryError(
-        'PatientQuestionRepository deleteById error',
+        `PatientQuestionRepository delete error: ${(e as Error).message}`,
         e as Error
       )
     }

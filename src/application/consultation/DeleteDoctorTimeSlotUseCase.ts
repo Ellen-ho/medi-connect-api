@@ -106,7 +106,7 @@ export class DeleteDoctorTimeSlotUseCase {
       )
     }
 
-    await this.doctorTimeSlotRepository.deleteById(doctorTimeSlotId)
+    await this.doctorTimeSlotRepository.delete(existingDoctorTimeSlot)
 
     return { deletedAt: new Date() }
   }

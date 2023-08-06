@@ -25,5 +25,5 @@ export interface IDoctorTimeSlotRepository {
       isAvailable: boolean
     }>
   }>
-  deleteById: (id: string, executo?: IExecutor) => Promise<void>
+  delete: (doctorTimeSlot: DoctorTimeSlot, executo?: IExecutor) => Promise<void>
 }

@@ -23,12 +23,12 @@ export class CancelPatientQuestionUseCase {
     private readonly patientRepository: IPatientRepository,
     private readonly answerAppreciationRepository: IAnswerAppreciationRepository,
     private readonly answerAgreementRepository: IAnswerAgreementRepository,
-    private readonly patientQuestionAnswerRepository: IPatientQuestionAnswerRepository,
-    private readonly tx: IRepositoryTx
+    private readonly patientQuestionAnswerRepository: IPatientQuestionAnswerRepository
   ) {}
 
   public async execute(
-    request: CancelPatientQuestionRequest
+    request: CancelPatientQuestionRequest,
+    tx: IRepositoryTx
   ): Promise<CancelPatientQuestionResponse> {
     const { user, patientQuestionId } = request
 
@@ -49,8 +49,8 @@ export class CancelPatientQuestionUseCase {
     }
 
     try {
-      await this.tx.start()
-      const txExecutor = this.tx.getExecutor()
+      await tx.start()
+      const txExecutor = tx.getExecutor()
 
       const answers =
         await this.patientQuestionAnswerRepository.findAllByQuestionId(
@@ -73,14 +73,14 @@ export class CancelPatientQuestionUseCase {
         txExecutor
       )
 
-      await this.patientQuestionRepository.deleteById(
-        existingPatientQuestion.id,
+      await this.patientQuestionRepository.delete(
+        existingPatientQuestion,
         txExecutor
       )
-      await this.tx.end()
+      await tx.end()
       return { patientQuestionId }
     } catch (error) {
-      await this.tx.rollback()
+      await tx.rollback()
       throw error
     }
   }

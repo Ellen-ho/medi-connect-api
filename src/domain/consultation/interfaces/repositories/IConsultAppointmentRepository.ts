@@ -13,7 +13,10 @@ export interface IConsultAppointmentRepository
     consultAppointmentId: string,
     patientId: string
   ) => Promise<ConsultAppointment | null>
-  deleteById: (id: string, executo?: IExecutor) => Promise<void>
+  delete: (
+    appointment: ConsultAppointment,
+    executo?: IExecutor
+  ) => Promise<void>
   findByPatientIdAndStatusWithinDateRange: (
     patientId: string,
     status: ConsultAppointmentStatusType[],

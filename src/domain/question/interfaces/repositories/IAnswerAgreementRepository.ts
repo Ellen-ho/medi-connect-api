@@ -18,7 +18,6 @@ export interface IAnswerAgreementRepository
     answerId: string,
     agreedDoctorId: string
   ) => Promise<AnswerAgreement | null>
-  deleteById: (id: string, executor?: IExecutor) => Promise<void>
   deleteAllByAnswerId: (answerId: string, executor?: IExecutor) => Promise<void>
   findByDoctorId: (doctorId: string) => Promise<AnswerAgreement[]>
   findByAnswerId: (answerId: string) => Promise<
@@ -30,4 +29,5 @@ export interface IAnswerAgreementRepository
       createdAt: Date
     }>
   >
+  delete: (agreement: AnswerAgreement, executor?: IExecutor) => Promise<void>
 }

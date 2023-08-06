@@ -10,6 +10,7 @@ import {
 } from '../../../domain/goal/HealthGoal'
 import { RepositoryError } from '../../error/RepositoryError'
 import { GenderType } from '../../../domain/patient/Patient'
+import { IExecutor } from '../../../domain/shared/IRepositoryTx'
 
 export class HealthGoalRepository
   extends BaseRepository<HealthGoalEntity, HealthGoal>
@@ -171,16 +172,16 @@ export class HealthGoalRepository
     }
   }
 
-  public async deleteById(id: string): Promise<void> {
+  public async delete(
+    goal: HealthGoal,
+    executor: IExecutor = this.getRepo()
+  ): Promise<void> {
     try {
-      await this.getRepo()
-        .createQueryBuilder('heal_goals')
-        .softDelete()
-        .where('id = :id', { id })
-        .execute()
+      const entity = this.getMapper().toPersistence(goal)
+      await executor.softRemove(entity)
     } catch (e) {
       throw new RepositoryError(
-        'HealthGoalRepositoryRepository deleteById error',
+        `HealthGoalRepositoryRepository delete error: ${(e as Error).message}`,
         e as Error
       )
     }

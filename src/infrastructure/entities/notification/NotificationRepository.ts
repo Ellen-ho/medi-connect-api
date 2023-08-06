@@ -8,6 +8,7 @@ import { BaseRepository } from '../../database/BaseRepository'
 import { NotificationEntity } from './NotificationEntity'
 import { NotificationMapper } from './NotificationMapper'
 import { RepositoryError } from '../../error/RepositoryError'
+import { IExecutor } from '../../../domain/shared/IRepositoryTx'
 
 export class NotificationRepository
   extends BaseRepository<NotificationEntity, Notification>
@@ -202,16 +203,16 @@ export class NotificationRepository
     }
   }
 
-  public async deleteById(id: string): Promise<void> {
+  public async delete(
+    notification: Notification,
+    executor: IExecutor = this.getRepo()
+  ): Promise<void> {
     try {
-      await this.getRepo()
-        .createQueryBuilder('notifications')
-        .softDelete()
-        .where('id = :id', { id })
-        .execute()
+      const entity = this.getMapper().toPersistence(notification)
+      await executor.softRemove(entity)
     } catch (e) {
       throw new RepositoryError(
-        'NotificationRepository deleteById error',
+        `NotificationRepository delete error: ${(e as Error).message}`,
         e as Error
       )
     }

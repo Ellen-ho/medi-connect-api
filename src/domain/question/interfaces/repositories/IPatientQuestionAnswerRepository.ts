@@ -19,7 +19,7 @@ export interface IPatientQuestionAnswerRepository
     questionId: string,
     executor?: IExecutor
   ) => Promise<void>
-  deleteById: (id: string, executor?: IExecutor) => Promise<void>
+  delete: (answer: PatientQuestionAnswer, executor?: IExecutor) => Promise<void>
   findAnswerDetailsByQuestionId: (questionId: string) => Promise<IAnswerItem[]>
   countByDoctorId: (doctorId: string) => Promise<number>
   countAppreciatedAnswersByDoctorId: (doctorId: string) => Promise<number>

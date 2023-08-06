@@ -64,7 +64,6 @@ import { EditPatientQuestionUseCase } from './application/question/EditPatientQu
 import { CreatePatientQuestionUseCase } from './application/question/CreatePatientQuestionUseCase'
 import { PatientQuestionRepository } from './infrastructure/entities/question/PatientQuestionRepository'
 import { CancelPatientQuestionUseCase } from './application/question/CancelPatientQuestionUsecase'
-import { RepositoryTx } from './infrastructure/database/RepositoryTx'
 import { DoctorTimeSlotRepository } from './infrastructure/entities/consultation/DoctorTimeSlotRepository'
 import { ConsultAppointmentRepository } from './infrastructure/entities/consultation/ConsultAppointmentRepository'
 import { CreateConsultAppointmentUseCase } from './application/consultation/CreateConsultAppointmentUseCase'
@@ -148,8 +147,7 @@ async function main(): Promise<void> {
   /**
    * Database Connection
    */
-  const postgresDatabase = new PostgresDatabase()
-  await postgresDatabase.connect()
+  const postgresDatabase = await PostgresDatabase.getInstance()
   const dataSource = postgresDatabase.getDataSource()
 
   /**
@@ -302,8 +300,7 @@ async function main(): Promise<void> {
       patientQuestionAnswerRepository,
       answerAppreciationRepository,
       answerAgreementRepository,
-      doctorRepository,
-      new RepositoryTx(dataSource)
+      doctorRepository
     )
 
   const createPatientQuestionUseCase = new CreatePatientQuestionUseCase(
@@ -320,8 +317,7 @@ async function main(): Promise<void> {
     patientRepository,
     answerAppreciationRepository,
     answerAgreementRepository,
-    patientQuestionAnswerRepository,
-    new RepositoryTx(dataSource)
+    patientQuestionAnswerRepository
   )
   const getSingleQuestionUseCase = new GetSingleQuestionUseCase(
     patientQuestionRepository,
@@ -529,7 +525,6 @@ async function main(): Promise<void> {
     doctorRepository,
     meetingLinkRepository,
     notificationHelper,
-    new RepositoryTx(dataSource),
     scheduler
   )
 

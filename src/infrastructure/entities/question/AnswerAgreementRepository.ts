@@ -131,19 +131,16 @@ export class AnswerAgreementRepository
     }
   }
 
-  public async deleteById(
-    id: string,
+  public async delete(
+    agreement: AnswerAgreement,
     executor: IExecutor = this.getRepo()
   ): Promise<void> {
     try {
-      await executor
-        .createQueryBuilder('answer_agreements')
-        .softDelete()
-        .where('id = :id', { id })
-        .execute()
+      const entity = this.getMapper().toPersistence(agreement)
+      await executor.softRemove(entity)
     } catch (e) {
       throw new RepositoryError(
-        'AnswerAgreementRepository deleteById error',
+        `AnswerAgreementRepository delete error: ${(e as Error).message}`,
         e as Error
       )
     }

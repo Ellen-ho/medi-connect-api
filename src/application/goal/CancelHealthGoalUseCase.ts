@@ -50,7 +50,7 @@ export class CancelHealthGoalUseCase {
     }
 
     for (const healthGoal of overThreeDaysPendingHealthGoals) {
-      await this.healthGoalRepository.deleteById(healthGoal.id)
+      await this.healthGoalRepository.delete(healthGoal)
       await this.notifictionHelper.createNotification({
         title: 'One of your appointments has been canceled.',
         content:

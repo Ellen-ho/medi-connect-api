@@ -9,6 +9,7 @@ import { GetPatientConsultAppointmentsUseCase } from '../../../application/consu
 import { GetDoctorConsultAppointmentsUseCase } from '../../../application/consultation/GetDoctorConsultAppointmentsUseCase'
 import { GetDoctorTimeSlotsUseCase } from '../../../application/consultation/GetDoctorTimeSlotsUseCase'
 import { DeleteDoctorTimeSlotUseCase } from '../../../application/consultation/DeleteDoctorTimeSlotUseCase'
+import { RepositoryTx } from '../../database/RepositoryTx'
 
 export interface IConsultationController {
   createConsultAppointment: (req: Request, res: Response) => Promise<Response>
@@ -63,7 +64,10 @@ export class ConsultationController implements IConsultationController {
       user: req.user as User,
       consultAppointmentId: req.params.id,
     }
-    const result = await this.cancelConsultAppointmentUseCase.execute(request)
+    const result = await this.cancelConsultAppointmentUseCase.execute(
+      request,
+      new RepositoryTx()
+    )
 
     return res.status(200).json(result)
   }

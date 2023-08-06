@@ -117,19 +117,16 @@ export class DoctorTimeSlotRepository
     }
   }
 
-  public async deleteById(
-    id: string,
+  public async delete(
+    timeSlot: DoctorTimeSlot,
     executor: IExecutor = this.getRepo()
   ): Promise<void> {
     try {
-      await executor
-        .createQueryBuilder('doctor_time_slots')
-        .softDelete()
-        .where('id = :id', { id })
-        .execute()
+      const entity = this.getMapper().toPersistence(timeSlot)
+      await executor.softRemove(entity)
     } catch (e) {
       throw new RepositoryError(
-        'DoctorTimeSlotRepository deleteById error',
+        `DoctorTimeSlotRepository delete error: ${(e as Error).message}`,
         e as Error
       )
     }

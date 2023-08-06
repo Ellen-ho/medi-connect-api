@@ -21,12 +21,12 @@ export class CancelPatientQuestionAnswerUseCase {
     private readonly patientQuestionAnswerRepository: IPatientQuestionAnswerRepository,
     private readonly answerAppreciationRepository: IAnswerAppreciationRepository,
     private readonly answerAgreementRepository: IAnswerAgreementRepository,
-    private readonly doctorRepository: IDoctorRepository,
-    private readonly tx: IRepositoryTx
+    private readonly doctorRepository: IDoctorRepository
   ) {}
 
   public async execute(
-    request: CancelPatientQuestionAnswerRequest
+    request: CancelPatientQuestionAnswerRequest,
+    tx: IRepositoryTx
   ): Promise<CancelPatientQuestionAnswerResponse> {
     const { user, answerId } = request
 
@@ -45,11 +45,11 @@ export class CancelPatientQuestionAnswerUseCase {
       throw new NotFoundError('Answer does not exist.')
     }
     try {
-      await this.tx.start()
-      const txExecutor = this.tx.getExecutor()
+      await tx.start()
+      const txExecutor = tx.getExecutor()
 
-      await this.patientQuestionAnswerRepository.deleteById(
-        existingPatientQuestionAnswer.id,
+      await this.patientQuestionAnswerRepository.delete(
+        existingPatientQuestionAnswer,
         txExecutor
       )
       await this.answerAgreementRepository.deleteAllByAnswerId(
@@ -60,12 +60,12 @@ export class CancelPatientQuestionAnswerUseCase {
         answerId,
         txExecutor
       )
-      await this.tx.end()
+      await tx.end()
       return {
         answerId,
       }
     } catch (error) {
-      await this.tx.rollback()
+      await tx.rollback()
       throw error
     }
   }
