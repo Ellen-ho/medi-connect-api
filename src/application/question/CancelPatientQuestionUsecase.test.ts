@@ -31,8 +31,7 @@ describe('Unit test: CancelPatientQuestionUseCase', () => {
     mockPatientRepo,
     mockAnswerAppreciationRepo,
     mockAnswerAgreementRepo,
-    mockPatientQuestionAnswerRepo,
-    mockTx
+    mockPatientQuestionAnswerRepo
   )
 
   MockDate.set('2023-06-18T13:18:00.155Z')
@@ -106,7 +105,7 @@ describe('Unit test: CancelPatientQuestionUseCase', () => {
     mockPatientRepo.findByUserId.mockResolvedValue(null)
 
     await expect(
-      cancelPatientQuestionUseCase.execute(mockRequest)
+      cancelPatientQuestionUseCase.execute(mockRequest, mockTx)
     ).rejects.toThrow(AuthorizationError)
     expect(mockPatientRepo.findByUserId).toHaveBeenCalledWith(
       mockRequest.user.id
@@ -130,7 +129,7 @@ describe('Unit test: CancelPatientQuestionUseCase', () => {
     mockPatientQuestionRepo.findByIdAndAskerId.mockResolvedValue(null)
 
     await expect(
-      cancelPatientQuestionUseCase.execute(mockRequest)
+      cancelPatientQuestionUseCase.execute(mockRequest, mockTx)
     ).rejects.toThrow(NotFoundError)
     expect(mockPatientRepo.findByUserId).toHaveBeenCalledWith(
       mockRequest.user.id
@@ -167,14 +166,17 @@ describe('Unit test: CancelPatientQuestionUseCase', () => {
     mockAnswerAppreciationRepo.deleteAllByAnswerId.mockResolvedValue()
     mockAnswerAgreementRepo.deleteAllByAnswerId.mockResolvedValue()
     mockPatientQuestionAnswerRepo.deleteAllByQuestionId.mockResolvedValue()
-    mockPatientQuestionRepo.deleteById.mockResolvedValue()
+    mockPatientQuestionRepo.delete.mockResolvedValue()
     mockTx.end.mockResolvedValue()
 
     const expectedResponse = {
       patientQuestionId: mockRequest.patientQuestionId,
     }
 
-    const response = await cancelPatientQuestionUseCase.execute(mockRequest)
+    const response = await cancelPatientQuestionUseCase.execute(
+      mockRequest,
+      mockTx
+    )
 
     expect(response).toEqual(expectedResponse)
     expect(mockPatientRepo.findByUserId).toHaveBeenCalledWith(

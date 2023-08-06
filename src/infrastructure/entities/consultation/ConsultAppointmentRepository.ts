@@ -61,16 +61,9 @@ export class ConsultAppointmentRepository
     try {
       const entity = this.getMapper().toPersistence(appointment)
       await executor.softRemove(entity)
-
-      // .createQueryBuilder('consult_appointments')
-      // .where('id = :id', { id })
-      // .softDelete()
-      // .execute()
     } catch (e) {
       throw new RepositoryError(
-        `ConsultAppointmentRepository deleteById error: ${
-          (e as Error).message
-        }`,
+        `ConsultAppointmentRepository delete error: ${(e as Error).message}`,
         e as Error
       )
     }

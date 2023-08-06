@@ -39,9 +39,7 @@ export class CancelAnswerAppreciationUseCase {
       throw new NotFoundError('Answer appreciation does not exist.')
     }
 
-    await this.answerAppreciationRepository.deleteById(
-      existingAnswerAppreciation.id
-    )
+    await this.answerAppreciationRepository.delete(existingAnswerAppreciation)
 
     const totalThankCounts =
       await this.answerAppreciationRepository.countByAnswerId(

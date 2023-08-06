@@ -119,7 +119,7 @@ describe('Unit test: CancelAnswerAppreciationUseCase', () => {
     mockAnswerAppreciationRepo.findByIdAndPatientId.mockResolvedValue(
       mockAppreciation
     )
-    mockAnswerAppreciationRepo.deleteById.mockResolvedValue()
+    mockAnswerAppreciationRepo.delete.mockResolvedValue()
     mockAnswerAppreciationRepo.countByAnswerId.mockResolvedValue(
       totalThankCounts
     )
@@ -137,7 +137,7 @@ describe('Unit test: CancelAnswerAppreciationUseCase', () => {
     expect(
       mockAnswerAppreciationRepo.findByIdAndPatientId
     ).toHaveBeenCalledWith(mockRequest.answerId, mockRequest.user.id)
-    expect(mockAnswerAppreciationRepo.deleteById).toHaveBeenCalled()
+    expect(mockAnswerAppreciationRepo.delete).toHaveBeenCalled()
     expect(mockAnswerAppreciationRepo.countByAnswerId).toHaveBeenCalledWith(
       mockAppreciation.answer.id
     )

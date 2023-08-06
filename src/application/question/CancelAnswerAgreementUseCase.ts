@@ -48,7 +48,7 @@ export class CancelAnswerAgreementUseCase {
       throw new NotFoundError('Answer agreement does not exist.')
     }
 
-    await this.answerAgreementRepository.deleteById(existingAnswerAgreement.id)
+    await this.answerAgreementRepository.delete(existingAnswerAgreement)
 
     const totalAgreedDoctorCounts =
       await this.answerAgreementRepository.countsByAnswerId(

@@ -73,8 +73,8 @@ export class CancelPatientQuestionUseCase {
         txExecutor
       )
 
-      await this.patientQuestionRepository.deleteById(
-        existingPatientQuestion.id,
+      await this.patientQuestionRepository.delete(
+        existingPatientQuestion,
         txExecutor
       )
       await tx.end()

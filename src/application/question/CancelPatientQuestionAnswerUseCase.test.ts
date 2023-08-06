@@ -26,8 +26,7 @@ describe('Unit test: CancelPatientQuestionAnswerUseCase', () => {
       mockPatientQuestionAnswerRepo,
       mockAnswerAppreciationRepo,
       mockAnswerAgreementRepo,
-      mockDoctorRepo,
-      mockTx
+      mockDoctorRepo
     )
 
   MockDate.set('2023-06-18T13:18:00.155Z')
@@ -99,7 +98,7 @@ describe('Unit test: CancelPatientQuestionAnswerUseCase', () => {
     mockDoctorRepo.findByUserId.mockResolvedValue(null)
 
     await expect(
-      cancelPatientQuestionAnswerUseCase.execute(mockRequest)
+      cancelPatientQuestionAnswerUseCase.execute(mockRequest, mockTx)
     ).rejects.toThrow(AuthorizationError)
     expect(mockDoctorRepo.findByUserId).toHaveBeenCalledWith(
       mockRequest.user.id
@@ -110,7 +109,7 @@ describe('Unit test: CancelPatientQuestionAnswerUseCase', () => {
     mockDoctorRepo.findByUserId.mockResolvedValue(mockExistingDoctor)
     mockPatientQuestionAnswerRepo.findByIdAndDoctorId.mockResolvedValue(null)
     await expect(
-      cancelPatientQuestionAnswerUseCase.execute(mockRequest)
+      cancelPatientQuestionAnswerUseCase.execute(mockRequest, mockTx)
     ).rejects.toThrow(NotFoundError)
     expect(
       mockPatientQuestionAnswerRepo.findByIdAndDoctorId
@@ -123,7 +122,7 @@ describe('Unit test: CancelPatientQuestionAnswerUseCase', () => {
     )
     mockTx.start.mockResolvedValue()
     mockTx.getExecutor.mockImplementation(() => mockTxExecutor)
-    mockPatientQuestionAnswerRepo.deleteById.mockResolvedValue()
+    mockPatientQuestionAnswerRepo.delete.mockResolvedValue()
     mockAnswerAgreementRepo.deleteAllByAnswerId.mockResolvedValue()
     mockAnswerAppreciationRepo.deleteAllByAnswerId.mockResolvedValue()
     mockTx.end.mockResolvedValue()
@@ -133,7 +132,8 @@ describe('Unit test: CancelPatientQuestionAnswerUseCase', () => {
     }
 
     const response = await cancelPatientQuestionAnswerUseCase.execute(
-      mockRequest
+      mockRequest,
+      mockTx
     )
 
     expect(response).toEqual(expectedResponse)
@@ -145,7 +145,7 @@ describe('Unit test: CancelPatientQuestionAnswerUseCase', () => {
     ).toHaveBeenCalledWith(mockRequest.answerId, mockRequest.user.id)
     expect(mockTx.start).toHaveBeenCalled()
     expect(mockTx.getExecutor).toHaveBeenCalled()
-    expect(mockPatientQuestionAnswerRepo.deleteById).toHaveBeenCalledWith(
+    expect(mockPatientQuestionAnswerRepo.delete).toHaveBeenCalledWith(
       mockPatientQuestionAnswer.id,
       mockTxExecutor
     )

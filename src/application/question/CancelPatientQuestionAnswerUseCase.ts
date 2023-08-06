@@ -48,8 +48,8 @@ export class CancelPatientQuestionAnswerUseCase {
       await tx.start()
       const txExecutor = tx.getExecutor()
 
-      await this.patientQuestionAnswerRepository.deleteById(
-        existingPatientQuestionAnswer.id,
+      await this.patientQuestionAnswerRepository.delete(
+        existingPatientQuestionAnswer,
         txExecutor
       )
       await this.answerAgreementRepository.deleteAllByAnswerId(

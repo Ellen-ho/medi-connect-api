@@ -9,7 +9,6 @@ export interface IPatientQuestionRepository
     patientQuestionAnswerId: string,
     askerId: string
   ) => Promise<PatientQuestion | null>
-  deleteById: (id: string, executor?: IExecutor) => Promise<void>
   findAndCountAll: (
     limit: number,
     offset: number
@@ -22,4 +21,5 @@ export interface IPatientQuestionRepository
       answerCounts: number
     }>
   }>
+  delete: (question: PatientQuestion, executo?: IExecutor) => Promise<void>
 }

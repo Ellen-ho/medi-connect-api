@@ -1,4 +1,5 @@
 import { IBaseRepository } from '../../../shared/IBaseRepository'
+import { IExecutor } from '../../../shared/IRepositoryTx'
 import { Notification, NotificationType } from '../../Notification'
 
 export interface INotificationRepository extends IBaseRepository<Notification> {
@@ -30,5 +31,5 @@ export interface INotificationRepository extends IBaseRepository<Notification> {
   saveAll: (notifications: Notification[]) => Promise<void>
   findAllByUserId: (userId: string) => Promise<Notification[]>
   deleteAllByUserId: (userId: string) => Promise<void>
-  deleteById: (id: string) => Promise<void>
+  delete: (notification: Notification, executo?: IExecutor) => Promise<void>
 }

@@ -71,19 +71,16 @@ export class AnswerAppreciationRepository
     }
   }
 
-  public async deleteById(
-    id: string,
+  public async delete(
+    appreciation: AnswerAppreciation,
     executor: IExecutor = this.getRepo()
   ): Promise<void> {
     try {
-      await executor
-        .createQueryBuilder('answer_appreciations')
-        .softDelete()
-        .where('id = :id', { id })
-        .execute()
+      const entity = this.getMapper().toPersistence(appreciation)
+      await executor.softRemove(entity)
     } catch (e) {
       throw new RepositoryError(
-        'AnswerAppreciationRepository deleteById error',
+        `AnswerAppreciationRepository delete error: ${(e as Error).message}`,
         e as Error
       )
     }

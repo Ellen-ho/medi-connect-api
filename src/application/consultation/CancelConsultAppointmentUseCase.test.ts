@@ -40,7 +40,6 @@ describe('Unit test: CancelConsultAppointmentUseCase', () => {
     mockDoctorRepo,
     mockMeetingLinkRepo,
     mockNotifictionHelper,
-    mockTx,
     mockScheduler
   )
 
@@ -150,7 +149,7 @@ describe('Unit test: CancelConsultAppointmentUseCase', () => {
 
     mockPatientRepo.findByUserId.mockResolvedValue(null)
     await expect(
-      cancelConsultAppointmentUseCase.execute(mockRequest)
+      cancelConsultAppointmentUseCase.execute(mockRequest, mockTx)
     ).rejects.toThrow(AuthorizationError)
     expect(mockPatientRepo.findByUserId).toHaveBeenCalledWith(
       mockRequest.user.id
@@ -172,7 +171,7 @@ describe('Unit test: CancelConsultAppointmentUseCase', () => {
     mockPatientRepo.findByUserId.mockResolvedValue(mockExistingPatient)
     mockConsultAppointmentRepo.findByIdAndPatientId.mockResolvedValue(null)
     await expect(
-      cancelConsultAppointmentUseCase.execute(mockRequest)
+      cancelConsultAppointmentUseCase.execute(mockRequest, mockTx)
     ).rejects.toThrow(NotFoundError)
     expect(mockPatientRepo.findByUserId).toHaveBeenCalledWith(
       mockRequest.user.id
@@ -203,7 +202,7 @@ describe('Unit test: CancelConsultAppointmentUseCase', () => {
     )
     mockDoctorRepo.findById.mockResolvedValue(null)
     await expect(
-      cancelConsultAppointmentUseCase.execute(mockRequest)
+      cancelConsultAppointmentUseCase.execute(mockRequest, mockTx)
     ).rejects.toThrow(AuthorizationError)
     expect(mockPatientRepo.findByUserId).toHaveBeenCalledWith(
       mockRequest.user.id
@@ -238,7 +237,7 @@ describe('Unit test: CancelConsultAppointmentUseCase', () => {
     )
     mockDoctorRepo.findById.mockResolvedValue(null)
     await expect(
-      cancelConsultAppointmentUseCase.execute(mockRequest)
+      cancelConsultAppointmentUseCase.execute(mockRequest, mockTx)
     ).rejects.toThrow(AuthorizationError)
     expect(mockPatientRepo.findByUserId).toHaveBeenCalledWith(
       mockRequest.user.id
@@ -282,7 +281,7 @@ describe('Unit test: CancelConsultAppointmentUseCase', () => {
     mockTx.getExecutor.mockImplementation(() => mockTxExecutor)
     mockMeetingLinkRepo.findByLink.mockResolvedValue(mockMeetingLink)
     mockMeetingLinkRepo.save.mockResolvedValue()
-    mockConsultAppointmentRepo.deleteById.mockResolvedValue()
+    mockConsultAppointmentRepo.delete.mockResolvedValue()
     mockScheduler.cancelJob.mockImplementation()
     mockTx.end.mockResolvedValue()
     mockNotifictionHelper.createNotification.mockResolvedValue()
@@ -291,7 +290,10 @@ describe('Unit test: CancelConsultAppointmentUseCase', () => {
       status: ConsultAppointmentStatusType.PATIENT_CANCELED,
     }
 
-    const response = await cancelConsultAppointmentUseCase.execute(mockRequest)
+    const response = await cancelConsultAppointmentUseCase.execute(
+      mockRequest,
+      mockTx
+    )
 
     expect(response).toEqual(expectedResponse)
     expect(mockPatientRepo.findByUserId).toHaveBeenCalledWith(
@@ -312,7 +314,7 @@ describe('Unit test: CancelConsultAppointmentUseCase', () => {
       mockMeetingLink.link
     )
     expect(mockMeetingLinkRepo.save).toHaveBeenCalled()
-    expect(mockConsultAppointmentRepo.deleteById).toHaveBeenCalledWith(
+    expect(mockConsultAppointmentRepo.delete).toHaveBeenCalledWith(
       mockConsultAppointment.id,
       mockTxExecutor
     )

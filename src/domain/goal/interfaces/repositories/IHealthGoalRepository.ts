@@ -1,5 +1,6 @@
 import { GenderType } from '../../../patient/Patient'
 import { IBaseRepository } from '../../../shared/IBaseRepository'
+import { IExecutor } from '../../../shared/IRepositoryTx'
 import {
   HealthGoal,
   HealthGoalStatus,
@@ -39,5 +40,5 @@ export interface IHealthGoalRepository extends IBaseRepository<HealthGoal> {
     status: HealthGoalStatus[],
     currentDate: Date
   ) => Promise<HealthGoal[]>
-  deleteById: (id: string) => Promise<void>
+  delete: (goal: HealthGoal, executor?: IExecutor) => Promise<void>
 }

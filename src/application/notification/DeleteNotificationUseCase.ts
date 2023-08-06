@@ -32,7 +32,7 @@ export class DeleteNotificationUseCase {
       throw new NotFoundError('The notification does not exits.')
     }
 
-    await this.notificationRepository.deleteById(existingNotification.id)
+    await this.notificationRepository.delete(existingNotification)
 
     return { deletedAt: new Date() }
   }
