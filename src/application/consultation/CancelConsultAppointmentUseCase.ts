@@ -100,8 +100,8 @@ export class CancelConsultAppointmentUseCase {
         txExecutor
       )
 
-      await this.consultAppointmentRepository.deleteById(
-        existingConsultAppointment.id,
+      await this.consultAppointmentRepository.delete(
+        existingConsultAppointment,
         txExecutor
       )
 

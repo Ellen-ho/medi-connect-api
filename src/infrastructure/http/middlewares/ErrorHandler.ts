@@ -3,6 +3,7 @@ import { ValidationError } from '../../error/ValidationError'
 import { AuthenticationError } from '../../error/AuthenticationError'
 import { NotFoundError } from '../../error/NotFoundError'
 import { AuthorizationError } from '../../error/AuthorizationError'
+import { RepositoryError } from '../../error/RepositoryError'
 
 export const errorHandler: ErrorRequestHandler = (
   err: unknown,
@@ -38,6 +39,15 @@ export const errorHandler: ErrorRequestHandler = (
     res.status(404).json({
       status: 'error',
       message: err.message,
+    })
+    return
+  }
+
+  if (err instanceof RepositoryError) {
+    res.status(400).json({
+      status: 'error',
+      message: err.message,
+      cause: err.cause,
     })
     return
   }

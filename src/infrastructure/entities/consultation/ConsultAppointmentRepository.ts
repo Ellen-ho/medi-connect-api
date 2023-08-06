@@ -54,19 +54,23 @@ export class ConsultAppointmentRepository
     }
   }
 
-  public async deleteById(
-    id: string,
+  public async delete(
+    appointment: ConsultAppointment,
     executor: IExecutor = this.getRepo()
   ): Promise<void> {
     try {
-      await executor
-        .createQueryBuilder('consult_appointments')
-        .softDelete()
-        .where('id = :id', { id })
-        .execute()
+      const entity = this.getMapper().toPersistence(appointment)
+      await executor.softRemove(entity)
+
+      // .createQueryBuilder('consult_appointments')
+      // .where('id = :id', { id })
+      // .softDelete()
+      // .execute()
     } catch (e) {
       throw new RepositoryError(
-        'ConsultAppointmentRepository deleteById error',
+        `ConsultAppointmentRepository deleteById error: ${
+          (e as Error).message
+        }`,
         e as Error
       )
     }
