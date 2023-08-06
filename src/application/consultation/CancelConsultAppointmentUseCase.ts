@@ -30,12 +30,12 @@ export class CancelConsultAppointmentUseCase {
     private readonly doctorRepository: IDoctorRepository,
     private readonly meetingLinkRepository: IMeetingLinkRepository,
     private readonly notifictionHelper: INotificationHelper,
-    private readonly tx: IRepositoryTx,
     private readonly scheduler: IScheduler
   ) {}
 
   public async execute(
-    request: CancelConsultAppointmentRequest
+    request: CancelConsultAppointmentRequest,
+    tx: IRepositoryTx
   ): Promise<CancelConsultAppointmentResponse> {
     const { user, consultAppointmentId } = request
 
@@ -77,8 +77,8 @@ export class CancelConsultAppointmentUseCase {
     }
 
     try {
-      await this.tx.start()
-      const txExecutor = this.tx.getExecutor()
+      await tx.start()
+      const txExecutor = tx.getExecutor()
 
       existingConsultAppointment.doctorTimeSlot.updateAvailability(true)
 
@@ -107,7 +107,7 @@ export class CancelConsultAppointmentUseCase {
 
       this.scheduler.cancelJob(`${existingConsultAppointment.id}_notification`)
 
-      await this.tx.end()
+      await tx.end()
 
       await this.notifictionHelper.createNotification({
         title: 'One of your appointments has been canceled.',
@@ -123,7 +123,7 @@ export class CancelConsultAppointmentUseCase {
         status: ConsultAppointmentStatusType.PATIENT_CANCELED,
       }
     } catch (error) {
-      await this.tx.rollback()
+      await tx.rollback()
       throw error
     }
   }

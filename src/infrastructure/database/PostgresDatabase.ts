@@ -2,13 +2,22 @@ import { DataSource, EntityTarget, ObjectLiteral, Repository } from 'typeorm'
 import getOrmConfig from '../config/ormconfig'
 
 export class PostgresDatabase {
+  private static instance: PostgresDatabase | null = null
   private dataSource: DataSource | null
 
-  constructor() {
+  private constructor() {
     this.dataSource = null
   }
 
-  public async connect(): Promise<void> {
+  public static async getInstance(): Promise<PostgresDatabase> {
+    if (PostgresDatabase.instance == null) {
+      PostgresDatabase.instance = new PostgresDatabase()
+      await PostgresDatabase.instance.connect()
+    }
+    return PostgresDatabase.instance
+  }
+
+  private async connect(): Promise<void> {
     try {
       this.dataSource = new DataSource(getOrmConfig())
       await this.dataSource.initialize()

@@ -1,15 +1,23 @@
-import { DataSource, QueryRunner } from 'typeorm'
+import { QueryRunner } from 'typeorm'
 import {
   IExecutor,
   IRepositoryTx,
   Isolation,
 } from '../../domain/shared/IRepositoryTx'
+import { PostgresDatabase } from './PostgresDatabase'
 
 export class RepositoryTx implements IRepositoryTx {
-  private readonly queryRunner: QueryRunner
+  private queryRunner!: QueryRunner
 
-  constructor(dataSource: DataSource) {
-    this.queryRunner = dataSource.createQueryRunner()
+  constructor() {
+    PostgresDatabase.getInstance()
+      .then(async (database) => {
+        const dataSource = database.getDataSource()
+        this.queryRunner = dataSource.createQueryRunner()
+      })
+      .catch((error) => {
+        console.error(error)
+      })
   }
 
   public async start(isolation: Isolation = 'READ COMMITTED'): Promise<void> {

@@ -16,6 +16,7 @@ import { GetSingleQuestionUseCase } from '../../../application/question/GetSingl
 import { GetQuestionsUseCase } from '../../../application/question/GetQuestionsUsecase'
 import { GetAnswerDetailsUseCase } from '../../../application/question/GetAnswerDetailsUseCase'
 import { GetAnswerListUseCase } from '../../../application/question/GetAnswerListUseCase'
+import { RepositoryTx } from '../../database/RepositoryTx'
 
 export interface IQuestionController {
   createAnswerAgreement: (req: Request, res: Response) => Promise<Response>
@@ -208,7 +209,8 @@ export class QuestionController implements IQuestionController {
       user: req.user as User,
     }
     const result = await this.cancelPatientQuestionAnswerUseCase.execute(
-      request
+      request,
+      new RepositoryTx()
     )
     return res.status(200).json(result)
   }
@@ -221,7 +223,10 @@ export class QuestionController implements IQuestionController {
       patientQuestionId: req.params.id,
       user: req.user as User,
     }
-    const result = await this.cancelPatientQuestionUseCase.execute(request)
+    const result = await this.cancelPatientQuestionUseCase.execute(
+      request,
+      new RepositoryTx()
+    )
     return res.status(200).json(result)
   }
 
