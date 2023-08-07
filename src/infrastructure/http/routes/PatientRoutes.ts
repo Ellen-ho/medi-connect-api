@@ -8,6 +8,7 @@ import {
   getPatientProfileSchema,
 } from '../../../application/patient/PatientValidator'
 import { authenticated } from '../middlewares/Auth'
+import upload from '../middlewares/multer'
 export class PatientRoutes {
   private readonly routes: Router
   constructor(private readonly patientController: IPatientController) {
@@ -16,12 +17,14 @@ export class PatientRoutes {
       .post(
         '/profile',
         authenticated,
+        upload.single('image'),
         validator(creatPatientProfileSchema),
         asyncHandler(this.patientController.createPatientProfile)
       )
       .patch(
         '/profile',
         authenticated,
+        upload.single('image'),
         validator(editPatientProfileSchema),
         asyncHandler(this.patientController.editPatientProfile)
       )

@@ -48,7 +48,7 @@ export class GetPatientProfileUseCase {
     if (user.role === UserRoleType.DOCTOR) {
       const currentDoctor = await this.doctorRepository.findByUserId(user.id)
       if (currentDoctor == null) {
-        throw new AuthorizationError('The currentDoctor does not exist.')
+        throw new AuthorizationError('The current Doctor does not exist.')
       }
       const upComingAppointments =
         await this.consultAppointmentRepository.findByPatientIdAndDoctorIdAndStatus(

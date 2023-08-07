@@ -152,8 +152,8 @@ Content-Type: application/json
 ###
 
 ### get a single blood pressure record
-@bloodPressureRecordId =b3f54074-1466-48ff-b727-d798046fa070
-GET {{recordsPath}}/blood-pressure/{{bloodPressureRecordId}}
+@bloodPressureRecordId =29d6fc55-a81c-4276-92d3-860f7b75ee6f
+GET {{recordsPath}}/blood-pressure/{{bloodPressureRecordId}}?targetPatientId=79ed933e-22c2-4e9a-bf71-16086f54f3f2
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###

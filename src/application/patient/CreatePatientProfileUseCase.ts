@@ -10,10 +10,11 @@ import { IPatientRepository } from '../../domain/patient/interfaces/repositories
 import { IUuidService } from '../../domain/utils/IUuidService'
 import { User } from '../../domain/user/User'
 import { ValidationError } from '../../infrastructure/error/ValidationError'
+import { localFileHandler } from '../../infrastructure/http/middlewares/FileHandler'
 
 interface CreatePatientProfileRequest {
   user: User
-  avatar: string | null
+  file: Express.Multer.File | null
   firstName: string
   lastName: string
   birthDate: Date
@@ -41,7 +42,7 @@ export class CreatePatientProfileUseCase {
   ): Promise<CreatePatientProfileResponse> {
     const {
       user,
-      avatar,
+      file,
       firstName,
       lastName,
       birthDate,
@@ -61,9 +62,15 @@ export class CreatePatientProfileUseCase {
       throw new ValidationError('Patient already exists.')
     }
 
+    let avatarFilePath: string | null = null
+    if (file !== null) {
+      const filePath = await localFileHandler(file)
+      avatarFilePath = filePath !== null ? filePath : null
+    }
+
     const patient = new Patient({
       id: this.uuidService.generateUuid(),
-      avatar,
+      avatar: avatarFilePath,
       firstName,
       lastName,
       birthDate,
