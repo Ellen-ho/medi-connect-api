@@ -1,4 +1,5 @@
 import 'reflect-metadata'
+import * as path from 'path'
 import express, { Express } from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
@@ -125,6 +126,7 @@ import swaggerDocument from './swagger.json'
 import { DeleteDoctorTimeSlotUseCase } from './application/consultation/DeleteDoctorTimeSlotUseCase'
 import { GetAnswerDetailsUseCase } from './application/question/GetAnswerDetailsUseCase'
 import { GetAnswerListUseCase } from './application/question/GetAnswerListUseCase'
+import { AuthRoutes } from './infrastructure/http/routes/AuthRoutes'
 
 // import { RawQueryRepository } from './infrastructure/database/RawRepository'
 
@@ -760,6 +762,7 @@ async function main(): Promise<void> {
   /**
    * Routes
    */
+  const authRoutes = new AuthRoutes()
   const userRoutes = new UserRoutes(userController)
   const patientRoutes = new PatientRoutes(patientController)
   const recordRoutes = new RecordRoutes(recordController)
@@ -770,6 +773,7 @@ async function main(): Promise<void> {
   const notificationRoutes = new NotificationRoutes(notificationController)
 
   const mainRoutes = new MainRoutes(
+    authRoutes,
     userRoutes,
     patientRoutes,
     recordRoutes,
@@ -783,6 +787,17 @@ async function main(): Promise<void> {
     origin: process.env.CORS_ORIGIN,
   }
   app.use(cors(corsOptions))
+  app.use((req, res, next) => {
+    res.setHeader(
+      'Content-Security-Policy',
+      "default-src 'self'; font-src 'self' http://localhost:10000 data:; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self';"
+    )
+    next()
+  })
+  app.use('/upload', express.static(path.join(__dirname, 'upload')))
+
+  // app.use(passport.initialize())
+
   app.use('/api', mainRoutes.createRouter())
   app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 

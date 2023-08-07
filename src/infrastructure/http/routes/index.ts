@@ -8,10 +8,12 @@ import { QuestionRoutes } from './QuestionRoutes'
 import { ConsultationRoutes } from './ConsultationRoutes'
 import { HealthGoalRoutes } from './HealthGoalRoutes'
 import { NotificationRoutes } from './NotificationRoutes'
+import { AuthRoutes } from './AuthRoutes'
 
 export class MainRoutes {
   private readonly routes: Router
   constructor(
+    private readonly authRoutes: AuthRoutes,
     private readonly userRoutes: UserRoutes,
     private readonly patientRoutes: PatientRoutes,
     private readonly recordRoutes: RecordRoutes,
@@ -22,6 +24,7 @@ export class MainRoutes {
     private readonly notificationRoutes: NotificationRoutes
   ) {
     this.routes = Router()
+    this.routes.use('/auth', this.authRoutes.createRouter())
     this.routes.use('/users', this.userRoutes.createRouter())
     this.routes.use(
       '/patients',

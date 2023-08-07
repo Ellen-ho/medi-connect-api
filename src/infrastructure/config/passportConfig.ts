@@ -166,8 +166,10 @@ export class PassportConfig {
             .findById(googleId)
             .then((user) => {
               if (user !== null) {
-                done(null, user)
-                return
+                done(null, {
+                  user,
+                  url: '/',
+                })
               }
 
               if (user == null) {
