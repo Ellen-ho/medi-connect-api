@@ -22,6 +22,7 @@ export class PassportConfig {
     this.initializeJwtStrategy()
     this.initializeFacebookStrategy()
     this.initializeGoogleStrategy()
+    // this.initializeSerialization()
   }
 
   private initializeLocalStrategy(): void {
@@ -103,19 +104,19 @@ export class PassportConfig {
           profileFields: ['email', 'displayName'],
         },
         (accessToken, refreshToken, profile, done) => {
-          const { email, displayName } = profile._json
+          /**
+           * '{"id":"225701267113224","displayName":"Erica Chen","name":{},"provider":"facebook","_raw":"{\\"name\\":\\"Erica Chen\\",\\"id\\":\\"225701267113224\\"}","_json":{"name":"Erica Chen","id":"225701267113224"}}'
+           */
+          const { displayName } = profile
+          // TODO: get email from FB callback if they provide
+          const email = 'mock@gmail.com'
+          console.table({ profile: JSON.stringify(profile) })
           this.userRepo
-            .findByEmail(profile._json.email)
+            .findByEmail(email)
             .then((user) => {
+              // if user exists, just pass
               if (user !== null) {
                 done(null, user)
-                return
-              }
-              if (user == null) {
-                const error = new AuthenticationError(
-                  'Email or password is incorrect.'
-                )
-                done(error)
                 return
               }
 
@@ -133,7 +134,6 @@ export class PassportConfig {
                     createdAt: new Date(),
                     updatedAt: new Date(),
                   })
-
                   await this.userRepo.save(user)
                 })
                 .then((createdUser) => {
@@ -149,6 +149,14 @@ export class PassportConfig {
         }
       )
     )
+
+    passport.serializeUser((user, done) => {
+      done(null, user)
+    })
+
+    passport.deserializeUser((user: User, done) => {
+      done(null, user)
+    })
   }
 
   private initializeGoogleStrategy(): void {
@@ -209,4 +217,14 @@ export class PassportConfig {
       )
     )
   }
+
+  // private initializeSerialization(): void {
+  //   passport.serializeUser((user, done) => {
+  //     done(null, user)
+  //   })
+
+  //   passport.deserializeUser((user: User, done) => {
+  //     done(null, user)
+  //   })
+  // }
 }

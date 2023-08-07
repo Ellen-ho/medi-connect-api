@@ -25,6 +25,7 @@ export class UserController implements IUserController {
 
   public login = async (req: Request, res: Response): Promise<Response> => {
     const { id, email, createdAt, displayName, role } = req.user as User
+    console.table({ id, email, createdAt, displayName, role })
 
     const token = jwt.sign({ id, email }, process.env.JWT_SECRET as string, {
       expiresIn: '30d',
