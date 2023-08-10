@@ -3740,9 +3740,9 @@
     },
     "/questions/answers/{id}": {
       "get": {
-        "tags": ["question"],
-        "summary": "Get an answer's details.",
-        "description": "Get an answer's details.",
+        "tags": ["goal"],
+        "summary": "Get a health goal.",
+        "description": "Get a health goal.",
         "parameters": [
           {
             "in": "header",
@@ -3756,7 +3756,7 @@
           {
             "name": "id",
             "in": "path",
-            "description": "Answer id for the request",
+            "description": "Health goal id for the request",
             "required": true,
             "type": "string"
           }
@@ -3949,6 +3949,241 @@
                         "next": {
                           "type": "number",
                           "example": 3
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/goal/{id}": {
+      "get": {
+        "tags": ["question"],
+        "summary": "Get an answer's details.",
+        "description": "Get an answer's details.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Answer id for the request",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "targetPatientId",
+            "in": "query",
+            "description": "patient id for the requested profile",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully get a health goal.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "12345"
+                    },
+                    "bloodPressureCurrentValue": {
+                      "type": "object",
+                      "properties": {
+                        "systolicBloodPressure": {
+                          "type": "integer",
+                          "example": 130
+                        },
+                        "diastolicBloodPressure": {
+                          "type": "integer",
+                          "example": 80
+                        }
+                      },
+                      "nullable": true
+                    },
+                    "bloodSugarCurrentValue": {
+                      "type": "number",
+                      "format": "double",
+                      "example": 100.0
+                    },
+                    "bloodSugarCurrentType": {
+                      "type": "string",
+                      "enum": [
+                        "FAST_PLASMA_GLUCOSE",
+                        "POSTPRANDIAL_PLASMA_GLUCOS"
+                      ],
+                      "example": "FAST_PLASMA_GLUCOSE"
+                    },
+                    "bloodSugarTargetValue": {
+                      "type": "number",
+                      "format": "double",
+                      "example": 100.0
+                    },
+                    "bloodSugarTargetType": {
+                      "type": "string",
+                      "enum": [
+                        "FAST_PLASMA_GLUCOSE",
+                        "POSTPRANDIAL_PLASMA_GLUCOS"
+                      ],
+                      "example": "FAST_PLASMA_GLUCOSE"
+                    },
+                    "glycatedHemoglobinCurrentValue": {
+                      "type": "number",
+                      "format": "double",
+                      "example": 5.68
+                    },
+                    "glycatedHemoglobinTargetValue": {
+                      "type": "number",
+                      "format": "double",
+                      "example": 5.68
+                    },
+                    "weightCurrentValue": {
+                      "type": "number",
+                      "format": "double",
+                      "example": 65.5
+                    },
+                    "weightTargetValue": {
+                      "type": "number",
+                      "format": "double",
+                      "example": 65.5
+                    },
+                    "bodyMassIndexCurrentValue": {
+                      "type": "number",
+                      "format": "double",
+                      "example": 18.5
+                    },
+                    "bodyMassIndexTargetValue": {
+                      "type": "number",
+                      "format": "double",
+                      "example": 18.5
+                    },
+                    "startAt": {
+                      "type": "string",
+                      "example": "2023-06-18T05:23:25.231Z"
+                    },
+                    "endAt": {
+                      "type": "string",
+                      "example": "2023-07-18T05:23:25.231Z"
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "IN_PROGRESS",
+                        "ALL_GOALS_ACHIEVED",
+                        "PARTIAL_GOALS_ACHIEVED",
+                        "GOAL_FAILED",
+                        "PENDING",
+                        "REJECTED"
+                      ],
+                      "example": "IN_PROGRESS"
+                    },
+                    "result": {
+                      "type": "object",
+                      "properties": {
+                        "bloodPressure": {
+                          "type": "object",
+                          "properties": {
+                            "currentValue": {
+                              "type": "object",
+                              "properties": {
+                                "systolicBloodPressure": {
+                                  "type": "integer",
+                                  "nullable": true,
+                                  "example": 130
+                                },
+                                "diastolicBloodPressure": {
+                                  "type": "integer",
+                                  "nullable": true,
+                                  "example": 80
+                                }
+                              },
+                              "nullable": true
+                            },
+                            "goalAchieved": {
+                              "type": "boolean",
+                              "example": true
+                            },
+                            "currentValueDate": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "2023-06-18T05:23:25.231Z"
+                            }
+                          }
+                        },
+                        "bloodSugar": {
+                          "type": "object",
+                          "properties": {
+                            "currentValue": {
+                              "type": "number",
+                              "format": "double",
+                              "example": 100.0,
+                              "nullable": true
+                            },
+                            "goalAchieved": {
+                              "type": "boolean",
+                              "example": false
+                            }
+                          },
+                          "currentValueDate": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2023-06-18T05:23:25.231Z"
+                          }
+                        }
+                      },
+                      "glycatedHemoglobin": {
+                        "type": "object",
+                        "properties": {
+                          "currentValue": {
+                            "type": "number",
+                            "format": "double",
+                            "example": 5.62,
+                            "nullable": true
+                          },
+                          "goalAchieved": {
+                            "type": "boolean",
+                            "example": true
+                          },
+                          "currentValueDate": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2023-06-18T05:23:25.231Z"
+                          }
+                        }
+                      },
+                      "weight": {
+                        "type": "object",
+                        "properties": {
+                          "currentValue": {
+                            "type": "number",
+                            "format": "double",
+                            "example": "56.8",
+                            "nullable": true
+                          },
+                          "goalAchieved": {
+                            "type": "boolean",
+                            "example": true
+                          },
+                          "currentValueDate": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2023-06-18T05:23:25.231Z"
+                          }
                         }
                       }
                     }
