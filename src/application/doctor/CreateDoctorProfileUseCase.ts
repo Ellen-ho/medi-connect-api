@@ -4,11 +4,10 @@ import { Doctor, GenderType, IAddress } from '../../domain/doctor/Doctor'
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 import { MedicalSpecialtyType } from '../../domain/question/PatientQuestion'
 import { ValidationError } from '../../infrastructure/error/ValidationError'
-import { localFileHandler } from '../../infrastructure/http/middlewares/FileHandler'
 
 interface CreateDoctorProfileRequest {
   user: User
-  file: Express.Multer.File | null
+  avatar: string | null
   firstName: string
   lastName: string
   gender: GenderType
@@ -38,7 +37,7 @@ export class CreateDoctorProfileUseCase {
   ): Promise<CreateDoctorProfileResponse> {
     const {
       user,
-      file,
+      avatar,
       firstName,
       lastName,
       gender,
@@ -60,15 +59,9 @@ export class CreateDoctorProfileUseCase {
       throw new ValidationError('Doctor already exists.')
     }
 
-    let avatarFilePath: string | null = null
-    if (file !== null) {
-      const filePath = await localFileHandler(file)
-      avatarFilePath = filePath !== null ? filePath : null
-    }
-
     const doctor = new Doctor({
       id: this.uuidService.generateUuid(),
-      avatar: avatarFilePath,
+      avatar,
       firstName,
       lastName,
       gender,

@@ -8,6 +8,7 @@ import {
   logInUserSchema,
   registerUserSchema,
 } from '../../../application/user/UserValidator'
+import upload from '../middlewares/multer'
 export class UserRoutes {
   private readonly routes: Router
   constructor(private readonly userController: IUserController) {
@@ -34,6 +35,11 @@ export class UserRoutes {
         authenticated,
         validator(editUserAccountSchema),
         asyncHandler(this.userController.editUserAccount)
+      )
+      .post(
+        '/upload-avatar',
+        upload.fields([{ name: 'avatar', maxCount: 1 }]),
+        asyncHandler(this.userController.uploadAvatar)
       )
   }
 
