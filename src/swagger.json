@@ -3740,7 +3740,7 @@
     },
     "/questions/answers/{id}": {
       "get": {
-        "tags": ["goal"],
+        "tags": ["question"],
         "summary": "Get a health goal.",
         "description": "Get a health goal.",
         "parameters": [
@@ -3960,9 +3960,9 @@
         }
       }
     },
-    "/goal/{id}": {
+    "/goals/{id}": {
       "get": {
-        "tags": ["question"],
+        "tags": ["goal"],
         "summary": "Get an answer's details.",
         "description": "Get an answer's details.",
         "parameters": [
