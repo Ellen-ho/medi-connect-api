@@ -10,6 +10,7 @@ export const rejectHealthGoalSchema = {
 
 export const getHealthGoalSchema = {
   params: Joi.object({ id: Joi.string().uuid().required() }),
+  query: Joi.object({ targetPatientId: Joi.string().uuid().required() }),
 }
 
 export const getHealthGoalListSchema = {

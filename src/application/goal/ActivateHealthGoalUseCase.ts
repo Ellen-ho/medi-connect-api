@@ -20,7 +20,7 @@ interface ActivateHealthGoalResponse {
   bloodPressureTargetValue: IBloodPressureValue
   bloodSugarTargetValue: number
   bloodSugarTargetType: BloodSugarType
-  glycatedHemonglobinTargetValue: number
+  glycatedHemoglobinTargetValue: number
   weightTargetValue: number
   bodyMassIndexTargetValue: number
   startAt: Date
@@ -70,8 +70,8 @@ export class ActivateHealthGoalUseCase {
       bloodPressureTargetValue: existingHealthGoal.bloodPressureTargetValue,
       bloodSugarTargetValue: existingHealthGoal.bloodSugarTargetValue,
       bloodSugarTargetType: existingHealthGoal.bloodSugarTargetType,
-      glycatedHemonglobinTargetValue:
-        existingHealthGoal.glycatedHemonglobinTargetValue,
+      glycatedHemoglobinTargetValue:
+        existingHealthGoal.glycatedHemoglobinTargetValue,
       weightTargetValue: existingHealthGoal.weightTargetValue,
       bodyMassIndexTargetValue: existingHealthGoal.bodyMassIndexTargetValue,
       startAt: existingHealthGoal.startAt,
