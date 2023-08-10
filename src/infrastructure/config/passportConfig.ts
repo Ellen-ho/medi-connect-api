@@ -108,8 +108,8 @@ export class PassportConfig {
            * '{"id":"225701267113224","displayName":"Erica Chen","name":{},"provider":"facebook","_raw":"{\\"name\\":\\"Erica Chen\\",\\"id\\":\\"225701267113224\\"}","_json":{"name":"Erica Chen","id":"225701267113224"}}'
            */
           const { displayName } = profile
+          const { email } = profile._json
           // TODO: get email from FB callback if they provide
-          const email = 'mock@gmail.com'
           console.table({ profile: JSON.stringify(profile) })
           this.userRepo
             .findByEmail(email)
