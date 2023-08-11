@@ -765,7 +765,7 @@
           {
             "name": "targetPatientId",
             "in": "query",
-            "description": "patient id for the requested profile",
+            "description": "patient id for the request",
             "required": true,
             "type": "string"
           }
@@ -1892,7 +1892,7 @@
           {
             "name": "targetPatientId",
             "in": "query",
-            "description": "patient id for the requested profile",
+            "description": "patient id for the request",
             "required": true,
             "type": "string"
           }
@@ -2135,7 +2135,7 @@
           {
             "name": "targetPatientId",
             "in": "query",
-            "description": "patient id for the requested profile",
+            "description": "patient id for the request",
             "required": true,
             "type": "string"
           }
@@ -2358,7 +2358,7 @@
           {
             "name": "targetPatientId",
             "in": "query",
-            "description": "patient id for the requested profile",
+            "description": "patient id for the request",
             "required": true,
             "type": "string"
           }
@@ -2598,7 +2598,7 @@
           {
             "name": "targetPatientId",
             "in": "query",
-            "description": "patient id for the requested profile",
+            "description": "patient id for the request",
             "required": true,
             "type": "string"
           }
@@ -2808,7 +2808,7 @@
           {
             "name": "targetPatientId",
             "in": "query",
-            "description": "patient id for the requested profile",
+            "description": "patient id for the request",
             "required": true,
             "type": "string"
           }
@@ -3047,7 +3047,7 @@
           {
             "name": "targetPatientId",
             "in": "query",
-            "description": "patient id for the requested profile",
+            "description": "patient id for the request",
             "required": true,
             "type": "string"
           }
@@ -3089,6 +3089,291 @@
                         "bloodSugarNote": {
                           "type": "string",
                           "example": "Blood sugar note."
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-07-27T08:12:34Z"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-07-27T14:56:12Z"
+                        }
+                      }
+                    },
+                    "recordOwner": {
+                      "type": "object",
+                      "properties": {
+                        "firstName": {
+                          "type": "string",
+                          "example": "John"
+                        },
+                        "lastName": {
+                          "type": "string",
+                          "example": "Doe"
+                        },
+                        "birthDate": {
+                          "type": "string",
+                          "format": "date",
+                          "example": "1990-01-01"
+                        },
+                        "gender": {
+                          "type": "string",
+                          "enum": ["Male", "Female", "Other"],
+                          "example": "Male"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/records/food/{id}": {
+      "patch": {
+        "tags": ["record"],
+        "summary": "Edit the specific food record.",
+        "description": "Edit the specific food record.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Food record id for the request",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "55ge933e-22c2-4e9a-bf71-16086f54f3f2"
+                  },
+                  "foodTime": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-07-27T12:34:56Z"
+                  },
+                  "foodCategory": {
+                    "type": "string",
+                    "enum": [
+                      "FRUIT",
+                      "VEGETABLE",
+                      "RICE",
+                      "NOODLE",
+                      "BREAD",
+                      "OTHER_GRAINS",
+                      "DAIRY_PRODUCT",
+                      "MEAT",
+                      "FISH",
+                      "SEAFOOD",
+                      "EGG",
+                      "SOY_MILK",
+                      "SOY_PRODUCT",
+                      "NUT",
+                      "JUICE",
+                      "SUGARY_DRINK",
+                      "SUGAR_FREE_DRINK",
+                      "ALCOHOLIC_BEVERAGE",
+                      "SNACK"
+                    ],
+                    "example": "SNACK"
+                  },
+                  "foodAmount": {
+                    "type": "number",
+                    "format": "double",
+                    "example": 1.5
+                  },
+                  "foodNote": {
+                    "type": "string",
+                    "example": "Food note."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful edit single blood sugar record.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "55ge933e-22c2-4e9a-bf71-16086f54f3f2"
+                    },
+                    "foodTime": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T12:34:56Z"
+                    },
+                    "foodCategory": {
+                      "type": "string",
+                      "enum": [
+                        "FRUIT",
+                        "VEGETABLE",
+                        "RICE",
+                        "NOODLE",
+                        "BREAD",
+                        "OTHER_GRAINS",
+                        "DAIRY_PRODUCT",
+                        "MEAT",
+                        "FISH",
+                        "SEAFOOD",
+                        "EGG",
+                        "SOY_MILK",
+                        "SOY_PRODUCT",
+                        "NUT",
+                        "JUICE",
+                        "SUGARY_DRINK",
+                        "SUGAR_FREE_DRINK",
+                        "ALCOHOLIC_BEVERAGE",
+                        "SNACK"
+                      ],
+                      "example": "SNACK"
+                    },
+                    "foodAmount": {
+                      "type": "number",
+                      "format": "double",
+                      "example": 1.5
+                    },
+                    "kcalories": {
+                      "type": "number",
+                      "format": "double",
+                      "example": 288.5
+                    },
+                    "foodNote": {
+                      "type": "string",
+                      "example": "Food note."
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T08:12:34Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T14:56:12Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["record"],
+        "summary": "Get the specific food record.",
+        "description": "Get the specific food record.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Food record id for the request",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "targetPatientId",
+            "in": "query",
+            "description": "patient id for the request",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful get single food record.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "example": "55ge933e-22c2-4e9a-bf71-16086f54f3f2"
+                        },
+                        "foodTime": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-07-27T12:34:56Z"
+                        },
+                        "foodCategory": {
+                          "type": "string",
+                          "enum": [
+                            "FRUIT",
+                            "VEGETABLE",
+                            "RICE",
+                            "NOODLE",
+                            "BREAD",
+                            "OTHER_GRAINS",
+                            "DAIRY_PRODUCT",
+                            "MEAT",
+                            "FISH",
+                            "SEAFOOD",
+                            "EGG",
+                            "SOY_MILK",
+                            "SOY_PRODUCT",
+                            "NUT",
+                            "JUICE",
+                            "SUGARY_DRINK",
+                            "SUGAR_FREE_DRINK",
+                            "ALCOHOLIC_BEVERAGE",
+                            "SNACK"
+                          ],
+                          "example": "SNACK"
+                        },
+                        "foodAmount": {
+                          "type": "number",
+                          "format": "double",
+                          "example": 1.5
+                        },
+                        "kcalories": {
+                          "type": "number",
+                          "format": "double",
+                          "example": 288.5
+                        },
+                        "foodNote": {
+                          "type": "string",
+                          "example": "Food note."
                         },
                         "createdAt": {
                           "type": "string",
@@ -3985,7 +4270,7 @@
           {
             "name": "targetPatientId",
             "in": "query",
-            "description": "patient id for the requested profile",
+            "description": "patient id for the request",
             "required": true,
             "type": "string"
           }
