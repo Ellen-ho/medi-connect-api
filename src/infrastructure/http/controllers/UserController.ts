@@ -31,7 +31,6 @@ export class UserController implements IUserController {
 
   public login = async (req: Request, res: Response): Promise<Response> => {
     const { id, email, createdAt, displayName, role } = req.user as User
-    console.table({ id, email, createdAt, displayName, role })
 
     const token = jwt.sign({ id, email }, process.env.JWT_SECRET as string, {
       expiresIn: '30d',
@@ -39,17 +38,20 @@ export class UserController implements IUserController {
 
     let loginPatient
     let loginDoctor
+    let avatar
     if (role === UserRoleType.PATIENT) {
       loginPatient = await this.patientRepository.findByUserId(id)
+      avatar = loginPatient?.avatar
     }
 
     if (role === UserRoleType.DOCTOR) {
       loginDoctor = await this.doctorRepository.findByUserId(id)
+      avatar = loginDoctor?.avatar
     }
 
     return res.status(200).json({
       token,
-      user: { id, createdAt, displayName, role },
+      user: { id, createdAt, displayName, role, avatar },
       patientId: loginPatient?.id,
       doctorId: loginDoctor?.id,
     })
