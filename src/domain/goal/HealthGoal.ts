@@ -6,7 +6,7 @@ export interface IHealthGoalProps {
   bloodPressureTargetValue: IBloodPressureValue
   bloodSugarTargetValue: number
   bloodSugarTargetType: BloodSugarType
-  glycatedHemonglobinTargetValue: number
+  glycatedHemoglobinTargetValue: number
   weightTargetValue: number
   bodyMassIndexTargetValue: number
   startAt: Date
@@ -28,7 +28,7 @@ export interface IBloodPressureValue {
 export interface IHealthGoalResult {
   bloodPressure: IHealthGoalBloodPressureResultItem
   bloodSugar: IHealthGoalResultItem
-  glycatedHemonglobin: IHealthGoalResultItem
+  glycatedHemoglobin: IHealthGoalResultItem
   weight: IHealthGoalResultItem
 }
 
@@ -72,8 +72,8 @@ export class HealthGoal {
     return this.props.bloodSugarTargetType
   }
 
-  public get glycatedHemonglobinTargetValue(): number {
-    return this.props.glycatedHemonglobinTargetValue
+  public get glycatedHemoglobinTargetValue(): number {
+    return this.props.glycatedHemoglobinTargetValue
   }
 
   public get weightTargetValue(): number {

@@ -28,7 +28,7 @@ interface CreateHealthGoalResponse {
   bloodPressureTargetValue: IBloodPressureValue
   bloodSugarTargetValue: number
   bloodSugarTargetType: BloodSugarType
-  glycatedHemonglobinTargetValue: number
+  glycatedHemoglobinTargetValue: number
   weightTargetValue: number
   bodyMassIndexTargetValue: number
   startAt: Date
@@ -123,14 +123,14 @@ export class CreateHealthGoalUseCase {
       return null
     }
 
-    const checkedGlycatedHemonglobinRecord =
+    const checkedGlycatedHemoglobinRecord =
       await this.isGlycatedHemoglobinAbnormal(
         existingPatient.id,
         hospitalCheckDaysAgo
       )
     if (
-      checkedGlycatedHemonglobinRecord.status === StatusAfterCheck.EMERGENCY ||
-      checkedGlycatedHemonglobinRecord.status === StatusAfterCheck.INVALID
+      checkedGlycatedHemoglobinRecord.status === StatusAfterCheck.EMERGENCY ||
+      checkedGlycatedHemoglobinRecord.status === StatusAfterCheck.INVALID
     ) {
       return null
     }
@@ -148,7 +148,7 @@ export class CreateHealthGoalUseCase {
 
     const bloodSugarRelatedStatus =
       checkedBloodSugarRecord.status === StatusAfterCheck.ABNORMAL ||
-      checkedGlycatedHemonglobinRecord.status === StatusAfterCheck.ABNORMAL
+      checkedGlycatedHemoglobinRecord.status === StatusAfterCheck.ABNORMAL
         ? StatusAfterCheck.ABNORMAL
         : StatusAfterCheck.NORMAL
 
@@ -172,7 +172,7 @@ export class CreateHealthGoalUseCase {
       },
       bloodSugarTargetValue: 100,
       bloodSugarTargetType: BloodSugarType.FAST_PLASMA_GLUCOSE,
-      glycatedHemonglobinTargetValue: 5,
+      glycatedHemoglobinTargetValue: 5,
       weightTargetValue: 50,
       bodyMassIndexTargetValue: 22,
       startAt: new Date(),
@@ -200,7 +200,7 @@ export class CreateHealthGoalUseCase {
       bloodPressureTargetValue: healthGoal.bloodPressureTargetValue,
       bloodSugarTargetValue: healthGoal.bloodSugarTargetValue,
       bloodSugarTargetType: healthGoal.bloodSugarTargetType,
-      glycatedHemonglobinTargetValue: healthGoal.glycatedHemonglobinTargetValue,
+      glycatedHemoglobinTargetValue: healthGoal.glycatedHemoglobinTargetValue,
       weightTargetValue: healthGoal.weightTargetValue,
       bodyMassIndexTargetValue: healthGoal.bodyMassIndexTargetValue,
       startAt: new Date(),

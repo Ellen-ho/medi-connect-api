@@ -78,6 +78,7 @@ export class HealthGoalController implements IHealthGoalController {
     const request = {
       user: req.user as User,
       healthGoalId: req.params.id,
+      targetPatientId: req.query.targetPatientId as string,
     }
     const result = await this.getHealthGoalUseCase.execute(request)
     return res.status(200).json(result)

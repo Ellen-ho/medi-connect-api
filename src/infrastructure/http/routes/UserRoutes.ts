@@ -1,25 +1,19 @@
 import { Router } from 'express'
 import { IUserController } from '../controllers/UserController'
 import { asyncHandler } from '../middlewares/AsyncHandler'
-import {
-  authenticated,
-  authenticator,
-  facebookAuthenticator,
-  facebookCallbackAuthenticator,
-} from '../middlewares/Auth'
+import { authenticated, authenticator } from '../middlewares/Auth'
 import { validator } from '../middlewares/Validator'
 import {
   editUserAccountSchema,
   logInUserSchema,
   registerUserSchema,
 } from '../../../application/user/UserValidator'
+import upload from '../middlewares/multer'
 export class UserRoutes {
   private readonly routes: Router
   constructor(private readonly userController: IUserController) {
     this.routes = Router()
     this.routes
-      .get('/auth/facebook', facebookAuthenticator)
-      .get('/auth/facebook/callback', facebookCallbackAuthenticator)
       .post(
         '/login',
         validator(logInUserSchema),
@@ -41,6 +35,11 @@ export class UserRoutes {
         authenticated,
         validator(editUserAccountSchema),
         asyncHandler(this.userController.editUserAccount)
+      )
+      .post(
+        '/upload-avatar',
+        upload.fields([{ name: 'avatar', maxCount: 1 }]),
+        asyncHandler(this.userController.uploadAvatar)
       )
   }
 

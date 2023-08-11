@@ -20,6 +20,7 @@ import { ValidationError } from '../../infrastructure/error/ValidationError'
 interface GetHealthGoalRequest {
   healthGoalId: string
   user: User
+  targetPatientId: string
 }
 
 interface GetHealthGoalResponse {
@@ -30,8 +31,8 @@ interface GetHealthGoalResponse {
   bloodSugarCurrentType: BloodSugarType | null
   bloodSugarTargetValue: number
   bloodSugarTargetType: BloodSugarType
-  glycatedHemonglobinCurrentValue: number | null
-  glycatedHemonglobinTargetValue: number
+  glycatedHemoglobinCurrentValue: number | null
+  glycatedHemoglobinTargetValue: number
   weightCurrentValue: number | null
   weightTargetValue: number
   bodyMassIndexCurrentValue: number | null
@@ -50,7 +51,7 @@ export class GetHealthGoalUseCase {
     private readonly doctorRepository: IDoctorRepository,
     private readonly bloodPressureRecordRepository: IBloodPressureRecordRepository,
     private readonly bloodSugarRecordRepository: IBloodSugarRecordRepository,
-    private readonly glycatedHemonglobinRecordRepository: IGlycatedHemoglobinRecordRepository,
+    private readonly glycatedHemoglobinRecordRepository: IGlycatedHemoglobinRecordRepository,
     private readonly weightRecordRepository: IWeightRecordRepository,
     private readonly consultAppointmentRepository: IConsultAppointmentRepository
   ) {}
@@ -94,7 +95,7 @@ export class GetHealthGoalUseCase {
       )
 
     const glycatedHemoglobinRecords =
-      await this.glycatedHemonglobinRecordRepository.findByPatientIdAndDateRange(
+      await this.glycatedHemoglobinRecordRepository.findByPatientIdAndDateRange(
         existingHealthGoal.patientId,
         startDate,
         currentDate
@@ -108,9 +109,7 @@ export class GetHealthGoalUseCase {
       )
     }
 
-    console.table({ glycatedHemoglobinRecords })
-
-    const latestGlycatedHemonglobinValue =
+    const latestGlycatedHemoglobinValue =
       glycatedHemoglobinRecords.length > 0
         ? glycatedHemoglobinRecords[0].glycatedHemoglobinValuePercent
         : null
@@ -187,9 +186,9 @@ export class GetHealthGoalUseCase {
           : null,
       bloodSugarTargetValue: existingHealthGoal.bloodSugarTargetValue,
       bloodSugarTargetType: existingHealthGoal.bloodSugarTargetType,
-      glycatedHemonglobinCurrentValue: latestGlycatedHemonglobinValue,
-      glycatedHemonglobinTargetValue:
-        existingHealthGoal.glycatedHemonglobinTargetValue,
+      glycatedHemoglobinCurrentValue: latestGlycatedHemoglobinValue,
+      glycatedHemoglobinTargetValue:
+        existingHealthGoal.glycatedHemoglobinTargetValue,
       weightCurrentValue:
         latestWeightRecord !== null ? latestWeightRecord.weightValueKg : null,
       weightTargetValue: existingHealthGoal.weightTargetValue,

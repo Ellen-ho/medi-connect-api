@@ -56,7 +56,7 @@ export class HealthGoalEntity {
     scale: 2,
     nullable: true,
   })
-  public glycatedHemonglobinTargetValue!: number
+  public glycatedHemoglobinTargetValue!: number
 
   @Column({
     name: 'weight_target_value',
