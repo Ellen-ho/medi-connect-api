@@ -3704,6 +3704,407 @@
         }
       }
     },
+    "/records/glycated-hemoglobin": {
+      "post": {
+        "tags": ["record"],
+        "summary": "Create single glycated hemoglobin record.",
+        "description": "Create single glycated hemoglobin record.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "glycatedHemoglobinDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-06-18T05:23:25.231Z"
+                  },
+                  "glycatedHemoglobinValuePercent": {
+                    "type": "number",
+                    "format": "double",
+                    "example": 5.68
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful create single glycated hemoglobin record.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "ffed933e-22c2-4e9a-bf71-16086f54f3f2"
+                    },
+                    "glycatedHemoglobinDate": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T12:34:56Z"
+                    },
+                    "glycatedHemoglobinValuePercent": {
+                      "type": "number",
+                      "format": "double",
+                      "example": 5.68
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T08:12:34Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T14:56:12Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["record"],
+        "summary": "Get glycated hemoglobin records list.",
+        "description": "Get glycated hemoglobin records list.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "example": 1
+            },
+            "description": "Page number for pagination.",
+            "required": false
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "example": 10
+            },
+            "description": "Number of items to return per page.",
+            "required": false
+          },
+          {
+            "name": "targetPatientId",
+            "in": "query",
+            "description": "patient id for the request",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success getglycated hemoglobin records list.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "patientData": {
+                          "type": "object",
+                          "properties": {
+                            "firstName": {
+                              "type": "string",
+                              "example": "John"
+                            },
+                            "lastName": {
+                              "type": "string",
+                              "example": "Doe"
+                            },
+                            "birthDate": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "1990-01-01"
+                            },
+                            "gender": {
+                              "type": "string",
+                              "enum": ["MALE", "FEMALE", "OTHER"],
+                              "example": "MALE"
+                            }
+                          }
+                        },
+                        "recordsData": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "date": {
+                                "type": "string",
+                                "format": "date-time",
+                                "example": "2023-07-28"
+                              },
+                              "glycatedHemoglobinValuePercent": {
+                                "type": "number",
+                                "format": "double",
+                                "example": 5.68
+                              }
+                            }
+                          }
+                        },
+                        "pagination": {
+                          "type": "object",
+                          "properties": {
+                            "pages": {
+                              "type": "array",
+                              "items": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "example": [1, 2, 3]
+                            },
+                            "totalPage": {
+                              "type": "integer",
+                              "example": 5
+                            },
+                            "currentPage": {
+                              "type": "integer",
+                              "example": 2
+                            },
+                            "prev": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "next": {
+                              "type": "integer",
+                              "example": 3
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/records/glycated-hemoglobin/{id}": {
+      "patch": {
+        "tags": ["record"],
+        "summary": "Edit the specific glycated hemoglobin record.",
+        "description": "Edit the specific glycated hemoglobin record.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Glycated hemoglobin record id for the request",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "55ge933e-22c2-4e9a-bf71-16086f54f3f2"
+                  },
+                  "glycatedHemoglobinDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-07-27T12:34:56Z"
+                  },
+                  "glycatedHemoglobinValuePercent": {
+                    "type": "number",
+                    "format": "double",
+                    "example": 5.68
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful edit single glycated hemoglobin record.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "55ge933e-22c2-4e9a-bf71-16086f54f3f2"
+                    },
+                    "glycatedHemoglobinDate": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T12:34:56Z"
+                    },
+                    "glycatedHemoglobinValuePercent": {
+                      "type": "number",
+                      "format": "double",
+                      "example": 5.68
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T08:12:34Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T14:56:12Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["record"],
+        "summary": "Get the specific glycated hemoglobin record.",
+        "description": "Get the specific glycated hemoglobin record.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Glycated hemoglobin record id for the request",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "targetPatientId",
+            "in": "query",
+            "description": "patient id for the request",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful get single glycated hemoglobin record.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "example": "55ge933e-22c2-4e9a-bf71-16086f54f3f2"
+                        },
+                        "glycatedHemoglobinDate": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-07-27T12:34:56Z"
+                        },
+                        "glycatedHemoglobinValuePercent": {
+                          "type": "number",
+                          "format": "double",
+                          "example": 5.68
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-07-27T08:12:34Z"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-07-27T14:56:12Z"
+                        }
+                      }
+                    },
+                    "recordOwner": {
+                      "type": "object",
+                      "properties": {
+                        "firstName": {
+                          "type": "string",
+                          "example": "John"
+                        },
+                        "lastName": {
+                          "type": "string",
+                          "example": "Doe"
+                        },
+                        "birthDate": {
+                          "type": "string",
+                          "format": "date",
+                          "example": "1990-01-01"
+                        },
+                        "gender": {
+                          "type": "string",
+                          "enum": ["Male", "Female", "Other"],
+                          "example": "Male"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/consultations": {
       "post": {
         "tags": ["consultation"],
