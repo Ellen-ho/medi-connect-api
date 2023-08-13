@@ -4245,7 +4245,7 @@
                       "enum": ["LOW", "MODERATE", "HIGH"],
                       "example": "MODERATE"
                     },
-                    "kcalories": {
+                    "kcaloriesBurned": {
                       "type": "number",
                       "format": "double",
                       "example": 288.5
@@ -4383,6 +4383,554 @@
                                   "AEROBIC_EXERCISE"
                                 ],
                                 "example": "STRETCHING"
+                              }
+                            }
+                          }
+                        },
+                        "pagination": {
+                          "type": "object",
+                          "properties": {
+                            "pages": {
+                              "type": "array",
+                              "items": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "example": [1, 2, 3]
+                            },
+                            "totalPage": {
+                              "type": "integer",
+                              "example": 5
+                            },
+                            "currentPage": {
+                              "type": "integer",
+                              "example": 2
+                            },
+                            "prev": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "next": {
+                              "type": "integer",
+                              "example": 3
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "records/exercise/{id}": {
+      "patch": {
+        "tags": ["record"],
+        "summary": "Edit the specific exercise record.",
+        "description": "Edit the specific exercise record.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Exercise record id for the request",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "55ge933e-22c2-4e9a-bf71-16086f54f3f2"
+                  },
+                  "exerciseDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-07-27T12:34:56Z"
+                  },
+                  "exerciseType": {
+                    "type": "string",
+                    "enum": [
+                      "WALKING",
+                      "STRETCHING",
+                      "YOGA",
+                      "SLOW_DANCE",
+                      "BICYCLE",
+                      "GOLF",
+                      "SWIMMING",
+                      "PING_PONG",
+                      "BASEBALL",
+                      "BADMINTON",
+                      "FAST_DANCE",
+                      "WEIGHT_TRAINING",
+                      "RUNNING",
+                      "SPINNING_BIKE",
+                      "BASKETBALL",
+                      "SOCCER",
+                      "TENNIS",
+                      "AEROBIC_EXERCISE"
+                    ],
+                    "example": "STRETCHING"
+                  },
+                  "exerciseDurationMinute": {
+                    "type": "number",
+                    "format": "double",
+                    "example": 120.0
+                  },
+                  "exerciseIntensity": {
+                    "type": "string",
+                    "enum": ["LOW", "MODERATE", "HIGH"],
+                    "example": "MODERATE"
+                  },
+                  "exerciseNote": {
+                    "type": "string",
+                    "example": "Blood sugar note.",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful edit single exercise record.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "55ge933e-22c2-4e9a-bf71-16086f54f3f2"
+                    },
+                    "exerciseDate": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T12:34:56Z"
+                    },
+                    "exerciseType": {
+                      "type": "string",
+                      "enum": [
+                        "WALKING",
+                        "STRETCHING",
+                        "YOGA",
+                        "SLOW_DANCE",
+                        "BICYCLE",
+                        "GOLF",
+                        "SWIMMING",
+                        "PING_PONG",
+                        "BASEBALL",
+                        "BADMINTON",
+                        "FAST_DANCE",
+                        "WEIGHT_TRAINING",
+                        "RUNNING",
+                        "SPINNING_BIKE",
+                        "BASKETBALL",
+                        "SOCCER",
+                        "TENNIS",
+                        "AEROBIC_EXERCISE"
+                      ],
+                      "example": "STRETCHING"
+                    },
+                    "exerciseDurationMinute": {
+                      "type": "number",
+                      "format": "double",
+                      "example": 120.0
+                    },
+                    "exerciseIntensity": {
+                      "type": "string",
+                      "enum": ["LOW", "MODERATE", "HIGH"],
+                      "example": "MODERATE"
+                    },
+                    "kcaloriesBurned": {
+                      "type": "number",
+                      "format": "double",
+                      "example": 288.5
+                    },
+                    "exerciseNote": {
+                      "type": "string",
+                      "example": "Blood sugar note.",
+                      "nullable": true
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T08:12:34Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T14:56:12Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["record"],
+        "summary": "Get the specific exercise record.",
+        "description": "Get the specific exercise record.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Exercise record id for the request",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "targetPatientId",
+            "in": "query",
+            "description": "patient id for the request",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful get single exercise record.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "example": "55ge933e-22c2-4e9a-bf71-16086f54f3f2"
+                        },
+                        "exerciseDate": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-07-27T12:34:56Z"
+                        },
+                        "exerciseType": {
+                          "type": "string",
+                          "enum": [
+                            "WALKING",
+                            "STRETCHING",
+                            "YOGA",
+                            "SLOW_DANCE",
+                            "BICYCLE",
+                            "GOLF",
+                            "SWIMMING",
+                            "PING_PONG",
+                            "BASEBALL",
+                            "BADMINTON",
+                            "FAST_DANCE",
+                            "WEIGHT_TRAINING",
+                            "RUNNING",
+                            "SPINNING_BIKE",
+                            "BASKETBALL",
+                            "SOCCER",
+                            "TENNIS",
+                            "AEROBIC_EXERCISE"
+                          ],
+                          "example": "STRETCHING"
+                        },
+                        "exerciseDurationMinute": {
+                          "type": "number",
+                          "format": "double",
+                          "example": 120.0
+                        },
+                        "exerciseIntensity": {
+                          "type": "string",
+                          "enum": ["LOW", "MODERATE", "HIGH"],
+                          "example": "MODERATE"
+                        },
+                        "kcaloriesBurned": {
+                          "type": "number",
+                          "format": "double",
+                          "example": 288.5
+                        },
+                        "exerciseNote": {
+                          "type": "string",
+                          "example": "Blood sugar note.",
+                          "nullable": true
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-07-27T08:12:34Z"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-07-27T14:56:12Z"
+                        }
+                      }
+                    },
+                    "recordOwner": {
+                      "type": "object",
+                      "properties": {
+                        "firstName": {
+                          "type": "string",
+                          "example": "John"
+                        },
+                        "lastName": {
+                          "type": "string",
+                          "example": "Doe"
+                        },
+                        "birthDate": {
+                          "type": "string",
+                          "format": "date",
+                          "example": "1990-01-01"
+                        },
+                        "gender": {
+                          "type": "string",
+                          "enum": ["Male", "Female", "Other"],
+                          "example": "Male"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "records/sleep": {
+      "post": {
+        "tags": ["record"],
+        "summary": "Create single sleep record.",
+        "description": "Create single sleep record.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "sleepDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-06-18T05:23:25.231Z"
+                  },
+                  "sleepTime": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-06-18T05:23:25.231Z"
+                  },
+                  "wakeUpTime": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-06-18T05:23:25.231Z"
+                  },
+                  "sleepQuality": {
+                    "type": "string",
+                    "enum": ["EXCELLENT", "GOOD", "FAIR", "POOR"],
+                    "example": "FAIR"
+                  },
+                  "sleepNote": {
+                    "type": "string",
+                    "example": "sleep note.",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful create single sleep record.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "ffed933e-22c2-4e9a-bf71-16086f54f3f2"
+                    },
+                    "sleepDate": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-06-18T05:23:25.231Z"
+                    },
+                    "sleepTime": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-06-18T05:23:25.231Z"
+                    },
+                    "wakeUpTime": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-06-18T05:23:25.231Z"
+                    },
+                    "sleepQuality": {
+                      "type": "string",
+                      "enum": ["EXCELLENT", "GOOD", "FAIR", "POOR"],
+                      "example": "FAIR"
+                    },
+                    "sleepDurationHour": {
+                      "type": "number",
+                      "format": "double",
+                      "example": 7.5
+                    },
+                    "sleepNote": {
+                      "type": "string",
+                      "example": "sleep note.",
+                      "nullable": true
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T08:12:34Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T14:56:12Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["record"],
+        "summary": "Get sleep records list.",
+        "description": "Get sleep records list.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "example": 1
+            },
+            "description": "Page number for pagination.",
+            "required": false
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "example": 10
+            },
+            "description": "Number of items to return per page.",
+            "required": false
+          },
+          {
+            "name": "targetPatientId",
+            "in": "query",
+            "description": "patient id for the request",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get sleep records list.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "patientData": {
+                          "type": "object",
+                          "properties": {
+                            "firstName": {
+                              "type": "string",
+                              "example": "John"
+                            },
+                            "lastName": {
+                              "type": "string",
+                              "example": "Doe"
+                            },
+                            "birthDate": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "1990-01-01"
+                            },
+                            "gender": {
+                              "type": "string",
+                              "enum": ["MALE", "FEMALE", "OTHER"],
+                              "example": "MALE"
+                            }
+                          }
+                        },
+                        "recordsData": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "date": {
+                                "type": "string",
+                                "format": "date-time",
+                                "example": "2023-07-28"
+                              },
+                              "sleepQuality": {
+                                "type": "string",
+                                "enum": ["EXCELLENT", "GOOD", "FAIR", "POOR"],
+                                "example": "FAIR"
                               }
                             }
                           }
