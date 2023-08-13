@@ -4974,6 +4974,249 @@
         }
       }
     },
+    "records/sleep/{id}": {
+      "patch": {
+        "tags": ["record"],
+        "summary": "Edit the specific sleep record.",
+        "description": "Edit the specific sleep record.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Sleep record id for the request",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "55ge933e-22c2-4e9a-bf71-16086f54f3f2"
+                  },
+                  "sleepDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-06-18T05:23:25.231Z"
+                  },
+                  "sleepTime": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-06-18T05:23:25.231Z"
+                  },
+                  "wakeUpTime": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-06-18T05:23:25.231Z"
+                  },
+                  "sleepQuality": {
+                    "type": "string",
+                    "enum": ["EXCELLENT", "GOOD", "FAIR", "POOR"],
+                    "example": "FAIR"
+                  },
+                  "sleepNote": {
+                    "type": "string",
+                    "example": "sleep note.",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful edit single sleep record.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "55ge933e-22c2-4e9a-bf71-16086f54f3f2"
+                    },
+                    "sleepDate": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-06-18T05:23:25.231Z"
+                    },
+                    "sleepTime": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-06-18T05:23:25.231Z"
+                    },
+                    "wakeUpTime": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-06-18T05:23:25.231Z"
+                    },
+                    "sleepDurationHour": {
+                      "type": "number",
+                      "format": "double",
+                      "example": 7.5
+                    },
+                    "sleepQuality": {
+                      "type": "string",
+                      "enum": ["EXCELLENT", "GOOD", "FAIR", "POOR"],
+                      "example": "FAIR"
+                    },
+                    "sleepNote": {
+                      "type": "string",
+                      "example": "sleep note.",
+                      "nullable": true
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T08:12:34Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T14:56:12Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["record"],
+        "summary": "Get the specific sleep record.",
+        "description": "Get the specific sleep record.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Sleep record id for the request",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "targetPatientId",
+            "in": "query",
+            "description": "patient id for the request",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful get single sleep record.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "example": "55ge933e-22c2-4e9a-bf71-16086f54f3f2"
+                        },
+                        "sleepDate": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-06-18T05:23:25.231Z"
+                        },
+                        "sleepTime": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-06-18T05:23:25.231Z"
+                        },
+                        "wakeUpTime": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-06-18T05:23:25.231Z"
+                        },
+                        "sleepDurationHour": {
+                          "type": "number",
+                          "format": "double",
+                          "example": 7.5
+                        },
+                        "sleepQuality": {
+                          "type": "string",
+                          "enum": ["EXCELLENT", "GOOD", "FAIR", "POOR"],
+                          "example": "FAIR"
+                        },
+                        "sleepNote": {
+                          "type": "string",
+                          "example": "sleep note.",
+                          "nullable": true
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-07-27T08:12:34Z"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-07-27T14:56:12Z"
+                        }
+                      }
+                    },
+                    "recordOwner": {
+                      "type": "object",
+                      "properties": {
+                        "firstName": {
+                          "type": "string",
+                          "example": "John"
+                        },
+                        "lastName": {
+                          "type": "string",
+                          "example": "Doe"
+                        },
+                        "birthDate": {
+                          "type": "string",
+                          "format": "date",
+                          "example": "1990-01-01"
+                        },
+                        "gender": {
+                          "type": "string",
+                          "enum": ["Male", "Female", "Other"],
+                          "example": "Male"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/consultations": {
       "post": {
         "tags": ["consultation"],
@@ -5519,6 +5762,84 @@
       }
     },
     "/notifications/{id}": {
+      "get": {
+        "tags": ["notification"],
+        "summary": "Get notification details.",
+        "description": "Get notification details.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Notification id for the request",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully get notification details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "example": "New Notification"
+                    },
+                    "isRead": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "content": {
+                      "type": "string",
+                      "example": "This is the content of the notification."
+                    },
+                    "notificationType": {
+                      "type": "string",
+                      "enum": [
+                        "UPCOMING_APPOINTMENT",
+                        "CANCEL_APPOINTMENT",
+                        "CREATE_APPOINTMENT",
+                        "HEALTH_GOAL_NOTIFICATION",
+                        "GET_ANSWER_NOTIFICATION",
+                        "THANK_YOU_NOTIFICATION",
+                        "AGREED_NOTIFICATION",
+                        "CANCEL_OVERTIME_PENDING_GOAL"
+                      ],
+                      "example": "UPCOMING_APPOINTMENT"
+                    },
+                    "referenceId": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "55ge933e-22c2-4e9a-bf71-16086f54f3f2"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-08-02T12:34:56Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-08-02T12:34:56Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "delete": {
         "tags": ["notification"],
         "summary": "Delete a notification.",
