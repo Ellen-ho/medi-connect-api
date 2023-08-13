@@ -39,14 +39,17 @@ export class UserController implements IUserController {
     let loginPatient
     let loginDoctor
     let avatar
+    let hasProfile
     if (role === UserRoleType.PATIENT) {
       loginPatient = await this.patientRepository.findByUserId(id)
       avatar = loginPatient?.avatar
+      loginPatient !== null ? (hasProfile = true) : (hasProfile = false)
     }
 
     if (role === UserRoleType.DOCTOR) {
       loginDoctor = await this.doctorRepository.findByUserId(id)
       avatar = loginDoctor?.avatar
+      loginDoctor !== null ? (hasProfile = true) : (hasProfile = false)
     }
 
     return res.status(200).json({
@@ -54,6 +57,7 @@ export class UserController implements IUserController {
       user: { id, createdAt, displayName, role, avatar },
       patientId: loginPatient?.id,
       doctorId: loginDoctor?.id,
+      hasProfile,
     })
   }
 

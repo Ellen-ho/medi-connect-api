@@ -1796,7 +1796,8 @@
                   },
                   "weightNote": {
                     "type": "string",
-                    "example": "Weight note."
+                    "example": "Weight note.",
+                    "nullable": true
                   }
                 }
               }
@@ -2261,7 +2262,8 @@
                   },
                   "bloodPressureNote": {
                     "type": "string",
-                    "example": "Blood pressure note."
+                    "example": "Blood pressure note.",
+                    "nullable": true
                   }
                 }
               }
@@ -2300,7 +2302,8 @@
                     },
                     "bloodPressureNote": {
                       "type": "string",
-                      "example": "Blood pressure note."
+                      "example": "Blood pressure note.",
+                      "nullable": true
                     },
                     "createdAt": {
                       "type": "string",
@@ -2402,11 +2405,6 @@
                           "items": {
                             "type": "object",
                             "properties": {
-                              "id": {
-                                "type": "string",
-                                "format": "uuid",
-                                "example": "12345"
-                              },
                               "date": {
                                 "type": "string",
                                 "format": "date-time",
@@ -2516,7 +2514,8 @@
                   },
                   "bloodPressureNote": {
                     "type": "string",
-                    "example": "Blood pressure note."
+                    "example": "Blood pressure note.",
+                    "nullable": true
                   }
                 }
               }
@@ -2555,7 +2554,8 @@
                     },
                     "bloodPressureNote": {
                       "type": "string",
-                      "example": "Blood pressure note."
+                      "example": "Blood pressure note.",
+                      "nullable": true
                     },
                     "createdAt": {
                       "type": "string",
@@ -2638,7 +2638,8 @@
                         },
                         "bloodPressureNote": {
                           "type": "string",
-                          "example": "Blood pressure note."
+                          "example": "Blood pressure note.",
+                          "nullable": true
                         },
                         "createdAt": {
                           "type": "string",
@@ -2718,7 +2719,8 @@
                   },
                   "bloodSugarNote": {
                     "type": "string",
-                    "example": "Blood pressure note."
+                    "example": "Blood pressure note.",
+                    "nullable": true
                   }
                 }
               }
@@ -2750,7 +2752,8 @@
                     },
                     "bloodSugarNote": {
                       "type": "string",
-                      "example": "Blood pressure note."
+                      "example": "Blood pressure note.",
+                      "nullable": true
                     },
                     "createdAt": {
                       "type": "string",
@@ -2852,11 +2855,6 @@
                           "items": {
                             "type": "object",
                             "properties": {
-                              "id": {
-                                "type": "string",
-                                "format": "uuid",
-                                "example": "12345"
-                              },
                               "date": {
                                 "type": "string",
                                 "format": "date-time",
@@ -2964,7 +2962,8 @@
                   },
                   "bloodSugarNote": {
                     "type": "string",
-                    "example": "Blood sugar note."
+                    "example": "Blood sugar note.",
+                    "nullable": true
                   }
                 }
               }
@@ -3004,7 +3003,8 @@
                     },
                     "bloodSugarNote": {
                       "type": "string",
-                      "example": "Blood sugar note."
+                      "example": "Blood sugar note.",
+                      "nullable": true
                     },
                     "createdAt": {
                       "type": "string",
@@ -3088,7 +3088,8 @@
                         },
                         "bloodSugarNote": {
                           "type": "string",
-                          "example": "Blood sugar note."
+                          "example": "Blood sugar note.",
+                          "nullable": true
                         },
                         "createdAt": {
                           "type": "string",
@@ -3122,6 +3123,304 @@
                           "type": "string",
                           "enum": ["Male", "Female", "Other"],
                           "example": "Male"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/records/food": {
+      "post": {
+        "tags": ["record"],
+        "summary": "Create single food record.",
+        "description": "Create single food record.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "foodTime": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-06-18T05:23:25.231Z"
+                  },
+                  "foodCategory": {
+                    "type": "string",
+                    "enum": [
+                      "FRUIT",
+                      "VEGETABLE",
+                      "RICE",
+                      "NOODLE",
+                      "BREAD",
+                      "OTHER_GRAINS",
+                      "DAIRY_PRODUCT",
+                      "MEAT",
+                      "FISH",
+                      "SEAFOOD",
+                      "EGG",
+                      "SOY_MILK",
+                      "SOY_PRODUCT",
+                      "NUT",
+                      "JUICE",
+                      "SUGARY_DRINK",
+                      "SUGAR_FREE_DRINK",
+                      "ALCOHOLIC_BEVERAGE",
+                      "SNACK"
+                    ],
+                    "example": "SNACK"
+                  },
+                  "foodAmount": {
+                    "type": "number",
+                    "format": "double",
+                    "example": 1.5
+                  },
+                  "foodNote": {
+                    "type": "string",
+                    "example": "Blood pressure note.",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful create single food record.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "ffed933e-22c2-4e9a-bf71-16086f54f3f2"
+                    },
+                    "foodTime": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-06-18T05:23:25.231Z"
+                    },
+                    "foodCategory": {
+                      "type": "string",
+                      "enum": [
+                        "FRUIT",
+                        "VEGETABLE",
+                        "RICE",
+                        "NOODLE",
+                        "BREAD",
+                        "OTHER_GRAINS",
+                        "DAIRY_PRODUCT",
+                        "MEAT",
+                        "FISH",
+                        "SEAFOOD",
+                        "EGG",
+                        "SOY_MILK",
+                        "SOY_PRODUCT",
+                        "NUT",
+                        "JUICE",
+                        "SUGARY_DRINK",
+                        "SUGAR_FREE_DRINK",
+                        "ALCOHOLIC_BEVERAGE",
+                        "SNACK"
+                      ],
+                      "example": "SNACK"
+                    },
+                    "foodAmount": {
+                      "type": "number",
+                      "format": "double",
+                      "example": 1.5
+                    },
+                    "kcalories": {
+                      "type": "number",
+                      "format": "double",
+                      "example": 288.5
+                    },
+                    "foodNote": {
+                      "type": "string",
+                      "example": "Blood pressure note.",
+                      "nullable": true
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T08:12:34Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T14:56:12Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["record"],
+        "summary": "Get food records list.",
+        "description": "Get food records list.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "example": 1
+            },
+            "description": "Page number for pagination.",
+            "required": false
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "example": 10
+            },
+            "description": "Number of items to return per page.",
+            "required": false
+          },
+          {
+            "name": "targetPatientId",
+            "in": "query",
+            "description": "patient id for the request",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get food records list.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "patientData": {
+                          "type": "object",
+                          "properties": {
+                            "firstName": {
+                              "type": "string",
+                              "example": "John"
+                            },
+                            "lastName": {
+                              "type": "string",
+                              "example": "Doe"
+                            },
+                            "birthDate": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "1990-01-01"
+                            },
+                            "gender": {
+                              "type": "string",
+                              "enum": ["MALE", "FEMALE", "OTHER"],
+                              "example": "MALE"
+                            }
+                          }
+                        },
+                        "recordsData": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "date": {
+                                "type": "string",
+                                "format": "date-time",
+                                "example": "2023-07-28"
+                              },
+                              "foodCategory": {
+                                "type": "string",
+                                "enum": [
+                                  "FRUIT",
+                                  "VEGETABLE",
+                                  "RICE",
+                                  "NOODLE",
+                                  "BREAD",
+                                  "OTHER_GRAINS",
+                                  "DAIRY_PRODUCT",
+                                  "MEAT",
+                                  "FISH",
+                                  "SEAFOOD",
+                                  "EGG",
+                                  "SOY_MILK",
+                                  "SOY_PRODUCT",
+                                  "NUT",
+                                  "JUICE",
+                                  "SUGARY_DRINK",
+                                  "SUGAR_FREE_DRINK",
+                                  "ALCOHOLIC_BEVERAGE",
+                                  "SNACK"
+                                ],
+                                "example": "SNACK"
+                              }
+                            }
+                          }
+                        },
+                        "pagination": {
+                          "type": "object",
+                          "properties": {
+                            "pages": {
+                              "type": "array",
+                              "items": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "example": [1, 2, 3]
+                            },
+                            "totalPage": {
+                              "type": "integer",
+                              "example": 5
+                            },
+                            "currentPage": {
+                              "type": "integer",
+                              "example": 2
+                            },
+                            "prev": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "next": {
+                              "type": "integer",
+                              "example": 3
+                            }
+                          }
                         }
                       }
                     }
@@ -3205,7 +3504,8 @@
                   },
                   "foodNote": {
                     "type": "string",
-                    "example": "Food note."
+                    "example": "Food note.",
+                    "nullable": true
                   }
                 }
               }
@@ -3267,7 +3567,8 @@
                     },
                     "foodNote": {
                       "type": "string",
-                      "example": "Food note."
+                      "example": "Food note.",
+                      "nullable": true
                     },
                     "createdAt": {
                       "type": "string",
@@ -3373,7 +3674,8 @@
                         },
                         "foodNote": {
                           "type": "string",
-                          "example": "Food note."
+                          "example": "Food note.",
+                          "nullable": true
                         },
                         "createdAt": {
                           "type": "string",
@@ -3407,6 +3709,712 @@
                           "type": "string",
                           "enum": ["Male", "Female", "Other"],
                           "example": "Male"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/records/glycated-hemoglobin": {
+      "post": {
+        "tags": ["record"],
+        "summary": "Create single glycated hemoglobin record.",
+        "description": "Create single glycated hemoglobin record.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "glycatedHemoglobinDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-06-18T05:23:25.231Z"
+                  },
+                  "glycatedHemoglobinValuePercent": {
+                    "type": "number",
+                    "format": "double",
+                    "example": 5.68
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful create single glycated hemoglobin record.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "ffed933e-22c2-4e9a-bf71-16086f54f3f2"
+                    },
+                    "glycatedHemoglobinDate": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T12:34:56Z"
+                    },
+                    "glycatedHemoglobinValuePercent": {
+                      "type": "number",
+                      "format": "double",
+                      "example": 5.68
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T08:12:34Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T14:56:12Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["record"],
+        "summary": "Get glycated hemoglobin records list.",
+        "description": "Get glycated hemoglobin records list.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "example": 1
+            },
+            "description": "Page number for pagination.",
+            "required": false
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "example": 10
+            },
+            "description": "Number of items to return per page.",
+            "required": false
+          },
+          {
+            "name": "targetPatientId",
+            "in": "query",
+            "description": "patient id for the request",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success getglycated hemoglobin records list.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "patientData": {
+                          "type": "object",
+                          "properties": {
+                            "firstName": {
+                              "type": "string",
+                              "example": "John"
+                            },
+                            "lastName": {
+                              "type": "string",
+                              "example": "Doe"
+                            },
+                            "birthDate": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "1990-01-01"
+                            },
+                            "gender": {
+                              "type": "string",
+                              "enum": ["MALE", "FEMALE", "OTHER"],
+                              "example": "MALE"
+                            }
+                          }
+                        },
+                        "recordsData": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "date": {
+                                "type": "string",
+                                "format": "date-time",
+                                "example": "2023-07-28"
+                              },
+                              "glycatedHemoglobinValuePercent": {
+                                "type": "number",
+                                "format": "double",
+                                "example": 5.68
+                              }
+                            }
+                          }
+                        },
+                        "pagination": {
+                          "type": "object",
+                          "properties": {
+                            "pages": {
+                              "type": "array",
+                              "items": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "example": [1, 2, 3]
+                            },
+                            "totalPage": {
+                              "type": "integer",
+                              "example": 5
+                            },
+                            "currentPage": {
+                              "type": "integer",
+                              "example": 2
+                            },
+                            "prev": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "next": {
+                              "type": "integer",
+                              "example": 3
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/records/glycated-hemoglobin/{id}": {
+      "patch": {
+        "tags": ["record"],
+        "summary": "Edit the specific glycated hemoglobin record.",
+        "description": "Edit the specific glycated hemoglobin record.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Glycated hemoglobin record id for the request",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "55ge933e-22c2-4e9a-bf71-16086f54f3f2"
+                  },
+                  "glycatedHemoglobinDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-07-27T12:34:56Z"
+                  },
+                  "glycatedHemoglobinValuePercent": {
+                    "type": "number",
+                    "format": "double",
+                    "example": 5.68
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful edit single glycated hemoglobin record.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "55ge933e-22c2-4e9a-bf71-16086f54f3f2"
+                    },
+                    "glycatedHemoglobinDate": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T12:34:56Z"
+                    },
+                    "glycatedHemoglobinValuePercent": {
+                      "type": "number",
+                      "format": "double",
+                      "example": 5.68
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T08:12:34Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T14:56:12Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["record"],
+        "summary": "Get the specific glycated hemoglobin record.",
+        "description": "Get the specific glycated hemoglobin record.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Glycated hemoglobin record id for the request",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "targetPatientId",
+            "in": "query",
+            "description": "patient id for the request",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful get single glycated hemoglobin record.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "example": "55ge933e-22c2-4e9a-bf71-16086f54f3f2"
+                        },
+                        "glycatedHemoglobinDate": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-07-27T12:34:56Z"
+                        },
+                        "glycatedHemoglobinValuePercent": {
+                          "type": "number",
+                          "format": "double",
+                          "example": 5.68
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-07-27T08:12:34Z"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-07-27T14:56:12Z"
+                        }
+                      }
+                    },
+                    "recordOwner": {
+                      "type": "object",
+                      "properties": {
+                        "firstName": {
+                          "type": "string",
+                          "example": "John"
+                        },
+                        "lastName": {
+                          "type": "string",
+                          "example": "Doe"
+                        },
+                        "birthDate": {
+                          "type": "string",
+                          "format": "date",
+                          "example": "1990-01-01"
+                        },
+                        "gender": {
+                          "type": "string",
+                          "enum": ["Male", "Female", "Other"],
+                          "example": "Male"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/records/exercise": {
+      "post": {
+        "tags": ["record"],
+        "summary": "Create single exercise record.",
+        "description": "Create single exercise record.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "exerciseDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-06-18T05:23:25.231Z"
+                  },
+                  "exerciseType": {
+                    "type": "string",
+                    "enum": [
+                      "WALKING",
+                      "STRETCHING",
+                      "YOGA",
+                      "SLOW_DANCE",
+                      "BICYCLE",
+                      "GOLF",
+                      "SWIMMING",
+                      "PING_PONG",
+                      "BASEBALL",
+                      "BADMINTON",
+                      "FAST_DANCE",
+                      "WEIGHT_TRAINING",
+                      "RUNNING",
+                      "SPINNING_BIKE",
+                      "BASKETBALL",
+                      "SOCCER",
+                      "TENNIS",
+                      "AEROBIC_EXERCISE"
+                    ],
+                    "example": "STRETCHING"
+                  },
+                  "exerciseDurationMinute": {
+                    "type": "number",
+                    "format": "double",
+                    "example": 120.0
+                  },
+                  "exerciseIntensity": {
+                    "type": "string",
+                    "enum": ["LOW", "MODERATE", "HIGH"],
+                    "example": "MODERATE"
+                  },
+                  "exerciseNote": {
+                    "type": "string",
+                    "example": "exercise note.",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful create single exercise record.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "ffed933e-22c2-4e9a-bf71-16086f54f3f2"
+                    },
+                    "exerciseDate": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-06-18T05:23:25.231Z"
+                    },
+                    "exerciseType": {
+                      "type": "string",
+                      "enum": [
+                        "WALKING",
+                        "STRETCHING",
+                        "YOGA",
+                        "SLOW_DANCE",
+                        "BICYCLE",
+                        "GOLF",
+                        "SWIMMING",
+                        "PING_PONG",
+                        "BASEBALL",
+                        "BADMINTON",
+                        "FAST_DANCE",
+                        "WEIGHT_TRAINING",
+                        "RUNNING",
+                        "SPINNING_BIKE",
+                        "BASKETBALL",
+                        "SOCCER",
+                        "TENNIS",
+                        "AEROBIC_EXERCISE"
+                      ],
+                      "example": "STRETCHING"
+                    },
+                    "exerciseDurationMinute": {
+                      "type": "number",
+                      "format": "double",
+                      "example": 120.0
+                    },
+                    "exerciseIntensity": {
+                      "type": "string",
+                      "enum": ["LOW", "MODERATE", "HIGH"],
+                      "example": "MODERATE"
+                    },
+                    "kcalories": {
+                      "type": "number",
+                      "format": "double",
+                      "example": 288.5
+                    },
+                    "exerciseNote": {
+                      "type": "string",
+                      "example": "exercise note.",
+                      "nullable": true
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T08:12:34Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T14:56:12Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["record"],
+        "summary": "Get exercise records list.",
+        "description": "Get exercise records list.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "example": 1
+            },
+            "description": "Page number for pagination.",
+            "required": false
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "example": 10
+            },
+            "description": "Number of items to return per page.",
+            "required": false
+          },
+          {
+            "name": "targetPatientId",
+            "in": "query",
+            "description": "patient id for the request",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get exercise records list.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "patientData": {
+                          "type": "object",
+                          "properties": {
+                            "firstName": {
+                              "type": "string",
+                              "example": "John"
+                            },
+                            "lastName": {
+                              "type": "string",
+                              "example": "Doe"
+                            },
+                            "birthDate": {
+                              "type": "string",
+                              "format": "date-time",
+                              "example": "1990-01-01"
+                            },
+                            "gender": {
+                              "type": "string",
+                              "enum": ["MALE", "FEMALE", "OTHER"],
+                              "example": "MALE"
+                            }
+                          }
+                        },
+                        "recordsData": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "date": {
+                                "type": "string",
+                                "format": "date-time",
+                                "example": "2023-07-28"
+                              },
+                              "exerciseType": {
+                                "type": "string",
+                                "enum": [
+                                  "WALKING",
+                                  "STRETCHING",
+                                  "YOGA",
+                                  "SLOW_DANCE",
+                                  "BICYCLE",
+                                  "GOLF",
+                                  "SWIMMING",
+                                  "PING_PONG",
+                                  "BASEBALL",
+                                  "BADMINTON",
+                                  "FAST_DANCE",
+                                  "WEIGHT_TRAINING",
+                                  "RUNNING",
+                                  "SPINNING_BIKE",
+                                  "BASKETBALL",
+                                  "SOCCER",
+                                  "TENNIS",
+                                  "AEROBIC_EXERCISE"
+                                ],
+                                "example": "STRETCHING"
+                              }
+                            }
+                          }
+                        },
+                        "pagination": {
+                          "type": "object",
+                          "properties": {
+                            "pages": {
+                              "type": "array",
+                              "items": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "example": [1, 2, 3]
+                            },
+                            "totalPage": {
+                              "type": "integer",
+                              "example": 5
+                            },
+                            "currentPage": {
+                              "type": "integer",
+                              "example": 2
+                            },
+                            "prev": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "next": {
+                              "type": "integer",
+                              "example": 3
+                            }
+                          }
                         }
                       }
                     }
