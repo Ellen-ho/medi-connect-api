@@ -108,6 +108,7 @@ describe('Integration test: GetSingleBloodPressureRecordUseCase', () => {
     const request: GetSingleBloodPressureRecordRequest = {
       user: mockUser,
       bloodPressureRecordId: mockTargetBloodPressureRecordId,
+      targetPatientId: mockPatient.id,
     }
     const result = await useCase.execute(request)
 
@@ -149,6 +150,7 @@ describe('Integration test: GetSingleBloodPressureRecordUseCase', () => {
     const request: GetSingleBloodPressureRecordRequest = {
       user: mockUser,
       bloodPressureRecordId: '532b4a37-cc5c-4193-9a9b-f2789102f3f9',
+      targetPatientId: mockPatient.id,
     }
     await expect(useCase.execute(request)).rejects.toThrow(NotFoundError)
   })
@@ -193,6 +195,7 @@ describe('Integration test: GetSingleBloodPressureRecordUseCase', () => {
     const request: GetSingleBloodPressureRecordRequest = {
       user: mockUser,
       bloodPressureRecordId: mockTargetBloodPressureRecordId,
+      targetPatientId: mockPatient2.id,
     }
     await expect(useCase.execute(request)).rejects.toThrow(AuthorizationError)
   })
@@ -240,6 +243,7 @@ describe('Integration test: GetSingleBloodPressureRecordUseCase', () => {
     const request: GetSingleBloodPressureRecordRequest = {
       user: mockDoctorUser,
       bloodPressureRecordId: mockTargetBloodPressureRecordId,
+      targetPatientId: mockPatient.id,
     }
     await expect(useCase.execute(request)).rejects.toThrow(AuthorizationError)
   })
@@ -296,6 +300,7 @@ describe('Integration test: GetSingleBloodPressureRecordUseCase', () => {
     const request: GetSingleBloodPressureRecordRequest = {
       user: mockUser,
       bloodPressureRecordId: mockTargetBloodPressureRecordId,
+      targetPatientId: mockPatient2.id,
     }
     await expect(useCase.execute(request)).rejects.toThrow(AuthorizationError)
   })
@@ -340,6 +345,7 @@ describe('Integration test: GetSingleBloodPressureRecordUseCase', () => {
     const request: GetSingleBloodPressureRecordRequest = {
       user: mockUser,
       bloodPressureRecordId: mockTargetBloodPressureRecordId,
+      targetPatientId: mockPatient2.id,
     }
     await expect(useCase.execute(request)).rejects.toThrow(AuthorizationError)
   })
@@ -385,6 +391,7 @@ describe('Integration test: GetSingleBloodPressureRecordUseCase', () => {
     const request: GetSingleBloodPressureRecordRequest = {
       user: mockUser,
       bloodPressureRecordId: mockTargetBloodPressureRecordId,
+      targetPatientId: mockPatient2.id,
     }
     await expect(useCase.execute(request)).rejects.toThrow(AuthorizationError)
   })

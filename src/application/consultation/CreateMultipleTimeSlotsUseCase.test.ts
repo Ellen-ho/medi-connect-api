@@ -72,6 +72,7 @@ describe('Unit test: CreateMultipleTimeSlotsUseCase', () => {
     endAt: new Date('2023-07-18T13:30:00.155Z'),
     createdAt: mockedDate,
     updatedAt: mockedDate,
+    deletedAt: new Date('2023-07-18T13:30:00.155Z'),
     availability: true,
   })
   const mockRequest = {

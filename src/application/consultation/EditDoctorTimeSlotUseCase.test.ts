@@ -111,6 +111,7 @@ describe('Unit test: EditDoctorTimeSlotUseCase', () => {
       endAt: new Date('2023-07-18T13:30:00.155Z'),
       createdAt: mockedDate,
       updatedAt: mockedDate,
+      deletedAt: new Date('2023-07-18T13:30:00.155Z'),
       availability: true,
     })
 
@@ -144,6 +145,7 @@ describe('Unit test: EditDoctorTimeSlotUseCase', () => {
       endAt: new Date('2023-05-18T13:30:00.155Z'),
       createdAt: mockedDate,
       updatedAt: mockedDate,
+      deletedAt: new Date('2023-07-18T13:30:00.155Z'),
       availability: true,
     })
     mockDoctorRepo.findByUserId.mockResolvedValue(mockExistingDoctor)
@@ -175,6 +177,7 @@ describe('Unit test: EditDoctorTimeSlotUseCase', () => {
       endAt: new Date('2023-05-21T13:00:00.155Z'),
       createdAt: mockedDate,
       updatedAt: mockedDate,
+      deletedAt: new Date('2023-07-18T13:30:00.155Z'),
       availability: true,
     })
     mockDoctorRepo.findByUserId.mockResolvedValue(mockExistingDoctor)
@@ -206,6 +209,7 @@ describe('Unit test: EditDoctorTimeSlotUseCase', () => {
       endAt: new Date('2023-05-21T13:20:00.155Z'),
       createdAt: mockedDate,
       updatedAt: mockedDate,
+      deletedAt: new Date('2023-07-18T13:30:00.155Z'),
       availability: true,
     })
     mockDoctorRepo.findByUserId.mockResolvedValue(mockExistingDoctor)
@@ -237,6 +241,7 @@ describe('Unit test: EditDoctorTimeSlotUseCase', () => {
       endAt: new Date('2023-08-21T13:30:00.155Z'),
       createdAt: mockedDate,
       updatedAt: mockedDate,
+      deletedAt: new Date('2023-07-18T13:30:00.155Z'),
       availability: true,
     })
     mockDoctorRepo.findByUserId.mockResolvedValue(mockExistingDoctor)
@@ -268,6 +273,7 @@ describe('Unit test: EditDoctorTimeSlotUseCase', () => {
       endAt: new Date('2023-07-21T13:30:00.155Z'),
       createdAt: mockedDate,
       updatedAt: new Date('2023-06-19T13:30:00.155Z'),
+      deletedAt: new Date('2023-07-18T13:30:00.155Z'),
       availability: true,
     })
     mockDoctorRepo.findByUserId.mockResolvedValue(mockExistingDoctor)
