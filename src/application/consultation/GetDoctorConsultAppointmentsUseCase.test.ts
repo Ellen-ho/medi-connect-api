@@ -103,6 +103,7 @@ describe('Unit test: GetDoctorConsultAppointmentsUseCase', () => {
     }
     const mockUpcomingAppointments = [
       {
+        appointmentId: '98e647d7-259c-4961-8102-97bb582422de',
         status: ConsultAppointmentStatusType.UPCOMING,
         doctorTimeSlot: {
           doctorId: 'doctor1',
@@ -110,6 +111,7 @@ describe('Unit test: GetDoctorConsultAppointmentsUseCase', () => {
           endAt: new Date('2023-06-19T09:30:00'),
         },
         patient: {
+          id: '2e9915e3-43c9-4f3c-9e52-59c83bb22f36',
           firstName: 'John',
           lastName: 'Lin',
         },
@@ -118,6 +120,7 @@ describe('Unit test: GetDoctorConsultAppointmentsUseCase', () => {
     ]
     const mockCompletedAppointments = [
       {
+        appointmentId: '66f547d7-259c-4961-8102-97bb582422de',
         status: ConsultAppointmentStatusType.COMPLETED,
         doctorTimeSlot: {
           doctorId: 'doctor1',
@@ -125,6 +128,7 @@ describe('Unit test: GetDoctorConsultAppointmentsUseCase', () => {
           endAt: new Date('2023-06-08T14:30:00'),
         },
         patient: {
+          id: '67f547d7-259c-4961-8102-97bb582422de',
           firstName: 'Jane',
           lastName: 'Smith',
         },
@@ -133,6 +137,7 @@ describe('Unit test: GetDoctorConsultAppointmentsUseCase', () => {
     ]
     const mockCanceledAppointments = [
       {
+        appointmentId: '99f547d7-259c-4961-8102-97bb582422de',
         status: ConsultAppointmentStatusType.PATIENT_CANCELED,
         doctorTimeSlot: {
           doctorId: 'doctor1',
@@ -140,6 +145,7 @@ describe('Unit test: GetDoctorConsultAppointmentsUseCase', () => {
           endAt: new Date('2023-06-15T15:00:00'),
         },
         patient: {
+          id: '88f547d7-259c-4961-8102-97bb582422de',
           firstName: 'Amy',
           lastName: 'Smith',
         },

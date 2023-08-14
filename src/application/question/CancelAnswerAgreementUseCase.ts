@@ -1,9 +1,11 @@
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
+import { NotificationType } from '../../domain/notification/Notification'
 import { IAnswerAgreementRepository } from '../../domain/question/interfaces/repositories/IAnswerAgreementRepository'
 import { IPatientQuestionAnswerRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionAnswerRepository'
 import { User } from '../../domain/user/User'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
 import { NotFoundError } from '../../infrastructure/error/NotFoundError'
+import { INotificationHelper } from '../notification/NotificationHelper'
 
 export interface CancelAnswerAgreementRequest {
   user: User
@@ -19,7 +21,8 @@ export class CancelAnswerAgreementUseCase {
   constructor(
     private readonly answerAgreementRepository: IAnswerAgreementRepository,
     private readonly doctorRepository: IDoctorRepository,
-    private readonly patientQuestionAnswerRepository: IPatientQuestionAnswerRepository
+    private readonly patientQuestionAnswerRepository: IPatientQuestionAnswerRepository,
+    private readonly notifictionHelper: INotificationHelper
   ) {}
 
   public async execute(
@@ -33,6 +36,16 @@ export class CancelAnswerAgreementUseCase {
     if (existingAnswer == null) {
       throw new NotFoundError('Answer does not exist.')
     }
+
+    const doctorBeAgreed = await this.doctorRepository.findByDoctorId(
+      existingAnswer.doctorId
+    )
+    if (doctorBeAgreed == null) {
+      throw new AuthorizationError(
+        'There is no doctor who has been agreed upon.'
+      )
+    }
+
     const existingDoctor = await this.doctorRepository.findByUserId(user.id)
 
     if (existingDoctor == null) {
@@ -49,6 +62,14 @@ export class CancelAnswerAgreementUseCase {
     }
 
     await this.answerAgreementRepository.delete(existingAnswerAgreement)
+
+    await this.notifictionHelper.createNotification({
+      title: 'One of your agreements has been canceled.',
+      content: 'One of your agreements has been canceled.',
+      notificationType: NotificationType.AGREED_BE_CANCELED_NOTIFICATION,
+      referenceId: existingAnswer.id,
+      user: doctorBeAgreed.user,
+    })
 
     const totalAgreedDoctorCounts =
       await this.answerAgreementRepository.countsByAnswerId(

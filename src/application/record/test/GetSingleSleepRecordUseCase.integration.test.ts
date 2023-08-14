@@ -10,6 +10,12 @@ import { UserRepository } from '../../../infrastructure/entities/user/UserReposi
 import { DoctorRepository } from '../../../infrastructure/entities/doctor/DoctorRepository'
 import { ConsultAppointmentRepository } from '../../../infrastructure/entities/consultation/ConsultAppointmentRepository'
 import { faker } from '@faker-js/faker'
+import { UserRoleType } from '../../../domain/user/User'
+import { PatientFactory } from '../../../domain/patient/test/PatientFactory'
+import { UserFactory } from '../../../domain/user/test/UserFactory'
+import { SleepRecordFactory } from '../../../domain/record/test/SleepRecordFactory'
+import { mock } from 'jest-mock-extended'
+import { IUuidService } from '../../../domain/utils/IUuidService'
 // import { AuthorizationError } from '../../../infrastructure/error/AuthorizationError'
 // import { NotFoundError } from '../../../infrastructure/error/NotFoundError'
 
@@ -98,6 +104,7 @@ describe('Integration test: GetSingleSleepRecordUseCase', () => {
     const request: GetSingleSleepRecordRequest = {
       user: mockUser,
       sleepRecordId: mockTargetSleepRecordId,
+      targetPatientId: mockUser.id,
     }
     const result = await useCase.execute(request)
 
@@ -121,7 +128,7 @@ describe('Integration test: GetSingleSleepRecordUseCase', () => {
     }
     expect(result).toEqual(expected)
   })
-  // it('should throw NotFoundError if this record not  found in DB', async () => {
+  // it('should throw NotFoundError if this record not found in DB', async () => {
   //   const mockUser = UserFactory.build({
   //     id: faker.string.uuid(),
   //     email: 'test@test.com',

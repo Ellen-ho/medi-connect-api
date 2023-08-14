@@ -96,7 +96,11 @@ describe('Integration test: CancelAnswerAgreementUseCase', () => {
     )
     userRepo = new UserRepository(database.getDataSource())
 
-    useCase = new CancelAnswerAgreementUseCase(answerAgreementRepo, doctorRepo)
+    useCase = new CancelAnswerAgreementUseCase(
+      answerAgreementRepo,
+      doctorRepo,
+      patientQuestionAnswerRepo
+    )
   }, 300000)
 
   beforeEach(async () => {})
@@ -137,7 +141,7 @@ describe('Integration test: CancelAnswerAgreementUseCase', () => {
 
     const request: CancelAnswerAgreementRequest = {
       user: mockAgreedDoctorUser,
-      answerAgreementId: mockTargetAgreementId,
+      answerId: mockAgreement.answerId,
     }
     const result = await useCase.execute(request)
     const expected = {
@@ -173,7 +177,7 @@ describe('Integration test: CancelAnswerAgreementUseCase', () => {
 
     const request: CancelAnswerAgreementRequest = {
       user: mockDoctorUser,
-      answerAgreementId: mockTargetAgreementId,
+      answerId: mockAgreement.answerId,
     }
     await expect(useCase.execute(request)).rejects.toThrow(AuthorizationError)
   })
@@ -188,7 +192,7 @@ describe('Integration test: CancelAnswerAgreementUseCase', () => {
     await patientQuestionAnswerRepo.save(mockAnswer)
     const request: CancelAnswerAgreementRequest = {
       user: mockAgreedDoctorUser,
-      answerAgreementId: 'bdd6b872-6424-416d-984c-99260115ef7a',
+      answerId: 'bdd6b872-6424-416d-984c-99260115ef7a',
     }
     await expect(useCase.execute(request)).rejects.toThrow(NotFoundError)
   })
