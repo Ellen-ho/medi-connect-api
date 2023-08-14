@@ -5260,6 +5260,72 @@
         }
       }
     },
+    "/consultations/{id}": {
+      "delete": {
+        "tags": ["consultation"],
+        "summary": "Delete a consult appointment.",
+        "description": "Delete a consult appointment.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Consult appointment id for the request",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "consultAppointmentId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "79ed933e-22c2-4e9a-bf71-16086f54f3f2"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully delete a consult appointment.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "consultAppointmentId": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "79ed933e-22c2-4e9a-bf71-16086f54f3f2"
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": ["UPCOMING", "COMPLETED", "PATIENT_CANCELED"],
+                      "example": "UPCOMING"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/consultations/time-slot": {
       "post": {
         "tags": ["consultation"],
@@ -5469,6 +5535,646 @@
                       "type": "string",
                       "format": "date-time",
                       "example": "2023-07-27T14:56:12Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/consultations/multiple-time-slots": {
+      "post": {
+        "tags": ["consultation"],
+        "summary": "Create multiple doctor time slots.",
+        "description": "Create multiple doctor time slots.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "timeSlots": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "startAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-07-27T12:30:56Z"
+                        },
+                        "endAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-07-27T13:00:56Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Doctor successfully create multiple doctor time slots.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "doctorId": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "ca901c4c-27f7-439d-bd4a-290af3d2db74"
+                    },
+                    "timeSlots": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid",
+                            "example": "75c5f3ea-3935-4d66-be06-d5f830a13b7f"
+                          },
+                          "startAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2023-07-27T12:30:56Z"
+                          },
+                          "endAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2023-07-27T13:00:56Z"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/consultations/doctor": {
+      "get": {
+        "tags": ["consultation"],
+        "summary": "Get doctor consult appointment list.",
+        "description": "Get doctor consult appointment list.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully get doctor consult appointment list.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "upcomingAppointments": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "appointmentId": {
+                            "type": "uuid",
+                            "example": "75c5f3ea-3935-4d66-be06-d5f830a13b7f"
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "UPCOMING",
+                              "COMPLETED",
+                              "PATIENT_CANCELED"
+                            ],
+                            "example": "UPCOMING"
+                          },
+                          "doctorTimeSlot": {
+                            "type": "object",
+                            "properties": {
+                              "startAt": {
+                                "type": "string",
+                                "example": "2023-06-18T05:23:25.231Z"
+                              },
+                              "endAt": {
+                                "type": "string",
+                                "example": "2023-06-18T05:23:25.231Z"
+                              }
+                            }
+                          },
+                          "patient": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "uuid",
+                                "example": "55ge933e-22c2-4e9a-bf71-16086f54f3f2"
+                              },
+                              "firstName": {
+                                "type": "string",
+                                "example": "Tim"
+                              },
+                              "LastName": {
+                                "type": "string",
+                                "example": "Lin"
+                              }
+                            }
+                          },
+                          "meetingLink": {
+                            "type": "string",
+                            "example": "xxx.xxx.url",
+                            "nullable": true
+                          }
+                        }
+                      }
+                    },
+                    "completedAppointments": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "appointmentId": {
+                            "type": "uuid",
+                            "example": "88h6f3ea-3935-4d66-be06-d5f830a13b7f"
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "UPCOMING",
+                              "COMPLETED",
+                              "PATIENT_CANCELED"
+                            ],
+                            "example": "COMPLETED"
+                          },
+                          "doctorTimeSlot": {
+                            "type": "object",
+                            "properties": {
+                              "startAt": {
+                                "type": "string",
+                                "example": "2023-06-10T05:23:25.231Z"
+                              },
+                              "endAt": {
+                                "type": "string",
+                                "example": "2023-06-10T05:23:25.231Z"
+                              }
+                            }
+                          },
+                          "patient": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "uuid",
+                                "example": "55ge933e-22c2-4e9a-bf71-16086f54f3f2"
+                              },
+                              "firstName": {
+                                "type": "string",
+                                "example": "Tim"
+                              },
+                              "LastName": {
+                                "type": "string",
+                                "example": "Lin"
+                              }
+                            }
+                          },
+                          "meetingLink": null
+                        }
+                      }
+                    },
+                    "canceledAppointments": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "appointmentId": {
+                            "type": "uuid",
+                            "example": "11c5f3dd-3935-4d66-be06-d5f830a13b7f"
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "UPCOMING",
+                              "COMPLETED",
+                              "PATIENT_CANCELED"
+                            ],
+                            "example": "PATIENT_CANCELED"
+                          },
+                          "doctorTimeSlot": {
+                            "type": "object",
+                            "properties": {
+                              "startAt": {
+                                "type": "string",
+                                "example": "2023-06-12T05:23:25.231Z"
+                              },
+                              "endAt": {
+                                "type": "string",
+                                "example": "2023-06-12T05:23:25.231Z"
+                              }
+                            }
+                          },
+                          "patient": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "uuid",
+                                "example": "55ge933e-22c2-4e9a-bf71-16086f54f3f2"
+                              },
+                              "firstName": {
+                                "type": "string",
+                                "example": "Tim"
+                              },
+                              "LastName": {
+                                "type": "string",
+                                "example": "Lin"
+                              }
+                            }
+                          },
+                          "meetingLink": null
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/consultations/patient": {
+      "get": {
+        "tags": ["consultation"],
+        "summary": "Get patient consult appointment list.",
+        "description": "Get patient consult appointment list.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully get patient consult appointment list.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "upcomingAppointments": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "appointmentId": {
+                            "type": "uuid",
+                            "example": "75c5f3ea-3935-4d66-be06-d5f830a13b7f"
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "UPCOMING",
+                              "COMPLETED",
+                              "PATIENT_CANCELED"
+                            ],
+                            "example": "UPCOMING"
+                          },
+                          "doctorTimeSlot": {
+                            "type": "object",
+                            "properties": {
+                              "startAt": {
+                                "type": "string",
+                                "example": "2023-06-18T05:23:25.231Z"
+                              },
+                              "endAt": {
+                                "type": "string",
+                                "example": "2023-06-18T05:23:25.231Z"
+                              }
+                            }
+                          },
+                          "doctor": {
+                            "type": "object",
+                            "properties": {
+                              "firstName": {
+                                "type": "string",
+                                "example": "Tina"
+                              },
+                              "LastName": {
+                                "type": "string",
+                                "example": "Lin"
+                              },
+                              "specialties": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "enum": [
+                                    "INTERNAL_MEDICINE",
+                                    "SURGERY",
+                                    "OBSTETRICS_AND_GYNECOLOGY",
+                                    "PEDIATRICS",
+                                    "OPHTHALMOLOGY",
+                                    "OTORHINOLARYNGOLOGY",
+                                    "DERMATOLOGY",
+                                    "PSYCHIATRY",
+                                    "DENTISTRY",
+                                    "ORTHOPEDICS",
+                                    "UROLOGY",
+                                    "NEUROLOGY",
+                                    "NEUROSURGERY",
+                                    "CARDIOLOGY",
+                                    "CARDIOTHORACIC_SURGERY",
+                                    "ONCOLOGY",
+                                    "NEPHROLOGY",
+                                    "PULMONOLOGY",
+                                    "GASTROENTEROLOGY",
+                                    "PULMONARY_MEDICINE"
+                                  ],
+                                  "example": ["INTERNAL_MEDICINE", "SURGERY"]
+                                }
+                              }
+                            }
+                          },
+                          "meetingLink": {
+                            "type": "string",
+                            "example": "xxx.xxx.url",
+                            "nullable": true
+                          },
+                          "cancelAvailability": {
+                            "type": "boolean",
+                            "example": true
+                          }
+                        }
+                      }
+                    },
+                    "completedAppointments": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "appointmentId": {
+                            "type": "uuid",
+                            "example": "88h6f3ea-3935-4d66-be06-d5f830a13b7f"
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "UPCOMING",
+                              "COMPLETED",
+                              "PATIENT_CANCELED"
+                            ],
+                            "example": "COMPLETED"
+                          },
+                          "doctorTimeSlot": {
+                            "type": "object",
+                            "properties": {
+                              "startAt": {
+                                "type": "string",
+                                "example": "2023-06-10T05:23:25.231Z"
+                              },
+                              "endAt": {
+                                "type": "string",
+                                "example": "2023-06-10T05:23:25.231Z"
+                              }
+                            }
+                          },
+                          "doctor": {
+                            "type": "object",
+                            "properties": {
+                              "firstName": {
+                                "type": "string",
+                                "example": "Tina"
+                              },
+                              "LastName": {
+                                "type": "string",
+                                "example": "Lin"
+                              },
+                              "specialties": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "enum": [
+                                    "INTERNAL_MEDICINE",
+                                    "SURGERY",
+                                    "OBSTETRICS_AND_GYNECOLOGY",
+                                    "PEDIATRICS",
+                                    "OPHTHALMOLOGY",
+                                    "OTORHINOLARYNGOLOGY",
+                                    "DERMATOLOGY",
+                                    "PSYCHIATRY",
+                                    "DENTISTRY",
+                                    "ORTHOPEDICS",
+                                    "UROLOGY",
+                                    "NEUROLOGY",
+                                    "NEUROSURGERY",
+                                    "CARDIOLOGY",
+                                    "CARDIOTHORACIC_SURGERY",
+                                    "ONCOLOGY",
+                                    "NEPHROLOGY",
+                                    "PULMONOLOGY",
+                                    "GASTROENTEROLOGY",
+                                    "PULMONARY_MEDICINE"
+                                  ],
+                                  "example": ["INTERNAL_MEDICINE", "SURGERY"]
+                                }
+                              }
+                            }
+                          },
+                          "meetingLink": null,
+                          "cancelAvailability": false
+                        }
+                      }
+                    },
+                    "canceledAppointments": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "appointmentId": {
+                            "type": "uuid",
+                            "example": "11c5f3dd-3935-4d66-be06-d5f830a13b7f"
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "UPCOMING",
+                              "COMPLETED",
+                              "PATIENT_CANCELED"
+                            ],
+                            "example": "PATIENT_CANCELED"
+                          },
+                          "doctorTimeSlot": {
+                            "type": "object",
+                            "properties": {
+                              "startAt": {
+                                "type": "string",
+                                "example": "2023-06-12T05:23:25.231Z"
+                              },
+                              "endAt": {
+                                "type": "string",
+                                "example": "2023-06-12T05:23:25.231Z"
+                              }
+                            }
+                          },
+                          "doctor": {
+                            "type": "object",
+                            "properties": {
+                              "firstName": {
+                                "type": "string",
+                                "example": "Tina"
+                              },
+                              "LastName": {
+                                "type": "string",
+                                "example": "Lin"
+                              },
+                              "specialties": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "enum": [
+                                    "INTERNAL_MEDICINE",
+                                    "SURGERY",
+                                    "OBSTETRICS_AND_GYNECOLOGY",
+                                    "PEDIATRICS",
+                                    "OPHTHALMOLOGY",
+                                    "OTORHINOLARYNGOLOGY",
+                                    "DERMATOLOGY",
+                                    "PSYCHIATRY",
+                                    "DENTISTRY",
+                                    "ORTHOPEDICS",
+                                    "UROLOGY",
+                                    "NEUROLOGY",
+                                    "NEUROSURGERY",
+                                    "CARDIOLOGY",
+                                    "CARDIOTHORACIC_SURGERY",
+                                    "ONCOLOGY",
+                                    "NEPHROLOGY",
+                                    "PULMONOLOGY",
+                                    "GASTROENTEROLOGY",
+                                    "PULMONARY_MEDICINE"
+                                  ],
+                                  "example": ["INTERNAL_MEDICINE", "SURGERY"]
+                                }
+                              }
+                            }
+                          },
+                          "meetingLink": {
+                            "type": "string",
+                            "example": "xxx.xxx.url",
+                            "nullable": true
+                          },
+                          "cancelAvailability": {
+                            "type": "boolean",
+                            "example": true
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/consultations/time-slots/doctors/{id}": {
+      "get": {
+        "tags": ["consultation"],
+        "summary": "Get the specific doctor's time slots.",
+        "description": "Get the specific doctor's time slots.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "doctorId",
+            "in": "path",
+            "description": "Doctor id for the request",
+            "required": true,
+            "type": "uuid",
+            "example": "55ge933e-22c2-4e9a-bf71-16086f54f3f2"
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "description": "Selected startTime by user",
+            "required": false,
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-08-02T12:28:56Z"
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "description": "Selected endTime by user",
+            "required": false,
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-08-02T12:58:56Z"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully get the specific doctor's time slots.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "doctorId": {
+                      "type": "uuid",
+                      "example": "55ge933e-22c2-4e9a-bf71-16086f54f3f2"
+                    },
+                    "timeSlots": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid",
+                            "example": "75c5f3ea-3935-4d66-be06-d5f830a13b7f"
+                          },
+                          "startAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2023-07-27T12:30:56Z"
+                          },
+                          "endAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2023-07-27T13:00:56Z"
+                          },
+                          "isAvailable": {
+                            "type": "boolean",
+                            "example": true
+                          }
+                        }
+                      }
                     }
                   }
                 }
