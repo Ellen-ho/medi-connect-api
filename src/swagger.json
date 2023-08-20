@@ -1679,7 +1679,30 @@
             "name": "specialty",
             "in": "query",
             "schema": {
-              "$ref": "#/components/schemas/MedicalSpecialtyType"
+              "type": "string",
+              "enum": [
+                "INTERNAL_MEDICINE",
+                "SURGERY",
+                "OBSTETRICS_AND_GYNECOLOGY",
+                "PEDIATRICS",
+                "OPHTHALMOLOGY",
+                "OTORHINOLARYNGOLOGY",
+                "DERMATOLOGY",
+                "PSYCHIATRY",
+                "DENTISTRY",
+                "ORTHOPEDICS",
+                "UROLOGY",
+                "NEUROLOGY",
+                "NEUROSURGERY",
+                "CARDIOLOGY",
+                "CARDIOTHORACIC_SURGERY",
+                "ONCOLOGY",
+                "NEPHROLOGY",
+                "PULMONOLOGY",
+                "GASTROENTEROLOGY",
+                "PULMONARY_MEDICINE"
+              ],
+              "example": ["INTERNAL_MEDICINE", "SURGERY"]
             },
             "description": "Filter doctors by medical specialty.",
             "required": false
@@ -6597,6 +6620,180 @@
                       "type": "string",
                       "format": "date-time",
                       "example": "2023-07-27T14:56:12Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/questions": {
+      "post": {
+        "tags": ["consultation"],
+        "summary": "Create a question.",
+        "description": "Create a question.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "content": {
+                    "type": "string",
+                    "example": "This is the content of the question."
+                  },
+                  "medicalSpecialty": {
+                    "type": "string",
+                    "enum": [
+                      "INTERNAL_MEDICINE",
+                      "SURGERY",
+                      "OBSTETRICS_AND_GYNECOLOGY",
+                      "PEDIATRICS",
+                      "OPHTHALMOLOGY",
+                      "OTORHINOLARYNGOLOGY",
+                      "DERMATOLOGY",
+                      "PSYCHIATRY",
+                      "DENTISTRY",
+                      "ORTHOPEDICS",
+                      "UROLOGY",
+                      "NEUROLOGY",
+                      "NEUROSURGERY",
+                      "CARDIOLOGY",
+                      "CARDIOTHORACIC_SURGERY",
+                      "ONCOLOGY",
+                      "NEPHROLOGY",
+                      "PULMONOLOGY",
+                      "GASTROENTEROLOGY",
+                      "PULMONARY_MEDICINE"
+                    ],
+                    "example": ["INTERNAL_MEDICINE", "SURGERY"]
+                  }
+                }
+              },
+              "responses": {
+                "200": {
+                  "description": "Patient successfully create a question.",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid",
+                            "example": "ca901c4c-27f7-439d-bd4a-290af3d2db74"
+                          },
+                          "content": {
+                            "type": "string",
+                            "example": "This is the content of the question."
+                          },
+                          "medicalSpecialty": {
+                            "type": "string",
+                            "enum": [
+                              "INTERNAL_MEDICINE",
+                              "SURGERY",
+                              "OBSTETRICS_AND_GYNECOLOGY",
+                              "PEDIATRICS",
+                              "OPHTHALMOLOGY",
+                              "OTORHINOLARYNGOLOGY",
+                              "DERMATOLOGY",
+                              "PSYCHIATRY",
+                              "DENTISTRY",
+                              "ORTHOPEDICS",
+                              "UROLOGY",
+                              "NEUROLOGY",
+                              "NEUROSURGERY",
+                              "CARDIOLOGY",
+                              "CARDIOTHORACIC_SURGERY",
+                              "ONCOLOGY",
+                              "NEPHROLOGY",
+                              "PULMONOLOGY",
+                              "GASTROENTEROLOGY",
+                              "PULMONARY_MEDICINE"
+                            ],
+                            "example": ["INTERNAL_MEDICINE", "SURGERY"]
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2023-08-03T12:34:56Z"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2023-06-18T05:23:25.231Z"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/questions/{id}": {
+      "delete": {
+        "tags": ["consultation"],
+        "summary": "Delete a consult appointment.",
+        "description": "Delete a consult appointment.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Consult appointment id for the request",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "consultAppointmentId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "79ed933e-22c2-4e9a-bf71-16086f54f3f2"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully delete a consult appointment.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "consultAppointmentId": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "79ed933e-22c2-4e9a-bf71-16086f54f3f2"
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": ["UPCOMING", "COMPLETED", "PATIENT_CANCELED"],
+                      "example": "UPCOMING"
                     }
                   }
                 }

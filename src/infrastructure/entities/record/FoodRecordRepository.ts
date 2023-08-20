@@ -75,7 +75,7 @@ export class FoodRecordRepository
       >(
         `
         SELECT
-          exercise_records.*,
+          food_records.*,
           patients.first_name as "patient_first_name",
           patients.last_name as "patient_last_name",
           patients.birth_date as "patient_birth_date",

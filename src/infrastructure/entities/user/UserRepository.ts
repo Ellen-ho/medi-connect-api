@@ -40,7 +40,6 @@ export class UserRepository
     try {
       const entities = await this.getRepo().find({
         where: { role },
-        relations: ['patient'],
       })
       return entities.length !== 0
         ? entities.map((entity) => this.getMapper().toDomainModel(entity))
