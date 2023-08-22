@@ -109,13 +109,13 @@ export class PassportConfig {
            */
           const { displayName } = profile
           const { email } = profile._json
-          // TODO: get email from FB callback if they provide
-          console.table({ profile: JSON.stringify(profile) })
+
           this.userRepo
             .findByEmail(email)
             .then((user) => {
               // if user exists, just pass
               if (user !== null) {
+                console.table({ inPassport: JSON.stringify(user) })
                 done(null, user)
                 return
               }
@@ -150,12 +150,19 @@ export class PassportConfig {
       )
     )
 
-    passport.serializeUser((user, done) => {
-      done(null, user)
+    passport.serializeUser<string>((user, done) => {
+      done(null, (user as User).id)
     })
 
-    passport.deserializeUser((user: User, done) => {
-      done(null, user)
+    passport.deserializeUser((userId: string, done) => {
+      this.userRepo
+        .findById(userId)
+        .then((user) => {
+          done(null, user)
+        })
+        .catch((error) => {
+          done(error)
+        })
     })
   }
 
@@ -217,14 +224,4 @@ export class PassportConfig {
       )
     )
   }
-
-  // private initializeSerialization(): void {
-  //   passport.serializeUser((user, done) => {
-  //     done(null, user)
-  //   })
-
-  //   passport.deserializeUser((user: User, done) => {
-  //     done(null, user)
-  //   })
-  // }
 }

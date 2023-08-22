@@ -22,13 +22,11 @@ const facebookCallbackAuthenticator = (
   res: Response,
   next: NextFunction
 ): void => {
-  console.table({
-    facebookCallbackAuthenticator: 'facebookCallbackAuthenticator',
-  })
+  const clientUrl = process.env.CLIENT_URL as string
   passport.authenticate('facebook', {
     // setup the FE routing path
-    successRedirect: 'http://localhost:5173/oauth',
-    failureRedirect: 'http://localhost:5173/signin',
+    successRedirect: `${clientUrl}/oauth`,
+    failureRedirect: `${clientUrl}/signin`,
   })(req, res, next)
 }
 

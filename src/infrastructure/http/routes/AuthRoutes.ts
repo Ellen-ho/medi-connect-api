@@ -12,23 +12,9 @@ export class AuthRoutes {
   constructor(private readonly userController: IUserController) {
     this.routes = Router()
 
-    this.routes.get('/facebook', facebookAuthenticator)
-    this.routes.get('/facebook/callback', facebookCallbackAuthenticator)
-    this.routes.get('/success', asyncHandler(this.userController.login))
-
-    // this.routes.get(
-    //   '/success',
-    //   (req: Request, res: Response, next: NextFunction): void => {
-    //     const { user } = req
-    //     if (user != null) {
-    //       res.status(200).json({
-    //         success: true,
-    //         message: 'successfull',
-    //         user: req.user,
-    //       })
-    //     }
-    //   }
-    // )
+    this.routes.get('/facebook', facebookAuthenticator) // redirect user to FB login page
+    this.routes.get('/facebook/callback', facebookCallbackAuthenticator) // FE hit this endpoint after FB login
+    this.routes.get('/success', asyncHandler(this.userController.login)) // FE hit this endpoint for getting access token
   }
 
   public createRouter(): Router {
