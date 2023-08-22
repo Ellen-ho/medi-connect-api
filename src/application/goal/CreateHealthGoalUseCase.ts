@@ -68,6 +68,12 @@ export class CreateHealthGoalUseCase {
       throw new AuthorizationError('Patient does not exist.')
     }
 
+    const heightRounded =
+      Math.round((existingPatient.heightValueCm / 100) * 100) / 100
+
+    const patientTargetWeight =
+      Math.round(Math.pow(heightRounded, 2) * 22.5 * 100) / 100
+
     const exsitingHealthGoals =
       await this.healthGoalRepository.findByPatientIdAndStatus(
         existingPatient.id,
@@ -173,8 +179,8 @@ export class CreateHealthGoalUseCase {
       bloodSugarTargetValue: 100,
       bloodSugarTargetType: BloodSugarType.FAST_PLASMA_GLUCOSE,
       glycatedHemoglobinTargetValue: 5,
-      weightTargetValue: 50,
-      bodyMassIndexTargetValue: 22,
+      weightTargetValue: patientTargetWeight,
+      bodyMassIndexTargetValue: 22.5,
       startAt: new Date(),
       endAt: new Date(),
       status: HealthGoalStatus.PENDING,
