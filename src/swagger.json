@@ -6631,7 +6631,7 @@
     },
     "/questions": {
       "post": {
-        "tags": ["consultation"],
+        "tags": ["question"],
         "summary": "Create a question.",
         "description": "Create a question.",
         "requestBody": {
@@ -6739,7 +6739,7 @@
     },
     "/questions/{id}": {
       "delete": {
-        "tags": ["consultation"],
+        "tags": ["question"],
         "summary": "Delete a consult appointment.",
         "description": "Delete a consult appointment.",
         "parameters": [
@@ -6794,6 +6794,173 @@
                       "type": "string",
                       "enum": ["UPCOMING", "COMPLETED", "PATIENT_CANCELED"],
                       "example": "UPCOMING"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["question"],
+        "summary": "Get a specific question.",
+        "description": "Get a specific question.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Question id for the request",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully get a specific question.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "question": {
+                      "type": "object",
+                      "properties": {
+                        "content": {
+                          "type": "string",
+                          "example": "question content."
+                        },
+                        "askerAge": {
+                          "type": "integer",
+                          "example": 20
+                        }
+                      }
+                    },
+                    "answers": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "answerId": {
+                            "type": "string",
+                            "example": "67890"
+                          },
+                          "answerCreatedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2023-08-03T12:34:56Z"
+                          },
+                          "content": {
+                            "type": "string",
+                            "example": "answer content."
+                          },
+                          "doctorId": {
+                            "type": "string",
+                            "format": "uuid",
+                            "example": "100001"
+                          },
+                          "avatar": {
+                            "type": "string",
+                            "example": "avatar.jpg",
+                            "nullable": true
+                          },
+                          "firstName": {
+                            "type": "string",
+                            "example": "Tina"
+                          },
+                          "lastName": {
+                            "type": "string",
+                            "example": "Lin"
+                          },
+                          "specialties": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "enum": [
+                                "INTERNAL_MEDICINE",
+                                "SURGERY",
+                                "OBSTETRICS_AND_GYNECOLOGY",
+                                "PEDIATRICS",
+                                "OPHTHALMOLOGY",
+                                "OTORHINOLARYNGOLOGY",
+                                "DERMATOLOGY",
+                                "PSYCHIATRY",
+                                "DENTISTRY",
+                                "ORTHOPEDICS",
+                                "UROLOGY",
+                                "NEUROLOGY",
+                                "NEUROSURGERY",
+                                "CARDIOLOGY",
+                                "CARDIOTHORACIC_SURGERY",
+                                "ONCOLOGY",
+                                "NEPHROLOGY",
+                                "PULMONOLOGY",
+                                "GASTROENTEROLOGY",
+                                "PULMONARY_MEDICINE"
+                              ],
+                              "example": ["INTERNAL_MEDICINE", "SURGERY"]
+                            }
+                          },
+                          "careerStartDate": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2023-07-27T10:30:00Z"
+                          },
+                          "agreeCounts": {
+                            "type": "integer",
+                            "example": 10
+                          },
+                          "thankCounts": {
+                            "type": "integer",
+                            "example": 10
+                          },
+                          "isAnswerByMe": {
+                            "type": "boolean",
+                            "example": true
+                          },
+                          "isThanked": {
+                            "type": "boolean",
+                            "example": true
+                          },
+                          "isAgreed": {
+                            "type": "boolean",
+                            "example": true
+                          },
+                          "agreedDoctors": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "doctorId": {
+                                  "type": "string",
+                                  "example": "12345"
+                                },
+                                "avatar": {
+                                  "type": "string",
+                                  "example": "avatar.jpg"
+                                },
+                                "firstName": {
+                                  "type": "string",
+                                  "example": "Nina"
+                                },
+                                "lastName": {
+                                  "type": "string",
+                                  "example": "Wang"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -7028,8 +7195,8 @@
     "/goals/{id}": {
       "get": {
         "tags": ["goal"],
-        "summary": "Get an answer's details.",
-        "description": "Get an answer's details.",
+        "summary": "Get a health goal.",
+        "description": "Get a health goal.",
         "parameters": [
           {
             "in": "header",
@@ -7043,7 +7210,7 @@
           {
             "name": "id",
             "in": "path",
-            "description": "Answer id for the request",
+            "description": "Goal id for the request",
             "required": true,
             "type": "string"
           },
