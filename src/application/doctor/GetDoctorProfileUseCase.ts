@@ -2,7 +2,6 @@ import { IAddress } from '../../domain/doctor/Doctor'
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 import { GenderType } from '../../domain/patient/Patient'
 import { MedicalSpecialtyType } from '../../domain/question/PatientQuestion'
-import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 
 interface GetDoctorProfileRequest {
   id: string
@@ -37,10 +36,30 @@ export class GetDoctorProfileUseCase {
     const existingDoctorProfile = await this.doctorRepository.findById(id)
 
     if (existingDoctorProfile == null) {
-      throw new NotFoundError(
-        'The current doctor whose profile does not exist.'
-      )
+      return {
+        id: '',
+        avatar: null,
+        firstName: '',
+        lastName: '',
+        gender: GenderType.MALE,
+        aboutMe: '',
+        languagesSpoken: [],
+        specialties: [],
+        careerStartDate: new Date(),
+        officePracticalLocation: {
+          line1: '',
+          city: '',
+          country: '',
+          countryCode: '',
+        },
+        education: [],
+        awards: null,
+        affiliations: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }
     }
+
     return {
       id: existingDoctorProfile.id,
       avatar: existingDoctorProfile.avatar,
