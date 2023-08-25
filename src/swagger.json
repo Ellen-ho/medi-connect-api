@@ -6735,6 +6735,117 @@
             }
           }
         }
+      },
+      "get": {
+        "tags": ["question"],
+        "summary": "Get questions.",
+        "description": "Get questions.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "example": 1
+            },
+            "description": "Page number for pagination.",
+            "required": false
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "example": 10
+            },
+            "description": "Number of items to return per page.",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully get questions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "totalCounts": {
+                      "type": "integer",
+                      "example": 10
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid",
+                            "example": "79ed933e-22c2-4e9a-bf71-16086f54f3f2"
+                          },
+                          "content": {
+                            "type": "string",
+                            "example": "content"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2023-08-03T12:34:56Z"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2023-06-18T05:23:25.231Z"
+                          }
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "pages": {
+                          "type": "array",
+                          "items": {
+                            "type": "number",
+                            "example": 1
+                          }
+                        },
+                        "totalPage": {
+                          "type": "number",
+                          "example": 5
+                        },
+                        "currentPage": {
+                          "type": "number",
+                          "example": 2
+                        },
+                        "prev": {
+                          "type": "number",
+                          "example": 1
+                        },
+                        "next": {
+                          "type": "number",
+                          "example": 3
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/questions/{id}": {
@@ -6970,104 +7081,63 @@
         }
       }
     },
-    "/questions/answers/{id}": {
-      "get": {
+    "/questions/{id}/answers": {
+      "post": {
         "tags": ["question"],
-        "summary": "Get a health goal.",
-        "description": "Get a health goal.",
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization",
-            "schema": {
-              "type": "string",
-              "example": "__JWT_TOKEN__"
-            },
-            "required": true
-          },
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Health goal id for the request",
-            "required": true,
-            "type": "string"
+        "summary": "Add answers to specific question.",
+        "description": "Add answers to specific question.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "content": {
+                    "type": "string",
+                    "example": "content"
+                  },
+                  "patientQuestionId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "12345"
+                  }
+                }
+              }
+            }
           }
-        ],
+        },
         "responses": {
           "200": {
-            "description": "Doctor successfully get an answer's details.",
+            "description": "Successfully add answers to specific question.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "questionId": {
+                    "id": {
                       "type": "string",
+                      "format": "uuid",
+                      "example": "ca901c4c-27f7-439d-bd4a-290af3d2db74"
+                    },
+                    "patientQuestionId": {
+                      "type": "string",
+                      "format": "uuid",
                       "example": "12345"
                     },
-                    "answerId": {
+                    "content": {
                       "type": "string",
-                      "example": "67890"
+                      "example": "content"
                     },
-                    "answerContent": {
+                    "createdAt": {
                       "type": "string",
-                      "example": "This is the answer content."
+                      "format": "date-time",
+                      "example": "2023-07-27T12:30:56Z"
                     },
-                    "appreciationData": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "content": {
-                            "type": "string",
-                            "nullable": true,
-                            "example": "Thank you for the answer!"
-                          },
-                          "patientId": {
-                            "type": "string",
-                            "example": "abc123"
-                          },
-                          "patientAge": {
-                            "type": "integer",
-                            "example": 30
-                          },
-                          "createdAt": {
-                            "type": "string",
-                            "format": "date-time",
-                            "example": "2023-08-03T12:34:56Z"
-                          }
-                        }
-                      }
-                    },
-                    "agreementData": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "comment": {
-                            "type": "string",
-                            "nullable": true,
-                            "example": "I agree with this answer."
-                          },
-                          "agreedDoctorId": {
-                            "type": "string",
-                            "example": "xyz789"
-                          },
-                          "agreedDoctorFirstName": {
-                            "type": "string",
-                            "example": "John"
-                          },
-                          "agreedDoctorLastName": {
-                            "type": "string",
-                            "example": "Doe"
-                          },
-                          "createdAt": {
-                            "type": "string",
-                            "format": "date-time",
-                            "example": "2023-08-03T12:45:00Z"
-                          }
-                        }
-                      }
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T13:00:56Z"
                     }
                   }
                 }
@@ -7182,6 +7252,379 @@
                           "type": "number",
                           "example": 3
                         }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/questions/answers/{id}": {
+      "get": {
+        "tags": ["question"],
+        "summary": "Get a health goal.",
+        "description": "Get a health goal.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Health goal id for the request",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Doctor successfully get an answer's details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "questionId": {
+                      "type": "string",
+                      "example": "12345"
+                    },
+                    "answerId": {
+                      "type": "string",
+                      "example": "67890"
+                    },
+                    "answerContent": {
+                      "type": "string",
+                      "example": "This is the answer content."
+                    },
+                    "appreciationData": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string",
+                            "nullable": true,
+                            "example": "Thank you for the answer!"
+                          },
+                          "patientId": {
+                            "type": "string",
+                            "example": "abc123"
+                          },
+                          "patientAge": {
+                            "type": "integer",
+                            "example": 30
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2023-08-03T12:34:56Z"
+                          }
+                        }
+                      }
+                    },
+                    "agreementData": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "comment": {
+                            "type": "string",
+                            "nullable": true,
+                            "example": "I agree with this answer."
+                          },
+                          "agreedDoctorId": {
+                            "type": "string",
+                            "example": "xyz789"
+                          },
+                          "agreedDoctorFirstName": {
+                            "type": "string",
+                            "example": "John"
+                          },
+                          "agreedDoctorLastName": {
+                            "type": "string",
+                            "example": "Doe"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2023-08-03T12:45:00Z"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/questions/answers/{id}/appreciations": {
+      "post": {
+        "tags": ["question"],
+        "summary": "Add appreciations to specific answer.",
+        "description": "Add appreciations to specific answer.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "content": {
+                    "type": "string",
+                    "example": "content",
+                    "nullable": true
+                  },
+                  "answerId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "12345"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully add appreciations to specific answer.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "ca901c4c-27f7-439d-bd4a-290af3d2db74"
+                    },
+                    "answerId": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "bb831c4c-27f7-439d-bd4a-290af3d2db74"
+                    },
+                    "totalThankCounts": {
+                      "type": "integer",
+                      "example": 10
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T12:30:56Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T13:00:56Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["question"],
+        "summary": "Delete an answer's appreciations.",
+        "description": "Delete an answer's appreciations.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "answerId",
+            "in": "path",
+            "description": "Answer id for the request",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "answerId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "79ed933e-22c2-4e9a-bf71-16086f54f3f2"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully delete an answer's appreciations.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "totalThankCounts": {
+                      "type": "integer",
+                      "example": 10
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/questions/answers/{id}/agreements": {
+      "post": {
+        "tags": ["question"],
+        "summary": "Add agreements to specific answer.",
+        "description": "Add agreements to specific answer.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "comment": {
+                    "type": "string",
+                    "example": "comment",
+                    "nullable": true
+                  },
+                  "answerId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "12345"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully add agreements to specific answer.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "ca901c4c-27f7-439d-bd4a-290af3d2db74"
+                    },
+                    "answerId": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "bb831c4c-27f7-439d-bd4a-290af3d2db74"
+                    },
+                    "totalAgreedDoctorCounts": {
+                      "type": "integer",
+                      "example": 10
+                    },
+                    "agreedDoctorAvatars": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "nullable": true,
+                        "example": "avatar1.jpg"
+                      }
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T12:30:56Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-07-27T13:00:56Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["question"],
+        "summary": "Delete an answer's agreements.",
+        "description": "Delete an answer's agreements.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "answerId",
+            "in": "path",
+            "description": "Answer id for the request",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "answerId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "79ed933e-22c2-4e9a-bf71-16086f54f3f2"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully delete an answer's agreements.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "totalAgreedDoctorCounts": {
+                      "type": "integer",
+                      "example": 10
+                    },
+                    "agreedDoctorAvatars": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "nullable": true,
+                        "example": "avatar1.jpg"
                       }
                     }
                   }
