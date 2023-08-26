@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import { CreateDoctorProfileUseCase } from '../../../application/doctor/CreateDoctorProfileUseCase'
 import { EditDoctorProfileUseCase } from '../../../application/doctor/EditDoctorProfileUseCase'
 import { GetDoctorStatisticUseCase } from '../../../application/doctor/GetDoctorStatisticUseCase'
-import { GetDoctorProfileUseCase } from '../../../application/doctor/GetDoctorProfleUseCase'
+import { GetDoctorProfileUseCase } from '../../../application/doctor/GetDoctorProfileUseCase'
 import { GetDoctorListUseCase } from '../../../application/doctor/GetDoctorListUseCase'
 import { MedicalSpecialtyType } from '../../../domain/question/PatientQuestion'
 
