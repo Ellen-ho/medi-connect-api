@@ -90,7 +90,25 @@ export class GetPatientProfileUseCase {
     // 若登入者身分為患者
     const currentPatient = await this.patientRepository.findByUserId(user.id)
     if (currentPatient == null) {
-      throw new AuthorizationError('The current patient does not exist.')
+      return {
+        id: '',
+        avatar: null,
+        firstName: '',
+        lastName: '',
+        birthDate: new Date(),
+        gender: GenderType.FEMALE,
+        medicalHistory: null,
+        allergy: {
+          medicine: null,
+          food: null,
+          other: null,
+        },
+        familyHistory: null,
+        heightValueCm: 0,
+        medicineUsage: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }
     }
     // 判斷此record是否屬於當前登入的患者
     if (currentPatient.id !== targetPatientId) {
