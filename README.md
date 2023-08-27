@@ -1,6 +1,6 @@
 ＃ About Ｍ edi-Connect
 
-＃ Packages that are used in this project
+## Packages that are used in this project
 
 Front End
 
@@ -50,11 +50,11 @@ Using uuid to generate Universally Unique Identifiers (UUIDs).
 Using eslint to enforce coding standards and maintain a consistent codebase in your JavaScript applications.
 Using prettier to automatically format and beautify your code, ensuring a consistent code style across your JavaScript applications.
 
-# Features
+## Features
 
-Patient
+# Patient
 
-As a patient member, you can...
+# As a patient member, you can...
 
 1. Sign up for a Medi-Connect account to embark on your journey towards a healthier lifestyle.
 2. Sign in using your registered email and password, or alternatively, you can also log in with your Facebook account.
@@ -77,9 +77,9 @@ As a patient member, you can...
 19. Accept the health goal plan and commence your plan accordingly.
 20. Decline the health goal plan provided by the platform.
 
-Doctor
+## Doctor
 
-As a doctor member, you can...
+# As a doctor member, you can...
 
 1. Sign up for a Medi-Connect account and begin utilizing your expertise to assist others.
 2. Sign in using your registered email and password.
@@ -99,7 +99,7 @@ As a doctor member, you can...
 
 # TO DO
 
-# Ｍ edi-Ｃ onnect-api
+# Medi-Connect-api
 
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
 
