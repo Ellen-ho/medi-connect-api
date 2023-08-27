@@ -1,60 +1,60 @@
-＃ About Ｍ edi-Connect
+## About Medi-Connect
 
-## Packages that are used in this project
+Recognizing physicians' constraints on time and presence, the platform aids in gaining a thorough understanding of patients' health and lifestyles. This tool allows doctors to make informed decisions beyond the traditional confines of clinic hours
 
-Front End
+### Packages that are used in this project
 
-Utilizing the Google Maps JavaScript API to showcase interactive maps featuring markers and embedding them seamlessly into the restaurant page.
-Utilizing @mui/material and @mui/icons-material to enhance the user interface and design of the application.
-Employing react-hook-form for effective and efficient form handling.
-Utilizing axios for making HTTP requests and interacting with APIs.
-Incorporating dayjs for efficient manipulation and formatting of dates and times.
-Utilizing dotenv to manage environment variables securely.
-Employing react-router-dom for navigation and routing within the application.
-Using swr for data fetching and caching.
-Employing yup for schema-based form validation.
-Utilizing normalize.css to ensure consistent styling across different browsers.
-Employing react-hot-toast for displaying user-friendly and customizable toasts.
-Using @mui/lab for accessing experimental components and features.
-Employing mui-file-input for enhanced file input handling.
-Utilizing @emotion/react and @emotion/styled for styling and theming in components.
-Employing @fullcalendar libraries for interactive calendar display.
-Using @fontsource/source-code-pro for font styling in the application.
+**Front End**
 
-Back End
+- Utilizing the [Google Maps JavaScript API](https://developers.google.com/maps/documentation/javascript/overview) to showcase interactive maps featuring markers and embedding them seamlessly into the restaurant page.
+- Utilizing [`@mui/material`](https://www.npmjs.com/package/@mui/material) and [`@mui/icons-material`](https://www.npmjs.com/package/@mui/icons-material) to enhance the user interface and design of the application.
+- Employing [`react-hook-form`](https://www.npmjs.com/package/react-hook-form) for effective and efficient form handling.
+- Utilizing [`axios`](https://www.npmjs.com/package/axios) for making HTTP requests and interacting with APIs.
+- Incorporating [`dayjs`](https://www.npmjs.com/package/dayjs) for efficient manipulation and formatting of dates and times.
+- Utilizing [`dotenv`](https://www.npmjs.com/package/dotenv) to manage environment variables securely.
+- Employing [`react-router-dom`](https://www.npmjs.com/package/react-router-dom) for navigation and routing within the application.
+- Using [`swr`](https://www.npmjs.com/package/swr) for data fetching and caching.
+- Employing [`yup`](https://www.npmjs.com/package/yup) for schema-based form validation.
+- Utilizing [`normalize.css`](https://www.npmjs.com/package/normalize.css) to ensure consistent styling across different browsers.
+- Employing [`react-hot-toast`](https://www.npmjs.com/package/react-hot-toast) for displaying user-friendly and customizable toasts.
+- Using [`@mui/lab`](https://www.npmjs.com/package/@mui/lab) for accessing experimental components and features.
+- Employing [`mui-file-input`](https://www.npmjs.com/package/mui-file-input) for enhanced file input handling.
+- Utilizing [`@emotion/react`](https://www.npmjs.com/package/@emotion/react) and [`@emotion/styled`](https://www.npmjs.com/package/@emotion/styled) for styling and theming in components.
+- Employing [`@fullcalendar`](https://www.npmjs.com/package/@fullcalendar) libraries for interactive calendar display.
+- Using [`@fontsource/source-code-pro`](https://www.npmjs.com/package/@fontsource/source-code-pro) for font styling in the application.
 
-Using bcrypt to hash passwords with a salt.
-Using body-parser to extract the information from incoming requests such as sign-up forms at the frontend.
-Using cors to serve third-party origins.
-Using express as a web applications framework for Node.js.
-Using imgur-node-api and multer to upload images to imgur, especially for user's profile avatars. (Mindful of cybersecurity and medical privacy, there's a future plan to optimize by securely storing user photos on a self-hosted server.)
-Using day.js to customize date and time format in date conversion and processing.
-Using node-schedule to schedule tasks that need to be triggered periodically.
-Using passport-facebook with the Facebook Strategy to authenticate users with their Facebook account.
-Using passport-google-oauth2 with the Google Strategy to authenticate user accounts.
-Using passport-jwt for token-based authentication in RESTful APIs.
-Using jest for unit tests and integration tests.
-Using swagger-ui-express to design and document RESTful APIs.
-Using TypeORM as an interface for database interactions.
-Using @google-cloud/local-auth to manage local authentication with Google services.
-Using class-transformer for object transformation and serialization.
-Using express-session to manage user sessions.
-Using googleapis to interact with Google APIs.
-Using joi for data validation and schema definition.
-Using jsonwebtoken to generate and verify JSON Web Tokens (JWT).
-Using passport as authentication middleware.
-Using passport-local for local authentication strategies.
-Using pg as the PostgreSQL database driver.
-Using reflect-metadata for handling metadata in TypeScript.
-Using uuid to generate Universally Unique Identifiers (UUIDs).
-Using eslint to enforce coding standards and maintain a consistent codebase in your JavaScript applications.
-Using prettier to automatically format and beautify your code, ensuring a consistent code style across your JavaScript applications.
+**Back End**
+
+- Using [`bcrypt`](https://www.npmjs.com/package/bcrypt) to hash passwords with a salt.
+- Using [`body-parser`](https://www.npmjs.com/package/body-parser) to extract information from incoming requests such as sign-up forms at the frontend.
+- Using [`cors`](https://www.npmjs.com/package/cors) to serve third-party origins.
+- Using [`express`](https://www.npmjs.com/package/express) as a web applications framework for Node.js.
+- Using [`imgur-node-api`](https://www.npmjs.com/package/imgur-node-api) and [`multer`](https://www.npmjs.com/package/multer) to upload images to imgur, especially for user's profile avatars. (Mindful of cybersecurity and medical privacy, there's a future plan to optimize by securely storing user photos on a self-hosted server.)
+- Using [`day.js`](https://www.npmjs.com/package/dayjs) to customize date and time format in date conversion and processing.
+- Using [`node-schedule`](https://www.npmjs.com/package/node-schedule) to schedule tasks that need to be triggered periodically.
+- Using [passport-facebook](http://www.passportjs.org/packages/passport-facebook/) with the Facebook Strategy to authenticate users with their Facebook account.
+- Using [passport-jwt](http://www.passportjs.org/packages/passport-jwt/) for token-based authentication in RESTful APIs.
+- Using [jest](https://www.npmjs.com/package/jest) for unit tests and integration tests.
+- Using [swagger-ui-express](https://www.npmjs.com/package/swagger-ui-express) to design and document RESTful APIs.
+- Using [TypeORM](https://www.npmjs.com/package/typeorm) as an interface for database interactions.
+- Using [class-transformer](https://www.npmjs.com/package/class-transformer) for object transformation and serialization.
+- Using [express-session](https://www.npmjs.com/package/express-session) to manage user sessions.
+- Using [googleapis](https://www.npmjs.com/package/googleapis) to interact with Google APIs.
+- Using [joi](https://www.npmjs.com/package/joi) for data validation and schema definition.
+- Using [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken) to generate and verify JSON Web Tokens (JWT).
+- Using [passport](https://www.npmjs.com/package/passport) as authentication middleware.
+- Using [passport-local](https://www.npmjs.com/package/passport-local) for local authentication strategies.
+- Using [pg](https://www.npmjs.com/package/pg) as the PostgreSQL database driver.
+- Using [reflect-metadata](https://www.npmjs.com/package/reflect-metadata) for handling metadata in TypeScript.
+- Using [uuid](https://www.npmjs.com/package/uuid) to generate Universally Unique Identifiers (UUIDs).
+- Using [eslint](https://www.npmjs.com/package/eslint) to enforce coding standards and maintain a consistent codebase in your JavaScript applications.
+- Using [prettier](https://www.npmjs.com/package/prettier) to automatically format and beautify your code, ensuring a consistent code style across your JavaScript applications.
 
 ## Features
 
-# Patient
+### Patient
 
-# As a patient member, you can...
+As a patient member, you can...
 
 1. Sign up for a Medi-Connect account to embark on your journey towards a healthier lifestyle.
 2. Sign in using your registered email and password, or alternatively, you can also log in with your Facebook account.
@@ -77,9 +77,9 @@ Using prettier to automatically format and beautify your code, ensuring a consis
 19. Accept the health goal plan and commence your plan accordingly.
 20. Decline the health goal plan provided by the platform.
 
-## Doctor
+### Doctor
 
-# As a doctor member, you can...
+As a doctor member, you can...
 
 1. Sign up for a Medi-Connect account and begin utilizing your expertise to assist others.
 2. Sign in using your registered email and password.
@@ -97,7 +97,7 @@ Using prettier to automatically format and beautify your code, ensuring a consis
 14. Receive the Google Meet link for the respective appointment 22 hours prior to the scheduled appointment time.
 15. View the number of agreements and expressions of gratitude received for each of your responses.
 
-# TO DO
+## TO DO
 
 # Medi-Connect-api
 
