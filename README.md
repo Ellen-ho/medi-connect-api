@@ -1,4 +1,105 @@
-# medi-connect-api
+＃ About Ｍ edi-Connect
+
+＃ Packages that are used in this project
+
+Front End
+
+Utilizing the Google Maps JavaScript API to showcase interactive maps featuring markers and embedding them seamlessly into the restaurant page.
+Utilizing @mui/material and @mui/icons-material to enhance the user interface and design of the application.
+Employing react-hook-form for effective and efficient form handling.
+Utilizing axios for making HTTP requests and interacting with APIs.
+Incorporating dayjs for efficient manipulation and formatting of dates and times.
+Utilizing dotenv to manage environment variables securely.
+Employing react-router-dom for navigation and routing within the application.
+Using swr for data fetching and caching.
+Employing yup for schema-based form validation.
+Utilizing normalize.css to ensure consistent styling across different browsers.
+Employing react-hot-toast for displaying user-friendly and customizable toasts.
+Using @mui/lab for accessing experimental components and features.
+Employing mui-file-input for enhanced file input handling.
+Utilizing @emotion/react and @emotion/styled for styling and theming in components.
+Employing @fullcalendar libraries for interactive calendar display.
+Using @fontsource/source-code-pro for font styling in the application.
+
+Back End
+
+Using bcrypt to hash passwords with a salt.
+Using body-parser to extract the information from incoming requests such as sign-up forms at the frontend.
+Using cors to serve third-party origins.
+Using express as a web applications framework for Node.js.
+Using imgur-node-api and multer to upload images to imgur, especially for user's profile avatars. (Mindful of cybersecurity and medical privacy, there's a future plan to optimize by securely storing user photos on a self-hosted server.)
+Using day.js to customize date and time format in date conversion and processing.
+Using node-schedule to schedule tasks that need to be triggered periodically.
+Using passport-facebook with the Facebook Strategy to authenticate users with their Facebook account.
+Using passport-google-oauth2 with the Google Strategy to authenticate user accounts.
+Using passport-jwt for token-based authentication in RESTful APIs.
+Using jest for unit tests and integration tests.
+Using swagger-ui-express to design and document RESTful APIs.
+Using TypeORM as an interface for database interactions.
+Using @google-cloud/local-auth to manage local authentication with Google services.
+Using class-transformer for object transformation and serialization.
+Using express-session to manage user sessions.
+Using googleapis to interact with Google APIs.
+Using joi for data validation and schema definition.
+Using jsonwebtoken to generate and verify JSON Web Tokens (JWT).
+Using passport as authentication middleware.
+Using passport-local for local authentication strategies.
+Using pg as the PostgreSQL database driver.
+Using reflect-metadata for handling metadata in TypeScript.
+Using uuid to generate Universally Unique Identifiers (UUIDs).
+Using eslint to enforce coding standards and maintain a consistent codebase in your JavaScript applications.
+Using prettier to automatically format and beautify your code, ensuring a consistent code style across your JavaScript applications.
+
+# Features
+
+Patient
+
+As a patient member, you can...
+
+1. Sign up for a Medi-Connect account to embark on your journey towards a healthier lifestyle.
+2. Sign in using your registered email and password, or alternatively, you can also log in with your Facebook account.
+3. Create your personal profile in order to commence the use of other services on the plant.
+4. Edit your account or your personal profile.
+5. Add your health records, with the platform offering seven categories of health record classifications, including blood pressure, blood sugar, glycated hemoglobin, sleep, exercise, diet, and weight.
+6. Review and examine individual entries or lists of records from any category to gain insights into changes in your personal health status.
+7. Pose any health inquiries and select the category attribute for your question, facilitating relevant medical professionals to respond to your queries.
+8. Navigate through your own inquiries and also view questions from other patients along with the corresponding responses from medical professionals in the question forum.
+9. Click the notification to view the reply that a red dot will appear on your notification bell when your question receives a response.
+10. Click the heart icon to write a gratitude message and express your thanks to the doctor who provided you with a response.
+11. Cancel any of your gratitude messages if you change your mind.
+12. Visit the physician list to view information about any doctor.
+13. View the schedule of any doctor and select an available time slot to create an appointment.
+14. View your appointment history, which includes categories such as upcoming, completed, and canceled appointments.
+15. Cancel your upcoming appointment no later than the day before the scheduled date.
+16. Receive upcoming appointment notifications 22 hours before the scheduled appointment time.
+17. Receive the Google Meet link for the respective appointment 22 hours prior to the scheduled appointment time.
+18. Receive the health goal plan sent by the platform when you have maintained records for two consecutive weeks.
+19. Accept the health goal plan and commence your plan accordingly.
+20. Decline the health goal plan provided by the platform.
+
+Doctor
+
+As a doctor member, you can...
+
+1. Sign up for a Medi-Connect account and begin utilizing your expertise to assist others.
+2. Sign in using your registered email and password.
+3. Create your personal profile in order to commence the use of other services on the plant.
+4. Edit your account or your personal profile.
+5. View the list of questions posed by patients.
+6. Respond to patients' inquiries.
+7. Click the thumbs-up icon to agree with another physician's response and send feedback content to the respective doctor.
+8. Withdraw your agreement if you change your mind.
+9. Receive notifications when patients express gratitude for your response or when other doctors agree with your answer.
+10. Create your schedule within the designated timeframes outlined by the platform guidelines.
+11. Edit your schedule within the timeframes specified by the platform guidelines.
+12. Receive notifications when patients schedule appointments during your available time slots or when they cancel appointments previously reserved with you.
+13. View the profile, records, and goals of the patient who has scheduled an appointment with you when the appointment status is "upcoming."
+14. Receive the Google Meet link for the respective appointment 22 hours prior to the scheduled appointment time.
+15. View the number of agreements and expressions of gratitude received for each of your responses.
+
+# TO DO
+
+# Ｍ edi-Ｃ onnect-api
 
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
 
