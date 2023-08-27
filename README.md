@@ -97,7 +97,11 @@ As a doctor member, you can...
 14. Receive the Google Meet link for the respective appointment 22 hours prior to the scheduled appointment time.
 15. View the number of agreements and expressions of gratitude received for each of your responses.
 
-## TO DO
+## Todos
+
+1. Elaborate the doctor's sign-up procedure by incorporating more comprehensive steps, including the submission of educational credentials and medical certificates.
+2. Modify the image uploading process for users to store images on other cloud storage service.
+3. Integrate additional social features, like doctors being able to share specialized articles to educate patients about different medical disciplines, and enabling patients to interact and motivate each other through mutual communication.
 
 # Medi-Connect-api
 
