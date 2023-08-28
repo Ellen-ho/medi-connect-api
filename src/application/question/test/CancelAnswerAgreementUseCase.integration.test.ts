@@ -18,6 +18,9 @@ import { PatientFactory } from '../../../domain/patient/test/PatientFactory'
 import { PatientQuestionFactory } from '../../../domain/question/test/PatientQuestionFactory'
 import { AuthorizationError } from '../../../infrastructure/error/AuthorizationError'
 import { NotFoundError } from '../../../infrastructure/error/NotFoundError'
+import { NotificationHelper } from '../../notification/NotificationHelper'
+import { NotificationRepository } from '../../../infrastructure/entities/notification/NotificationRepository'
+import { UuidService } from '../../../infrastructure/utils/UuidService'
 
 describe('Integration test: CancelAnswerAgreementUseCase', () => {
   let database: PostgresDatabase
@@ -28,6 +31,9 @@ describe('Integration test: CancelAnswerAgreementUseCase', () => {
   let patientQuestionAnswerRepo: PatientQuestionAnswerRepository
   let useCase: CancelAnswerAgreementUseCase
   let userRepo: UserRepository
+  let notificationRepo: NotificationRepository
+  let uuidService: UuidService
+  let notificationHelper: NotificationHelper
 
   const mockAgreedDoctorUser = UserFactory.build({
     role: UserRoleType.DOCTOR,
@@ -77,8 +83,7 @@ describe('Integration test: CancelAnswerAgreementUseCase', () => {
 
   beforeAll(async () => {
     // connect to test db
-    database = new PostgresDatabase()
-    await database.connect()
+    database = await PostgresDatabase.getInstance()
     // create repos and service
 
     doctorRepo = new DoctorRepository(database.getDataSource())
@@ -96,10 +101,15 @@ describe('Integration test: CancelAnswerAgreementUseCase', () => {
     )
     userRepo = new UserRepository(database.getDataSource())
 
+    notificationRepo = new NotificationRepository(database.getDataSource())
+    uuidService = new UuidService()
+    notificationHelper = new NotificationHelper(notificationRepo, uuidService)
+
     useCase = new CancelAnswerAgreementUseCase(
       answerAgreementRepo,
       doctorRepo,
-      patientQuestionAnswerRepo
+      patientQuestionAnswerRepo,
+      notificationHelper
     )
   }, 300000)
 

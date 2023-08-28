@@ -29,8 +29,7 @@ describe('Integration test: CreateBloodSugarRecordUseCase', () => {
 
   beforeAll(async () => {
     // connect to test db
-    database = new PostgresDatabase()
-    await database.connect()
+    database = await PostgresDatabase.getInstance()
     // create repos and service
     bloodSugarRecordRepo = new BloodSugarRecordRepository(
       database.getDataSource()

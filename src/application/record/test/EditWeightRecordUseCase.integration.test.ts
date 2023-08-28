@@ -25,8 +25,7 @@ describe('Integration test: EditWeightRecordUseCase', () => {
 
   beforeAll(async () => {
     // connect to test db
-    database = new PostgresDatabase()
-    await database.connect()
+    database = await PostgresDatabase.getInstance()
     // create repos and service
     weightRecordRepo = new WeightRecordRepository(database.getDataSource())
     patientRepo = new PatientRepository(database.getDataSource())

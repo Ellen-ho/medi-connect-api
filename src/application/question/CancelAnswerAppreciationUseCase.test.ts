@@ -9,14 +9,23 @@ import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 import { IAnswerAppreciationRepository } from '../../domain/question/interfaces/repositories/IAnswerAppreciationtRepository'
 import { PatientQuestionAnswer } from '../../domain/question/PatientQuestionAnswer'
 import { AnswerAppreciation } from '../../domain/question/AnswerAppreciation'
+import { IPatientQuestionAnswerRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionAnswerRepository'
+import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
+import { INotificationHelper } from '../notification/NotificationHelper'
 
 describe('Unit test: CancelAnswerAppreciationUseCase', () => {
   const mockAnswerAppreciationRepo = mock<IAnswerAppreciationRepository>()
   const mockPatientRepo = mock<IPatientRepository>()
+  const mockPatientQuestionAnswerRepo = mock<IPatientQuestionAnswerRepository>()
+  const mockDoctorRepo = mock<IDoctorRepository>()
+  const mockNotifictionHelper = mock<INotificationHelper>()
 
   const cancelAnswerAppreciationUseCase = new CancelAnswerAppreciationUseCase(
     mockAnswerAppreciationRepo,
-    mockPatientRepo
+    mockPatientRepo,
+    mockPatientQuestionAnswerRepo,
+    mockDoctorRepo,
+    mockNotifictionHelper
   )
 
   MockDate.set('2023-06-18T13:18:00.155Z')
