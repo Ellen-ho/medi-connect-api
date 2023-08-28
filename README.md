@@ -18,25 +18,6 @@ Recognizing physicians' constraints on time and presence, the platform aids in g
 
 ### Packages that are used in this project
 
-**Front End**
-
-- Utilizing the [Google Maps JavaScript API](https://developers.google.com/maps/documentation/javascript/overview) to showcase interactive maps featuring markers and embedding them seamlessly into the restaurant page.
-- Utilizing [`@mui/material`](https://www.npmjs.com/package/@mui/material) and [`@mui/icons-material`](https://www.npmjs.com/package/@mui/icons-material) to enhance the user interface and design of the application.
-- Employing [`react-hook-form`](https://www.npmjs.com/package/react-hook-form) for effective and efficient form handling.
-- Utilizing [`axios`](https://www.npmjs.com/package/axios) for making HTTP requests and interacting with APIs.
-- Incorporating [`dayjs`](https://www.npmjs.com/package/dayjs) for efficient manipulation and formatting of dates and times.
-- Utilizing [`dotenv`](https://www.npmjs.com/package/dotenv) to manage environment variables securely.
-- Employing [`react-router-dom`](https://www.npmjs.com/package/react-router-dom) for navigation and routing within the application.
-- Using [`swr`](https://www.npmjs.com/package/swr) for data fetching and caching.
-- Employing [`yup`](https://www.npmjs.com/package/yup) for schema-based form validation.
-- Utilizing [`normalize.css`](https://www.npmjs.com/package/normalize.css) to ensure consistent styling across different browsers.
-- Employing [`react-hot-toast`](https://www.npmjs.com/package/react-hot-toast) for displaying user-friendly and customizable toasts.
-- Using [`@mui/lab`](https://www.npmjs.com/package/@mui/lab) for accessing experimental components and features.
-- Employing [`mui-file-input`](https://www.npmjs.com/package/mui-file-input) for enhanced file input handling.
-- Utilizing [`@emotion/react`](https://www.npmjs.com/package/@emotion/react) and [`@emotion/styled`](https://www.npmjs.com/package/@emotion/styled) for styling and theming in components.
-- Employing [`@fullcalendar`](https://www.npmjs.com/package/@fullcalendar) libraries for interactive calendar display.
-- Using [`@fontsource/source-code-pro`](https://www.npmjs.com/package/@fontsource/source-code-pro) for font styling in the application.
-
 **Back End**
 
 - Using [`bcrypt`](https://www.npmjs.com/package/bcrypt) to hash passwords with a salt.
