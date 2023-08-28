@@ -2,6 +2,16 @@
 
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
 
+## Table of contents
+
+- [User Interface](#User-Interface)
+- [About Medi-Connect](#About-Medi-Connect)
+- [Features](#Features)
+- [Todos](#Todos)
+- [Local development](#local-development)
+
+## User Interface
+
 ## About Medi-Connect
 
 Recognizing physicians' constraints on time and presence, the platform aids in gaining a thorough understanding of patients' health and lifestyles. This tool allows doctors to make informed decisions beyond the traditional confines of clinic hours
