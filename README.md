@@ -198,6 +198,19 @@ Important notes:
 
 Reference: [Why need to setup typeorm-ts-node-commonjs in typeorm script](https://typeorm.io/using-cli#if-entities-files-are-in-typescript)
 
+### Seeder
+
+Can run seeder to insert dummy patent and doctor.
+
+```
+$ npm run seed
+```
+
+| Role    | Email          | Password |
+| ------- | -------------- | -------- |
+| Patient | john@gmail.com | 12345678 |
+| Doctor  | jim@gmail.com  | 12345678 |
+
 ### Integration Test
 
 1. Setup test database
