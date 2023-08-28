@@ -19,7 +19,7 @@ export class AnswerAgreementRepository
     try {
       const entity = await this.getRepo().findOne({
         where: { id },
-        relations: ['answer', 'agreedDoctor'], // if no @RalationId set, you need to add relations here
+        relations: ['answer', 'agreedDoctor'],
       })
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {

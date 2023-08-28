@@ -66,7 +66,6 @@ export class GetSingleGlycatedHemoglobinRecordUseCase {
 
     const patientId = existingRecord.patientId
 
-    // 若登入者為doctor
     if (user.role === UserRoleType.DOCTOR) {
       const currentDoctor = await this.doctorRepository.findByUserId(user.id)
       if (currentDoctor == null) {
@@ -74,9 +73,9 @@ export class GetSingleGlycatedHemoglobinRecordUseCase {
       }
       const upComingAppointments =
         await this.consultAppointmentRepository.findByPatientIdAndDoctorIdAndStatus(
-          patientId, // 該紀錄的擁有患者
-          currentDoctor.id, // 當前登入的醫師
-          [ConsultAppointmentStatusType.UPCOMING] // 預約狀態為upComing
+          patientId,
+          currentDoctor.id,
+          [ConsultAppointmentStatusType.UPCOMING]
         )
       if (upComingAppointments.length === 0) {
         throw new AuthorizationError(
@@ -109,16 +108,15 @@ export class GetSingleGlycatedHemoglobinRecordUseCase {
       }
     }
 
-    // 若登入者身分為患者
     const currentPatient = await this.patientRepository.findByUserId(user.id)
     if (currentPatient == null) {
       throw new AuthorizationError('The current patient does not exist.')
     }
-    // 判斷此record是否屬於當前登入的患者
+
     const recordWithOwner =
       await this.glycatedHemoglobinRecordRepository.findRecordWithOwnerByRecordIdAndPatientId(
         glycatedHemoglobinRecordId,
-        currentPatient.id // 當前登入的patient
+        currentPatient.id
       )
 
     if (recordWithOwner == null) {

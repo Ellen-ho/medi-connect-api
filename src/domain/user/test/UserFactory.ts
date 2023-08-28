@@ -2,8 +2,6 @@ import { Factory } from 'fishery'
 import { faker } from '@faker-js/faker'
 import { User, UserRoleType } from '../User'
 
-// faker doc: https://github.com/faker-js/faker#readme
-
 export const UserFactory = Factory.define<User>(({ params }) => {
   return new User({
     id: params.id ?? faker.string.uuid(),

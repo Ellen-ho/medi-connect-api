@@ -53,7 +53,6 @@ export class EditExerciseRecordUseCase {
       throw new AuthorizationError('Patient does not exist.')
     }
 
-    // get record by recordId and patientId
     const existingExerciseRecord =
       await this.exerciseRecordRepository.findByIdAndPatientId(
         exerciseRecordId,

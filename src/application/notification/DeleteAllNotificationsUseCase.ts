@@ -21,10 +21,7 @@ export class DeleteAllNotificationsUseCase {
     const { user } = request
 
     const existingNotifications =
-      await this.notificationRepository.findAllByUserId(
-        // 用user id 找出所有存在訊息
-        user.id
-      )
+      await this.notificationRepository.findAllByUserId(user.id)
 
     if (existingNotifications == null) {
       throw new NotFoundError('No notification exits.')

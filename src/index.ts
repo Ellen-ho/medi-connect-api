@@ -129,12 +129,9 @@ import { AuthRoutes } from './infrastructure/http/routes/AuthRoutes'
 import passport from 'passport'
 import session from 'express-session'
 
-// import { RawQueryRepository } from './infrastructure/database/RawRepository'
-
 void main()
 
 async function main(): Promise<void> {
-  // TODO: should active only on dev environment
   dotenv.config()
   const env = process.env
   const port = env.API_PORT as string

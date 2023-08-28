@@ -86,7 +86,6 @@ export class DoctorTimeSlotRepository
     try {
       const startDate = dayjs(startTime).startOf('day').toDate()
       const endDate = dayjs(endTime).endOf('day').toDate()
-      console.table({ startDate })
       const entities = await this.getRepo().find({
         where: {
           doctor: { id: doctorId },

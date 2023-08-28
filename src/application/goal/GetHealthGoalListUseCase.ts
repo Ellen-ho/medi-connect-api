@@ -88,16 +88,15 @@ export class GetHealthGoalListUseCase {
     )
 
     if (user.role === UserRoleType.DOCTOR) {
-      // 若登入者為doctor
       const currentDoctor = await this.doctorRepository.findByUserId(user.id)
       if (currentDoctor == null) {
         throw new AuthorizationError('The currentDoctor does not exist.')
       }
       const upComingAppointments =
         await this.consultAppointmentRepository.findByPatientIdAndDoctorIdAndStatus(
-          targetPatientId, // 紀錄的擁有患者
-          currentDoctor.id, // 當前登入的醫師
-          [ConsultAppointmentStatusType.UPCOMING] // 預約狀態為upComing
+          targetPatientId,
+          currentDoctor.id,
+          [ConsultAppointmentStatusType.UPCOMING]
         )
       if (upComingAppointments.length === 0) {
         throw new AuthorizationError(
@@ -128,7 +127,6 @@ export class GetHealthGoalListUseCase {
       }
     }
 
-    // 若登入者身分為患者
     const currentPatient = await this.patientRepository.findByUserId(user.id)
     if (currentPatient == null) {
       throw new AuthorizationError('The current patient does not exist.')

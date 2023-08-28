@@ -2,7 +2,6 @@ import passport from 'passport'
 import { Strategy as LocalStrategy } from 'passport-local'
 import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt'
 import { Strategy as FacebookStrategy } from 'passport-facebook'
-import { Strategy as GoogleStrategy } from 'passport-google-oauth20'
 import { IUserRepository } from '../../domain/user/interfaces/repositories/IUserRepository'
 import bcrypt from 'bcrypt'
 
@@ -21,8 +20,6 @@ export class PassportConfig {
     this.initializeLocalStrategy()
     this.initializeJwtStrategy()
     this.initializeFacebookStrategy()
-    this.initializeGoogleStrategy()
-    // this.initializeSerialization()
   }
 
   private initializeLocalStrategy(): void {
@@ -104,9 +101,6 @@ export class PassportConfig {
           profileFields: ['email', 'displayName'],
         },
         (accessToken, refreshToken, profile, done) => {
-          /**
-           * '{"id":"225701267113224","displayName":"Erica Chen","name":{},"provider":"facebook","_raw":"{\\"name\\":\\"Erica Chen\\",\\"id\\":\\"225701267113224\\"}","_json":{"name":"Erica Chen","id":"225701267113224"}}'
-           */
           const { displayName } = profile
           const { email } = profile._json
 
@@ -115,7 +109,6 @@ export class PassportConfig {
             .then((user) => {
               // if user exists, just pass
               if (user !== null) {
-                console.table({ inPassport: JSON.stringify(user) })
                 done(null, user)
                 return
               }
@@ -164,64 +157,5 @@ export class PassportConfig {
           done(error)
         })
     })
-  }
-
-  private initializeGoogleStrategy(): void {
-    passport.use(
-      new GoogleStrategy(
-        {
-          clientID: process.env.GOOGLE_CLIENT_ID as string,
-          clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-          callbackURL: process.env.GOOGLE_CALLBACK_URL as string,
-          scope: ['profile', 'https://www.googleapis.com/auth/calendar'],
-        },
-        (accessToken, refreshToken, profile, done) => {
-          const googleId = profile.id
-          this.userRepo
-            .findById(googleId)
-            .then((user) => {
-              if (user !== null) {
-                done(null, {
-                  user,
-                  url: '/',
-                })
-              }
-
-              if (user == null) {
-                const error = new AuthenticationError(
-                  'Email or password is incorrect.'
-                )
-                done(error)
-                return
-              }
-
-              const randomPassword = Math.random().toString(36).slice(-8)
-              bcrypt
-                .genSalt(10)
-                .then(async (salt) => await bcrypt.hash(randomPassword, salt))
-                .then(async (hash) => {
-                  const newUser = new User({
-                    id: this.uuidService.generateUuid(),
-                    email: 'jsmith@example.com',
-                    displayName: 'jsmith',
-                    hashedPassword: hash,
-                    role: UserRoleType.PATIENT,
-                    createdAt: new Date(),
-                    updatedAt: new Date(),
-                  })
-
-                  await this.userRepo.save(newUser)
-                  done(null, newUser)
-                })
-                .catch((err) => {
-                  done(err, false)
-                })
-            })
-            .catch((err) => {
-              done(err)
-            })
-        }
-      )
-    )
   }
 }

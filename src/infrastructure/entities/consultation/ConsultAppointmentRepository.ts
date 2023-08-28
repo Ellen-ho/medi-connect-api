@@ -41,7 +41,7 @@ export class ConsultAppointmentRepository
       const entity = await this.getRepo().findOne({
         where: {
           id: consultAppointmentId,
-          patient: { id: patientId }, // need to set @RelationId
+          patient: { id: patientId },
         },
         relations: ['doctorTimeSlot'],
       })

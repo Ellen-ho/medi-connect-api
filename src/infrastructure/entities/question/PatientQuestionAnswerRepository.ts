@@ -25,7 +25,7 @@ export class PatientQuestionAnswerRepository
     try {
       const entity = await this.getRepo().findOne({
         where: { id },
-        relations: ['patientQuestion'], // if no @RalationId set, you need to add relations here
+        relations: ['patientQuestion'],
       })
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {
@@ -66,7 +66,7 @@ export class PatientQuestionAnswerRepository
           patientQuestion: { id: patientQuestionId },
           doctor: { id: doctorId }, // need to set @RelationId
         },
-        relations: ['patientQuestion'], // if no @RalationId set, you need to add relations here
+        relations: ['patientQuestion'],
       })
       return entity != null ? this.getMapper().toDomainModel(entity) : null
     } catch (e) {

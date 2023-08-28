@@ -31,7 +31,6 @@ export class ReadAllNotificationsUseCase {
 
     const existingUnReadNotifications =
       await this.notificationRepository.findAllUnreadNotificationsByUserId(
-        // 用user id 找出所有未讀訊息
         user.id
       )
 

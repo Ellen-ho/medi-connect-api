@@ -84,12 +84,7 @@ export class QuestionRoutes {
         validator(creatPatientQuestionAnswerSchema),
         asyncHandler(this.questionController.createPatientQuestionAnswer)
       )
-      // TODO: uncomment when edit is needed
-      // .patch(
-      //   '/answers/:id',
-      //   validator(editPatientQuestionAnswerSchema),
-      //   asyncHandler(this.questionController.editPatientQuestionAnswerContent)
-      // )
+
       .post(
         '/',
         authenticated,

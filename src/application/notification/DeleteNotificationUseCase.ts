@@ -23,7 +23,6 @@ export class DeleteNotificationUseCase {
 
     const existingNotification =
       await this.notificationRepository.findByIdAndUserId(
-        // 用user id 找出要刪除的特定訊息訊息
         notificationId,
         user.id
       )

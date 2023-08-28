@@ -43,14 +43,12 @@ export class EditBloodSugarRecordUseCase {
       bloodSugarNote,
     } = request
 
-    // get patient by userId
     const existingPatient = await this.patientRepository.findByUserId(user.id)
 
     if (existingPatient == null) {
       throw new AuthenticationError('Patient does not exist.')
     }
 
-    // get record by recordId and patientId
     const existingBloodSugarRecord =
       await this.bloodSugarRecordRepository.findByIdAndPatientId(
         bloodSugarRecordId,

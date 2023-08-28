@@ -9,7 +9,7 @@ export interface INotificationProps {
   referenceId: string | null
   createdAt: Date
   updatedAt: Date
-  user: User // 自己才可以看到自己的通知
+  user: User
 }
 
 export enum NotificationType {

@@ -84,7 +84,6 @@ export class CreateConsultAppointmentUseCase {
     let isWithinCurrentMonthRange = false
     let isWithinNextMonthRange = false
 
-    // 28號以前預約，範圍:在當天以後，在當月最後一天前
     if (currentDateDay < 28) {
       const wantedAppointmentTime = dayjs(existingDoctorTimeSlot.startAt)
       isWithinCurrentMonthRange =
@@ -98,7 +97,7 @@ export class CreateConsultAppointmentUseCase {
         )
       }
     }
-    // 28號以後預約(含28號當天)，28,29,30,31,範圍:當月28號後到當月底，下月整月到下月底
+
     if (currentDateDay >= 28) {
       const wantedAppointmentTime = dayjs(existingDoctorTimeSlot.startAt)
       isWithinCurrentMonthRange =

@@ -62,8 +62,6 @@ export class EditDoctorTimeSlotUseCase {
       )
     }
 
-    // 更改後的時間表不能早於現在時間(包括年月日時分秒)
-    // 如:同一天，晚上不能創白天時間表
     if (dayjs(startAt).isBefore(currentDate)) {
       throw new ValidationError('Time slot can not be before the current time.')
     }
@@ -88,9 +86,6 @@ export class EditDoctorTimeSlotUseCase {
 
     const thisMonthDivisionDate = thisMonthStartDate.set('date', 28)
     const nextMonthDivisionDate = nextMonthStartDate.set('date', 28)
-
-    // 當月28號前(不含28號)不能創下下月，不可創當月以前時間，只可創下月整月時間
-    // 當月28號後(含28號)到下月28號前(不含28號)，不可創當月28後時間到下月整月時間，不可創下下下月，只可以創建下下月
 
     if (
       currentDate.isBefore(thisMonthDivisionDate, 'day') &&

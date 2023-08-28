@@ -52,9 +52,6 @@ export class DeleteDoctorTimeSlotUseCase {
     const thisMonthDivisionDate = thisMonthStartDate.set('date', 28)
     const nextMonthDivisionDate = nextMonthStartDate.set('date', 28)
 
-    // 當月28號前(不含28號)不能創下下月，不可創當月以前時間，只可創下月整月時間
-    // 當月28號後(含28號)到下月28號前(不含28號)，不可創當月28後時間到下月整月時間，不可創下下下月，只可以創建下下月
-
     if (
       currentDate.isBefore(thisMonthDivisionDate, 'day') &&
       !(

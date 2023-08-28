@@ -32,7 +32,6 @@ export const editBloodSugarRecordSchema = {
 export const creatExerciseRecordSchema = {
   body: Joi.object({
     exerciseDate: Joi.date().required(),
-    // exerciseDate: Joi.date().timestamp('unix').required(),
     exerciseType: Joi.string()
       .valid(...Object.values(ExerciseType))
       .required(),

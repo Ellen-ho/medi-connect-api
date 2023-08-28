@@ -44,7 +44,6 @@ export class GetPatientProfileUseCase {
     request: GetPatientProfileRequest
   ): Promise<GetPatientProfileResponse> {
     const { user, targetPatientId } = request
-    // 若登入者為doctor
     if (user.role === UserRoleType.DOCTOR) {
       const currentDoctor = await this.doctorRepository.findByUserId(user.id)
       if (currentDoctor == null) {
@@ -52,9 +51,9 @@ export class GetPatientProfileUseCase {
       }
       const upComingAppointments =
         await this.consultAppointmentRepository.findByPatientIdAndDoctorIdAndStatus(
-          targetPatientId, // profile的擁有患者
-          currentDoctor.id, // 當前登入的醫師
-          [ConsultAppointmentStatusType.UPCOMING] // 預約狀態為upComing
+          targetPatientId,
+          currentDoctor.id,
+          [ConsultAppointmentStatusType.UPCOMING]
         )
       if (upComingAppointments.length === 0) {
         throw new AuthorizationError(
@@ -87,7 +86,6 @@ export class GetPatientProfileUseCase {
       }
     }
 
-    // 若登入者身分為患者
     const currentPatient = await this.patientRepository.findByUserId(user.id)
     if (currentPatient == null) {
       return {
@@ -110,7 +108,7 @@ export class GetPatientProfileUseCase {
         updatedAt: new Date(),
       }
     }
-    // 判斷此record是否屬於當前登入的患者
+
     if (currentPatient.id !== targetPatientId) {
       throw new AuthorizationError(
         'These records do not belong to the current patient.'

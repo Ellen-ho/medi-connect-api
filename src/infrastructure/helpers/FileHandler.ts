@@ -8,7 +8,6 @@ export const imgurFileHandler = async (avatar: {
 
   const response = await client.upload({
     image: fs.createReadStream(avatar.path),
-    // type: 'stream',
   })
 
   if (!response.success) {
