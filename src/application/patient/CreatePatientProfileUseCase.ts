@@ -27,7 +27,18 @@ interface CreatePatientProfileRequest {
 
 interface CreatePatientProfileResponse {
   id: string
+  avatar: string | null
+  firstName: string
+  lastName: string
+  birthDate: Date
+  gender: GenderType
+  medicalHistory: IMedicalHistoryItem[] | null
+  allergy: IAllergy
+  familyHistory: IFamilyHistoryItem[] | null
+  heightValueCm: number
+  medicineUsage: IMedicineUsageItem[] | null
   createdAt: Date
+  updatedAt: Date
 }
 
 export class CreatePatientProfileUseCase {
@@ -82,7 +93,18 @@ export class CreatePatientProfileUseCase {
 
     return {
       id: patient.id,
+      avatar: patient.avatar,
+      firstName: patient.firstName,
+      lastName: patient.lastName,
+      birthDate: patient.birthDate,
+      gender: patient.gender,
+      medicalHistory: patient.medicalHistory,
+      allergy: patient.allergy,
+      familyHistory: patient.familyHistory,
+      heightValueCm: patient.heightValueCm,
+      medicineUsage: patient.medicineUsage,
       createdAt: patient.createdAt,
+      updatedAt: patient.updatedAt,
     }
   }
 }

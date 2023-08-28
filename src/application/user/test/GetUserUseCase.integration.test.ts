@@ -14,8 +14,7 @@ describe('Integration test: GetUserUseCase', () => {
 
   beforeAll(async () => {
     // connect to test db
-    database = new PostgresDatabase()
-    await database.connect()
+    database = await PostgresDatabase.getInstance()
     // create user repo
     userRepo = new UserRepository(database.getDataSource())
   }, 300000)

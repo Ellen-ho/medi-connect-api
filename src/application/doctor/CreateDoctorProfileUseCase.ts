@@ -23,7 +23,20 @@ interface CreateDoctorProfileRequest {
 
 interface CreateDoctorProfileResponse {
   id: string
+  avatar: string | null
+  firstName: string
+  lastName: string
+  gender: GenderType
+  aboutMe: string
+  languagesSpoken: string[]
+  specialties: MedicalSpecialtyType[]
+  careerStartDate: Date
+  officePracticalLocation: IAddress
+  education: string[]
+  awards: string[] | null
+  affiliations: string[] | null
   createdAt: Date
+  updatedAt: Date
 }
 
 export class CreateDoctorProfileUseCase {
@@ -82,7 +95,20 @@ export class CreateDoctorProfileUseCase {
 
     return {
       id: doctor.id,
+      avatar: doctor.avatar,
+      firstName: doctor.firstName,
+      lastName: doctor.lastName,
+      gender: doctor.gender,
+      aboutMe: doctor.aboutMe,
+      languagesSpoken: doctor.languagesSpoken,
+      careerStartDate: doctor.careerStartDate,
+      specialties: doctor.specialties,
+      officePracticalLocation: doctor.officePracticalLocation,
+      education: doctor.education,
+      awards: doctor.awards,
+      affiliations: doctor.affiliations,
       createdAt: doctor.createdAt,
+      updatedAt: doctor.updatedAt,
     }
   }
 }

@@ -32,8 +32,7 @@ describe('Integration test: GetSingleBloodPressureRecordUseCase', () => {
 
   beforeAll(async () => {
     // connect to test db
-    database = new PostgresDatabase()
-    await database.connect()
+    database = await PostgresDatabase.getInstance()
     // create repos and service
     bloodPressureRecordRepo = new BloodPressureRecordRepository(
       database.getDataSource()
