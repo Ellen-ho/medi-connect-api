@@ -30,8 +30,7 @@ describe('Integration test: CreateExerciseRecordUseCase', () => {
 
   beforeAll(async () => {
     // connect to test db
-    database = new PostgresDatabase()
-    await database.connect()
+    database = await PostgresDatabase.getInstance()
     // create repos and service
     exerciseRecordRepo = new ExerciseRecordRepository(database.getDataSource())
     patientRepo = new PatientRepository(database.getDataSource())

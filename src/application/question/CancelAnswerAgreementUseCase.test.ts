@@ -12,16 +12,19 @@ import { AnswerAgreement } from '../../domain/question/AnswerAgreement'
 import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 import { IPatientQuestionAnswerRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionAnswerRepository'
 import { PatientQuestionAnswer } from '../../domain/question/PatientQuestionAnswer'
+import { INotificationHelper } from '../notification/NotificationHelper'
 
 describe('Unit test: CancelAnswerAppreciationUseCase', () => {
   const mockAnswerAgreementRepo = mock<IAnswerAgreementRepository>()
   const mockDoctorRepo = mock<IDoctorRepository>()
   const mockPatientQuestionAnswerRepo = mock<IPatientQuestionAnswerRepository>()
+  const mockNotificationHelper = mock<INotificationHelper>()
 
   const cancelAnswerAppreciationUseCase = new CancelAnswerAgreementUseCase(
     mockAnswerAgreementRepo,
     mockDoctorRepo,
-    mockPatientQuestionAnswerRepo
+    mockPatientQuestionAnswerRepo,
+    mockNotificationHelper
   )
 
   MockDate.set('2023-06-18T13:18:00.155Z')
