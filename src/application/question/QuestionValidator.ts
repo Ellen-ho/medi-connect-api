@@ -10,25 +10,7 @@ export const createAnswerAgreementSchema = {
   }),
 }
 
-export const editAnswerAgreementCommentSchema = {
-  params: Joi.object({
-    id: Joi.string().uuid().required(),
-  }),
-  body: Joi.object({
-    comment: Joi.string().optional(),
-  }),
-}
-
 export const creatAnswerAppreciationSchema = {
-  params: Joi.object({
-    id: Joi.string().uuid().required(),
-  }),
-  body: Joi.object({
-    content: Joi.string().optional(),
-  }),
-}
-
-export const editAnswerAppreciationContentSchema = {
   params: Joi.object({
     id: Joi.string().uuid().required(),
   }),
@@ -46,28 +28,7 @@ export const creatPatientQuestionAnswerSchema = {
   }),
 }
 
-export const editPatientQuestionAnswerSchema = {
-  params: Joi.object({
-    id: Joi.string().uuid().required(),
-  }),
-  body: Joi.object({
-    content: Joi.string().required(),
-  }),
-}
-
 export const creatPatientQuestionSchema = {
-  body: Joi.object({
-    content: Joi.string().required(),
-    medicalSpecialty: Joi.string()
-      .valid(...Object.values(MedicalSpecialtyType))
-      .required(),
-  }),
-}
-
-export const editPatientQuestionSchema = {
-  params: Joi.object({
-    id: Joi.string().uuid().required(),
-  }),
   body: Joi.object({
     content: Joi.string().required(),
     medicalSpecialty: Joi.string()

@@ -50,18 +50,14 @@ import { DoctorRepository } from './infrastructure/entities/doctor/DoctorReposit
 import { QuestionRoutes } from './infrastructure/http/routes/QuestionRoutes'
 import { QuestionController } from './infrastructure/http/controllers/QuestionController'
 import { CreateAnswerAgreementUseCase } from './application/question/CreateAnswerAgreementUseCase'
-import { EditAnswerAgreementCommentUseCase } from './application/question/EditAnswerAgreementCommentUseCase'
 import { AnswerAgreementRepository } from './infrastructure/entities/question/AnswerAgreementRepository'
 import { CancelAnswerAgreementUseCase } from './application/question/CancelAnswerAgreementUseCase'
 import { AnswerAppreciationRepository } from './infrastructure/entities/question/AnswerAppreciationRepository'
 import { CreateAnswerAppreciationUseCase } from './application/question/CreateAnswerAppreciationUseCase'
-import { EditAnswerAppreciationContentUseCase } from './application/question/EditAnswerAppreciationContentUseCase'
 import { CancelAnswerAppreciationUseCase } from './application/question/CancelAnswerAppreciationUseCase'
 import { PatientQuestionAnswerRepository } from './infrastructure/entities/question/PatientQuestionAnswerRepository'
 import { CreatePatientQuestionAnswerUseCase } from './application/question/CreatePatientQuestionAnswerUseCase'
-import { EditPatientQuestionAnswerContentUseCase } from './application/question/EditPatientQuestionAnswerContentUseCase'
 import { CancelPatientQuestionAnswerUseCase } from './application/question/CancelPatientQuestionAnswerUseCase'
-import { EditPatientQuestionUseCase } from './application/question/EditPatientQuestionUseCase'
 import { CreatePatientQuestionUseCase } from './application/question/CreatePatientQuestionUseCase'
 import { PatientQuestionRepository } from './infrastructure/entities/question/PatientQuestionRepository'
 import { CancelPatientQuestionUseCase } from './application/question/CancelPatientQuestionUsecase'
@@ -253,11 +249,6 @@ async function main(): Promise<void> {
     uuidService,
     notificationHelper
   )
-  const editAnswerAgreementCommentUseCase =
-    new EditAnswerAgreementCommentUseCase(
-      answerAgreementRepository,
-      doctorRepository
-    )
   const cancelAnswerAgreementUseCase = new CancelAnswerAgreementUseCase(
     answerAgreementRepository,
     doctorRepository,
@@ -273,11 +264,6 @@ async function main(): Promise<void> {
     notificationHelper,
     doctorRepository
   )
-  const editAnswerAppreciationContentUseCase =
-    new EditAnswerAppreciationContentUseCase(
-      answerAppreciationRepository,
-      patientRepository
-    )
   const cancelAnswerAppreciationUseCase = new CancelAnswerAppreciationUseCase(
     answerAppreciationRepository,
     patientRepository,
@@ -294,11 +280,7 @@ async function main(): Promise<void> {
       notificationHelper,
       patientRepository
     )
-  const editPatientQuestionAnswerContentUseCase =
-    new EditPatientQuestionAnswerContentUseCase(
-      patientQuestionAnswerRepository,
-      doctorRepository
-    )
+
   const cancelPatientQuestionAnswerUseCase =
     new CancelPatientQuestionAnswerUseCase(
       patientQuestionAnswerRepository,
@@ -312,10 +294,7 @@ async function main(): Promise<void> {
     patientRepository,
     uuidService
   )
-  const editPatientQuestionUseCase = new EditPatientQuestionUseCase(
-    patientQuestionRepository,
-    patientRepository
-  )
+
   const cancelPatientQuestionUseCase = new CancelPatientQuestionUseCase(
     patientQuestionRepository,
     patientRepository,
@@ -708,14 +687,10 @@ async function main(): Promise<void> {
   )
   const questionController = new QuestionController(
     createAnswerAgreementUseCase,
-    editAnswerAgreementCommentUseCase,
     createAnswerAppreciationUseCase,
-    editAnswerAppreciationContentUseCase,
     createPatientQuestionAnswerUseCase,
-    editPatientQuestionAnswerContentUseCase,
     cancelPatientQuestionAnswerUseCase,
     createPatientQuestionUseCase,
-    editPatientQuestionUseCase,
     cancelAnswerAppreciationUseCase,
     cancelAnswerAgreementUseCase,
     cancelPatientQuestionUseCase,

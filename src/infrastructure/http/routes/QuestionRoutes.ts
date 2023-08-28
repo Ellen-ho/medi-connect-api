@@ -9,9 +9,6 @@ import {
   creatPatientQuestionAnswerSchema,
   creatPatientQuestionSchema,
   createAnswerAgreementSchema,
-  editAnswerAgreementCommentSchema,
-  editAnswerAppreciationContentSchema,
-  editPatientQuestionSchema,
   getAnswerDetailsSchema,
   getAnswerListSchema,
   getSingleQuestionSchema,
@@ -24,24 +21,6 @@ export class QuestionRoutes {
   constructor(private readonly questionController: IQuestionController) {
     this.routes = Router()
     this.routes
-      // patient specific
-      .patch(
-        '/answers/:id/appreciations',
-        authenticated,
-        validator(editAnswerAppreciationContentSchema),
-        asyncHandler(this.questionController.editAnswerAppreciationContent)
-      )
-      .patch(
-        '/answers/:id/agreements',
-        validator(editAnswerAgreementCommentSchema),
-        asyncHandler(this.questionController.editAnswerAgreementComment)
-      )
-      .patch(
-        '/:id',
-        authenticated,
-        validator(editPatientQuestionSchema),
-        asyncHandler(this.questionController.editPatientQuestion)
-      )
       .delete(
         '/answers/:id/appreciations',
         authenticated,
@@ -84,7 +63,6 @@ export class QuestionRoutes {
         validator(creatPatientQuestionAnswerSchema),
         asyncHandler(this.questionController.createPatientQuestionAnswer)
       )
-
       .post(
         '/',
         authenticated,
