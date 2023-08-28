@@ -81,6 +81,7 @@ export enum MedicineFrequencyType {
 export enum MedicineTimeType {
   BEFORE_MEAL = 'BEFORE_MEAL',
   AFTER_MEAL = 'AFTER_MEAL',
+  AT_BEDTIME = 'AT_BEDTIME',
   OTHER = 'OTHER',
 }
 
