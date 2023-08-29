@@ -9,7 +9,7 @@
 <br>
 <br>
 <p align="center">
-  <a href="https://medi-connet-api.onrender.com">Join Hands for an Empowering Journey to Health and Vitality!</a>
+  <a href="https://medi-connect-ui.vercel.app">Join Hands for an Empowering Journey to Health and Vitality!</a>
 </p>
 
 <br>
