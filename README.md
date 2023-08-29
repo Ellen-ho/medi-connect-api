@@ -85,8 +85,7 @@ Recognizing physicians' constraints on time and presence, the platform aids in g
 As a patient member, you can...
 
 1. Sign up for a Medi-Connect account to embark on your journey towards a healthier lifestyle.
-2. Sign in using your registered email and password, or alternatively, you can also log in with your Facebook account. (Facebook authentication works fine in local development mode, but due to recent changes in Meta for Developers, using Facebook OAuth now requires the product to be officially launched and pass business verification. Since Medi-Connect is a side project, the Facebook authentication feature is currently not functioning as expected on production.
-)
+2. Sign in using your registered email and password, or alternatively, you can also log in with your Facebook account. (**Facebook authentication works fine in local development mode, but due to recent changes in Meta for Developers, using Facebook OAuth now requires the product to be officially launched and pass business verification. Since Medi-Connect is a side project, the Facebook authentication feature is currently not functioning as expected on production.**)
 3. Create your personal profile in order to commence the use of other services on the plant.
 4. Edit your account or your personal profile.
 5. Add your health records, with the platform offering seven categories of health record classifications, including blood pressure, blood sugar, glycated hemoglobin, sleep, exercise, diet, and weight.
