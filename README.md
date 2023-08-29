@@ -12,6 +12,24 @@
 
 ## User Interface
 
+### Visit doctor's page, choose a time slot, and book appointment
+
+<p align="center">
+  <img width="80%" align="center" src="./demo/Book appointment.gif">
+</p>
+
+### Add patient record
+
+<p align="center">
+  <img width="80%" align="center" src="./demo/Add patient record.gif">
+</p>
+
+### Doctor views patient info after appointment notification
+
+<p align="center">
+  <img width="80%" align="center" src="./demo/Doctor views patient info after appointment notification.gif">
+</p>
+
 ## About Medi-Connect
 
 Recognizing physicians' constraints on time and presence, the platform aids in gaining a thorough understanding of patients' health and lifestyles. This tool allows doctors to make informed decisions beyond the traditional confines of clinic hours
