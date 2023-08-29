@@ -7635,6 +7635,246 @@
         }
       }
     },
+    "/goals": {
+      "get": {
+        "tags": ["goal"],
+        "summary": "Get health goal list.",
+        "description": "Get health goal list.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "example": "__JWT_TOKEN__"
+            },
+            "required": true
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "example": 1
+            },
+            "description": "Page number for pagination.",
+            "required": false
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "example": 10
+            },
+            "description": "Number of items to return per page.",
+            "required": false
+          },
+          {
+            "name": "targetPatientId",
+            "in": "query",
+            "description": "patient id for the request",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully get health goal list.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "patientData": {
+                      "type": "object",
+                      "properties": {
+                        "firstName": {
+                          "type": "string",
+                          "example": "Tim"
+                        },
+                        "lastName": {
+                          "type": "string",
+                          "example": "Lin"
+                        },
+                        "birthDate": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "1995-12-31T00:00:00.000Z"
+                        },
+                        "gender": {
+                          "type": "string",
+                          "enum": ["MALE", "FEMALE", "NON_BINARY"],
+                          "example": "MALE"
+                        }
+                      }
+                    },
+                    "goalsData": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid",
+                            "example": "df5ff2e5-9d76-42ca-acfb-688267229369"
+                          },
+                          "startAt": {
+                            "type": "string",
+                            "example": "2023-06-18T05:23:25.231Z"
+                          },
+                          "endAt": {
+                            "type": "string",
+                            "example": "2023-07-18T05:23:25.231Z"
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "IN_PROGRESS",
+                              "ALL_GOALS_ACHIEVED",
+                              "PARTIAL_GOALS_ACHIEVED",
+                              "GOAL_FAILED",
+                              "PENDING",
+                              "REJECTED"
+                            ],
+                            "example": "IN_PROGRESS"
+                          },
+                          "result": {
+                            "type": "object",
+                            "properties": {
+                              "bloodPressure": {
+                                "type": "object",
+                                "properties": {
+                                  "currentValue": {
+                                    "type": "object",
+                                    "properties": {
+                                      "systolicBloodPressure": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "example": 130
+                                      },
+                                      "diastolicBloodPressure": {
+                                        "type": "integer",
+                                        "nullable": true,
+                                        "example": 80
+                                      }
+                                    },
+                                    "nullable": true
+                                  },
+                                  "goalAchieved": {
+                                    "type": "boolean",
+                                    "example": true
+                                  },
+                                  "currentValueDate": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "example": "2023-06-18T05:23:25.231Z"
+                                  }
+                                }
+                              },
+                              "bloodSugar": {
+                                "type": "object",
+                                "properties": {
+                                  "currentValue": {
+                                    "type": "number",
+                                    "format": "double",
+                                    "example": 100.0,
+                                    "nullable": true
+                                  },
+                                  "goalAchieved": {
+                                    "type": "boolean",
+                                    "example": false
+                                  }
+                                },
+                                "currentValueDate": {
+                                  "type": "string",
+                                  "format": "date-time",
+                                  "example": "2023-06-18T05:23:25.231Z"
+                                }
+                              }
+                            },
+                            "glycatedHemoglobin": {
+                              "type": "object",
+                              "properties": {
+                                "currentValue": {
+                                  "type": "number",
+                                  "format": "double",
+                                  "example": 5.62,
+                                  "nullable": true
+                                },
+                                "goalAchieved": {
+                                  "type": "boolean",
+                                  "example": true
+                                },
+                                "currentValueDate": {
+                                  "type": "string",
+                                  "format": "date-time",
+                                  "example": "2023-06-18T05:23:25.231Z"
+                                }
+                              }
+                            },
+                            "weight": {
+                              "type": "object",
+                              "properties": {
+                                "currentValue": {
+                                  "type": "number",
+                                  "format": "double",
+                                  "example": "56.8",
+                                  "nullable": true
+                                },
+                                "goalAchieved": {
+                                  "type": "boolean",
+                                  "example": true
+                                },
+                                "currentValueDate": {
+                                  "type": "string",
+                                  "format": "date-time",
+                                  "example": "2023-06-18T05:23:25.231Z"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "pages": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          },
+                          "example": [1, 2, 3]
+                        },
+                        "totalPage": {
+                          "type": "number",
+                          "example": 3
+                        },
+                        "currentPage": {
+                          "type": "number",
+                          "example": 2
+                        },
+                        "prev": {
+                          "type": "number",
+                          "example": 1
+                        },
+                        "next": {
+                          "type": "number",
+                          "example": 3
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/goals/{id}": {
       "get": {
         "tags": ["goal"],
