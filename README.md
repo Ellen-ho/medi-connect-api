@@ -2,6 +2,10 @@
 
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
 
+<div align="center">
+  <img width="100%" align="center" src="./demo/Demo picture.png">
+</div>
+
 ## Table of contents
 
 - [User Interface](#User-Interface)
