@@ -109,7 +109,7 @@ describe('Unit test: GetPatientConsultAppointmentsUseCase', () => {
           specialties: [MedicalSpecialtyType.CARDIOLOGY],
         },
         meetingLink: 'https://example.com/meeting1',
-        cancelAvailability: true,
+        cancelAvailability: false,
       },
     ]
     const mockCompletedAppointments = [

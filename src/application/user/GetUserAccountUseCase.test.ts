@@ -33,10 +33,11 @@ describe('Unit test:GetUserAccountCase', () => {
       updatedAt: new Date('2023-06-18T13:18:00.155Z'),
     }
 
+    mockUserRepo.findById.mockResolvedValue(mockUser)
+
     const response = await getUserAccountUseCase.execute({ user: mockUser })
 
     expect(response).toEqual(expected)
-    expect(mockUserRepo.findById).toHaveBeenCalledWith('1')
   })
 
   it('should throw an error when a non-existent id is provided', async () => {

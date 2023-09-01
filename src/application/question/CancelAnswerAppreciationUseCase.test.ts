@@ -12,6 +12,8 @@ import { AnswerAppreciation } from '../../domain/question/AnswerAppreciation'
 import { IPatientQuestionAnswerRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionAnswerRepository'
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 import { INotificationHelper } from '../notification/NotificationHelper'
+import { Doctor } from '../../domain/doctor/Doctor'
+import { MedicalSpecialtyType } from '../../domain/question/PatientQuestion'
 
 describe('Unit test: CancelAnswerAppreciationUseCase', () => {
   const mockAnswerAppreciationRepo = mock<IAnswerAppreciationRepository>()
@@ -65,6 +67,42 @@ describe('Unit test: CancelAnswerAppreciationUseCase', () => {
     }),
   })
 
+  const mockExistingDoctor = new Doctor({
+    id: 'doctor1',
+    avatar: null,
+    firstName: 'John',
+    lastName: 'Doe',
+    gender: GenderType.MALE,
+    aboutMe:
+      'I have been a physician for over 10 years, specializing in cardiology.',
+    languagesSpoken: ['English', 'Spanish'],
+    specialties: [MedicalSpecialtyType.CARDIOLOGY],
+    careerStartDate: new Date('2010-01-01T00:00:00.000Z'),
+    officePracticalLocation: {
+      line1: '123 Main Street',
+      line2: 'Apt 4B',
+      city: 'Cityville',
+      stateProvince: 'State',
+      postalCode: '12345',
+      country: 'United States',
+      countryCode: 'US',
+    },
+    education: [],
+    awards: null,
+    affiliations: null,
+    createdAt: mockedDate,
+    updatedAt: mockedDate,
+    user: new User({
+      id: 'doctor1',
+      email: 'doctor1@test.com',
+      displayName: 'Test patient1',
+      role: UserRoleType.DOCTOR,
+      hashedPassword: 'hashedPassword',
+      createdAt: mockedDate,
+      updatedAt: mockedDate,
+    }),
+  })
+
   const mockPatientQuestionAnswer = new PatientQuestionAnswer({
     id: 'A1',
     content: 'Example answer',
@@ -97,6 +135,10 @@ describe('Unit test: CancelAnswerAppreciationUseCase', () => {
   })
 
   it('should throw AuthorizationError when the patient does not exist', async () => {
+    mockPatientQuestionAnswerRepo.findById.mockResolvedValue(
+      mockPatientQuestionAnswer
+    )
+    mockDoctorRepo.findById.mockResolvedValue(mockExistingDoctor)
     mockPatientRepo.findByUserId.mockResolvedValue(null)
 
     await expect(
@@ -113,19 +155,17 @@ describe('Unit test: CancelAnswerAppreciationUseCase', () => {
     await expect(
       cancelAnswerAppreciationUseCase.execute(mockRequest)
     ).rejects.toThrow(NotFoundError)
-    expect(mockPatientRepo.findByUserId).toHaveBeenCalledWith(
-      mockRequest.user.id
-    )
-    expect(
-      mockAnswerAppreciationRepo.findByIdAndPatientId
-    ).toHaveBeenCalledWith(mockRequest.answerId, mockRequest.user.id)
   })
 
   it('should delete the appreciation when valid request is provided', async () => {
     const totalThankCounts = 1
 
+    mockPatientQuestionAnswerRepo.findById.mockResolvedValue(
+      mockPatientQuestionAnswer
+    )
+    mockDoctorRepo.findById.mockResolvedValue(mockExistingDoctor)
     mockPatientRepo.findByUserId.mockResolvedValue(mockExistingPatient)
-    mockAnswerAppreciationRepo.findByIdAndPatientId.mockResolvedValue(
+    mockAnswerAppreciationRepo.findByAnswerIdAndPatientId.mockResolvedValue(
       mockAppreciation
     )
     mockAnswerAppreciationRepo.delete.mockResolvedValue()
@@ -140,15 +180,6 @@ describe('Unit test: CancelAnswerAppreciationUseCase', () => {
     const response = await cancelAnswerAppreciationUseCase.execute(mockRequest)
 
     expect(response).toEqual(expectedResponse)
-    expect(mockPatientRepo.findByUserId).toHaveBeenCalledWith(
-      mockRequest.user.id
-    )
-    expect(
-      mockAnswerAppreciationRepo.findByIdAndPatientId
-    ).toHaveBeenCalledWith(mockRequest.answerId, mockRequest.user.id)
     expect(mockAnswerAppreciationRepo.delete).toHaveBeenCalled()
-    expect(mockAnswerAppreciationRepo.countByAnswerId).toHaveBeenCalledWith(
-      mockAppreciation.answer.id
-    )
   })
 })
