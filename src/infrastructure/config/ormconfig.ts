@@ -1,8 +1,7 @@
 import { DataSourceOptions } from 'typeorm'
 import 'dotenv/config'
 
-const isDevMode = process.env.TS_NODE === 'true'
-
+const isDevMode = process.env.NODE_ENV === 'development'
 const entities = isDevMode
   ? ['./src/infrastructure/entities/**/*Entity.ts']
   : ['./build/infrastructure/entities/**/*Entity.js']

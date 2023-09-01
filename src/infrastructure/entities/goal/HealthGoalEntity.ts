@@ -82,7 +82,7 @@ export class HealthGoalEntity {
   @Column({ name: 'end_at' })
   public endAt!: Date
 
-  @Column({ name: 'status' })
+  @Column({ name: 'status', type: 'varchar' })
   public status!: HealthGoalStatus
 
   @Column({ name: 'result', type: 'jsonb', nullable: true })

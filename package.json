@@ -4,13 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon",
+    "dev": "export NODE_ENV=development && nodemon",
     "test:unit": "jest --watch src --coverage",
     "test:integration": "jest --detectOpenHandles --runInBand --testRegex='.*\\.integration.test\\.ts'",
     "lint": "eslint ./src --ext .ts",
     "prettier": "prettier --check .",
     "build": "rimraf ./build && tsc",
-    "start": "npm run build && node build/index.js",
+    "start": "export NODE_ENV=production && npm run build && node build/index.js",
     "typeorm": "typeorm-ts-node-commonjs -d ./src/infrastructure/config/dataSource.ts",
     "seed": "ts-node ./seeder/seed.ts"
   },
