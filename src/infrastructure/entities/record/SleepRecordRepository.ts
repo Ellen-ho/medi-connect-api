@@ -65,7 +65,7 @@ export class SleepRecordRepository
           sleep_time: Date
           wake_up_time: Date
           sleep_quality: SleepQualityType
-          sleep_duration_hour: number
+          sleep_duration_hour: string
           sleep_note: string | null
           created_at: Date
           updated_at: Date
@@ -101,7 +101,9 @@ export class SleepRecordRepository
             sleepTime: rawRecordsWithOwner[0].sleep_time,
             wakeUpTime: rawRecordsWithOwner[0].wake_up_time,
             sleepQuality: rawRecordsWithOwner[0].sleep_quality,
-            sleepDurationHour: rawRecordsWithOwner[0].sleep_duration_hour,
+            sleepDurationHour: parseFloat(
+              rawRecordsWithOwner[0].sleep_duration_hour
+            ),
             sleepNote: rawRecordsWithOwner[0].sleep_note,
             createdAt: rawRecordsWithOwner[0].created_at,
             updatedAt: rawRecordsWithOwner[0].updated_at,

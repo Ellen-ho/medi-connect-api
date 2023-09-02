@@ -1,12 +1,12 @@
 import { DataSourceOptions } from 'typeorm'
 import 'dotenv/config'
 
-const isDevMode = process.env.NODE_ENV === 'development'
-const entities = isDevMode
-  ? ['./src/infrastructure/entities/**/*Entity.ts']
-  : ['./build/infrastructure/entities/**/*Entity.js']
+const isProd = process.env.NODE_ENV === 'production'
+const entities = isProd
+  ? ['./build/infrastructure/entities/**/*Entity.js']
+  : ['./src/infrastructure/entities/**/*Entity.ts']
 
-const migrations = isDevMode ? ['./migrations/*.ts'] : []
+const migrations = isProd ? [] : ['./migrations/*.ts']
 
 const OrmConfig: DataSourceOptions = {
   type: 'postgres',

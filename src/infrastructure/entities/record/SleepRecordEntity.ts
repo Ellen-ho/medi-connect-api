@@ -36,7 +36,7 @@ export class SleepRecordEntity {
     scale: 1,
   })
   @Transform(({ value }) => Number(value))
-  public sleepDurationHour!: number
+  public sleepDurationHour!: string
 
   @Column({ name: 'sleep_note', type: 'varchar', length: 250, nullable: true })
   public sleepNote!: string | null

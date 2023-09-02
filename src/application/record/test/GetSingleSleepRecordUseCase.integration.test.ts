@@ -96,6 +96,7 @@ describe('Integration test: GetSingleSleepRecordUseCase', () => {
       updatedAt: new Date(mockDateString),
       patientId: mockPatient.id,
     })
+
     await sleepRecordRepo.save(mockSleepRecord)
 
     MockDate.set(mockDateString)
@@ -109,6 +110,7 @@ describe('Integration test: GetSingleSleepRecordUseCase', () => {
 
     const expected = {
       data: {
+        id: mockSleepRecord.id,
         sleepDate: mockSleepRecord.sleepDate,
         sleepTime: mockSleepRecord.sleepTime,
         wakeUpTime: mockSleepRecord.wakeUpTime,
@@ -125,6 +127,7 @@ describe('Integration test: GetSingleSleepRecordUseCase', () => {
         gender: mockPatient.gender,
       },
     }
+
     expect(result).toEqual(expected)
   })
   // it('should throw NotFoundError if this record not found in DB', async () => {

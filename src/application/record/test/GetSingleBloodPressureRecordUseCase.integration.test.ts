@@ -113,6 +113,7 @@ describe('Integration test: GetSingleBloodPressureRecordUseCase', () => {
 
     const expected = {
       data: {
+        id: mockBloodPressureRecord.id,
         bloodPressureDate: mockBloodPressureRecord.bloodPressureDate,
         systolicBloodPressure: mockBloodPressureRecord.systolicBloodPressure,
         diastolicBloodPressure: mockBloodPressureRecord.diastolicBloodPressure,

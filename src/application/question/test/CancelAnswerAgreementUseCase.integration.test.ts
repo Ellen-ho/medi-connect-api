@@ -85,14 +85,12 @@ describe('Integration test: CancelAnswerAgreementUseCase', () => {
     // connect to test db
     database = await PostgresDatabase.getInstance()
     // create repos and service
-
     doctorRepo = new DoctorRepository(database.getDataSource())
     patientRepo = new PatientRepository(database.getDataSource())
 
     patientQuestionRepo = new PatientQuestionRepository(
       database.getDataSource()
     )
-
     patientQuestionAnswerRepo = new PatientQuestionAnswerRepository(
       database.getDataSource()
     )
@@ -119,6 +117,7 @@ describe('Integration test: CancelAnswerAgreementUseCase', () => {
     await answerAgreementRepo.clear()
     await patientQuestionAnswerRepo.clear()
     await patientQuestionRepo.clear()
+    await notificationRepo.clear()
     await patientRepo.clear()
     await doctorRepo.clear()
     await userRepo.clear()
