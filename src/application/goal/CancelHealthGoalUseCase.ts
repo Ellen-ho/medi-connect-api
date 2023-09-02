@@ -4,7 +4,6 @@ import { NotificationType } from '../../domain/notification/Notification'
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { User } from '../../domain/user/User'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
-import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 import { INotificationHelper } from '../notification/NotificationHelper'
 
 interface CancelHealthGoalRequest {
@@ -24,7 +23,7 @@ export class CancelHealthGoalUseCase {
 
   public async execute(
     request: CancelHealthGoalRequest
-  ): Promise<CancelHealthGoalResponse> {
+  ): Promise<CancelHealthGoalResponse | null> {
     const { user } = request
 
     const existingPatient = await this.patientRepository.findByUserId(user.id)
@@ -44,9 +43,8 @@ export class CancelHealthGoalUseCase {
       )
 
     if (overThreeDaysPendingHealthGoals.length === 0) {
-      throw new NotFoundError(
-        'There are no over time pending health goals exist.'
-      )
+      console.log('There are no over time pending health goals exist.')
+      return null
     }
 
     for (const healthGoal of overThreeDaysPendingHealthGoals) {
