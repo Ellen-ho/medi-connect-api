@@ -86,7 +86,7 @@ export class CreateHealthGoalUseCase {
         [HealthGoalStatus.REJECTED]
       )
 
-    if (latestRejectedHealthGoal[0] !== null) {
+    if (latestRejectedHealthGoal.length !== 0) {
       const createdAtDate = latestRejectedHealthGoal[0].createdAt
 
       const fourteenDaysLater = new Date(createdAtDate.getTime())

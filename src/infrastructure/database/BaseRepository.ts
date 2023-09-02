@@ -5,7 +5,7 @@ import { IExecutor } from '../../domain/shared/IRepositoryTx'
 import dotenv from 'dotenv'
 
 dotenv.config()
-const { NODE_ENV } = process.env
+const { NODE_ENV, POSTGRES_DB_NAME } = process.env
 
 export class BaseRepository<E extends ObjectLiteral, DM>
   implements IBaseRepository<DM>
@@ -62,7 +62,7 @@ export class BaseRepository<E extends ObjectLiteral, DM>
   }
 
   public async clear(): Promise<void> {
-    if (NODE_ENV !== 'test') {
+    if (NODE_ENV !== 'test' && POSTGRES_DB_NAME !== 'test_db') {
       throw new Error(
         'Operation not allowed: you can use it under the test environment only'
       )
@@ -71,9 +71,7 @@ export class BaseRepository<E extends ObjectLiteral, DM>
     try {
       await this.getRepo().delete({})
     } catch (e) {
-      throw new Error(
-        'Operation not allowed: you can use it under the test environment only'
-      )
+      throw new Error(e instanceof Error ? e.message : 'repository clear error')
     }
   }
 }

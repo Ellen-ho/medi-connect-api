@@ -106,7 +106,6 @@ describe('Unit test: GetDoctorConsultAppointmentsUseCase', () => {
         appointmentId: '98e647d7-259c-4961-8102-97bb582422de',
         status: ConsultAppointmentStatusType.UPCOMING,
         doctorTimeSlot: {
-          doctorId: 'doctor1',
           startAt: new Date('2023-06-19T09:00:00'),
           endAt: new Date('2023-06-19T09:30:00'),
         },
@@ -123,7 +122,6 @@ describe('Unit test: GetDoctorConsultAppointmentsUseCase', () => {
         appointmentId: '66f547d7-259c-4961-8102-97bb582422de',
         status: ConsultAppointmentStatusType.COMPLETED,
         doctorTimeSlot: {
-          doctorId: 'doctor1',
           startAt: new Date('2023-06-08T14:00:00'),
           endAt: new Date('2023-06-08T14:30:00'),
         },
@@ -140,7 +138,6 @@ describe('Unit test: GetDoctorConsultAppointmentsUseCase', () => {
         appointmentId: '99f547d7-259c-4961-8102-97bb582422de',
         status: ConsultAppointmentStatusType.PATIENT_CANCELED,
         doctorTimeSlot: {
-          doctorId: 'doctor1',
           startAt: new Date('2023-06-15T14:00:00'),
           endAt: new Date('2023-06-15T15:00:00'),
         },

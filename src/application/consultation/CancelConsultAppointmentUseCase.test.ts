@@ -315,7 +315,7 @@ describe('Unit test: CancelConsultAppointmentUseCase', () => {
     )
     expect(mockMeetingLinkRepo.save).toHaveBeenCalled()
     expect(mockConsultAppointmentRepo.delete).toHaveBeenCalledWith(
-      mockConsultAppointment.id,
+      mockConsultAppointment,
       mockTxExecutor
     )
     expect(mockScheduler.cancelJob).toHaveBeenCalledWith(

@@ -326,6 +326,7 @@ describe('Unit test: GetSingleBloodPressureRecordUseCase', () => {
         systolicBloodPressure: mockBloodPressureRecord.systolicBloodPressure,
         diastolicBloodPressure: mockBloodPressureRecord.diastolicBloodPressure,
         heartBeat: mockBloodPressureRecord.heartBeat,
+        id: mockBloodPressureRecord.id,
         bloodPressureNote: mockBloodPressureRecord.bloodPressureNote,
         createdAt: mockedDate,
         updatedAt: mockedDate,

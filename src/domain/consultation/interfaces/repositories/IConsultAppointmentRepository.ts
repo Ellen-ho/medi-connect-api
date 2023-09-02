@@ -50,7 +50,6 @@ export interface IConsultAppointmentRepository
       appointmentId: string
       status: ConsultAppointmentStatusType
       doctorTimeSlot: {
-        doctorId: string
         startAt: Date
         endAt: Date
       }

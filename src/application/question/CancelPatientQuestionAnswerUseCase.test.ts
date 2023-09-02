@@ -115,6 +115,7 @@ describe('Unit test: CancelPatientQuestionAnswerUseCase', () => {
       mockPatientQuestionAnswerRepo.findByIdAndDoctorId
     ).toHaveBeenCalledWith(mockRequest.answerId, mockRequest.user.id)
   })
+
   it('should delete the answer when valid request is provided', async () => {
     mockDoctorRepo.findByUserId.mockResolvedValue(mockExistingDoctor)
     mockPatientQuestionAnswerRepo.findByIdAndDoctorId.mockResolvedValue(
@@ -146,7 +147,7 @@ describe('Unit test: CancelPatientQuestionAnswerUseCase', () => {
     expect(mockTx.start).toHaveBeenCalled()
     expect(mockTx.getExecutor).toHaveBeenCalled()
     expect(mockPatientQuestionAnswerRepo.delete).toHaveBeenCalledWith(
-      mockPatientQuestionAnswer.id,
+      mockPatientQuestionAnswer,
       mockTxExecutor
     )
     expect(mockAnswerAgreementRepo.deleteAllByAnswerId).toHaveBeenCalledWith(

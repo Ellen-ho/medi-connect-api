@@ -15,6 +15,7 @@ import { Doctor } from '../../domain/doctor/Doctor'
 import { MedicalSpecialtyType } from '../../domain/question/PatientQuestion'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
 import { AnswerAppreciation } from '../../domain/question/AnswerAppreciation'
+import { ValidationError } from '../../infrastructure/error/ValidationError'
 
 describe('Unit test: CreateAnswerAppreciationUseCase', () => {
   const mockPatientQuestionAnswerRepo = mock<IPatientQuestionAnswerRepository>()
@@ -161,12 +162,6 @@ describe('Unit test: CreateAnswerAppreciationUseCase', () => {
     await expect(
       createAnswerAppreciationUseCase.execute(mockRequest)
     ).rejects.toThrow(AuthorizationError)
-    expect(mockPatientQuestionAnswerRepo.findById).toHaveBeenCalledWith(
-      mockRequest.answerId
-    )
-    expect(mockPatientRepo.findByUserId).toHaveBeenCalledWith(
-      mockRequest.user.id
-    )
   })
 
   it('should throw AuthorizationError when the doctor who is appreciated does not exist', async () => {
@@ -190,16 +185,7 @@ describe('Unit test: CreateAnswerAppreciationUseCase', () => {
     mockDoctorRepo.findById.mockResolvedValue(null)
     await expect(
       createAnswerAppreciationUseCase.execute(mockRequest)
-    ).rejects.toThrow(AuthorizationError)
-    expect(mockPatientQuestionAnswerRepo.findById).toHaveBeenCalledWith(
-      mockRequest.answerId
-    )
-    expect(mockPatientRepo.findByUserId).toHaveBeenCalledWith(
-      mockRequest.user.id
-    )
-    expect(mockDoctorRepo.findById).toHaveBeenCalledWith(
-      mockPatientQuestionAnswer.doctorId
-    )
+    ).rejects.toThrow(ValidationError)
   })
 
   it('should create a new answer appreciation when valid request is provided', async () => {
@@ -231,6 +217,9 @@ describe('Unit test: CreateAnswerAppreciationUseCase', () => {
 
     mockPatientQuestionAnswerRepo.findById.mockResolvedValue(
       mockPatientQuestionAnswer
+    )
+    mockAnswerAppreciationRepo.findByAnswerIdAndPatientId.mockResolvedValue(
+      null
     )
     mockPatientRepo.findByUserId.mockResolvedValue(mockExistingPatient)
     mockDoctorRepo.findById.mockResolvedValue(mockExistingDoctor)

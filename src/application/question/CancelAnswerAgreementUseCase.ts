@@ -41,9 +41,7 @@ export class CancelAnswerAgreementUseCase {
       existingAnswer.doctorId
     )
     if (doctorBeAgreed == null) {
-      throw new AuthorizationError(
-        'There is no doctor who has been agreed upon.'
-      )
+      throw new NotFoundError('There is no doctor who has been agreed upon.')
     }
 
     const existingDoctor = await this.doctorRepository.findByUserId(user.id)

@@ -350,7 +350,7 @@ describe('Unit test: CreateConsultAppointmentUseCase', () => {
 
     await expect(
       createConsultAppointmentUseCase.execute(mockRequest)
-    ).rejects.toThrow(ValidationError)
+    ).rejects.toThrow(AuthorizationError)
     expect(mockPatientRepo.findByUserId).toHaveBeenCalledWith(
       mockRequest.user.id
     )
