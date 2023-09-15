@@ -139,6 +139,12 @@ export class BloodPressureRecordRepository
       diastolicBloodPressure: number
     }>
   }> {
+    const totalCountsQuery = await this.getRepo()
+      .createQueryBuilder('record')
+      .leftJoin('record.patient', 'patient')
+      .where('patient.id = :targetPatientId', { targetPatientId })
+      .getCount()
+
     const result = await this.getRepo()
       .createQueryBuilder('record')
       .select([
@@ -154,13 +160,13 @@ export class BloodPressureRecordRepository
       .leftJoin('record.patient', 'patient')
       .where('patient.id = :targetPatientId', { targetPatientId })
       .orderBy('record.blood_pressure_date', 'DESC')
-      .take(limit)
-      .skip(offset)
+      .limit(limit)
+      .offset(offset)
       .getRawMany()
 
     // Map the raw result to the desired structure
     const formattedResult = {
-      total_counts: result.length,
+      total_counts: totalCountsQuery,
       patientData: {
         firstName: result.length > 0 ? result[0].firstName : '',
         lastName: result.length > 0 ? result[0].lastName : '',
