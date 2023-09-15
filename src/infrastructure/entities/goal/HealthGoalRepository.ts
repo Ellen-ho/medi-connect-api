@@ -100,6 +100,12 @@ export class HealthGoalRepository
     }>
   }> {
     try {
+      const totalCountsQuery = await this.getRepo()
+        .createQueryBuilder('record')
+        .leftJoin('record.patient', 'patient')
+        .where('patient.id = :targetPatientId', { targetPatientId })
+        .getCount()
+
       const result = await this.getRepo()
         .createQueryBuilder('goal')
         .select([
@@ -117,13 +123,13 @@ export class HealthGoalRepository
         .leftJoin('goal.patient', 'patient')
         .where('patient.id = :targetPatientId', { targetPatientId })
         .orderBy('goal.start_at', 'DESC')
-        .take(limit)
-        .skip(offset)
+        .limit(limit)
+        .offset(offset)
         .getRawMany()
 
       // Map the raw result to the desired structure
       const formattedResult = {
-        total_counts: result.length,
+        total_counts: totalCountsQuery,
         patientData: {
           firstName: result.length > 0 ? result[0].firstName : '',
           lastName: result.length > 0 ? result[0].lastName : '',
