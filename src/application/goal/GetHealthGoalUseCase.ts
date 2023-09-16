@@ -104,8 +104,8 @@ export class GetHealthGoalUseCase {
     if (glycatedHemoglobinRecords.length > 0) {
       glycatedHemoglobinRecords.sort(
         (a, b) =>
-          b.glycatedHemoglobinDate.getTime() -
-          a.glycatedHemoglobinDate.getTime()
+          new Date(b.glycatedHemoglobinDate).getTime() -
+          new Date(a.glycatedHemoglobinDate).getTime()
       )
     }
 
