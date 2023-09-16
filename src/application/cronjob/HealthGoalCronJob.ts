@@ -25,8 +25,8 @@ export class HealthGoalCronJob implements IHealthGoalCronJob {
 
   private createPatientHealthGoalsCronJob(): void {
     const rule = new schedule.RecurrenceRule()
-    rule.hour = 16
-    rule.minute = 50
+    rule.hour = 17
+    rule.minute = 15
 
     const jobCallback = async (): Promise<void> => {
       await this.generatePatientHealthGoals()
@@ -48,9 +48,19 @@ export class HealthGoalCronJob implements IHealthGoalCronJob {
     }
 
     for (const patient of existingPatients) {
-      await this.createHealthGoalUseCase.execute({
+      const result = await this.createHealthGoalUseCase.execute({
         user: patient,
       })
+
+      if (result == null) {
+        console.log(
+          `===== NO Health Goal for ${patient.displayName} is created =====`
+        )
+      } else {
+        console.log(
+          `===== Health Goal for ${patient.displayName} is created =====`
+        )
+      }
     }
   }
 
