@@ -89,7 +89,7 @@ export class GlycatedHemoglobinRecordRepository
           patients ON patients.id = glycated_hemoglobin_records.patient_id
         WHERE
           glycated_hemoglobin_records.patient_id = $1
-          AND food_records.id = $2
+          AND glycated_hemoglobin_records.id = $2
         `,
         [patientId, recordId]
       )
