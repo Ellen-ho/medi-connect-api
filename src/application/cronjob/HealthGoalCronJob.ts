@@ -25,8 +25,8 @@ export class HealthGoalCronJob implements IHealthGoalCronJob {
 
   private createPatientHealthGoalsCronJob(): void {
     const rule = new schedule.RecurrenceRule()
-    rule.hour = 23
-    rule.minute = 0
+    rule.hour = 16
+    rule.minute = 50
 
     const jobCallback = async (): Promise<void> => {
       await this.generatePatientHealthGoals()
