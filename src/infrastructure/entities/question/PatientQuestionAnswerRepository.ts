@@ -155,60 +155,76 @@ export class PatientQuestionAnswerRepository
         }>
       >(
         `
-      SELECT
-        patient_question_answers.id as "answerId",
-        patient_question_answers.created_at as "answerCreatedAt",
-        patient_question_answers.content as "content",
-        doctors.id as "doctorId",
-        doctors.avatar as "avatar",
-        doctors.first_name as "firstName",
-        doctors.last_name as "lastName",
-        doctors.specialties as "specialties",
-        doctors.career_start_date as "careerStartDate",
-        COUNT(DISTINCT answer_agreements.id) as "agreeCounts",
-        COUNT(DISTINCT answer_appreciations.id) as "thankCounts",
-        ARRAY_AGG(
-          JSON_BUILD_OBJECT(
-            'doctorId', agreed_doctors.id,
-            'avatar', agreed_doctors.avatar,
-            'firstName', agreed_doctors.first_name,
-            'lastName', agreed_doctors.last_name
-          )
-        ) as "agreedDoctors"
-      FROM patient_question_answers
-      LEFT JOIN answer_agreements ON patient_question_answers.id = answer_agreements.patient_question_answer_id AND answer_agreements.deleted_at IS NULL
-      LEFT JOIN answer_appreciations ON patient_question_answers.id = answer_appreciations.answer_id AND answer_appreciations.deleted_at IS NULL
-      LEFT JOIN doctors ON patient_question_answers.doctor_id = doctors.id
-      LEFT JOIN doctors as agreed_doctors ON answer_agreements.agreed_doctor_id = agreed_doctors.id
-      WHERE patient_question_answers.patient_question_id = $1
-      GROUP BY patient_question_answers.id, doctors.id;
-  `,
+          SELECT
+              patient_question_answers.id as "answerId",
+              patient_question_answers.created_at as "answerCreatedAt",
+              patient_question_answers.content as "content",
+              doctors.id as "doctorId",
+              doctors.avatar as "avatar",
+              doctors.first_name as "firstName",
+              doctors.last_name as "lastName",
+              doctors.specialties as "specialties",
+              doctors.career_start_date as "careerStartDate",
+              COUNT(DISTINCT answer_agreements.id) as "agreeCounts",
+              COUNT(DISTINCT answer_appreciations.id) as "thankCounts",
+              ARRAY_AGG(
+                JSON_BUILD_OBJECT(
+                  'doctorId', agreed_doctors.id,
+                  'avatar', agreed_doctors.avatar,
+                  'firstName', agreed_doctors.first_name,
+                  'lastName', agreed_doctors.last_name
+                )
+              ) as "agreedDoctors"
+          FROM patient_question_answers
+          LEFT JOIN answer_agreements ON patient_question_answers.id = answer_agreements.patient_question_answer_id AND answer_agreements.deleted_at IS NULL
+          LEFT JOIN answer_appreciations ON patient_question_answers.id = answer_appreciations.answer_id AND answer_appreciations.deleted_at IS NULL
+          LEFT JOIN doctors ON patient_question_answers.doctor_id = doctors.id
+          LEFT JOIN doctors AS agreed_doctors ON answer_agreements.agreed_doctor_id = agreed_doctors.id
+          WHERE patient_question_answers.patient_question_id = $1
+          GROUP BY patient_question_answers.id, doctors.id;
+        `,
         [questionId]
       )
 
       const answerDetails: IAnswerItem[] = rawAnswerItems.map(
-        (rawAnswerItem) => ({
-          answerId: rawAnswerItem.answerId,
-          answerCreatedAt: rawAnswerItem.answerCreatedAt,
-          content: rawAnswerItem.content,
-          doctorId: rawAnswerItem.doctorId,
-          avatar: rawAnswerItem.avatar !== 'null' ? rawAnswerItem.avatar : null,
-          firstName: rawAnswerItem.firstName,
-          lastName: rawAnswerItem.lastName,
-          specialties: rawAnswerItem.specialties,
-          careerStartDate: rawAnswerItem.careerStartDate,
-          agreeCounts: rawAnswerItem.agreeCounts,
-          thankCounts: rawAnswerItem.thankCounts,
-          agreedDoctors: rawAnswerItem.agreedDoctors.map(
-            (agreedDoctor: any) => ({
-              doctorId: agreedDoctor.doctorId,
-              avatar:
-                agreedDoctor.avatar === 'null' ? null : agreedDoctor.avatar,
-              firstName: agreedDoctor.firstName,
-              lastName: agreedDoctor.lastName,
-            })
-          ),
-        })
+        (rawAnswerItem) => {
+          // hack: remove duplicated items
+          const seenDoctorIds = new Set()
+          const distictAgreedDoctor: Array<{
+            doctorId: string
+            avatar: string | null
+            firstName: string
+            lastName: string
+          }> = []
+
+          rawAnswerItem.agreedDoctors.forEach((doctor) => {
+            if (!seenDoctorIds.has(doctor.doctorId)) {
+              distictAgreedDoctor.push({
+                doctorId: doctor.doctorId,
+                avatar: doctor.avatar === 'null' ? null : doctor.avatar,
+                firstName: doctor.firstName,
+                lastName: doctor.lastName,
+              })
+              seenDoctorIds.add(doctor.doctorId)
+            }
+          })
+
+          return {
+            answerId: rawAnswerItem.answerId,
+            answerCreatedAt: rawAnswerItem.answerCreatedAt,
+            content: rawAnswerItem.content,
+            doctorId: rawAnswerItem.doctorId,
+            avatar:
+              rawAnswerItem.avatar !== 'null' ? rawAnswerItem.avatar : null,
+            firstName: rawAnswerItem.firstName,
+            lastName: rawAnswerItem.lastName,
+            specialties: rawAnswerItem.specialties,
+            careerStartDate: rawAnswerItem.careerStartDate,
+            agreeCounts: rawAnswerItem.agreeCounts,
+            thankCounts: rawAnswerItem.thankCounts,
+            agreedDoctors: distictAgreedDoctor,
+          }
+        }
       )
       return answerDetails
     } catch (e) {
