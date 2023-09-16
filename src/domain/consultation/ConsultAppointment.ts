@@ -50,4 +50,8 @@ export class ConsultAppointment {
   public completeAppointment(): void {
     this.props.status = ConsultAppointmentStatusType.COMPLETED
   }
+
+  public setCancelStatus(): void {
+    this.props.status = ConsultAppointmentStatusType.PATIENT_CANCELED
+  }
 }

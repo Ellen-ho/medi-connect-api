@@ -52,7 +52,7 @@ export class ConsultAppointmentEntity {
     () => DoctorTimeSlotEntity,
     (doctorTimeSlot) => doctorTimeSlot.id,
     {
-      cascade: true,
+      cascade: ['update'], // only allow update (to prevent soft-delete specifically)
     }
   )
   @JoinColumn({ name: 'doctor_time_slot_id' })
