@@ -255,10 +255,14 @@ export class PatientQuestionAnswerRepository
     try {
       const rawCounts = await this.getQuery<Array<{ count: number }>>(
         `
-        SELECT COUNT(DISTINCT patient_question_answers.id) as count
-        FROM patient_question_answers
-        JOIN answer_appreciations ON patient_question_answers.id = answer_appreciations.answer_id AND answer_appreciations.deleted_at IS NULL
-        WHERE patient_question_answers.doctor_id = $1
+        SELECT
+          COUNT(DISTINCT answer_appreciations.id) as "count"
+        FROM
+          patient_question_answers
+        LEFT JOIN
+          answer_appreciations ON patient_question_answers.id = answer_appreciations.answer_id AND answer_appreciations.deleted_at IS NULL
+        WHERE
+          patient_question_answers.doctor_id = $1;
       `,
         [doctorId]
       )
