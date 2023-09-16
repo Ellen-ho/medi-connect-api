@@ -81,6 +81,7 @@ export class CancelConsultAppointmentUseCase {
       const txExecutor = tx.getExecutor()
 
       existingConsultAppointment.doctorTimeSlot.updateAvailability(true)
+      existingConsultAppointment.setCancelStatus()
 
       if (existingConsultAppointment.meetingLink == null) {
         throw new NotFoundError('The meeting link does not exist')

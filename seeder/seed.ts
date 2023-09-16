@@ -22,7 +22,6 @@ void (async () => {
 
   await dataSource.initialize().then(async () => {
     try {
-      await dataSource.synchronize(true)
       console.log('Data Source has been initialized!')
       await runSeeders(dataSource)
       console.log('Seeder executed successfully!')

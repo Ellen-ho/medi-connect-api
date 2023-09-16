@@ -255,10 +255,14 @@ export class PatientQuestionAnswerRepository
     try {
       const rawCounts = await this.getQuery<Array<{ count: number }>>(
         `
-        SELECT COUNT(DISTINCT patient_question_answers.id) as count
-        FROM patient_question_answers
-        JOIN answer_appreciations ON patient_question_answers.id = answer_appreciations.answer_id
-        WHERE patient_question_answers.doctor_id = $1
+        SELECT
+          COUNT(DISTINCT answer_appreciations.id) as "count"
+        FROM
+          patient_question_answers
+        LEFT JOIN
+          answer_appreciations ON patient_question_answers.id = answer_appreciations.answer_id AND answer_appreciations.deleted_at IS NULL
+        WHERE
+          patient_question_answers.doctor_id = $1;
       `,
         [doctorId]
       )
@@ -275,10 +279,14 @@ export class PatientQuestionAnswerRepository
     try {
       const rawCounts = await this.getQuery<Array<{ count: number }>>(
         `
-          SELECT COUNT(*) as count
-          FROM patient_question_answers AS patient_question_answer
-          JOIN answer_agreements ON patient_question_answer.id = answer_agreements.patient_question_answer_id
-          WHERE patient_question_answer.doctor_id = $1
+        SELECT
+          COUNT(DISTINCT answer_agreements.id) as "count"
+        FROM
+          patient_question_answers
+        LEFT JOIN
+          answer_agreements ON patient_question_answers.id = answer_agreements.patient_question_answer_id AND answer_agreements.deleted_at IS NULL
+        WHERE
+          patient_question_answers.doctor_id = $1;   
         `,
         [doctorId]
       )
