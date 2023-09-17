@@ -286,7 +286,7 @@ export class GlycatedHemoglobinRecordRepository
           currentDate,
         })
         .orderBy('record.glycatedHemoglobinDate', 'DESC')
-        .getRawMany()
+        .getMany()
 
       return result.length > 0 ? result : []
     } catch (e) {
