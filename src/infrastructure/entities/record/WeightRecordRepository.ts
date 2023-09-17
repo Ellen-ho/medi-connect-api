@@ -171,8 +171,8 @@ export class WeightRecordRepository
         }>
       >(
         `SELECT
-             weight_value_kg,
-              body_mass_index
+              weight_value_kg,
+              body_mass_index,
               weight_date
           FROM
               weight_records
