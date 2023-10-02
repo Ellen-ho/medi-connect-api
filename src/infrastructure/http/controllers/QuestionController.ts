@@ -174,6 +174,7 @@ export class QuestionController implements IQuestionController {
     const request = {
       limit: Number(req.query.limit),
       page: Number(req.query.page),
+      searchKeyword: req.query.searchKeyword as string,
     }
     const result = await this.getQuestionsUseCase.execute(request)
     return res.status(200).json(result)
@@ -199,6 +200,7 @@ export class QuestionController implements IQuestionController {
       user: req.user as User,
       limit: Number(req.query.limit),
       page: Number(req.query.page),
+      searchKeyword: req.query.searchKeyword as string,
     }
     const result = await this.getAnswerListUseCase.execute(request)
     return res.status(200).json(result)

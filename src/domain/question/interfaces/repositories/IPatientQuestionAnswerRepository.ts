@@ -38,4 +38,19 @@ export interface IPatientQuestionAnswerRepository
       agreeCounts: number
     }>
   }>
+  findFilteredAndCountByDoctorId: (
+    doctorId: string,
+    limit: number,
+    offset: number,
+    searchKeyword: string
+  ) => Promise<{
+    totalAnswerCounts: number
+    data: Array<{
+      id: string
+      content: string
+      createdAt: Date
+      thankCounts: number
+      agreeCounts: number
+    }>
+  }>
 }
