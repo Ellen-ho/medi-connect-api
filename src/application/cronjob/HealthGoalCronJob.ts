@@ -1,3 +1,4 @@
+import { IHealthGoalRepository } from 'domain/goal/interfaces/repositories/IHealthGoalRepository'
 import { UserRoleType } from '../../domain/user/User'
 import { IUserRepository } from '../../domain/user/interfaces/repositories/IUserRepository'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
@@ -5,6 +6,8 @@ import { IScheduler } from '../../infrastructure/network/Scheduler'
 import { CancelHealthGoalUseCase } from '../goal/CancelHealthGoalUseCase'
 import { CreateHealthGoalUseCase } from '../goal/CreateHealthGoalUseCase'
 import schedule from 'node-schedule'
+import { NotFoundError } from 'infrastructure/error/NotFoundError'
+import { UpdateGoalResultUseCase } from 'application/goal/UpdateGoalResultUseCase'
 
 export interface IHealthGoalCronJob {
   init: () => Promise<void>
@@ -15,12 +18,15 @@ export class HealthGoalCronJob implements IHealthGoalCronJob {
     private readonly scheduler: IScheduler,
     private readonly createHealthGoalUseCase: CreateHealthGoalUseCase,
     private readonly cancelHealthGoalUseCase: CancelHealthGoalUseCase,
-    private readonly userRepository: IUserRepository
+    private readonly updateGoalResultUseCase: UpdateGoalResultUseCase,
+    private readonly userRepository: IUserRepository,
+    private readonly healthGoalRepository: IHealthGoalRepository
   ) {}
 
   public async init(): Promise<void> {
     this.createPatientHealthGoalsCronJob()
     this.createCancelPatientPendingHealthGoalsCronJob()
+    this.createCheckGoalsResultCronJob()
   }
 
   private createPatientHealthGoalsCronJob(): void {
@@ -91,6 +97,36 @@ export class HealthGoalCronJob implements IHealthGoalCronJob {
     for (const patient of existingPatients) {
       await this.cancelHealthGoalUseCase.execute({
         user: patient,
+      })
+    }
+  }
+
+  private createCheckGoalsResultCronJob(): void {
+    const rule = new schedule.RecurrenceRule()
+    rule.hour = 1
+    rule.minute = 0
+
+    const jobCallback = async (): Promise<void> => {
+      await this.checkGoalsResult()
+    }
+
+    this.scheduler.createJob(
+      `checkGoalsResult ${new Date().toISOString()}`,
+      rule,
+      jobCallback
+    )
+  }
+
+  private async checkGoalsResult(): Promise<void> {
+    const existingGoals =
+      await this.healthGoalRepository.findAllByCurrentDayEndAt()
+    if (existingGoals.length === 0) {
+      throw new NotFoundError('No expired goals.')
+    }
+
+    for (const goal of existingGoals) {
+      await this.updateGoalResultUseCase.execute({
+        healthGoalId: goal.id,
       })
     }
   }
