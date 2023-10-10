@@ -12,7 +12,7 @@ export interface IHealthGoalProps {
   startAt: Date
   endAt: Date
   status: HealthGoalStatus
-  result: IHealthGoalResult | null
+  result: IHealthGoalResult
   createdAt: Date
   updatedAt: Date
   patientId: string
@@ -26,28 +26,16 @@ export interface IBloodPressureValue {
 
 // when the goal ends, we need to store the latest records
 export interface IHealthGoalResult {
-  bloodPressure: IHealthGoalBloodPressureResultItem
-  bloodSugar: IHealthGoalResultItem
-  glycatedHemoglobin: IHealthGoalResultItem
-  weight: IHealthGoalResultItem
-}
-
-export interface IHealthGoalBloodPressureResultItem {
-  currentValue: IBloodPressureValue // fetch the latest records
-  goalAchieved: boolean
-  currentValueDate: Date
-}
-
-export interface IHealthGoalResultItem {
-  currentValue: number | null // fetch the latest records
-  goalAchieved: boolean
-  currentValueDate: Date
+  bloodPressureGoalAchieved: boolean
+  bloodSugarGoalAchieved: boolean
+  glycatedHemoglobinGoalAchieved: boolean
+  weightGoalAchieved: boolean
 }
 
 export enum HealthGoalStatus {
   IN_PROGRESS = 'IN_PROGRESS',
   ALL_GOALS_ACHIEVED = 'ALL_GOALS_ACHIEVED',
-  PARTIAL_GOALS_ACHIEVED = 'PARTIAL_GOALS_ACHIEVED',
+  // PARTIAL_GOALS_ACHIEVED = 'PARTIAL_GOALS_ACHIEVED',
   GOAL_FAILED = 'GOAL_FAILED',
   PENDING = 'PENDING',
   REJECTED = 'REJECTED',
@@ -96,7 +84,7 @@ export class HealthGoal {
     return this.props.status
   }
 
-  public get result(): IHealthGoalResult | null {
+  public get result(): IHealthGoalResult {
     return this.props.result
   }
 
@@ -126,5 +114,30 @@ export class HealthGoal {
 
   public rejectGoal(): void {
     this.props.status = HealthGoalStatus.REJECTED
+  }
+
+  public updateGoalStatus(status: HealthGoalStatus): void {
+    this.props.status = status
+  }
+
+  public updateBloodPressureGoalResult(
+    bloodPressureGoalAchieved: boolean
+  ): void {
+    this.props.result.bloodPressureGoalAchieved = bloodPressureGoalAchieved
+  }
+
+  public updateBloodSugarGoalResult(bloodSugarGoalAchieved: boolean): void {
+    this.props.result.bloodSugarGoalAchieved = bloodSugarGoalAchieved
+  }
+
+  public updateGlycatedHemoglobinGoalResult(
+    glycatedHemoglobinAchieved: boolean
+  ): void {
+    this.props.result.glycatedHemoglobinGoalAchieved =
+      glycatedHemoglobinAchieved
+  }
+
+  public updateWeightGoalResult(weightGoalAchieved: boolean): void {
+    this.props.result.weightGoalAchieved = weightGoalAchieved
   }
 }

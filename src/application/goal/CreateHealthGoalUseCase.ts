@@ -180,7 +180,12 @@ export class CreateHealthGoalUseCase {
       startAt: new Date(),
       endAt: new Date(),
       status: HealthGoalStatus.PENDING,
-      result: null,
+      result: {
+        bloodPressureGoalAchieved: false,
+        bloodSugarGoalAchieved: false,
+        glycatedHemoglobinGoalAchieved: false,
+        weightGoalAchieved: false,
+      },
       createdAt: new Date(),
       updatedAt: new Date(),
       patientId: existingPatient.id,
