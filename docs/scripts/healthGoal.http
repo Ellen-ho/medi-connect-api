@@ -47,3 +47,10 @@ PATCH {{healthGoalsPath}}/reject/{{rejectHealthGoalId}}
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###
+
+### update a health goal result
+@updateHealthGoalId=a742ca7c-9351-42ba-a7f2-1ee67f2f0c90
+PATCH {{healthGoalsPath}}/update-result/{{updateHealthGoalId}}
+Authorization: {{accessToken}}
+Content-Type: application/json
+###

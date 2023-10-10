@@ -272,4 +272,44 @@ export class BloodPressureRecordRepository
       )
     }
   }
+
+  public async findByGoalDurationDays(
+    startDate: Date,
+    endDate: Date
+  ): Promise<
+    Array<{
+      systolicBloodPressure: number
+      diastolicBloodPressure: number
+    }>
+  > {
+    try {
+      const results = await this.getRepo()
+        .createQueryBuilder('blood_pressure_record')
+        .select(
+          'blood_pressure_record.systolicBloodPressure',
+          'systolicBloodPressure'
+        )
+        .addSelect(
+          'blood_pressure_record.diastolicBloodPressure',
+          'diastolicBloodPressure'
+        )
+        .where('blood_pressure_record.bloodPressureDate >= :startDate', {
+          startDate,
+        })
+        .andWhere('blood_pressure_record.bloodPressureDate <= :endDate', {
+          endDate,
+        })
+        .getRawMany()
+
+      if (results.length === 0) {
+        return []
+      }
+      return results
+    } catch (e) {
+      throw new RepositoryError(
+        'BloodPressureRecordRepository findByPatientIdAndDat error',
+        e as Error
+      )
+    }
+  }
 }

@@ -50,4 +50,13 @@ export interface IBloodPressureRecordRepository
     diastolicBloodPressure: number
   } | null>
   findById: (id: string) => Promise<BloodPressureRecord | null>
+  findByGoalDurationDays: (
+    startDate: Date,
+    endDate: Date
+  ) => Promise<
+    Array<{
+      systolicBloodPressure: number
+      diastolicBloodPressure: number
+    }>
+  >
 }
