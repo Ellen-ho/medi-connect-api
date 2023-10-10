@@ -193,18 +193,18 @@ export class HealthGoalRepository
     }
   }
 
-  public async findAllByCurrentDayEndAt(): Promise<HealthGoal[]> {
+  public async findAllByDate(date: Date): Promise<HealthGoal[]> {
     try {
-      const currentDate = new Date()
-      currentDate.setHours(0, 0, 0, 0) // set time to the beginning of current date
+      const startOfDay = new Date(date)
+      startOfDay.setHours(0, 0, 0, 0)
 
-      const nextDate = new Date(currentDate)
-      nextDate.setDate(currentDate.getDate() + 1) // set time to the beginning of next date
+      const endOfDay = new Date(date)
+      endOfDay.setHours(23, 59, 59, 999)
 
       const healthGoals = await this.getRepo()
         .createQueryBuilder('health_goal')
-        .where('health_goal.end_at >= :currentDate', { currentDate })
-        .andWhere('health_goal.end_at < :nextDate', { nextDate })
+        .where('health_goal.end_at >= :startOfDay', { startOfDay })
+        .andWhere('health_goal.end_at <= :endOfDay', { endOfDay })
         .getMany()
 
       console.table({ healthGoals: JSON.stringify(healthGoals) })
@@ -216,7 +216,7 @@ export class HealthGoalRepository
         : []
     } catch (e) {
       throw new RepositoryError(
-        'HealthGoalRepository findAllByCurrentDayEndAt error',
+        'HealthGoalRepository findAllByDate error',
         e as Error
       )
     }

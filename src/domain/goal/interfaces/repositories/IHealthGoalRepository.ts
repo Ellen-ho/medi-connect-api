@@ -41,5 +41,5 @@ export interface IHealthGoalRepository extends IBaseRepository<HealthGoal> {
     currentDate: Date
   ) => Promise<HealthGoal[]>
   delete: (goal: HealthGoal, executor?: IExecutor) => Promise<void>
-  findAllByCurrentDayEndAt: () => Promise<HealthGoal[]>
+  findAllByDate: (date: Date) => Promise<HealthGoal[]>
 }

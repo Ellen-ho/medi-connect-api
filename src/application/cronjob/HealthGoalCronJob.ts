@@ -118,13 +118,16 @@ export class HealthGoalCronJob implements IHealthGoalCronJob {
   }
 
   private async checkGoalsResult(): Promise<void> {
-    const existingGoals =
-      await this.healthGoalRepository.findAllByCurrentDayEndAt()
-    if (existingGoals.length === 0) {
+    const yesterday = new Date()
+    yesterday.setDate(yesterday.getDate() - 1) // get the date of yesterday
+    const expiredGoals = await this.healthGoalRepository.findAllByDate(
+      yesterday
+    )
+    if (expiredGoals.length === 0) {
       throw new NotFoundError('No expired goals.')
     }
 
-    for (const goal of existingGoals) {
+    for (const goal of expiredGoals) {
       await this.updateGoalResultUseCase.execute({
         healthGoalId: goal.id,
       })
