@@ -6,6 +6,7 @@ import { RejectHealthGoalUseCase } from '../../../application/goal/RejectHealthG
 import { GetHealthGoalUseCase } from '../../../application/goal/GetHealthGoalUseCase'
 import { GetHealthGoalListUseCase } from '../../../application/goal/GetHealthGoalListUseCase'
 import { CancelHealthGoalUseCase } from '../../../application/goal/CancelHealthGoalUseCase'
+import { UpdateGoalResultUseCase } from 'application/goal/UpdateGoalResultUseCase'
 
 export interface IHealthGoalController {
   createHealthGoal: (req: Request, res: Response) => Promise<Response>
@@ -13,6 +14,7 @@ export interface IHealthGoalController {
   rejectHealthGoal: (req: Request, res: Response) => Promise<Response>
   getHealthGoal: (req: Request, res: Response) => Promise<Response>
   getHealthGoalList: (req: Request, res: Response) => Promise<Response>
+  updateGoalResult: (req: Request, res: Response) => Promise<Response>
 }
 
 export class HealthGoalController implements IHealthGoalController {
@@ -22,7 +24,8 @@ export class HealthGoalController implements IHealthGoalController {
     private readonly activateHealthGoalUseCase: ActivateHealthGoalUseCase,
     private readonly rejectHealthGoalUseCase: RejectHealthGoalUseCase,
     private readonly getHealthGoalUseCase: GetHealthGoalUseCase,
-    private readonly getHealthGoalListUseCase: GetHealthGoalListUseCase
+    private readonly getHealthGoalListUseCase: GetHealthGoalListUseCase,
+    private readonly updateGoalResultUseCase: UpdateGoalResultUseCase
   ) {}
 
   public createHealthGoal = async (
@@ -33,6 +36,17 @@ export class HealthGoalController implements IHealthGoalController {
       user: req.user as User,
     }
     const result = await this.createHealthGoalUseCase.execute(request)
+    return res.status(200).json(result)
+  }
+
+  public updateGoalResult = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    const request = {
+      healthGoalId: req.params.id,
+    }
+    const result = await this.updateGoalResultUseCase.execute(request)
     return res.status(200).json(result)
   }
 

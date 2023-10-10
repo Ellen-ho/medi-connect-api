@@ -124,6 +124,7 @@ import { GetAnswerListUseCase } from './application/question/GetAnswerListUseCas
 import { AuthRoutes } from './infrastructure/http/routes/AuthRoutes'
 import passport from 'passport'
 import session from 'express-session'
+import { UpdateGoalResultUseCase } from 'application/goal/UpdateGoalResultUseCase'
 
 void main()
 
@@ -595,6 +596,14 @@ async function main(): Promise<void> {
     consultAppointmentRepository
   )
 
+  const updateGoalResultUseCase = new UpdateGoalResultUseCase(
+    healthGoalRepository,
+    bloodPressureRecordRepository,
+    bloodSugarRecordRepository,
+    weightRecordRepository,
+    glycatedHemoglobinRecordRepository
+  )
+
   /**
    * Notification Domain
    */
@@ -630,7 +639,9 @@ async function main(): Promise<void> {
     scheduler,
     createHealthGoalUseCase,
     cancelHealthGoalUseCase,
-    userRepository
+    updateGoalResultUseCase,
+    userRepository,
+    healthGoalRepository
   )
   await healthGoalCronJob.init()
   /**
@@ -718,7 +729,8 @@ async function main(): Promise<void> {
     activateHealthGoalUseCase,
     rejectHealthGoalUseCase,
     getHealthGoalUseCase,
-    getHealthGoalListUseCase
+    getHealthGoalListUseCase,
+    updateGoalResultUseCase
   )
 
   const notificationController = new NotificationController(

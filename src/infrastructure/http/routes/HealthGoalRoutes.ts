@@ -7,6 +7,7 @@ import {
   getHealthGoalListSchema,
   getHealthGoalSchema,
   rejectHealthGoalSchema,
+  updateGoalResultSchema,
 } from '../../../application/goal/GoalValidator'
 import { authenticated } from '../middlewares/Auth'
 
@@ -42,6 +43,12 @@ export class HealthGoalRoutes {
       authenticated,
       validator(rejectHealthGoalSchema),
       asyncHandler(this.HealthGoalController.rejectHealthGoal)
+    )
+    this.routes.patch(
+      '/update-result/:id',
+      validator(updateGoalResultSchema),
+      authenticated,
+      asyncHandler(this.HealthGoalController.updateGoalResult)
     )
   }
 
