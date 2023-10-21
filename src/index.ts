@@ -125,6 +125,7 @@ import { AuthRoutes } from './infrastructure/http/routes/AuthRoutes'
 import passport from 'passport'
 import session from 'express-session'
 import { UpdateGoalResultUseCase } from 'application/goal/UpdateGoalResultUseCase'
+import { GetGoalDurationRecordsUseCase } from 'application/record/GetGoalDurationRecordsUseCase'
 
 void main()
 
@@ -490,6 +491,17 @@ async function main(): Promise<void> {
     consultAppointmentRepository
   )
 
+  const getGoalDurationRecordsUseCase = new GetGoalDurationRecordsUseCase(
+    bloodPressureRecordRepository,
+    bloodSugarRecordRepository,
+    glycatedHemoglobinRecordRepository,
+    weightRecordRepository,
+    patientRepository,
+    doctorRepository,
+    healthGoalRepository,
+    consultAppointmentRepository
+  )
+
   /**
    * Conultation Domain
    */
@@ -694,7 +706,8 @@ async function main(): Promise<void> {
     getFoodRecordsUseCase,
     getGlycatedHemoglobinRecordsUseCase,
     getSleepRecordsUseCase,
-    getWeightRecordsUseCase
+    getWeightRecordsUseCase,
+    getGoalDurationRecordsUseCase
   )
   const questionController = new QuestionController(
     createAnswerAgreementUseCase,

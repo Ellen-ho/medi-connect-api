@@ -205,3 +205,10 @@ export const getWeightRecordsSchema = {
     targetPatientId: Joi.string().uuid().required(),
   }),
 }
+
+export const getGoalDurationRecordsSchema = {
+  params: Joi.object({
+    id: Joi.string().uuid().required(),
+  }),
+  query: Joi.object({ targetPatientId: Joi.string().uuid().required() }),
+}

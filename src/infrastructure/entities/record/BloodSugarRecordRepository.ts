@@ -269,4 +269,51 @@ export class BloodSugarRecordRepository
       )
     }
   }
+
+  public async findByGoalDurationDays(
+    startDate: Date,
+    endDate: Date
+  ): Promise<
+    | Array<{
+        id: string
+        bloodSugarValue: number
+        bloodSugarType: BloodSugarType
+        bloodSugarDate: Date
+      }>
+    | []
+  > {
+    try {
+      const results = await this.getRepo()
+        .createQueryBuilder('blood_sugar_record')
+        .select('blood_sugar_record.id', 'id')
+        .addSelect('blood_sugar_record.blood_sugar_value', 'bloodSugarValue')
+        .addSelect('blood_sugar_record.blood_sugar_type', 'bloodSugarType')
+        .addSelect('blood_sugar_record.blood_sugar_date', 'bloodSugarDate')
+        .where('blood_sugar_record.blood_sugar_date >= :startDate', {
+          startDate,
+        })
+        .andWhere('blood_sugar_record.blood_sugar_date <= :endDate', {
+          endDate,
+        })
+        .getRawMany()
+
+      if (results.length === 0) {
+        return []
+      }
+      const datas = results.map((result) => {
+        return {
+          id: result.id,
+          bloodSugarValue: result.bloodSugarValue,
+          bloodSugarType: result.bloodSugarType,
+          bloodSugarDate: result.bloodPressureDate,
+        }
+      })
+      return datas
+    } catch (e) {
+      throw new RepositoryError(
+        'BloodSugarRecordRepository findByGoalDurationDays error',
+        e as Error
+      )
+    }
+  }
 }

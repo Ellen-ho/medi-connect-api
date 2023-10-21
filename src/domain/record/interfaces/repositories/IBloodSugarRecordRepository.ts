@@ -50,4 +50,16 @@ export interface IBloodSugarRecordRepository
       bloodSugarType: BloodSugarType
     }>
   }>
+  findByGoalDurationDays: (
+    startDate: Date,
+    endDate: Date
+  ) => Promise<
+    | Array<{
+        id: string
+        bloodSugarValue: number
+        bloodSugarType: BloodSugarType
+        bloodSugarDate: Date
+      }>
+    | []
+  >
 }

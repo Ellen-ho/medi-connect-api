@@ -277,26 +277,34 @@ export class BloodPressureRecordRepository
     startDate: Date,
     endDate: Date
   ): Promise<
-    Array<{
-      systolicBloodPressure: number
-      diastolicBloodPressure: number
-    }>
+    | Array<{
+        id: string
+        systolicBloodPressure: number
+        diastolicBloodPressure: number
+        bloodPressureDate: Date
+      }>
+    | []
   > {
     try {
       const results = await this.getRepo()
         .createQueryBuilder('blood_pressure_record')
-        .select(
-          'blood_pressure_record.systolicBloodPressure',
+        .select('blood_pressure_record.id', 'id')
+        .addSelect(
+          'blood_pressure_record.systolic_blood_pressure',
           'systolicBloodPressure'
         )
         .addSelect(
-          'blood_pressure_record.diastolicBloodPressure',
+          'blood_pressure_record.diastolic_blood_pressure',
           'diastolicBloodPressure'
         )
-        .where('blood_pressure_record.bloodPressureDate >= :startDate', {
+        .addSelect(
+          'blood_pressure_record.blood_pressure_date',
+          'bloodPressureDate'
+        )
+        .where('blood_pressure_record.blood_pressure_date >= :startDate', {
           startDate,
         })
-        .andWhere('blood_pressure_record.bloodPressureDate <= :endDate', {
+        .andWhere('blood_pressure_record.blood_pressure_date <= :endDate', {
           endDate,
         })
         .getRawMany()
@@ -304,10 +312,18 @@ export class BloodPressureRecordRepository
       if (results.length === 0) {
         return []
       }
-      return results
+      const datas = results.map((result) => {
+        return {
+          id: result.id,
+          systolicBloodPressure: result.systolicBloodPressure,
+          diastolicBloodPressure: result.diastolicBloodPressure,
+          bloodPressureDate: result.bloodPressureDate,
+        }
+      })
+      return datas
     } catch (e) {
       throw new RepositoryError(
-        'BloodPressureRecordRepository findByPatientIdAndDat error',
+        'BloodPressureRecordRepository findByGoalDurationDays error',
         e as Error
       )
     }

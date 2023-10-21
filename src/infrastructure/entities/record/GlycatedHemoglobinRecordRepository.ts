@@ -296,4 +296,60 @@ export class GlycatedHemoglobinRecordRepository
       )
     }
   }
+
+  public async findByGoalDurationDays(
+    startDate: Date,
+    endDate: Date
+  ): Promise<
+    | Array<{
+        id: string
+        glycatedHemoglobinValuePercent: number
+        glycatedHemoglobinDate: Date
+      }>
+    | []
+  > {
+    try {
+      const results = await this.getRepo()
+        .createQueryBuilder('glycated_hemoglobin_record')
+        .select('glycated_hemoglobin_record.id', 'id')
+        .addSelect(
+          'glycated_hemoglobin_record.glycated_hemoglobin_value_percent',
+          'glycatedHemoglobinValuePercent'
+        )
+        .addSelect(
+          'glycated_hemoglobin_record.glycated_hemoglobin_date',
+          'glycatedHemoglobinDate'
+        )
+        .where(
+          'glycated_hemoglobin_record.glycated_hemoglobin_date >= :startDate',
+          {
+            startDate,
+          }
+        )
+        .andWhere(
+          'glycated_hemoglobin_record.glycated_hemoglobin_date <= :endDate',
+          {
+            endDate,
+          }
+        )
+        .getRawMany()
+
+      if (results.length === 0) {
+        return []
+      }
+      const datas = results.map((result) => {
+        return {
+          id: result.id,
+          glycatedHemoglobinValuePercent: result.glycatedHemoglobinValuePercent,
+          glycatedHemoglobinDate: result.glycatedHemoglobinDate,
+        }
+      })
+      return datas
+    } catch (e) {
+      throw new RepositoryError(
+        'GlycatedHemoglobinRepository findByGoalDurationDays error',
+        e as Error
+      )
+    }
+  }
 }

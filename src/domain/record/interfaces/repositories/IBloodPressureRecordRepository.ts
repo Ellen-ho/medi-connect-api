@@ -54,9 +54,12 @@ export interface IBloodPressureRecordRepository
     startDate: Date,
     endDate: Date
   ) => Promise<
-    Array<{
-      systolicBloodPressure: number
-      diastolicBloodPressure: number
-    }>
+    | Array<{
+        id: string
+        systolicBloodPressure: number
+        diastolicBloodPressure: number
+        bloodPressureDate: Date
+      }>
+    | []
   >
 }
