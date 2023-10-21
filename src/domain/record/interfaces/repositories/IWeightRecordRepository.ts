@@ -58,7 +58,7 @@ export interface IWeightRecordRepository extends IBaseRepository<WeightRecord> {
         id: string
         weightValueKg: number
         bodyMassIndex: number
-        weightDate: Date
+        weightDate: string
       }>
     | []
   >

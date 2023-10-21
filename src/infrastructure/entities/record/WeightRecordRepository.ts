@@ -7,6 +7,7 @@ import { WeightRecordMapper } from './WeightRecordMapper'
 import { RepositoryError } from '../../error/RepositoryError'
 import { IWeightRecordWithOwner } from '../../../application/record/GetSingleWeightRecordUseCase'
 import { GenderType } from '../../../domain/patient/Patient'
+import dayjs from 'dayjs'
 
 export class WeightRecordRepository
   extends BaseRepository<WeightRecordEntity, WeightRecord>
@@ -278,7 +279,7 @@ export class WeightRecordRepository
         id: string
         weightValueKg: number
         bodyMassIndex: number
-        weightDate: Date
+        weightDate: string
       }>
     | []
   > {
@@ -288,13 +289,14 @@ export class WeightRecordRepository
         .select('weight_record.id', 'id')
         .addSelect('weight_record.weight_value_kg', 'weightValueKg')
         .addSelect('weight_record.body_mass_index', 'bodyMassIndex')
-        .addSelect('weight_record.weight_date', 'weightDate')
+        .addSelect("date_trunc('day', weight_record.weight_date)", 'weightDate')
         .where('weight_record.weight_date >= :startDate', {
           startDate,
         })
         .andWhere('weight_record.weight_date <= :endDate', {
           endDate,
         })
+        .orderBy('weight_record.weight_date', 'ASC')
         .getRawMany()
 
       if (results.length === 0) {
@@ -305,7 +307,7 @@ export class WeightRecordRepository
           id: result.id,
           weightValueKg: result.weightValueKg,
           bodyMassIndex: result.bodyMassIndex,
-          weightDate: result.weightDate,
+          weightDate: dayjs(result.weightDate).format('YYYY-MM-DD'),
         }
       })
       return datas

@@ -58,7 +58,7 @@ export interface IBloodPressureRecordRepository
         id: string
         systolicBloodPressure: number
         diastolicBloodPressure: number
-        bloodPressureDate: Date
+        bloodPressureDate: string
       }>
     | []
   >

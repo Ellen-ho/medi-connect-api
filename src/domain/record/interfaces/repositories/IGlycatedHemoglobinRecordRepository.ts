@@ -63,7 +63,7 @@ export interface IGlycatedHemoglobinRecordRepository
     | Array<{
         id: string
         glycatedHemoglobinValuePercent: number
-        glycatedHemoglobinDate: Date
+        glycatedHemoglobinDate: string
       }>
     | []
   >

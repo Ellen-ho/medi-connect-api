@@ -8,6 +8,7 @@ import { IGlycatedHemoglobinRecordRepository } from '../../../domain/record/inte
 import { RepositoryError } from '../../error/RepositoryError'
 import { IGlycatedHemoglobinRecordWithOwner } from '../../../application/record/GetSingleGlycatedHemoglobinRecordUseCase'
 import { GenderType } from '../../../domain/patient/Patient'
+import dayjs from 'dayjs'
 
 export class GlycatedHemoglobinRecordRepository
   extends BaseRepository<
@@ -304,7 +305,7 @@ export class GlycatedHemoglobinRecordRepository
     | Array<{
         id: string
         glycatedHemoglobinValuePercent: number
-        glycatedHemoglobinDate: Date
+        glycatedHemoglobinDate: string
       }>
     | []
   > {
@@ -317,7 +318,7 @@ export class GlycatedHemoglobinRecordRepository
           'glycatedHemoglobinValuePercent'
         )
         .addSelect(
-          'glycated_hemoglobin_record.glycated_hemoglobin_date',
+          "date_trunc('day', glycated_hemoglobin_record.glycated_hemoglobin_date)",
           'glycatedHemoglobinDate'
         )
         .where(
@@ -332,6 +333,7 @@ export class GlycatedHemoglobinRecordRepository
             endDate,
           }
         )
+        .orderBy('glycated_hemoglobin_record.glycated_hemoglobin_date', 'ASC')
         .getRawMany()
 
       if (results.length === 0) {
@@ -341,7 +343,9 @@ export class GlycatedHemoglobinRecordRepository
         return {
           id: result.id,
           glycatedHemoglobinValuePercent: result.glycatedHemoglobinValuePercent,
-          glycatedHemoglobinDate: result.glycatedHemoglobinDate,
+          glycatedHemoglobinDate: dayjs(result.glycatedHemoglobinDate).format(
+            'YYYY-MM-DD'
+          ),
         }
       })
       return datas

@@ -8,6 +8,7 @@ import { RepositoryError } from '../../error/RepositoryError'
 
 import { GenderType } from '../../../domain/patient/Patient'
 import { IBloodPressureRecordWithOwner } from '../../../application/record/GetSingleBloodPressureRecordUsecase'
+import dayjs from 'dayjs'
 
 export class BloodPressureRecordRepository
   extends BaseRepository<BloodPressureRecordEntity, BloodPressureRecord>
@@ -281,7 +282,7 @@ export class BloodPressureRecordRepository
         id: string
         systolicBloodPressure: number
         diastolicBloodPressure: number
-        bloodPressureDate: Date
+        bloodPressureDate: string
       }>
     | []
   > {
@@ -298,7 +299,7 @@ export class BloodPressureRecordRepository
           'diastolicBloodPressure'
         )
         .addSelect(
-          'blood_pressure_record.blood_pressure_date',
+          "date_trunc('day', blood_pressure_record.blood_pressure_date)",
           'bloodPressureDate'
         )
         .where('blood_pressure_record.blood_pressure_date >= :startDate', {
@@ -307,6 +308,7 @@ export class BloodPressureRecordRepository
         .andWhere('blood_pressure_record.blood_pressure_date <= :endDate', {
           endDate,
         })
+        .orderBy('blood_pressure_record.blood_pressure_date', 'ASC')
         .getRawMany()
 
       if (results.length === 0) {
@@ -317,7 +319,9 @@ export class BloodPressureRecordRepository
           id: result.id,
           systolicBloodPressure: result.systolicBloodPressure,
           diastolicBloodPressure: result.diastolicBloodPressure,
-          bloodPressureDate: result.bloodPressureDate,
+          bloodPressureDate: dayjs(result.bloodPressureDate).format(
+            'YYYY-MM-DD'
+          ),
         }
       })
       return datas

@@ -57,8 +57,7 @@ export interface IBloodSugarRecordRepository
     | Array<{
         id: string
         bloodSugarValue: number
-        bloodSugarType: BloodSugarType
-        bloodSugarDate: Date
+        bloodSugarDate: string
       }>
     | []
   >

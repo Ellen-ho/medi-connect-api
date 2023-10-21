@@ -29,21 +29,21 @@ interface GetGoalDurationRecordsResponse {
         id: string
         systolicBloodPressure: number
         diastolicBloodPressure: number
-        bloodPressureDate: Date
+        bloodPressureDate: string
       }>
     | []
   bloodSugarRecordsData:
     | Array<{
         id: string
         bloodSugarValue: number
-        bloodSugarDate: Date
+        bloodSugarDate: string
       }>
     | []
   glycatedHemoglobinRecordsData:
     | Array<{
         id: string
         glycatedHemoglobinValuePercent: number
-        glycatedHemoglobinDate: Date
+        glycatedHemoglobinDate: string
       }>
     | []
   weightRecordsData:
@@ -51,7 +51,7 @@ interface GetGoalDurationRecordsResponse {
         id: string
         weightValueKg: number
         bodyMassIndex: number
-        weightDate: Date
+        weightDate: string
       }>
     | []
 }
