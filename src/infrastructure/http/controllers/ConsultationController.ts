@@ -113,6 +113,7 @@ export class ConsultationController implements IConsultationController {
   ): Promise<Response> => {
     const request = {
       user: req.user as User,
+      onlyUpcoming: req.query.onlyUpcoming === 'true',
     }
     const result = await this.getPatientConsultAppointmentsUseCase.execute(
       request

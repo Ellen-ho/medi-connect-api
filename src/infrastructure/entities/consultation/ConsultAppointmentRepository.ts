@@ -87,6 +87,7 @@ export class ConsultAppointmentRepository
         firstName: string
         lastName: string
         specialties: MedicalSpecialtyType[]
+        avatar: string | null
       }
       meetingLink: string | null
       cancelAvailability: boolean
@@ -101,6 +102,7 @@ export class ConsultAppointmentRepository
           first_name: string
           last_name: string
           specialties: MedicalSpecialtyType[]
+          avatar: string | null
           start_at: Date
           end_at: Date
           meeting_link: string | null
@@ -116,6 +118,7 @@ export class ConsultAppointmentRepository
           doctors.first_name,
           doctors.last_name,
           doctors.specialties,
+          doctors.avatar,
           doctor_time_slots.start_at,
           doctor_time_slots.end_at
         FROM consult_appointments
@@ -141,6 +144,7 @@ export class ConsultAppointmentRepository
           firstName: rawItem.first_name,
           lastName: rawItem.last_name,
           specialties: rawItem.specialties,
+          avatar: rawItem.avatar,
         },
         meetingLink: rawItem.meeting_link,
         cancelAvailability: rawItem.cacel_availability,

@@ -17,6 +17,7 @@ export interface ConsultAppointmentDatas {
     firstName: string
     lastName: string
     specialties: MedicalSpecialtyType[]
+    avatar: string | null
   }
   meetingLink: string | null
   cancelAvailability: boolean
@@ -34,6 +35,7 @@ export interface ConsultAppointmentData {
     firstName: string
     lastName: string
     specialties: MedicalSpecialtyType[]
+    avatar: string | null
   }
   meetingLink: string | null
   cancelAvailability: boolean
@@ -41,6 +43,7 @@ export interface ConsultAppointmentData {
 
 interface GetPatientConsultAppointmentsRequest {
   user: User
+  onlyUpcoming?: boolean
 }
 
 interface GetPatientConsultAppointmentsResponse {
@@ -58,7 +61,7 @@ export class GetPatientConsultAppointmentsUseCase {
   public async execute(
     request: GetPatientConsultAppointmentsRequest
   ): Promise<GetPatientConsultAppointmentsResponse> {
-    const { user } = request
+    const { user, onlyUpcoming = false } = request
 
     const currentPatient = await this.patientRepository.findByUserId(user.id)
 
@@ -104,12 +107,21 @@ export class GetPatientConsultAppointmentsUseCase {
           firstName: appointment.doctor.firstName,
           lastName: appointment.doctor.lastName,
           specialties: appointment.doctor.specialties,
+          avatar: appointment.doctor.avatar,
         },
         meetingLink: timeDifference > 22 ? null : appointment.meetingLink,
         cancelAvailability: timeDifference > 24,
       }
 
       upcomingConsultAppointments.push(consultAppointmentData)
+    }
+
+    if (onlyUpcoming) {
+      return {
+        upcomingAppointments: upcomingConsultAppointments,
+        completedAppointments: [],
+        canceledAppointments: [],
+      }
     }
 
     const completedAppointments =
@@ -153,6 +165,7 @@ export class GetPatientConsultAppointmentsUseCase {
         firstName: appointment.doctor.firstName,
         lastName: appointment.doctor.lastName,
         specialties: appointment.doctor.specialties,
+        avatar: appointment.doctor.avatar,
       },
       meetingLink: null,
       cancelAvailability: false,

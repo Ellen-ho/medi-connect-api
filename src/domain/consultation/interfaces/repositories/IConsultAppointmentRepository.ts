@@ -35,6 +35,7 @@ export interface IConsultAppointmentRepository
         firstName: string
         lastName: string
         specialties: MedicalSpecialtyType[]
+        avatar: string | null
       }
       meetingLink: string | null
       cancelAvailability: boolean
