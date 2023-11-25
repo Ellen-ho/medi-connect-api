@@ -67,7 +67,8 @@ export class PatientQuestionRepository
 
   public async findAndCountAll(
     limit: number,
-    offset: number
+    offset: number,
+    askerId?: string
   ): Promise<{
     totalCounts: number
     questions: Array<{
@@ -78,8 +79,9 @@ export class PatientQuestionRepository
     }>
   }> {
     try {
-      const result = await this.getRepo()
-        .createQueryBuilder('question')
+      const queryBuilder = this.getRepo().createQueryBuilder('question')
+
+      queryBuilder
         .select('COUNT(answer.id)', 'answerCounts')
         .addSelect('question.id', 'id')
         .addSelect('question.content', 'content')
@@ -93,7 +95,12 @@ export class PatientQuestionRepository
         .orderBy('question.created_at', 'DESC')
         .limit(limit)
         .offset(offset)
-        .getRawMany()
+
+      if (askerId !== undefined) {
+        queryBuilder.where('question.asker_id = :askerId', { askerId })
+      }
+
+      const result = await queryBuilder.getRawMany()
 
       const totalCounts: number = await this.getRepo().count()
 

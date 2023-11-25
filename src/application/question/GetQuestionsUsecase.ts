@@ -3,6 +3,7 @@ import { getOffset, getPagination } from '../../infrastructure/utils/Pagination'
 interface GetQuestionsRequest {
   page?: number
   limit?: number
+  askerId?: string
 }
 interface GetQuestionsResponse {
   totalCounts: number
@@ -31,9 +32,14 @@ export class GetQuestionsUseCase {
     const page: number = request.page != null ? request.page : 1
     const limit: number = request.limit != null ? request.limit : 10
     const offset: number = getOffset(limit, page)
+    const askerId = request.askerId
 
     const existingPatientQuestions =
-      await this.patientQuestionRepository.findAndCountAll(limit, offset)
+      await this.patientQuestionRepository.findAndCountAll(
+        limit,
+        offset,
+        askerId
+      )
 
     return {
       totalCounts: existingPatientQuestions.totalCounts,
