@@ -10,6 +10,7 @@ import { BloodSugarRecordMapper } from './BloodSugarRecordMapper'
 import { RepositoryError } from '../../error/RepositoryError'
 import { IBloodSugarRecordWithOwner } from '../../../application/record/GetSingleBloodSugarRecordUseCase'
 import { GenderType } from '../../../domain/patient/Patient'
+import dayjs from 'dayjs'
 
 export class BloodSugarRecordRepository
   extends BaseRepository<BloodSugarRecordEntity, BloodSugarRecord>
@@ -265,6 +266,54 @@ export class BloodSugarRecordRepository
     } catch (e) {
       throw new RepositoryError(
         'BloodSugarRecordRepository findByPatientIdAndCountAll error',
+        e as Error
+      )
+    }
+  }
+
+  public async findByGoalDurationDays(
+    startDate: Date,
+    endDate: Date
+  ): Promise<
+    | Array<{
+        id: string
+        bloodSugarValue: number
+        bloodSugarDate: string
+      }>
+    | []
+  > {
+    try {
+      const results = await this.getRepo()
+        .createQueryBuilder('blood_sugar_record')
+        .select('blood_sugar_record.id', 'id')
+        .addSelect('blood_sugar_record.blood_sugar_value', 'bloodSugarValue')
+        .addSelect(
+          "date_trunc('day', blood_sugar_record.blood_sugar_date)",
+          'bloodSugarDate'
+        )
+        .where('blood_sugar_record.blood_sugar_date >= :startDate', {
+          startDate,
+        })
+        .andWhere('blood_sugar_record.blood_sugar_date <= :endDate', {
+          endDate,
+        })
+        .orderBy('blood_sugar_record.blood_sugar_date', 'ASC')
+        .getRawMany()
+
+      if (results.length === 0) {
+        return []
+      }
+      const datas = results.map((result) => {
+        return {
+          id: result.id,
+          bloodSugarValue: result.bloodSugarValue,
+          bloodSugarDate: dayjs(result.bloodSugarDate).format('YYYY-MM-DD'),
+        }
+      })
+      return datas
+    } catch (e) {
+      throw new RepositoryError(
+        'BloodSugarRecordRepository findByGoalDurationDays error',
         e as Error
       )
     }

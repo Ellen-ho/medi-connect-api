@@ -1,4 +1,4 @@
-import { DataSource } from 'typeorm'
+import { DataSource, Like } from 'typeorm'
 import { PatientQuestion } from '../../../domain/question/PatientQuestion'
 import { BaseRepository } from '../../database/BaseRepository'
 import { PatientQuestionEntity } from './PatientQuestionEntity'
@@ -103,6 +103,63 @@ export class PatientQuestionRepository
       const result = await queryBuilder.getRawMany()
 
       const totalCounts: number = await this.getRepo().count()
+
+      return {
+        totalCounts,
+        questions: result.map((question) => ({
+          id: question.id,
+          content: question.content,
+          createdAt: question.createdAt,
+          answerCounts: parseInt(question.answerCounts),
+        })),
+      }
+    } catch (e) {
+      throw new RepositoryError(
+        'PatientQuestionRepository findAndCountAll error',
+        e as Error
+      )
+    }
+  }
+
+  public async findAfterFiteredAndCountAll(
+    limit: number,
+    offset: number,
+    searchKeyword: string
+  ): Promise<{
+    totalCounts: number
+    questions: Array<{
+      id: string
+      content: string
+      createdAt: Date
+      answerCounts: number
+    }>
+  }> {
+    try {
+      const result = await this.getRepo()
+        .createQueryBuilder('question')
+        .select('COUNT(answer.id)', 'answerCounts')
+        .addSelect('question.id', 'id')
+        .addSelect('question.content', 'content')
+        .addSelect('question.created_at', 'createdAt')
+        .leftJoin(
+          'patient_question_answers',
+          'answer',
+          'answer.patient_question_id = question.id'
+        )
+        .where('question.content LIKE :searchKeyword', {
+          searchKeyword: `%${searchKeyword}%`,
+        })
+        .groupBy('question.id')
+        .orderBy('question.created_at', 'DESC')
+        .limit(limit)
+        .offset(offset)
+        .getRawMany()
+
+      const totalCounts: number = await this.getRepo().count({
+        where: {
+          content: Like(`%${searchKeyword}%`),
+        },
+      })
 
       return {
         totalCounts,

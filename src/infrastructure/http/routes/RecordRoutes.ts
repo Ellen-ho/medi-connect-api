@@ -24,6 +24,7 @@ import {
   getExerciseRecordsSchema,
   getFoodRecordsSchema,
   getGlycatedHemoglobinRecordsSchema,
+  getGoalDurationRecordsSchema,
   getSingleBloodPressureRecordSchema,
   getSingleBloodSugarRecordSchema,
   getSingleExerciseRecordSchema,
@@ -100,7 +101,6 @@ export class RecordRoutes {
         validator(editFoodRecordSchema),
         asyncHandler(this.recordController.editFoodRecord)
       )
-
       .post(
         '/glycated-hemoglobin',
         authenticated,
@@ -124,6 +124,12 @@ export class RecordRoutes {
         authenticated,
         validator(editSleepRecordSchema),
         asyncHandler(this.recordController.editSleepRecord)
+      )
+      .get(
+        '/goal/:id',
+        authenticated,
+        validator(getGoalDurationRecordsSchema),
+        asyncHandler(this.recordController.getGoalDurationRecords)
       )
       .get(
         '/exercise/:id',

@@ -20,3 +20,7 @@ export const getHealthGoalListSchema = {
     targetPatientId: Joi.string().uuid().required(),
   }),
 }
+
+export const updateGoalResultSchema = {
+  params: Joi.object({ id: Joi.string().uuid().required() }),
+}

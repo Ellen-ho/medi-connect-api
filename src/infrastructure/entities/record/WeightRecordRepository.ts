@@ -7,6 +7,7 @@ import { WeightRecordMapper } from './WeightRecordMapper'
 import { RepositoryError } from '../../error/RepositoryError'
 import { IWeightRecordWithOwner } from '../../../application/record/GetSingleWeightRecordUseCase'
 import { GenderType } from '../../../domain/patient/Patient'
+import dayjs from 'dayjs'
 
 export class WeightRecordRepository
   extends BaseRepository<WeightRecordEntity, WeightRecord>
@@ -265,6 +266,54 @@ export class WeightRecordRepository
     } catch (e) {
       throw new RepositoryError(
         'WeightRecordRepository findByPatientIdAndCountAll error',
+        e as Error
+      )
+    }
+  }
+
+  public async findByGoalDurationDays(
+    startDate: Date,
+    endDate: Date
+  ): Promise<
+    | Array<{
+        id: string
+        weightValueKg: number
+        bodyMassIndex: number
+        weightDate: string
+      }>
+    | []
+  > {
+    try {
+      const results = await this.getRepo()
+        .createQueryBuilder('weight_record')
+        .select('weight_record.id', 'id')
+        .addSelect('weight_record.weight_value_kg', 'weightValueKg')
+        .addSelect('weight_record.body_mass_index', 'bodyMassIndex')
+        .addSelect("date_trunc('day', weight_record.weight_date)", 'weightDate')
+        .where('weight_record.weight_date >= :startDate', {
+          startDate,
+        })
+        .andWhere('weight_record.weight_date <= :endDate', {
+          endDate,
+        })
+        .orderBy('weight_record.weight_date', 'ASC')
+        .getRawMany()
+
+      if (results.length === 0) {
+        return []
+      }
+      const datas = results.map((result) => {
+        return {
+          id: result.id,
+          weightValueKg: result.weightValueKg,
+          bodyMassIndex: result.bodyMassIndex,
+          weightDate: dayjs(result.weightDate).format('YYYY-MM-DD'),
+        }
+      })
+      return datas
+    } catch (e) {
+      throw new RepositoryError(
+        'WeightRecordRepository findByGoalDurationDays error',
         e as Error
       )
     }

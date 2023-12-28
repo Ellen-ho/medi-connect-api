@@ -8,6 +8,7 @@ interface GetAnswerListRequest {
   user: User
   page?: number
   limit?: number
+  searchKeyword?: string
 }
 interface GetAnswerListResponse {
   totalAnswerCounts: number
@@ -36,6 +37,8 @@ export class GetAnswerListUseCase {
     request: GetAnswerListRequest
   ): Promise<GetAnswerListResponse> {
     const { user } = request
+    const searchKeyword: string =
+      request.searchKeyword != null ? request.searchKeyword : ''
     const page: number = request.page != null ? request.page : 1
     const limit: number = request.limit != null ? request.limit : 10
     const offset: number = getOffset(limit, page)
@@ -46,11 +49,32 @@ export class GetAnswerListUseCase {
       throw new AuthorizationError('Current doctor does not exist.')
     }
 
-    const existingAnswers =
-      await this.patientQuestionAnswerRepository.findAndCountByDoctorId(
+    const filteredAnswers =
+      await this.patientQuestionAnswerRepository.findFilteredAndCountByDoctorId(
         currentDoctor.id,
         limit,
-        offset
+        offset,
+        searchKeyword
+      )
+
+    if (filteredAnswers !== null) {
+      return {
+        totalAnswerCounts: filteredAnswers.totalAnswerCounts,
+        data: filteredAnswers.data,
+        pagination: getPagination(
+          limit,
+          page,
+          filteredAnswers.totalAnswerCounts
+        ),
+      }
+    }
+
+    const existingAnswers =
+      await this.patientQuestionAnswerRepository.findFilteredAndCountByDoctorId(
+        currentDoctor.id,
+        limit,
+        offset,
+        searchKeyword
       )
 
     if (existingAnswers.totalAnswerCounts === 0) {

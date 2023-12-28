@@ -22,5 +22,18 @@ export interface IPatientQuestionRepository
       answerCounts: number
     }>
   }>
+  findAfterFiteredAndCountAll: (
+    limit: number,
+    offset: number,
+    searchKeyword: string
+  ) => Promise<{
+    totalCounts: number
+    questions: Array<{
+      id: string
+      content: string
+      createdAt: Date
+      answerCounts: number
+    }>
+  }>
   delete: (question: PatientQuestion, executo?: IExecutor) => Promise<void>
 }

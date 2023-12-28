@@ -4,6 +4,7 @@ interface GetQuestionsRequest {
   page?: number
   limit?: number
   askerId?: string
+  searchKeyword?: string
 }
 interface GetQuestionsResponse {
   totalCounts: number
@@ -29,10 +30,26 @@ export class GetQuestionsUseCase {
   public async execute(
     request: GetQuestionsRequest
   ): Promise<GetQuestionsResponse> {
+    const searchKeyword =
+      request.searchKeyword != null ? request.searchKeyword : ''
     const page: number = request.page != null ? request.page : 1
     const limit: number = request.limit != null ? request.limit : 10
     const offset: number = getOffset(limit, page)
     const askerId = request.askerId
+
+    if (searchKeyword !== null) {
+      const filteredQuestions =
+        await this.patientQuestionRepository.findAfterFiteredAndCountAll(
+          limit,
+          offset,
+          searchKeyword
+        )
+      return {
+        totalCounts: filteredQuestions.totalCounts,
+        data: filteredQuestions.questions,
+        pagination: getPagination(limit, page, filteredQuestions.totalCounts),
+      }
+    }
 
     const existingPatientQuestions =
       await this.patientQuestionRepository.findAndCountAll(

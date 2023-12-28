@@ -56,4 +56,15 @@ export interface IGlycatedHemoglobinRecordRepository
       glycatedHemoglobinValuePercent: number
     }>
   >
+  findByGoalDurationDays: (
+    startDate: Date,
+    endDate: Date
+  ) => Promise<
+    | Array<{
+        id: string
+        glycatedHemoglobinValuePercent: number
+        glycatedHemoglobinDate: string
+      }>
+    | []
+  >
 }
