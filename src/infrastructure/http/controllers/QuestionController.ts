@@ -174,6 +174,7 @@ export class QuestionController implements IQuestionController {
     const request = {
       limit: Number(req.query.limit),
       page: Number(req.query.page),
+      askerId: req.query.askerId as string,
       searchKeyword: req.query.searchKeyword as string,
     }
     const result = await this.getQuestionsUseCase.execute(request)
