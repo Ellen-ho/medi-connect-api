@@ -8,6 +8,7 @@ import { RepositoryError } from '../../error/RepositoryError'
 
 import { GenderType } from '../../../domain/patient/Patient'
 import { IBloodPressureRecordWithOwner } from '../../../application/record/GetSingleBloodPressureRecordUsecase'
+import dayjs from 'dayjs'
 
 export class BloodPressureRecordRepository
   extends BaseRepository<BloodPressureRecordEntity, BloodPressureRecord>
@@ -268,6 +269,65 @@ export class BloodPressureRecordRepository
     } catch (e) {
       throw new RepositoryError(
         'BloodPressureRecordRepository findByPatientIdAndDat error',
+        e as Error
+      )
+    }
+  }
+
+  public async findByGoalDurationDays(
+    startDate: Date,
+    endDate: Date
+  ): Promise<
+    | Array<{
+        id: string
+        systolicBloodPressure: number
+        diastolicBloodPressure: number
+        bloodPressureDate: string
+      }>
+    | []
+  > {
+    try {
+      const results = await this.getRepo()
+        .createQueryBuilder('blood_pressure_record')
+        .select('blood_pressure_record.id', 'id')
+        .addSelect(
+          'blood_pressure_record.systolic_blood_pressure',
+          'systolicBloodPressure'
+        )
+        .addSelect(
+          'blood_pressure_record.diastolic_blood_pressure',
+          'diastolicBloodPressure'
+        )
+        .addSelect(
+          "date_trunc('day', blood_pressure_record.blood_pressure_date)",
+          'bloodPressureDate'
+        )
+        .where('blood_pressure_record.blood_pressure_date >= :startDate', {
+          startDate,
+        })
+        .andWhere('blood_pressure_record.blood_pressure_date <= :endDate', {
+          endDate,
+        })
+        .orderBy('blood_pressure_record.blood_pressure_date', 'ASC')
+        .getRawMany()
+
+      if (results.length === 0) {
+        return []
+      }
+      const datas = results.map((result) => {
+        return {
+          id: result.id,
+          systolicBloodPressure: result.systolicBloodPressure,
+          diastolicBloodPressure: result.diastolicBloodPressure,
+          bloodPressureDate: dayjs(result.bloodPressureDate).format(
+            'YYYY-MM-DD'
+          ),
+        }
+      })
+      return datas
+    } catch (e) {
+      throw new RepositoryError(
+        'BloodPressureRecordRepository findByGoalDurationDays error',
         e as Error
       )
     }

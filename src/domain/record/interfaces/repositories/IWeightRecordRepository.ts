@@ -50,4 +50,16 @@ export interface IWeightRecordRepository extends IBaseRepository<WeightRecord> {
       bodyMassIndex: number
     }>
   }>
+  findByGoalDurationDays: (
+    startDate: Date,
+    endDate: Date
+  ) => Promise<
+    | Array<{
+        id: string
+        weightValueKg: number
+        bodyMassIndex: number
+        weightDate: string
+      }>
+    | []
+  >
 }

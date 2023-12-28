@@ -124,6 +124,8 @@ import { GetAnswerListUseCase } from './application/question/GetAnswerListUseCas
 import { AuthRoutes } from './infrastructure/http/routes/AuthRoutes'
 import passport from 'passport'
 import session from 'express-session'
+import { UpdateGoalResultUseCase } from 'application/goal/UpdateGoalResultUseCase'
+import { GetGoalDurationRecordsUseCase } from 'application/record/GetGoalDurationRecordsUseCase'
 
 void main()
 
@@ -489,6 +491,17 @@ async function main(): Promise<void> {
     consultAppointmentRepository
   )
 
+  const getGoalDurationRecordsUseCase = new GetGoalDurationRecordsUseCase(
+    bloodPressureRecordRepository,
+    bloodSugarRecordRepository,
+    glycatedHemoglobinRecordRepository,
+    weightRecordRepository,
+    patientRepository,
+    doctorRepository,
+    healthGoalRepository,
+    consultAppointmentRepository
+  )
+
   /**
    * Conultation Domain
    */
@@ -595,6 +608,14 @@ async function main(): Promise<void> {
     consultAppointmentRepository
   )
 
+  const updateGoalResultUseCase = new UpdateGoalResultUseCase(
+    healthGoalRepository,
+    bloodPressureRecordRepository,
+    bloodSugarRecordRepository,
+    weightRecordRepository,
+    glycatedHemoglobinRecordRepository
+  )
+
   /**
    * Notification Domain
    */
@@ -630,7 +651,9 @@ async function main(): Promise<void> {
     scheduler,
     createHealthGoalUseCase,
     cancelHealthGoalUseCase,
-    userRepository
+    updateGoalResultUseCase,
+    userRepository,
+    healthGoalRepository
   )
   await healthGoalCronJob.init()
   /**
@@ -683,7 +706,8 @@ async function main(): Promise<void> {
     getFoodRecordsUseCase,
     getGlycatedHemoglobinRecordsUseCase,
     getSleepRecordsUseCase,
-    getWeightRecordsUseCase
+    getWeightRecordsUseCase,
+    getGoalDurationRecordsUseCase
   )
   const questionController = new QuestionController(
     createAnswerAgreementUseCase,
@@ -718,7 +742,8 @@ async function main(): Promise<void> {
     activateHealthGoalUseCase,
     rejectHealthGoalUseCase,
     getHealthGoalUseCase,
-    getHealthGoalListUseCase
+    getHealthGoalListUseCase,
+    updateGoalResultUseCase
   )
 
   const notificationController = new NotificationController(

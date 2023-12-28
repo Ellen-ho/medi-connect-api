@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-
 import { EditWeightRecordUseCase } from '../../../application/record/EditWeightRecordUseCase'
 import { CreateWeightRecordUseCase } from '../../../application/record/CreateWeightRecordUseCase'
 import { EditBloodPressureRecordUseCase } from '../../../application/record/EditBloodPressureRecordUseCase'
@@ -29,6 +28,7 @@ import { GetFoodRecordsUseCase } from '../../../application/record/GetFoodRecord
 import { GetGlycatedHemoglobinRecordsUseCase } from '../../../application/record/GetGlycatedHemoglobinRecordsUseCase'
 import { GetSleepRecordsUseCase } from '../../../application/record/GetSleepRecordsUseCase'
 import { GetWeightRecordsUseCase } from '../../../application/record/GetWeightRecordsUseCase'
+import { GetGoalDurationRecordsUseCase } from 'application/record/GetGoalDurationRecordsUseCase'
 export interface IRecordController {
   createWeightRecord: (req: Request, res: Response) => Promise<Response>
   editWeightRecord: (req: Request, res: Response) => Promise<Response>
@@ -73,6 +73,7 @@ export interface IRecordController {
   ) => Promise<Response>
   getSleepRecords: (req: Request, res: Response) => Promise<Response>
   getWeightRecords: (req: Request, res: Response) => Promise<Response>
+  getGoalDurationRecords: (req: Request, res: Response) => Promise<Response>
 }
 
 export class RecordController implements IRecordController {
@@ -104,7 +105,8 @@ export class RecordController implements IRecordController {
     private readonly getFoodRecordsUseCase: GetFoodRecordsUseCase,
     private readonly getGlycatedHemoglobinRecordsUseCase: GetGlycatedHemoglobinRecordsUseCase,
     private readonly getSleepRecordsUseCase: GetSleepRecordsUseCase,
-    private readonly getWeightRecordsUseCase: GetWeightRecordsUseCase
+    private readonly getWeightRecordsUseCase: GetWeightRecordsUseCase,
+    private readonly getGoalDurationRecordsUseCase: GetGoalDurationRecordsUseCase
   ) {}
 
   public createWeightRecord = async (
@@ -457,6 +459,19 @@ export class RecordController implements IRecordController {
       page: Number(req.query.page),
     }
     const result = await this.getWeightRecordsUseCase.execute(request)
+    return res.status(200).json(result)
+  }
+
+  public getGoalDurationRecords = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    const request = {
+      user: req.user as User,
+      goalId: req.params.id,
+      targetPatientId: req.query.targetPatientId as string,
+    }
+    const result = await this.getGoalDurationRecordsUseCase.execute(request)
     return res.status(200).json(result)
   }
 }

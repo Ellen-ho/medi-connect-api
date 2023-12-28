@@ -192,4 +192,33 @@ export class HealthGoalRepository
       )
     }
   }
+
+  public async findAllByDate(date: Date): Promise<HealthGoal[]> {
+    try {
+      const startOfDay = new Date(date)
+      startOfDay.setHours(0, 0, 0, 0)
+
+      const endOfDay = new Date(date)
+      endOfDay.setHours(23, 59, 59, 999)
+
+      const healthGoals = await this.getRepo()
+        .createQueryBuilder('health_goal')
+        .where('health_goal.end_at >= :startOfDay', { startOfDay })
+        .andWhere('health_goal.end_at <= :endOfDay', { endOfDay })
+        .getMany()
+
+      console.table({ healthGoals: JSON.stringify(healthGoals) })
+
+      return healthGoals.length !== 0
+        ? healthGoals.map((healthGoal) =>
+            this.getMapper().toDomainModel(healthGoal)
+          )
+        : []
+    } catch (e) {
+      throw new RepositoryError(
+        'HealthGoalRepository findAllByDate error',
+        e as Error
+      )
+    }
+  }
 }

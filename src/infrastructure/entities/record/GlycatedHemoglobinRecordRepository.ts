@@ -8,6 +8,7 @@ import { IGlycatedHemoglobinRecordRepository } from '../../../domain/record/inte
 import { RepositoryError } from '../../error/RepositoryError'
 import { IGlycatedHemoglobinRecordWithOwner } from '../../../application/record/GetSingleGlycatedHemoglobinRecordUseCase'
 import { GenderType } from '../../../domain/patient/Patient'
+import dayjs from 'dayjs'
 
 export class GlycatedHemoglobinRecordRepository
   extends BaseRepository<
@@ -292,6 +293,65 @@ export class GlycatedHemoglobinRecordRepository
     } catch (e) {
       throw new RepositoryError(
         'GlycatedHemoglobinRecordRepository findByPatientIdAndCountAll error',
+        e as Error
+      )
+    }
+  }
+
+  public async findByGoalDurationDays(
+    startDate: Date,
+    endDate: Date
+  ): Promise<
+    | Array<{
+        id: string
+        glycatedHemoglobinValuePercent: number
+        glycatedHemoglobinDate: string
+      }>
+    | []
+  > {
+    try {
+      const results = await this.getRepo()
+        .createQueryBuilder('glycated_hemoglobin_record')
+        .select('glycated_hemoglobin_record.id', 'id')
+        .addSelect(
+          'glycated_hemoglobin_record.glycated_hemoglobin_value_percent',
+          'glycatedHemoglobinValuePercent'
+        )
+        .addSelect(
+          "date_trunc('day', glycated_hemoglobin_record.glycated_hemoglobin_date)",
+          'glycatedHemoglobinDate'
+        )
+        .where(
+          'glycated_hemoglobin_record.glycated_hemoglobin_date >= :startDate',
+          {
+            startDate,
+          }
+        )
+        .andWhere(
+          'glycated_hemoglobin_record.glycated_hemoglobin_date <= :endDate',
+          {
+            endDate,
+          }
+        )
+        .orderBy('glycated_hemoglobin_record.glycated_hemoglobin_date', 'ASC')
+        .getRawMany()
+
+      if (results.length === 0) {
+        return []
+      }
+      const datas = results.map((result) => {
+        return {
+          id: result.id,
+          glycatedHemoglobinValuePercent: result.glycatedHemoglobinValuePercent,
+          glycatedHemoglobinDate: dayjs(result.glycatedHemoglobinDate).format(
+            'YYYY-MM-DD'
+          ),
+        }
+      })
+      return datas
+    } catch (e) {
+      throw new RepositoryError(
+        'GlycatedHemoglobinRepository findByGoalDurationDays error',
         e as Error
       )
     }
