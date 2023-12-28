@@ -24,25 +24,11 @@ export interface IPatientQuestionAnswerRepository
   countByDoctorId: (doctorId: string) => Promise<number>
   countAppreciatedAnswersByDoctorId: (doctorId: string) => Promise<number>
   countAgreedAnswersByDoctorId: (doctorId: string) => Promise<number>
-  findAndCountByDoctorId: (
-    doctorId: string,
-    limit: number,
-    offset: number
-  ) => Promise<{
-    totalAnswerCounts: number
-    data: Array<{
-      id: string
-      content: string
-      createdAt: Date
-      thankCounts: number
-      agreeCounts: number
-    }>
-  }>
   findFilteredAndCountByDoctorId: (
     doctorId: string,
     limit: number,
     offset: number,
-    searchKeyword: string
+    searchKeyword?: string
   ) => Promise<{
     totalAnswerCounts: number
     data: Array<{

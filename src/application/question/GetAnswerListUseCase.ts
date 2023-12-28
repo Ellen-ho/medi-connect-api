@@ -70,7 +70,7 @@ export class GetAnswerListUseCase {
     }
 
     const existingAnswers =
-      await this.patientQuestionAnswerRepository.findAndCountByDoctorId(
+      await this.patientQuestionAnswerRepository.findFilteredAndCountByDoctorId(
         currentDoctor.id,
         limit,
         offset

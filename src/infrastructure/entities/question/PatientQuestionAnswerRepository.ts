@@ -299,69 +299,11 @@ export class PatientQuestionAnswerRepository
     }
   }
 
-  public async findAndCountByDoctorId(
-    doctorId: string,
-    limit: number,
-    offset: number
-  ): Promise<{
-    totalAnswerCounts: number
-    data: Array<{
-      id: string
-      content: string
-      createdAt: Date
-      thankCounts: number
-      agreeCounts: number
-    }>
-  }> {
-    try {
-      const rawAnswerItems = await this.getQuery<
-        Array<{
-          answerId: string
-          answerCreatedAt: Date
-          content: string
-          agreeCounts: number
-          thankCounts: number
-        }>
-      >(
-        `
-        SELECT
-        patient_question_answers.id as "answerId",
-        patient_question_answers.created_at as "answerCreatedAt",
-        patient_question_answers.content as "content",
-        COUNT(DISTINCT answer_agreements.id) as "agreeCounts",
-        COUNT(DISTINCT answer_appreciations.id) as "thankCounts"
-      FROM patient_question_answers
-      LEFT JOIN answer_agreements ON patient_question_answers.id = answer_agreements.patient_question_answer_id AND answer_agreements.deleted_at IS NULL
-      LEFT JOIN answer_appreciations ON patient_question_answers.id = answer_appreciations.answer_id AND answer_appreciations.deleted_at IS NULL
-      WHERE patient_question_answers.doctor_id = $1
-      GROUP BY patient_question_answers.id
-      LIMIT $2 OFFSET $3
-  `,
-        [doctorId, limit, offset]
-      )
-
-      const totalAnswerCounts = rawAnswerItems.length
-      const data = rawAnswerItems.map((rawItem) => ({
-        id: rawItem.answerId,
-        content: rawItem.content,
-        createdAt: rawItem.answerCreatedAt,
-        thankCounts: rawItem.thankCounts,
-        agreeCounts: rawItem.agreeCounts,
-      }))
-      return { totalAnswerCounts, data }
-    } catch (e) {
-      throw new RepositoryError(
-        'PatientQuestionAnswerRepository findAndCountByDoctorId error',
-        e as Error
-      )
-    }
-  }
-
   public async findFilteredAndCountByDoctorId(
     doctorId: string,
     limit: number,
     offset: number,
-    searchKeyword: string
+    searchKeyword?: string
   ): Promise<{
     totalAnswerCounts: number
     data: Array<{
@@ -373,6 +315,10 @@ export class PatientQuestionAnswerRepository
     }>
   }> {
     try {
+      const searchCondition =
+        searchKeyword !== undefined && searchKeyword !== ''
+          ? `%${searchKeyword}%`
+          : null
       const rawAnswerItems = await this.getQuery<
         Array<{
           answerId: string
@@ -384,20 +330,20 @@ export class PatientQuestionAnswerRepository
       >(
         `
         SELECT
-        patient_question_answers.id as "answerId",
-        patient_question_answers.created_at as "answerCreatedAt",
-        patient_question_answers.content as "content",
-        COUNT(DISTINCT answer_agreements.id) as "agreeCounts",
-        COUNT(DISTINCT answer_appreciations.id) as "thankCounts"
-      FROM patient_question_answers
-      LEFT JOIN answer_agreements ON patient_question_answers.id = answer_agreements.patient_question_answer_id AND answer_agreements.deleted_at IS NULL
-      LEFT JOIN answer_appreciations ON patient_question_answers.id = answer_appreciations.answer_id AND answer_appreciations.deleted_at IS NULL
-      WHERE patient_question_answers.doctor_id = $1
-       AND (patient_question_answers.content LIKE $4)
-      GROUP BY patient_question_answers.id
-      LIMIT $2 OFFSET $3
-  `,
-        [doctorId, limit, offset, `%${searchKeyword}%`]
+          patient_question_answers.id as "answerId",
+          patient_question_answers.created_at as "answerCreatedAt",
+          patient_question_answers.content as "content",
+          COUNT(DISTINCT answer_agreements.id) as "agreeCounts",
+          COUNT(DISTINCT answer_appreciations.id) as "thankCounts"
+        FROM patient_question_answers
+        LEFT JOIN answer_agreements ON patient_question_answers.id = answer_agreements.patient_question_answer_id AND answer_agreements.deleted_at IS NULL
+        LEFT JOIN answer_appreciations ON patient_question_answers.id = answer_appreciations.answer_id AND answer_appreciations.deleted_at IS NULL
+        WHERE patient_question_answers.doctor_id = $1
+        AND ($4 IS NULL OR patient_question_answers.content::TEXT LIKE $4)
+        GROUP BY patient_question_answers.id
+        LIMIT $2 OFFSET $3
+      `,
+        [doctorId, limit, offset, searchCondition]
       )
 
       const totalAnswerCounts = rawAnswerItems.length
