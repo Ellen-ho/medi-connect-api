@@ -28,7 +28,7 @@ export interface IPatientQuestionAnswerRepository
     doctorId: string,
     limit: number,
     offset: number,
-    searchKeyword?: string
+    searchKeyword: string
   ) => Promise<{
     totalAnswerCounts: number
     data: Array<{

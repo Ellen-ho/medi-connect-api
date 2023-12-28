@@ -73,7 +73,8 @@ export class GetAnswerListUseCase {
       await this.patientQuestionAnswerRepository.findFilteredAndCountByDoctorId(
         currentDoctor.id,
         limit,
-        offset
+        offset,
+        searchKeyword
       )
 
     if (existingAnswers.totalAnswerCounts === 0) {

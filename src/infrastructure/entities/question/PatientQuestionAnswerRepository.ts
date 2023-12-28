@@ -303,7 +303,7 @@ export class PatientQuestionAnswerRepository
     doctorId: string,
     limit: number,
     offset: number,
-    searchKeyword?: string
+    searchKeyword: string
   ): Promise<{
     totalAnswerCounts: number
     data: Array<{
@@ -315,10 +315,7 @@ export class PatientQuestionAnswerRepository
     }>
   }> {
     try {
-      const searchCondition =
-        searchKeyword !== undefined && searchKeyword !== ''
-          ? `%${searchKeyword}%`
-          : null
+      const searchCondition = searchKeyword !== '' ? `%${searchKeyword}%` : null
       const rawAnswerItems = await this.getQuery<
         Array<{
           answerId: string
@@ -339,7 +336,7 @@ export class PatientQuestionAnswerRepository
         LEFT JOIN answer_agreements ON patient_question_answers.id = answer_agreements.patient_question_answer_id AND answer_agreements.deleted_at IS NULL
         LEFT JOIN answer_appreciations ON patient_question_answers.id = answer_appreciations.answer_id AND answer_appreciations.deleted_at IS NULL
         WHERE patient_question_answers.doctor_id = $1
-        AND ($4 IS NULL OR patient_question_answers.content::TEXT LIKE $4)
+        AND ($4::TEXT IS NULL OR patient_question_answers.content::TEXT LIKE $4::TEXT)
         GROUP BY patient_question_answers.id
         LIMIT $2 OFFSET $3
       `,

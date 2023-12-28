@@ -77,5 +77,6 @@ export const getAnswerListSchema = {
   query: Joi.object({
     limit: Joi.number().optional(),
     page: Joi.number().optional(),
+    searchKeyword: Joi.string().optional(),
   }),
 }
