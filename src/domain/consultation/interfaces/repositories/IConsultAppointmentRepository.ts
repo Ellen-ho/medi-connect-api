@@ -58,6 +58,7 @@ export interface IConsultAppointmentRepository
         id: string
         firstName: string
         lastName: string
+        avatar: string
       }
       meetingLink: string | null
     }>
