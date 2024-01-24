@@ -15,6 +15,7 @@ export interface ConsultAppointmentDatas {
     id: string
     firstName: string
     lastName: string
+    avatar: string
   }
   meetingLink: string | null
 }
@@ -30,12 +31,14 @@ export interface ConsultAppointmentData {
     id: string
     firstName: string
     lastName: string
+    avatar: string
   }
   meetingLink: string | null
 }
 
 interface GetDoctorConsultAppointmentsRequest {
   user: User
+  onlyUpcoming?: boolean
 }
 
 interface GetDoctorConsultAppointmentsResponse {
@@ -97,6 +100,7 @@ export class GetDoctorConsultAppointmentsUseCase {
           id: appointment.patient.id,
           firstName: appointment.patient.firstName,
           lastName: appointment.patient.lastName,
+          avatar: appointment.patient.avatar,
         },
         meetingLink: timeDifference > 22 ? null : appointment.meetingLink,
       }
@@ -144,6 +148,7 @@ export class GetDoctorConsultAppointmentsUseCase {
         id: appointment.patient.id,
         firstName: appointment.patient.firstName,
         lastName: appointment.patient.lastName,
+        avatar: appointment.patient.avatar,
       },
       meetingLink: null,
     }))

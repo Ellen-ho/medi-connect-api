@@ -175,6 +175,7 @@ export class ConsultAppointmentRepository
         id: string
         firstName: string
         lastName: string
+        avatar: string
       }
       meetingLink: string | null
     }>
@@ -188,6 +189,7 @@ export class ConsultAppointmentRepository
           id: string
           first_name: string
           last_name: string
+          avatar: string
           start_at: Date
           end_at: Date
           meeting_link: string | null
@@ -203,7 +205,8 @@ export class ConsultAppointmentRepository
           doctor_time_slots.end_at AS "end_at",
           patients.id AS "id",
           patients.first_name AS "first_name",
-          patients.last_name AS "last_name"
+          patients.last_name AS "last_name",
+          patients.avatar AS "avatar"
         FROM consult_appointments
         INNER JOIN doctor_time_slots ON consult_appointments.doctor_time_slot_id = doctor_time_slots.id
         INNER JOIN doctors ON doctor_time_slots.doctor_id = doctors.id
@@ -228,6 +231,7 @@ export class ConsultAppointmentRepository
           id: rawItem.id,
           firstName: rawItem.first_name,
           lastName: rawItem.last_name,
+          avatar: rawItem.avatar,
         },
         meetingLink: rawItem.meeting_link,
       }))
