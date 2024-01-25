@@ -3,6 +3,8 @@ import * as path from 'path'
 import express, { Express } from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
+import { createServer } from 'http'
+import { Server } from 'socket.io'
 import { PostgresDatabase } from './infrastructure/database/PostgresDatabase'
 import { UuidService } from './infrastructure/utils/UuidService'
 import { UserRepository } from './infrastructure/entities/user/UserRepository'
@@ -126,6 +128,7 @@ import passport from 'passport'
 import session from 'express-session'
 import { UpdateGoalResultUseCase } from 'application/goal/UpdateGoalResultUseCase'
 import { GetGoalDurationRecordsUseCase } from 'application/record/GetGoalDurationRecordsUseCase'
+import SocketService from 'infrastructure/network/SocketService'
 
 void main()
 
@@ -141,6 +144,22 @@ async function main(): Promise<void> {
       }'`
     )
   }
+
+  const corsOptions = {
+    origin: process.env.CORS_ORIGIN,
+    credentials: true,
+  }
+
+  const app: Express = express()
+  // Socket.io init
+  const httpServer = createServer(app)
+  const io = new Server(httpServer, {
+    path: '/ws/notification',
+    transports: ['websocket'],
+    cors: corsOptions,
+  })
+
+  const socketService = new SocketService(io)
 
   /**
    * Database Connection
@@ -238,7 +257,8 @@ async function main(): Promise<void> {
 
   const notificationHelper = new NotificationHelper(
     notificationRepository,
-    uuidService
+    uuidService,
+    socketService
   )
 
   /**
@@ -755,7 +775,6 @@ async function main(): Promise<void> {
     deleteNotificationUseCase
   )
 
-  const app: Express = express()
   app.use(express.urlencoded({ extended: true }))
   app.use(express.json())
 
@@ -796,10 +815,6 @@ async function main(): Promise<void> {
     notificationRoutes
   )
 
-  const corsOptions = {
-    origin: process.env.CORS_ORIGIN,
-    credentials: true,
-  }
   app.use(cors(corsOptions))
   app.use('/upload', express.static(path.join(__dirname, 'upload')))
   app.use('/api', mainRoutes.createRouter())
@@ -807,7 +822,17 @@ async function main(): Promise<void> {
 
   app.use(errorHandler)
 
-  app.listen(port, () => {
+  // io.on('connection', (socket: Socket) => {
+  //   console.log(`a user connected: ${socket.id}`)
+
+  //   // 每隔一段时间发送通知
+  //   setInterval(() => {
+  //     console.log('notification')
+  //     socket.emit('notification', { message: 'Hello from server!' })
+  //   }, 2000)
+  // })
+
+  httpServer.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`)
   })
 }

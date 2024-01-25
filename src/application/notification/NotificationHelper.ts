@@ -1,3 +1,4 @@
+import { ISocketService } from 'domain/interface/network/ISocketService'
 import {
   Notification,
   NotificationType,
@@ -21,7 +22,8 @@ export interface INotificationHelper {
 export class NotificationHelper implements INotificationHelper {
   constructor(
     private readonly notificationRepository: INotificationRepository,
-    private readonly uuidService: IUuidService
+    private readonly uuidService: IUuidService,
+    private readonly socketService: ISocketService
   ) {}
 
   public async createNotification(
@@ -40,5 +42,10 @@ export class NotificationHelper implements INotificationHelper {
       user,
     })
     await this.notificationRepository.save(notification)
+
+    // Send notification to client
+    this.socketService.sendToUser(user.id, 'notification', {
+      hasUnReadNotification: true,
+    })
   }
 }
