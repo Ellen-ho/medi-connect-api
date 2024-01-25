@@ -822,16 +822,6 @@ async function main(): Promise<void> {
 
   app.use(errorHandler)
 
-  // io.on('connection', (socket: Socket) => {
-  //   console.log(`a user connected: ${socket.id}`)
-
-  //   // 每隔一段时间发送通知
-  //   setInterval(() => {
-  //     console.log('notification')
-  //     socket.emit('notification', { message: 'Hello from server!' })
-  //   }, 2000)
-  // })
-
   httpServer.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`)
   })
