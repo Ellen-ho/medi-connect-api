@@ -190,7 +190,9 @@ export class SleepRecordRepository
   public async findByPatientIdAndCountAll(
     targetPatientId: string,
     limit: number,
-    offset: number
+    offset: number,
+    startDate: string,
+    endDate: string
   ): Promise<{
     total_counts: number
     patientData: {
@@ -210,6 +212,10 @@ export class SleepRecordRepository
         .createQueryBuilder('record')
         .leftJoin('record.patient', 'patient')
         .where('patient.id = :targetPatientId', { targetPatientId })
+        .andWhere('DATE(record.sleep_date) BETWEEN :startDate AND :endDate', {
+          startDate,
+          endDate,
+        })
         .getCount()
 
       const result = await this.getRepo()
@@ -225,6 +231,10 @@ export class SleepRecordRepository
         ])
         .leftJoin('record.patient', 'patient')
         .where('patient.id = :targetPatientId', { targetPatientId })
+        .andWhere('DATE(record.sleep_date) BETWEEN :startDate AND :endDate', {
+          startDate,
+          endDate,
+        })
         .orderBy('sleep_date', 'DESC')
         .limit(limit)
         .offset(offset)

@@ -16,7 +16,9 @@ export interface IFoodRecordRepository extends IBaseRepository<FoodRecord> {
   findByPatientIdAndCountAll: (
     patientId: string,
     limit: number,
-    offset: number
+    offset: number,
+    startDate,
+    endDate
   ) => Promise<{
     total_counts: number
     patientData: {

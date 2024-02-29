@@ -204,7 +204,9 @@ export class BloodSugarRecordRepository
   public async findByPatientIdAndCountAll(
     targetPatientId: string,
     limit: number,
-    offset: number
+    offset: number,
+    startDate: string,
+    endDate: string
   ): Promise<{
     total_counts: number
     patientData: {
@@ -225,6 +227,13 @@ export class BloodSugarRecordRepository
         .createQueryBuilder('record')
         .leftJoin('record.patient', 'patient')
         .where('patient.id = :targetPatientId', { targetPatientId })
+        .andWhere(
+          'DATE(record.blood_sugar_date) BETWEEN :startDate AND :endDate',
+          {
+            startDate,
+            endDate,
+          }
+        )
         .getCount()
 
       const result = await this.getRepo()
@@ -241,6 +250,13 @@ export class BloodSugarRecordRepository
         ])
         .leftJoin('record.patient', 'patient')
         .where('patient.id = :targetPatientId', { targetPatientId })
+        .andWhere(
+          'DATE(record.blood_sugar_date) BETWEEN :startDate AND :endDate',
+          {
+            startDate,
+            endDate,
+          }
+        )
         .orderBy('record.blood_sugar_date', 'DESC')
         .limit(limit)
         .offset(offset)

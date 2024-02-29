@@ -20,7 +20,9 @@ export interface ISleepRecordRepository extends IBaseRepository<SleepRecord> {
   findByPatientIdAndCountAll: (
     patientId: string,
     limit: number,
-    offset: number
+    offset: number,
+    startDate,
+    endDate
   ) => Promise<{
     total_counts: number
     patientData: {

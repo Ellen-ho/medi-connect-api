@@ -154,6 +154,8 @@ export const getBloodPressureRecordsSchema = {
   query: Joi.object({
     limit: Joi.number().optional(),
     page: Joi.number().optional(),
+    startDate: Joi.string().optional(),
+    endDate: Joi.string().optional(),
     targetPatientId: Joi.string().uuid().required(),
   }),
 }

@@ -371,6 +371,8 @@ export class RecordController implements IRecordController {
       targetPatientId: req.query.targetPatientId as string,
       limit: Number(req.query.limit),
       page: Number(req.query.page),
+      startDate: req.query.startDate as string,
+      endDate: req.query.endDate as string,
     }
     const result = await this.getExerciseRecordsUseCase.execute(request)
     return res.status(200).json(result)
@@ -385,6 +387,8 @@ export class RecordController implements IRecordController {
       targetPatientId: req.query.targetPatientId as string,
       limit: Number(req.query.limit),
       page: Number(req.query.page),
+      startDate: req.query.startDate as string,
+      endDate: req.query.endDate as string,
     }
     const result = await this.getBloodPressureRecordsUseCase.execute(request)
     return res.status(200).json(result)
@@ -399,6 +403,8 @@ export class RecordController implements IRecordController {
       targetPatientId: req.query.targetPatientId as string,
       limit: Number(req.query.limit),
       page: Number(req.query.page),
+      startDate: req.query.startDate as string,
+      endDate: req.query.endDate as string,
     }
     const result = await this.getBloodSugarRecordsUseCase.execute(request)
     return res.status(200).json(result)
@@ -413,6 +419,8 @@ export class RecordController implements IRecordController {
       targetPatientId: req.query.targetPatientId as string,
       limit: Number(req.query.limit),
       page: Number(req.query.page),
+      startDate: req.query.startDate as string,
+      endDate: req.query.endDate as string,
     }
     const result = await this.getFoodRecordsUseCase.execute(request)
     return res.status(200).json(result)
@@ -427,6 +435,8 @@ export class RecordController implements IRecordController {
       targetPatientId: req.query.targetPatientId as string,
       limit: Number(req.query.limit),
       page: Number(req.query.page),
+      startDate: req.query.startDate as string,
+      endDate: req.query.endDate as string,
     }
     const result = await this.getGlycatedHemoglobinRecordsUseCase.execute(
       request
@@ -443,6 +453,8 @@ export class RecordController implements IRecordController {
       targetPatientId: req.query.targetPatientId as string,
       limit: Number(req.query.limit),
       page: Number(req.query.page),
+      startDate: req.query.startDate as string,
+      endDate: req.query.endDate as string,
     }
     const result = await this.getSleepRecordsUseCase.execute(request)
     return res.status(200).json(result)
@@ -457,6 +469,8 @@ export class RecordController implements IRecordController {
       targetPatientId: req.query.targetPatientId as string,
       limit: Number(req.query.limit),
       page: Number(req.query.page),
+      startDate: req.query.startDate as string,
+      endDate: req.query.endDate as string,
     }
     const result = await this.getWeightRecordsUseCase.execute(request)
     return res.status(200).json(result)

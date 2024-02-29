@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { ConsultAppointmentStatusType } from '../../domain/consultation/ConsultAppointment'
 import { IConsultAppointmentRepository } from '../../domain/consultation/interfaces/repositories/IConsultAppointmentRepository'
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
@@ -14,6 +15,8 @@ interface GetSleepRecordsRequest {
   user: User
   page?: number
   limit?: number
+  startDate?: string
+  endDate?: string
   targetPatientId: string
 }
 interface GetSleepRecordsResponse {
@@ -51,11 +54,21 @@ export class GetSleepRecordsUseCase {
     const limit: number = request.limit != null ? request.limit : 10
     const offset: number = getOffset(limit, page)
 
+    const firstDayOfCurrentMonth = dayjs().startOf('month').format('YYYY-MM-DD')
+
+    const lastDayOfCurrentMonth = dayjs().endOf('month').format('YYYY-MM-DD')
+    const startDate: string =
+      request.startDate != null ? request.startDate : firstDayOfCurrentMonth
+    const endDate: string =
+      request.endDate != null ? request.endDate : lastDayOfCurrentMonth
+
     const existingSleepRecords =
       await this.sleepRecordRepository.findByPatientIdAndCountAll(
         targetPatientId,
         limit,
-        offset
+        offset,
+        startDate,
+        endDate
       )
 
     if (existingSleepRecords.recordsData.length === 0) {

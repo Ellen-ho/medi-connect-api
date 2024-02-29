@@ -200,7 +200,9 @@ export class GlycatedHemoglobinRecordRepository
   public async findByPatientIdAndCountAll(
     targetPatientId: string,
     limit: number,
-    offset: number
+    offset: number,
+    startDate: string,
+    endDate: string
   ): Promise<{
     total_counts: number
     patientData: {
@@ -220,6 +222,13 @@ export class GlycatedHemoglobinRecordRepository
         .createQueryBuilder('record')
         .leftJoin('record.patient', 'patient')
         .where('patient.id = :targetPatientId', { targetPatientId })
+        .andWhere(
+          'DATE(record.glycated_hemoglobin_date) BETWEEN :startDate AND :endDate',
+          {
+            startDate,
+            endDate,
+          }
+        )
         .getCount()
 
       const result = await this.getRepo()
@@ -235,6 +244,13 @@ export class GlycatedHemoglobinRecordRepository
         ])
         .leftJoin('record.patient', 'patient')
         .where('patient.id = :targetPatientId', { targetPatientId })
+        .andWhere(
+          'DATE(record.glycated_hemoglobin_date) BETWEEN :startDate AND :endDate',
+          {
+            startDate,
+            endDate,
+          }
+        )
         .orderBy('glycated_hemoglobin_date', 'DESC')
         .limit(limit)
         .offset(offset)

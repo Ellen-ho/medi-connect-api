@@ -118,7 +118,9 @@ export class FoodRecordRepository
   public async findByPatientIdAndCountAll(
     targetPatientId: string,
     limit: number,
-    offset: number
+    offset: number,
+    startDate: string,
+    endDate: string
   ): Promise<{
     total_counts: number
     patientData: {
@@ -138,6 +140,10 @@ export class FoodRecordRepository
         .createQueryBuilder('record')
         .leftJoin('record.patient', 'patient')
         .where('patient.id = :targetPatientId', { targetPatientId })
+        .andWhere('DATE(record.food_date) BETWEEN :startDate AND :endDate', {
+          startDate,
+          endDate,
+        })
         .getCount()
 
       const result = await this.getRepo()
@@ -153,6 +159,10 @@ export class FoodRecordRepository
         ])
         .leftJoin('record.patient', 'patient')
         .where('patient.id = :targetPatientId', { targetPatientId })
+        .andWhere('DATE(record.food_date) BETWEEN :startDate AND :endDate', {
+          startDate,
+          endDate,
+        })
         .orderBy('food_time', 'DESC')
         .limit(limit)
         .offset(offset)
