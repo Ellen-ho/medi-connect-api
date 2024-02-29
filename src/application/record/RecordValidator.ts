@@ -157,6 +157,29 @@ export const getBloodPressureRecordsSchema = {
     startDate: Joi.string().optional(),
     endDate: Joi.string().optional(),
     targetPatientId: Joi.string().uuid().required(),
+  }).custom((value, helpers) => {
+    const startDate = value.startDate as string // 显式类型转换
+    const endDate = value.endDate as string // 显式类型转换
+
+    if (startDate !== '' && endDate !== '') {
+      {
+        const start = new Date(startDate).getTime()
+        const end = new Date(endDate).getTime()
+
+        // Check if endDate is not earlier than startDate
+        if (end < start) {
+          return helpers.error('any.invalid')
+        }
+
+        // Check if the difference between startDate and endDate is not more than 31 days
+        const diffInDays = (end - start) / (1000 * 3600 * 24)
+        if (diffInDays > 31) {
+          return helpers.error('any.invalid')
+        }
+      }
+
+      return value
+    }
   }),
 }
 
@@ -164,6 +187,8 @@ export const getBloodSugarRecordsSchema = {
   query: Joi.object({
     limit: Joi.number().optional(),
     page: Joi.number().optional(),
+    startDate: Joi.string().optional(),
+    endDate: Joi.string().optional(),
     targetPatientId: Joi.string().uuid().required(),
   }),
 }
@@ -172,7 +197,32 @@ export const getExerciseRecordsSchema = {
   query: Joi.object({
     limit: Joi.number().optional(),
     page: Joi.number().optional(),
+    startDate: Joi.string().optional(),
+    endDate: Joi.string().optional(),
     targetPatientId: Joi.string().uuid().required(),
+  }).custom((value, helpers) => {
+    const startDate = value.startDate as string // 显式类型转换
+    const endDate = value.endDate as string // 显式类型转换
+
+    if (startDate !== '' && endDate !== '') {
+      {
+        const start = new Date(startDate).getTime()
+        const end = new Date(endDate).getTime()
+
+        // Check if endDate is not earlier than startDate
+        if (end < start) {
+          return helpers.error('any.invalid')
+        }
+
+        // Check if the difference between startDate and endDate is not more than 31 days
+        const diffInDays = (end - start) / (1000 * 3600 * 24)
+        if (diffInDays > 31) {
+          return helpers.error('any.invalid')
+        }
+      }
+
+      return value
+    }
   }),
 }
 
@@ -180,7 +230,32 @@ export const getFoodRecordsSchema = {
   query: Joi.object({
     limit: Joi.number().optional(),
     page: Joi.number().optional(),
+    startDate: Joi.string().optional(),
+    endDate: Joi.string().optional(),
     targetPatientId: Joi.string().uuid().required(),
+  }).custom((value, helpers) => {
+    const startDate = value.startDate as string // 显式类型转换
+    const endDate = value.endDate as string // 显式类型转换
+
+    if (startDate !== '' && endDate !== '') {
+      {
+        const start = new Date(startDate).getTime()
+        const end = new Date(endDate).getTime()
+
+        // Check if endDate is not earlier than startDate
+        if (end < start) {
+          return helpers.error('any.invalid')
+        }
+
+        // Check if the difference between startDate and endDate is not more than 31 days
+        const diffInDays = (end - start) / (1000 * 3600 * 24)
+        if (diffInDays > 31) {
+          return helpers.error('any.invalid')
+        }
+      }
+
+      return value
+    }
   }),
 }
 
@@ -188,7 +263,32 @@ export const getGlycatedHemoglobinRecordsSchema = {
   query: Joi.object({
     limit: Joi.number().optional(),
     page: Joi.number().optional(),
+    startDate: Joi.string().optional(),
+    endDate: Joi.string().optional(),
     targetPatientId: Joi.string().uuid().required(),
+  }).custom((value, helpers) => {
+    const startDate = value.startDate as string // 显式类型转换
+    const endDate = value.endDate as string // 显式类型转换
+
+    if (startDate !== '' && endDate !== '') {
+      {
+        const start = new Date(startDate).getTime()
+        const end = new Date(endDate).getTime()
+
+        // Check if endDate is not earlier than startDate
+        if (end < start) {
+          return helpers.error('any.invalid')
+        }
+
+        // Check if the difference between startDate and endDate is not more than 31 days
+        const diffInDays = (end - start) / (1000 * 3600 * 24)
+        if (diffInDays > 31) {
+          return helpers.error('any.invalid')
+        }
+      }
+
+      return value
+    }
   }),
 }
 
@@ -196,7 +296,32 @@ export const getSleepRecordsSchema = {
   query: Joi.object({
     limit: Joi.number().optional(),
     page: Joi.number().optional(),
+    startDate: Joi.string().optional(),
+    endDate: Joi.string().optional(),
     targetPatientId: Joi.string().uuid().required(),
+  }).custom((value, helpers) => {
+    const startDate = value.startDate as string // 显式类型转换
+    const endDate = value.endDate as string // 显式类型转换
+
+    if (startDate !== '' && endDate !== '') {
+      {
+        const start = new Date(startDate).getTime()
+        const end = new Date(endDate).getTime()
+
+        // Check if endDate is not earlier than startDate
+        if (end < start) {
+          return helpers.error('any.invalid')
+        }
+
+        // Check if the difference between startDate and endDate is not more than 31 days
+        const diffInDays = (end - start) / (1000 * 3600 * 24)
+        if (diffInDays > 31) {
+          return helpers.error('any.invalid')
+        }
+      }
+
+      return value
+    }
   }),
 }
 
@@ -204,6 +329,8 @@ export const getWeightRecordsSchema = {
   query: Joi.object({
     limit: Joi.number().optional(),
     page: Joi.number().optional(),
+    startDate: Joi.string().optional(),
+    endDate: Joi.string().optional(),
     targetPatientId: Joi.string().uuid().required(),
   }),
 }
