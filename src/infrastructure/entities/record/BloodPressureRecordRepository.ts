@@ -125,8 +125,8 @@ export class BloodPressureRecordRepository
     targetPatientId: string,
     startDate?: string,
     endDate?: string,
-    limit?: number,
-    offset?: number
+    offset?: number,
+    limit?: number
   ): Promise<{
     total_counts: number
     patientData: {
