@@ -193,7 +193,7 @@ Content-Type: application/json
 ###
 
 ### get all blood pressure record lists
-GET {{recordsPath}}/blood-pressure?limit=3&page=1&targetPatientId=df5ff2e5-9d76-42ca-acfb-688267229369&startDate=2024-02-11&endDate=2024-04-09
+GET {{recordsPath}}/blood-pressure?limit=3&page=1&targetPatientId=df5ff2e5-9d76-42ca-acfb-688267229369&startDate=2024-03-01&endDate=2024-03-31
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###

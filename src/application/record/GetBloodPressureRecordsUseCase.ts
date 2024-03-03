@@ -25,6 +25,7 @@ interface GetBloodPressureRecordsResponse {
     gender: GenderType
   }
   recordsData: Array<{
+    id: string
     date: Date
     systolicBloodPressure: number
     diastolicBloodPressure: number

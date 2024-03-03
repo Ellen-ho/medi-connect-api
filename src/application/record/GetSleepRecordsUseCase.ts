@@ -27,6 +27,7 @@ interface GetSleepRecordsResponse {
     gender: GenderType
   }
   recordsData: Array<{
+    id: string
     date: Date
     sleepQuality: SleepQualityType
   }>

@@ -25,6 +25,7 @@ interface GetGlycatedHemoglobinRecordsResponse {
     gender: GenderType
   }
   recordsData: Array<{
+    id: string
     date: Date
     glycatedHemoglobinValuePercent: number
   }>

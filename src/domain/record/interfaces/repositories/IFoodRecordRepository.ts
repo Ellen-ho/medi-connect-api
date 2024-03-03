@@ -17,8 +17,8 @@ export interface IFoodRecordRepository extends IBaseRepository<FoodRecord> {
     patientId: string,
     limit: number,
     offset: number,
-    startDate,
-    endDate
+    startDate: string,
+    endDate: string
   ) => Promise<{
     total_counts: number
     patientData: {
@@ -28,6 +28,7 @@ export interface IFoodRecordRepository extends IBaseRepository<FoodRecord> {
       gender: GenderType
     }
     recordsData: Array<{
+      id: string
       date: Date
       foodCategory: FoodCategoryType
     }>

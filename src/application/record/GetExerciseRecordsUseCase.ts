@@ -26,6 +26,7 @@ interface GetExerciseRecordsResponse {
     gender: GenderType
   }
   recordsData: Array<{
+    id: string
     date: Date
     exerciseType: ExerciseType
   }>

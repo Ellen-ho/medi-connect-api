@@ -35,8 +35,8 @@ export interface IWeightRecordRepository extends IBaseRepository<WeightRecord> {
     patientId: string,
     limit: number,
     offset: number,
-    startDate,
-    endDate
+    startDate: string,
+    endDate: string
   ) => Promise<{
     total_counts: number
     patientData: {

@@ -33,8 +33,8 @@ export interface IGlycatedHemoglobinRecordRepository
     patientId: string,
     limit: number,
     offset: number,
-    startDate,
-    endDate
+    startDate: string,
+    endDate: string
   ) => Promise<{
     total_counts: number
     patientData: {
@@ -44,6 +44,7 @@ export interface IGlycatedHemoglobinRecordRepository
       gender: GenderType
     }
     recordsData: Array<{
+      id: string
       date: Date
       glycatedHemoglobinValuePercent: number
     }>

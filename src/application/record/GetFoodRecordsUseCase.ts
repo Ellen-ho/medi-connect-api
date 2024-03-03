@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { ConsultAppointmentStatusType } from '../../domain/consultation/ConsultAppointment'
 import { IConsultAppointmentRepository } from '../../domain/consultation/interfaces/repositories/IConsultAppointmentRepository'
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
@@ -13,6 +14,8 @@ interface GetFoodRecordsRequest {
   user: User
   page?: number
   limit?: number
+  startDate?: string
+  endDate?: string
   targetPatientId: string
 }
 interface GetFoodRecordsResponse {
@@ -23,6 +26,7 @@ interface GetFoodRecordsResponse {
     gender: GenderType
   }
   recordsData: Array<{
+    id: string
     date: Date
     foodCategory: FoodCategoryType
   }>
@@ -50,11 +54,21 @@ export class GetFoodRecordsUseCase {
     const limit: number = request.limit != null ? request.limit : 10
     const offset: number = getOffset(limit, page)
 
+    const firstDayOfCurrentMonth = dayjs().startOf('month').format('YYYY-MM-DD')
+
+    const lastDayOfCurrentMonth = dayjs().endOf('month').format('YYYY-MM-DD')
+    const startDate: string =
+      request.startDate != null ? request.startDate : firstDayOfCurrentMonth
+    const endDate: string =
+      request.endDate != null ? request.endDate : lastDayOfCurrentMonth
+
     const existingFoodRecords =
       await this.foodRecordRepository.findByPatientIdAndCountAll(
         targetPatientId,
         limit,
-        offset
+        offset,
+        startDate,
+        endDate
       )
 
     if (user.role === UserRoleType.DOCTOR) {
