@@ -123,10 +123,10 @@ export class BloodPressureRecordRepository
 
   public async findByPatientIdAndCountAll(
     targetPatientId: string,
-    limit: number,
-    offset: number,
     startDate: string,
-    endDate: string
+    endDate: string,
+    limit?: number,
+    offset?: number
   ): Promise<{
     total_counts: number
     patientData: {
@@ -155,7 +155,7 @@ export class BloodPressureRecordRepository
       )
       .getCount()
 
-    const result = await this.getRepo()
+    const query = this.getRepo()
       .createQueryBuilder('record')
       .select([
         'record.id AS "id"',
@@ -177,9 +177,12 @@ export class BloodPressureRecordRepository
         }
       )
       .orderBy('record.blood_pressure_date', 'DESC')
-      .limit(limit)
-      .offset(offset)
-      .getRawMany()
+
+    if (limit !== undefined && offset !== undefined) {
+      query.limit(limit).offset(offset)
+    }
+
+    const result = await query.getRawMany()
 
     // Map the raw result to the desired structure
     const formattedResult = {
