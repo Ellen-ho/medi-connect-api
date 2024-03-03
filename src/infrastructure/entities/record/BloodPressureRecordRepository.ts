@@ -123,8 +123,8 @@ export class BloodPressureRecordRepository
 
   public async findByPatientIdAndCountAll(
     targetPatientId: string,
-    startDate: string,
-    endDate: string,
+    startDate?: string,
+    endDate?: string,
     limit?: number,
     offset?: number
   ): Promise<{

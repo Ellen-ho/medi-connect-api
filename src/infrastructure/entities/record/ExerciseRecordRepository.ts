@@ -123,10 +123,10 @@ export class ExerciseRecordRepository
 
   public async findByPatientIdAndCountAll(
     targetPatientId: string,
-    limit: number,
-    offset: number,
-    startDate: string,
-    endDate: string
+    limit?: number,
+    offset?: number,
+    startDate?: string,
+    endDate?: string
   ): Promise<{
     total_counts: number
     patientData: {
