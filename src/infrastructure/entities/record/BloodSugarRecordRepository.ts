@@ -236,7 +236,7 @@ export class BloodSugarRecordRepository
         )
         .getCount()
 
-      const result = await this.getRepo()
+      const query = this.getRepo()
         .createQueryBuilder('record')
         .select([
           'record.id AS "id"',
@@ -258,9 +258,12 @@ export class BloodSugarRecordRepository
           }
         )
         .orderBy('record.blood_sugar_date', 'DESC')
-        .limit(limit)
-        .offset(offset)
-        .getRawMany()
+
+      if (limit !== undefined && offset !== undefined) {
+        query.limit(limit).offset(offset)
+      }
+
+      const result = await query.getRawMany()
 
       // Map the raw result to the desired structure
       const formattedResult = {

@@ -401,8 +401,8 @@ export class RecordController implements IRecordController {
     const request = {
       user: req.user as User,
       targetPatientId: req.query.targetPatientId as string,
-      limit: Number(req.query.limit),
-      page: Number(req.query.page),
+      limit: req.query.limit as string,
+      page: req.query.page as string,
       startDate: req.query.startDate as string,
       endDate: req.query.endDate as string,
     }
@@ -417,8 +417,8 @@ export class RecordController implements IRecordController {
     const request = {
       user: req.user as User,
       targetPatientId: req.query.targetPatientId as string,
-      limit: Number(req.query.limit),
-      page: Number(req.query.page),
+      limit: req.query.limit as string,
+      page: req.query.page as string,
       startDate: req.query.startDate as string,
       endDate: req.query.endDate as string,
     }
@@ -433,8 +433,8 @@ export class RecordController implements IRecordController {
     const request = {
       user: req.user as User,
       targetPatientId: req.query.targetPatientId as string,
-      limit: Number(req.query.limit),
-      page: Number(req.query.page),
+      limit: req.query.limit as string,
+      page: req.query.page as string,
       startDate: req.query.startDate as string,
       endDate: req.query.endDate as string,
     }
@@ -451,8 +451,8 @@ export class RecordController implements IRecordController {
     const request = {
       user: req.user as User,
       targetPatientId: req.query.targetPatientId as string,
-      limit: Number(req.query.limit),
-      page: Number(req.query.page),
+      limit: req.query.limit as string,
+      page: req.query.page as string,
       startDate: req.query.startDate as string,
       endDate: req.query.endDate as string,
     }
@@ -467,8 +467,8 @@ export class RecordController implements IRecordController {
     const request = {
       user: req.user as User,
       targetPatientId: req.query.targetPatientId as string,
-      limit: Number(req.query.limit),
-      page: Number(req.query.page),
+      limit: req.query.limit as string,
+      page: req.query.page as string,
       startDate: req.query.startDate as string,
       endDate: req.query.endDate as string,
     }

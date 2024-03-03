@@ -11,8 +11,8 @@ import { getOffset, getPagination } from '../../infrastructure/utils/Pagination'
 
 interface GetGlycatedHemoglobinRecordsRequest {
   user: User
-  page?: number
-  limit?: number
+  page?: string
+  limit?: string
   startDate?: string
   endDate?: string
   targetPatientId: string
@@ -49,9 +49,11 @@ export class GetGlycatedHemoglobinRecordsUseCase {
     request: GetGlycatedHemoglobinRecordsRequest
   ): Promise<GetGlycatedHemoglobinRecordsResponse> {
     const { user, targetPatientId } = request
-    const page: number = request.page != null ? request.page : 1
-    const limit: number = request.limit != null ? request.limit : 10
-    const offset: number = getOffset(limit, page)
+    const page: number | undefined =
+      request.page !== undefined ? Number(request.page) : undefined
+    const limit: number | undefined =
+      request.limit !== undefined ? Number(request.limit) : undefined
+    const offset: number | undefined = getOffset(limit, page)
     const firstDayOfCurrentMonth = dayjs().startOf('month').format('YYYY-MM-DD')
 
     const lastDayOfCurrentMonth = dayjs().endOf('month').format('YYYY-MM-DD')

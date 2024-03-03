@@ -146,7 +146,7 @@ export class FoodRecordRepository
         })
         .getCount()
 
-      const result = await this.getRepo()
+      const query = this.getRepo()
         .createQueryBuilder('record')
         .select([
           'record.id AS "id"',
@@ -164,9 +164,12 @@ export class FoodRecordRepository
           endDate,
         })
         .orderBy('food_time', 'DESC')
-        .limit(limit)
-        .offset(offset)
-        .getRawMany()
+
+      if (limit !== undefined && offset !== undefined) {
+        query.limit(limit).offset(offset)
+      }
+
+      const result = await query.getRawMany()
 
       // Map the raw result to the desired structure
       const formattedResult = {

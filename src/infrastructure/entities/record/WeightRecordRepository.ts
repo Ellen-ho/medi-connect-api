@@ -233,7 +233,7 @@ export class WeightRecordRepository
         })
         .getCount()
 
-      const result = await this.getRepo()
+      const query = this.getRepo()
         .createQueryBuilder('record')
         .select([
           'record.id AS "id"',
@@ -252,9 +252,12 @@ export class WeightRecordRepository
           endDate,
         })
         .orderBy('weight_date', 'DESC')
-        .limit(limit)
-        .offset(offset)
-        .getRawMany()
+
+      if (limit !== undefined && offset !== undefined) {
+        query.limit(limit).offset(offset)
+      }
+
+      const result = await query.getRawMany()
 
       // Map the raw result to the desired structure
       const formattedResult = {
