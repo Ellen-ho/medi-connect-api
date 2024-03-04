@@ -175,7 +175,7 @@ export class ConsultAppointmentRepository
         id: string
         firstName: string
         lastName: string
-        avatar: string
+        avatar: string | null
       }
       meetingLink: string | null
     }>
