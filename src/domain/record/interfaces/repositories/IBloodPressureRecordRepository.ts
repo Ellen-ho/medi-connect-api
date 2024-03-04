@@ -15,8 +15,10 @@ export interface IBloodPressureRecordRepository
   ) => Promise<IBloodPressureRecordWithOwner | null>
   findByPatientIdAndCountAll: (
     patientId: string,
-    limit: number,
-    offset: number
+    startDate?: string,
+    endDate?: string,
+    limit?: number,
+    offset?: number
   ) => Promise<{
     total_counts: number
     patientData: {

@@ -22,7 +22,7 @@ Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "bloodPressureDate":"2023-05-29 15:34:38.090",
+  "bloodPressureDate":"2024-02-28 15:34:38.090",
   "systolicBloodPressure": 138,
   "diastolicBloodPressure": 78,
   "heartBeat":78,
@@ -152,7 +152,7 @@ Content-Type: application/json
 ###
 
 ### get a single blood pressure record
-@bloodPressureRecordId =29d6fc55-a81c-4276-92d3-860f7b75ee6f
+@bloodPressureRecordId =c150ac1d-56d3-4a08-b680-905a768a3c88
 GET {{recordsPath}}/blood-pressure/{{bloodPressureRecordId}}?targetPatientId=79ed933e-22c2-4e9a-bf71-16086f54f3f2
 Authorization: {{accessToken}}
 Content-Type: application/json
@@ -187,49 +187,50 @@ Content-Type: application/json
 ###
 
 ### get all exercise record lists
-GET {{recordsPath}}/exercise-records?limit=3&page=1
+GET {{recordsPath}}/exercise?limit=3&page=1
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###
 
 ### get all blood pressure record lists
-GET {{recordsPath}}/blood-pressure-records?limit=3&page=1&targetPatientId=e6b08543-8ef9-47f0-852d-5442830089da
+GET {{recordsPath}}/blood-pressure?limit=3&page=1&targetPatientId=df5ff2e5-9d76-42ca-acfb-688267229369&startDate=2024-03-01&endDate=2024-03-31
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###
 
 ### get all blood sugar record lists
-GET {{recordsPath}}/blood-sugar-records?limit=3&page=1&targetPatientId=e6b08543-8ef9-47f0-852d-5442830089da
+GET {{recordsPath}}/blood-sugar?limit=3&page=1&targetPatientId=df5ff2e5-9d76-42ca-acfb-688267229369&startDate=2024-02-01&endDate=2024-02-29
+Authorization: {{accessToken}}
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###
 
 ### get all exercise record lists
-GET {{recordsPath}}/exercise-records?limit=3&page=1&targetPatientId=e6b08543-8ef9-47f0-852d-5442830089da
+GET {{recordsPath}}/exercise?limit=3&page=1&targetPatientId=df5ff2e5-9d76-42ca-acfb-688267229369&startDate=2024-02-01&endDate=2024-02-29
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###
 
 ### get all food record lists
-GET {{recordsPath}}/food-records?limit=3&page=1&targetPatientId=e6b08543-8ef9-47f0-852d-5442830089da
+GET {{recordsPath}}/food?limit=3&page=1&targetPatientId=df5ff2e5-9d76-42ca-acfb-688267229369&startDate=2024-02-01&endDate=2024-02-29
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###
 
 ### get all glycated hemoglobin record lists
-GET {{recordsPath}}/glycated-hemoglobin-records?limit=3&page=1&targetPatientId=e6b08543-8ef9-47f0-852d-5442830089da
+GET {{recordsPath}}/glycated-hemoglobin?limit=3&page=1&targetPatientId=df5ff2e5-9d76-42ca-acfb-688267229369&startDate=2024-02-01&endDate=2024-02-29
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###
 
 ### get all sleep record lists
-GET {{recordsPath}}/sleep-records?limit=3&page=1&targetPatientId=e6b08543-8ef9-47f0-852d-5442830089da
+GET {{recordsPath}}/sleep?limit=3&page=1&targetPatientId=df5ff2e5-9d76-42ca-acfb-688267229369&startDate=2024-02-01&endDate=2024-02-29
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###
 
 ### get all weight record lists
-GET {{recordsPath}}/weight-records?limit=3&page=1&targetPatientId=e6b08543-8ef9-47f0-852d-5442830089da
+GET {{recordsPath}}/weight?limit=3&page=1&targetPatientId=df5ff2e5-9d76-42ca-acfb-688267229369&startDate=2024-02-01&endDate=2024-02-29
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###

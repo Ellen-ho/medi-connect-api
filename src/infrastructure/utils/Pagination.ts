@@ -1,6 +1,12 @@
 const getOffset = (limit: number = 10, page: number = 1): number =>
   (page - 1) * limit
 
+const getRecordOffset = (limit?: number, page?: number): number | undefined => {
+  if (limit !== undefined && page !== undefined) return (page - 1) * limit
+
+  return undefined
+}
+
 interface Pagination {
   pages: number[]
   totalPage: number
@@ -31,4 +37,4 @@ const getPagination = (
   }
 }
 
-export { getOffset, getPagination }
+export { getOffset, getRecordOffset, getPagination }

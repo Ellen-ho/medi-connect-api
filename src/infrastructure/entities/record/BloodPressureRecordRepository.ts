@@ -123,8 +123,10 @@ export class BloodPressureRecordRepository
 
   public async findByPatientIdAndCountAll(
     targetPatientId: string,
-    limit: number,
-    offset: number
+    startDate?: string,
+    endDate?: string,
+    offset?: number,
+    limit?: number
   ): Promise<{
     total_counts: number
     patientData: {
@@ -144,9 +146,16 @@ export class BloodPressureRecordRepository
       .createQueryBuilder('record')
       .leftJoin('record.patient', 'patient')
       .where('patient.id = :targetPatientId', { targetPatientId })
+      .andWhere(
+        'DATE(record.blood_pressure_date) BETWEEN :startDate AND :endDate',
+        {
+          startDate,
+          endDate,
+        }
+      )
       .getCount()
 
-    const result = await this.getRepo()
+    const query = this.getRepo()
       .createQueryBuilder('record')
       .select([
         'record.id AS "id"',
@@ -160,10 +169,20 @@ export class BloodPressureRecordRepository
       ])
       .leftJoin('record.patient', 'patient')
       .where('patient.id = :targetPatientId', { targetPatientId })
+      .andWhere(
+        'DATE(record.blood_pressure_date) BETWEEN :startDate AND :endDate',
+        {
+          startDate,
+          endDate,
+        }
+      )
       .orderBy('record.blood_pressure_date', 'DESC')
-      .limit(limit)
-      .offset(offset)
-      .getRawMany()
+
+    if (limit !== undefined && offset !== undefined) {
+      query.limit(limit).offset(offset)
+    }
+
+    const result = await query.getRawMany()
 
     // Map the raw result to the desired structure
     const formattedResult = {

@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { ConsultAppointmentStatusType } from '../../domain/consultation/ConsultAppointment'
 import { IConsultAppointmentRepository } from '../../domain/consultation/interfaces/repositories/IConsultAppointmentRepository'
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
@@ -6,12 +7,17 @@ import { IPatientRepository } from '../../domain/patient/interfaces/repositories
 import { IGlycatedHemoglobinRecordRepository } from '../../domain/record/interfaces/repositories/IGlycatedHemoglobinRecordRepository'
 import { User, UserRoleType } from '../../domain/user/User'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
-import { getOffset, getPagination } from '../../infrastructure/utils/Pagination'
+import {
+  getRecordOffset,
+  getPagination,
+} from '../../infrastructure/utils/Pagination'
 
 interface GetGlycatedHemoglobinRecordsRequest {
   user: User
-  page?: number
-  limit?: number
+  page?: string
+  limit?: string
+  startDate?: string
+  endDate?: string
   targetPatientId: string
 }
 interface GetGlycatedHemoglobinRecordsResponse {
@@ -22,6 +28,7 @@ interface GetGlycatedHemoglobinRecordsResponse {
     gender: GenderType
   }
   recordsData: Array<{
+    id: string
     date: Date
     glycatedHemoglobinValuePercent: number
   }>
@@ -45,15 +52,26 @@ export class GetGlycatedHemoglobinRecordsUseCase {
     request: GetGlycatedHemoglobinRecordsRequest
   ): Promise<GetGlycatedHemoglobinRecordsResponse> {
     const { user, targetPatientId } = request
-    const page: number = request.page != null ? request.page : 1
-    const limit: number = request.limit != null ? request.limit : 10
-    const offset: number = getOffset(limit, page)
+    const page: number | undefined =
+      request.page !== undefined ? Number(request.page) : undefined
+    const limit: number | undefined =
+      request.limit !== undefined ? Number(request.limit) : undefined
+    const offset: number | undefined = getRecordOffset(limit, page)
+    const firstDayOfCurrentMonth = dayjs().startOf('month').format('YYYY-MM-DD')
+
+    const lastDayOfCurrentMonth = dayjs().endOf('month').format('YYYY-MM-DD')
+    const startDate: string =
+      request.startDate != null ? request.startDate : firstDayOfCurrentMonth
+    const endDate: string =
+      request.endDate != null ? request.endDate : lastDayOfCurrentMonth
 
     const existingGlycatedHemoglobinRecords =
       await this.glycatedHemoglobinRecordRepository.findByPatientIdAndCountAll(
         targetPatientId,
         limit,
-        offset
+        offset,
+        startDate,
+        endDate
       )
 
     if (user.role === UserRoleType.DOCTOR) {

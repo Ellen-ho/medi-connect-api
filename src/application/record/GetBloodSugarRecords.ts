@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { ConsultAppointmentStatusType } from '../../domain/consultation/ConsultAppointment'
 import { IConsultAppointmentRepository } from '../../domain/consultation/interfaces/repositories/IConsultAppointmentRepository'
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
@@ -7,12 +8,17 @@ import { BloodSugarType } from '../../domain/record/BloodSugarRecord'
 import { IBloodSugarRecordRepository } from '../../domain/record/interfaces/repositories/IBloodSugarRecordRepository'
 import { User, UserRoleType } from '../../domain/user/User'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
-import { getOffset, getPagination } from '../../infrastructure/utils/Pagination'
+import {
+  getRecordOffset,
+  getPagination,
+} from '../../infrastructure/utils/Pagination'
 
 interface GetBloodSugarRecordsRequest {
   user: User
-  page?: number
-  limit?: number
+  page?: string
+  limit?: string
+  startDate?: string
+  endDate?: string
   targetPatientId: string
 }
 interface GetBloodSugarRecordsResponse {
@@ -23,6 +29,7 @@ interface GetBloodSugarRecordsResponse {
     gender: GenderType
   }
   recordsData: Array<{
+    id: string
     date: Date
     bloodSugarValue: number // mg/L
     bloodSugarType: BloodSugarType
@@ -47,15 +54,26 @@ export class GetBloodSugarRecordsUseCase {
     request: GetBloodSugarRecordsRequest
   ): Promise<GetBloodSugarRecordsResponse> {
     const { user, targetPatientId } = request
-    const page: number = request.page != null ? request.page : 1
-    const limit: number = request.limit != null ? request.limit : 10
-    const offset: number = getOffset(limit, page)
+    const page: number | undefined =
+      request.page !== undefined ? Number(request.page) : undefined
+    const limit: number | undefined =
+      request.limit !== undefined ? Number(request.limit) : undefined
+    const offset: number | undefined = getRecordOffset(limit, page)
+    const firstDayOfCurrentMonth = dayjs().startOf('month').format('YYYY-MM-DD')
+
+    const lastDayOfCurrentMonth = dayjs().endOf('month').format('YYYY-MM-DD')
+    const startDate: string =
+      request.startDate != null ? request.startDate : firstDayOfCurrentMonth
+    const endDate: string =
+      request.endDate != null ? request.endDate : lastDayOfCurrentMonth
 
     const existingBloodSugarRecords =
       await this.bloodSugarRecordRepository.findByPatientIdAndCountAll(
         targetPatientId,
         limit,
-        offset
+        offset,
+        startDate,
+        endDate
       )
 
     if (user.role === UserRoleType.DOCTOR) {

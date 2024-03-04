@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { ConsultAppointmentStatusType } from '../../domain/consultation/ConsultAppointment'
 import { IConsultAppointmentRepository } from '../../domain/consultation/interfaces/repositories/IConsultAppointmentRepository'
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
@@ -6,12 +7,17 @@ import { IPatientRepository } from '../../domain/patient/interfaces/repositories
 import { IBloodPressureRecordRepository } from '../../domain/record/interfaces/repositories/IBloodPressureRecordRepository'
 import { User, UserRoleType } from '../../domain/user/User'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
-import { getOffset, getPagination } from '../../infrastructure/utils/Pagination'
+import {
+  getPagination,
+  getRecordOffset,
+} from '../../infrastructure/utils/Pagination'
 
 interface GetBloodPressureRecordsRequest {
   user: User
-  page?: number
-  limit?: number
+  page?: string
+  limit?: string
+  startDate?: string
+  endDate?: string
   targetPatientId: string // validator檢查為必填
 }
 interface GetBloodPressureRecordsResponse {
@@ -22,6 +28,7 @@ interface GetBloodPressureRecordsResponse {
     gender: GenderType
   }
   recordsData: Array<{
+    id: string
     date: Date
     systolicBloodPressure: number
     diastolicBloodPressure: number
@@ -46,15 +53,27 @@ export class GetBloodPressureRecordsUseCase {
     request: GetBloodPressureRecordsRequest
   ): Promise<GetBloodPressureRecordsResponse> {
     const { user, targetPatientId } = request
-    const page: number = request.page != null ? request.page : 1
-    const limit: number = request.limit != null ? request.limit : 10
-    const offset: number = getOffset(limit, page)
+    const page: number | undefined =
+      request.page !== undefined ? Number(request.page) : undefined
+    const limit: number | undefined =
+      request.limit !== undefined ? Number(request.limit) : undefined
+    const offset: number | undefined = getRecordOffset(limit, page)
+
+    const firstDayOfCurrentMonth = dayjs().startOf('month').format('YYYY-MM-DD')
+
+    const lastDayOfCurrentMonth = dayjs().endOf('month').format('YYYY-MM-DD')
+    const startDate: string =
+      request.startDate != null ? request.startDate : firstDayOfCurrentMonth
+    const endDate: string =
+      request.endDate != null ? request.endDate : lastDayOfCurrentMonth
 
     const existingBloodPressureRecords =
       await this.bloodPressureRecordRepository.findByPatientIdAndCountAll(
         targetPatientId,
-        limit,
-        offset
+        startDate,
+        endDate,
+        offset,
+        limit
       )
 
     if (user.role === UserRoleType.DOCTOR) {

@@ -126,9 +126,9 @@ import { GetAnswerListUseCase } from './application/question/GetAnswerListUseCas
 import { AuthRoutes } from './infrastructure/http/routes/AuthRoutes'
 import passport from 'passport'
 import session from 'express-session'
-import { UpdateGoalResultUseCase } from 'application/goal/UpdateGoalResultUseCase'
-import { GetGoalDurationRecordsUseCase } from 'application/record/GetGoalDurationRecordsUseCase'
-import SocketService from 'infrastructure/network/SocketService'
+import { UpdateGoalResultUseCase } from './application/goal/UpdateGoalResultUseCase'
+import { GetGoalDurationRecordsUseCase } from './application/record/GetGoalDurationRecordsUseCase'
+import SocketService from './infrastructure/network/SocketService'
 
 void main()
 

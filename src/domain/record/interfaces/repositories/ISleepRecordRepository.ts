@@ -19,8 +19,10 @@ export interface ISleepRecordRepository extends IBaseRepository<SleepRecord> {
   findById: (id: string) => Promise<SleepRecord | null>
   findByPatientIdAndCountAll: (
     patientId: string,
-    limit: number,
-    offset: number
+    limit?: number,
+    offset?: number,
+    startDate?: string,
+    endDate?: string
   ) => Promise<{
     total_counts: number
     patientData: {
@@ -30,6 +32,7 @@ export interface ISleepRecordRepository extends IBaseRepository<SleepRecord> {
       gender: GenderType
     }
     recordsData: Array<{
+      id: string
       date: Date
       sleepQuality: SleepQualityType
     }>

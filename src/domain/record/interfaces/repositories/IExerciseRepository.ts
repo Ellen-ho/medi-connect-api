@@ -16,8 +16,10 @@ export interface IExerciseRecordRepository
   ) => Promise<IExerciseRecordWithOwner | null>
   findByPatientIdAndCountAll: (
     patientId: string,
-    limit: number,
-    offset: number
+    limit?: number,
+    offset?: number,
+    startDate?: string,
+    endDate?: string
   ) => Promise<{
     total_counts: number
     patientData: {

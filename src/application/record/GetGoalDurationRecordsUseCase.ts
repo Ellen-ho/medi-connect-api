@@ -1,16 +1,16 @@
-import { IHealthGoalRepository } from 'domain/goal/interfaces/repositories/IHealthGoalRepository'
+import { IHealthGoalRepository } from '../../domain/goal/interfaces/repositories/IHealthGoalRepository'
 import { ConsultAppointmentStatusType } from '../../domain/consultation/ConsultAppointment'
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 import { GenderType } from '../../domain/patient/Patient'
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { IGlycatedHemoglobinRecordRepository } from '../../domain/record/interfaces/repositories/IGlycatedHemoglobinRecordRepository'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
-import { IBloodPressureRecordRepository } from 'domain/record/interfaces/repositories/IBloodPressureRecordRepository'
-import { IBloodSugarRecordRepository } from 'domain/record/interfaces/repositories/IBloodSugarRecordRepository'
-import { IWeightRecordRepository } from 'domain/record/interfaces/repositories/IWeightRecordRepository'
-import { NotFoundError } from 'infrastructure/error/NotFoundError'
-import { User, UserRoleType } from 'domain/user/User'
-import { IConsultAppointmentRepository } from 'domain/consultation/interfaces/repositories/IConsultAppointmentRepository'
+import { IBloodPressureRecordRepository } from '../../domain/record/interfaces/repositories/IBloodPressureRecordRepository'
+import { IBloodSugarRecordRepository } from '../../domain/record/interfaces/repositories/IBloodSugarRecordRepository'
+import { IWeightRecordRepository } from '../../domain/record/interfaces/repositories/IWeightRecordRepository'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
+import { User, UserRoleType } from '../../domain/user/User'
+import { IConsultAppointmentRepository } from '../../domain/consultation/interfaces/repositories/IConsultAppointmentRepository'
 
 interface GetGoalDurationRecordsRequest {
   user: User

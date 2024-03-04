@@ -33,8 +33,10 @@ export interface IWeightRecordRepository extends IBaseRepository<WeightRecord> {
   findById: (id: string) => Promise<WeightRecord | null>
   findByPatientIdAndCountAll: (
     patientId: string,
-    limit: number,
-    offset: number
+    limit?: number,
+    offset?: number,
+    startDate?: string,
+    endDate?: string
   ) => Promise<{
     total_counts: number
     patientData: {
