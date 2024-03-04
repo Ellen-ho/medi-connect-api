@@ -7,6 +7,7 @@ export const imgurFileHandler = async (avatar: {
   const client = new ImgurClient({ clientId: process.env.IMGUR_CLIENT_ID })
 
   const response = await client.upload({
+    // @ts-ignore
     image: fs.createReadStream(avatar.path),
   })
 
