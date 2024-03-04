@@ -6,7 +6,7 @@ import { RejectHealthGoalUseCase } from '../../../application/goal/RejectHealthG
 import { GetHealthGoalUseCase } from '../../../application/goal/GetHealthGoalUseCase'
 import { GetHealthGoalListUseCase } from '../../../application/goal/GetHealthGoalListUseCase'
 import { CancelHealthGoalUseCase } from '../../../application/goal/CancelHealthGoalUseCase'
-import { UpdateGoalResultUseCase } from 'application/goal/UpdateGoalResultUseCase'
+import { UpdateGoalResultUseCase } from '../../../application/goal/UpdateGoalResultUseCase'
 
 export interface IHealthGoalController {
   createHealthGoal: (req: Request, res: Response) => Promise<Response>

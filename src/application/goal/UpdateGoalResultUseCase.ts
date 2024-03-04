@@ -2,14 +2,14 @@ import {
   HealthGoalStatus,
   IBloodPressureValue,
   IHealthGoalResult,
-} from 'domain/goal/HealthGoal'
-import { IHealthGoalRepository } from 'domain/goal/interfaces/repositories/IHealthGoalRepository'
-import { BloodSugarType } from 'domain/record/BloodSugarRecord'
-import { IBloodPressureRecordRepository } from 'domain/record/interfaces/repositories/IBloodPressureRecordRepository'
-import { IBloodSugarRecordRepository } from 'domain/record/interfaces/repositories/IBloodSugarRecordRepository'
-import { IGlycatedHemoglobinRecordRepository } from 'domain/record/interfaces/repositories/IGlycatedHemoglobinRecordRepository'
-import { IWeightRecordRepository } from 'domain/record/interfaces/repositories/IWeightRecordRepository'
-import { NotFoundError } from 'infrastructure/error/NotFoundError'
+} from '../../domain/goal/HealthGoal'
+import { IHealthGoalRepository } from '../../domain/goal/interfaces/repositories/IHealthGoalRepository'
+import { BloodSugarType } from '../../domain/record/BloodSugarRecord'
+import { IBloodPressureRecordRepository } from '../../domain/record/interfaces/repositories/IBloodPressureRecordRepository'
+import { IBloodSugarRecordRepository } from '../../domain/record/interfaces/repositories/IBloodSugarRecordRepository'
+import { IGlycatedHemoglobinRecordRepository } from '../../domain/record/interfaces/repositories/IGlycatedHemoglobinRecordRepository'
+import { IWeightRecordRepository } from '../../domain/record/interfaces/repositories/IWeightRecordRepository'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 
 interface UpdateGoalResultRequest {
   healthGoalId: string

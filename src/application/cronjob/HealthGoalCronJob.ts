@@ -1,4 +1,4 @@
-import { IHealthGoalRepository } from 'domain/goal/interfaces/repositories/IHealthGoalRepository'
+import { IHealthGoalRepository } from '../../domain/goal/interfaces/repositories/IHealthGoalRepository'
 import { UserRoleType } from '../../domain/user/User'
 import { IUserRepository } from '../../domain/user/interfaces/repositories/IUserRepository'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
@@ -6,8 +6,8 @@ import { IScheduler } from '../../infrastructure/network/Scheduler'
 import { CancelHealthGoalUseCase } from '../goal/CancelHealthGoalUseCase'
 import { CreateHealthGoalUseCase } from '../goal/CreateHealthGoalUseCase'
 import schedule from 'node-schedule'
-import { NotFoundError } from 'infrastructure/error/NotFoundError'
-import { UpdateGoalResultUseCase } from 'application/goal/UpdateGoalResultUseCase'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
+import { UpdateGoalResultUseCase } from '../../application/goal/UpdateGoalResultUseCase'
 
 export interface IHealthGoalCronJob {
   init: () => Promise<void>
