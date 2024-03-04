@@ -7,7 +7,10 @@ import { IPatientRepository } from '../../domain/patient/interfaces/repositories
 import { IBloodPressureRecordRepository } from '../../domain/record/interfaces/repositories/IBloodPressureRecordRepository'
 import { User, UserRoleType } from '../../domain/user/User'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
-import { getOffset, getPagination } from '../../infrastructure/utils/Pagination'
+import {
+  getPagination,
+  getRecordOffset,
+} from '../../infrastructure/utils/Pagination'
 
 interface GetBloodPressureRecordsRequest {
   user: User
@@ -54,7 +57,7 @@ export class GetBloodPressureRecordsUseCase {
       request.page !== undefined ? Number(request.page) : undefined
     const limit: number | undefined =
       request.limit !== undefined ? Number(request.limit) : undefined
-    const offset: number | undefined = getOffset(limit, page)
+    const offset: number | undefined = getRecordOffset(limit, page)
 
     const firstDayOfCurrentMonth = dayjs().startOf('month').format('YYYY-MM-DD')
 
