@@ -207,7 +207,11 @@ export class HealthGoalRepository
         .andWhere('health_goal.end_at <= :endOfDay', { endOfDay })
         .getMany()
 
-      console.table({ healthGoals: JSON.stringify(healthGoals) })
+      console.table({
+        startOfDay,
+        endOfDay,
+        healthGoals: JSON.stringify(healthGoals),
+      })
 
       return healthGoals.length !== 0
         ? healthGoals.map((healthGoal) =>
