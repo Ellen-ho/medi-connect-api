@@ -15,8 +15,8 @@ import {
 
 interface GetExerciseRecordsRequest {
   user: User
-  page?: number
-  limit?: number
+  page?: string
+  limit?: string
   startDate?: string
   endDate?: string
   targetPatientId: string
@@ -58,7 +58,6 @@ export class GetExerciseRecordsUseCase {
     const limit: number | undefined =
       request.limit !== undefined ? Number(request.limit) : undefined
     const offset: number | undefined = getRecordOffset(limit, page)
-
     const firstDayOfCurrentMonth = dayjs().startOf('month').format('YYYY-MM-DD')
 
     const lastDayOfCurrentMonth = dayjs().endOf('month').format('YYYY-MM-DD')

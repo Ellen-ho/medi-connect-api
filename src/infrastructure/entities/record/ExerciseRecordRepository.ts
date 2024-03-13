@@ -180,6 +180,7 @@ export class ExerciseRecordRepository
       if (limit !== undefined && offset !== undefined) {
         query.limit(limit).offset(offset)
       }
+
       const result = await query.getRawMany()
 
       // Map the raw result to the desired structure
@@ -197,6 +198,7 @@ export class ExerciseRecordRepository
           exerciseType: record.exerciseType,
         })),
       }
+      console.table({ formattedResult: JSON.stringify(formattedResult) })
       return formattedResult
     } catch (e) {
       throw new RepositoryError(

@@ -140,7 +140,7 @@ export class FoodRecordRepository
         .createQueryBuilder('record')
         .leftJoin('record.patient', 'patient')
         .where('patient.id = :targetPatientId', { targetPatientId })
-        .andWhere('DATE(record.food_date) BETWEEN :startDate AND :endDate', {
+        .andWhere('DATE(record.food_time) BETWEEN :startDate AND :endDate', {
           startDate,
           endDate,
         })
@@ -159,7 +159,7 @@ export class FoodRecordRepository
         ])
         .leftJoin('record.patient', 'patient')
         .where('patient.id = :targetPatientId', { targetPatientId })
-        .andWhere('DATE(record.food_date) BETWEEN :startDate AND :endDate', {
+        .andWhere('DATE(record.food_time) BETWEEN :startDate AND :endDate', {
           startDate,
           endDate,
         })
