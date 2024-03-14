@@ -318,6 +318,7 @@ export class GlycatedHemoglobinRecordRepository
   }
 
   public async findByGoalDurationDays(
+    targetPatientId: string,
     startDate: Date,
     endDate: Date
   ): Promise<
@@ -352,6 +353,9 @@ export class GlycatedHemoglobinRecordRepository
             endDate,
           }
         )
+        .andWhere('glycated_hemoglobin_record.patient_id = :targetPatientId', {
+          targetPatientId,
+        })
         .orderBy('glycated_hemoglobin_record.glycated_hemoglobin_date', 'ASC')
         .getRawMany()
 

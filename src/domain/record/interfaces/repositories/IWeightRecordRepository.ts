@@ -53,6 +53,7 @@ export interface IWeightRecordRepository extends IBaseRepository<WeightRecord> {
     }>
   }>
   findByGoalDurationDays: (
+    targetPatientId: string,
     startDate: Date,
     endDate: Date
   ) => Promise<

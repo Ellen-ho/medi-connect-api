@@ -60,6 +60,7 @@ export interface IGlycatedHemoglobinRecordRepository
     }>
   >
   findByGoalDurationDays: (
+    targetPatientId: string,
     startDate: Date,
     endDate: Date
   ) => Promise<

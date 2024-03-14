@@ -53,6 +53,7 @@ export interface IBloodPressureRecordRepository
   } | null>
   findById: (id: string) => Promise<BloodPressureRecord | null>
   findByGoalDurationDays: (
+    targetPatientId: string,
     startDate: Date,
     endDate: Date
   ) => Promise<

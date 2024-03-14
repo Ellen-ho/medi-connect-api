@@ -291,6 +291,7 @@ export class BloodSugarRecordRepository
   }
 
   public async findByGoalDurationDays(
+    targetPatientId: string,
     startDate: Date,
     endDate: Date
   ): Promise<
@@ -315,6 +316,9 @@ export class BloodSugarRecordRepository
         })
         .andWhere('blood_sugar_record.blood_sugar_date <= :endDate', {
           endDate,
+        })
+        .andWhere('blood_sugar_record.patient_id = :targetPatientId', {
+          targetPatientId,
         })
         .orderBy('blood_sugar_record.blood_sugar_date', 'ASC')
         .getRawMany()
