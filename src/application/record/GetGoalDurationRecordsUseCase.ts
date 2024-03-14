@@ -80,24 +80,28 @@ export class GetGoalDurationRecordsUseCase {
 
     const bloodPressureRecordsData =
       await this.bloodPressureRecordRepository.findByGoalDurationDays(
+        targetPatientId,
         targetGoal.startAt,
         targetGoal.endAt
       )
 
     const bloodSugarRecordsData =
       await this.bloodSugarRecordRepository.findByGoalDurationDays(
+        targetPatientId,
         targetGoal.startAt,
         targetGoal.endAt
       )
 
     const weightRecordsData =
       await this.weightRecordRepository.findByGoalDurationDays(
+        targetPatientId,
         targetGoal.startAt,
         targetGoal.endAt
       )
 
     const glycatedHemoglobinRecordsData =
       await this.glycatedHemoglobinRecordRepository.findByGoalDurationDays(
+        targetPatientId,
         targetGoal.startAt,
         targetGoal.endAt
       )

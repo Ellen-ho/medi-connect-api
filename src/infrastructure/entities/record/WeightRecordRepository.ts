@@ -285,6 +285,7 @@ export class WeightRecordRepository
   }
 
   public async findByGoalDurationDays(
+    targetPatientId: string,
     startDate: Date,
     endDate: Date
   ): Promise<
@@ -308,6 +309,9 @@ export class WeightRecordRepository
         })
         .andWhere('weight_record.weight_date <= :endDate', {
           endDate,
+        })
+        .andWhere('weight_record.patient_id = :targetPatientId', {
+          targetPatientId,
         })
         .orderBy('weight_record.weight_date', 'ASC')
         .getRawMany()
