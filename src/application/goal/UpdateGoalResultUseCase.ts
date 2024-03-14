@@ -61,6 +61,7 @@ export class UpdateGoalResultUseCase {
 
     const bloodPressureGoalDurationValue =
       await this.bloodPressureRecordRepository.findByGoalDurationDays(
+        existingHealthGoal.patientId,
         existingHealthGoal.startAt,
         existingHealthGoal.endAt
       )
