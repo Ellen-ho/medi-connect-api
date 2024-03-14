@@ -6,7 +6,6 @@ import { IScheduler } from '../../infrastructure/network/Scheduler'
 import { CancelHealthGoalUseCase } from '../goal/CancelHealthGoalUseCase'
 import { CreateHealthGoalUseCase } from '../goal/CreateHealthGoalUseCase'
 import schedule from 'node-schedule'
-import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 import { UpdateGoalResultUseCase } from '../../application/goal/UpdateGoalResultUseCase'
 
 export interface IHealthGoalCronJob {
@@ -124,7 +123,8 @@ export class HealthGoalCronJob implements IHealthGoalCronJob {
       yesterday
     )
     if (expiredGoals.length === 0) {
-      throw new NotFoundError('No expired goals.')
+      console.log('No expired goals.')
+      return
     }
 
     for (const goal of expiredGoals) {
