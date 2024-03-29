@@ -129,8 +129,9 @@ import session from 'express-session'
 import { UpdateGoalResultUseCase } from './application/goal/UpdateGoalResultUseCase'
 import { GetGoalDurationRecordsUseCase } from './application/record/GetGoalDurationRecordsUseCase'
 import SocketService from './infrastructure/network/SocketService'
-import { UpdatePasswordUseCase } from 'application/user/UpdatePasswordUseCase'
-import { CreatePasswordChangeMailUseCase } from 'application/user/CreatePasswordChangeMailUseCase'
+import { UpdatePasswordUseCase } from './application/user/UpdatePasswordUseCase'
+import { CreatePasswordChangeMailUseCase } from './application/user/CreatePasswordChangeMailUseCase'
+import { MailTrapService } from './infrastructure/network/MailTrapService'
 
 void main()
 
@@ -176,6 +177,7 @@ async function main(): Promise<void> {
   const uuidService = new UuidService()
   const hashGenerator = new BcryptHashGenerator()
   const scheduler = new Scheduler()
+  const mailService = new MailTrapService()
 
   /**
    * Repositories
@@ -223,7 +225,8 @@ async function main(): Promise<void> {
   )
 
   const createPasswordChangeMailUseCase = new CreatePasswordChangeMailUseCase(
-    userRepository
+    userRepository,
+    mailService
   )
 
   const updatePasswordUseCase = new UpdatePasswordUseCase(

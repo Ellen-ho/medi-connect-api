@@ -1,5 +1,6 @@
-import { IUserRepository } from 'domain/user/interfaces/repositories/IUserRepository'
-import { NotFoundError } from 'infrastructure/error/NotFoundError'
+import { IMailService } from '../../domain/interface/network/IMailService'
+import { IUserRepository } from '../../domain/user/interfaces/repositories/IUserRepository'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 import jwt from 'jsonwebtoken'
 
 interface CreatePasswordChangeMailRequest {
@@ -12,13 +13,10 @@ interface CreatePasswordChangeMailResponse {
 }
 
 export class CreatePasswordChangeMailUseCase {
-  // private mailtrapClient: MailtrapClient,
-  // private readonly senderEmail: string = '<SENDER@YOURDOMAIN.COM>' // 应从配置中获取
-
-  constructor(private readonly userRepository: IUserRepository) {
-    // const token: string = process.env.MAILTRAP_TOKEN
-    // this.mailtrapClient = new MailtrapClient({ token })
-  }
+  constructor(
+    private readonly userRepository: IUserRepository,
+    private readonly mailService: IMailService
+  ) {}
 
   public async execute(
     request: CreatePasswordChangeMailRequest
@@ -44,17 +42,12 @@ export class CreatePasswordChangeMailUseCase {
       process.env.CLIENT_URL as string
     }/reset-password?token=${resetToken}`
 
-    console.log(resetToken)
-
-    // const sender = { name: 'Medi Connect', email: this.senderEmail }
-
     try {
-      // await this.mailtrapClient.send({
-      //   from: sender,
-      //   to: [{ email: recipientEmail }],
-      //   subject: 'Password Reset',
-      //   text: `Click here to reset your password: ${passwordResetLink}`,
-      // })
+      await this.mailService.sendMail({
+        to: [{ email: userEmail }],
+        subject: 'Password Reset',
+        text: `Click here to reset your password: ${passwordResetLink}`,
+      })
 
       console.table({
         mailLink: passwordResetLink,
