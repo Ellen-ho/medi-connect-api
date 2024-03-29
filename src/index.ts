@@ -129,6 +129,8 @@ import session from 'express-session'
 import { UpdateGoalResultUseCase } from './application/goal/UpdateGoalResultUseCase'
 import { GetGoalDurationRecordsUseCase } from './application/record/GetGoalDurationRecordsUseCase'
 import SocketService from './infrastructure/network/SocketService'
+import { UpdatePasswordUseCase } from 'application/user/UpdatePasswordUseCase'
+import { CreatePasswordChangeMailUseCase } from 'application/user/CreatePasswordChangeMailUseCase'
 
 void main()
 
@@ -216,6 +218,15 @@ async function main(): Promise<void> {
     hashGenerator
   )
   const editUserAccountUseCase = new EditUserAccountUseCase(
+    userRepository,
+    hashGenerator
+  )
+
+  const createPasswordChangeMailUseCase = new CreatePasswordChangeMailUseCase(
+    userRepository
+  )
+
+  const updatePasswordUseCase = new UpdatePasswordUseCase(
     userRepository,
     hashGenerator
   )
@@ -684,7 +695,9 @@ async function main(): Promise<void> {
     createUserUseCase,
     patientRepository,
     doctorRepository,
-    editUserAccountUseCase
+    editUserAccountUseCase,
+    createPasswordChangeMailUseCase,
+    updatePasswordUseCase
   )
   const patientController = new PatientController(
     createPatientProfileUseCase,

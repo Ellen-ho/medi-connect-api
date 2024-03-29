@@ -25,3 +25,16 @@ export const editUserAccountSchema = {
     password: Joi.string().optional(),
   }),
 }
+
+export const createPasswordChangeMailSchema = {
+  body: Joi.object({
+    email: Joi.string().required(),
+  }),
+}
+
+export const updatePasswordSchema = {
+  body: Joi.object({
+    newPassword: Joi.string().required(),
+    resetToken: Joi.string().required(),
+  }),
+}

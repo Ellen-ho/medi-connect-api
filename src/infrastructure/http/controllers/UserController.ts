@@ -7,6 +7,8 @@ import { PatientRepository } from '../../entities/patient/PatientRepository'
 import { DoctorRepository } from '../../entities/doctor/DoctorRepository'
 import { EditUserAccountUseCase } from '../../../application/user/EditUserAccountUseCase'
 import { imgurFileHandler } from '../../helpers/FileHandler'
+import { CreatePasswordChangeMailUseCase } from 'application/user/CreatePasswordChangeMailUseCase'
+import { UpdatePasswordUseCase } from 'application/user/UpdatePasswordUseCase'
 
 interface MulterRequest extends Request {
   files: any
@@ -18,6 +20,8 @@ export interface IUserController {
   registerNewUser: (req: Request, res: Response) => Promise<Response>
   editUserAccount: (req: Request, res: Response) => Promise<Response>
   uploadAvatar: (req: Request, res: Response) => Promise<Response>
+  createPasswordChangeMail: (req: Request, res: Response) => Promise<Response>
+  updatePassword: (req: Request, res: Response) => Promise<Response>
 }
 
 export class UserController implements IUserController {
@@ -26,7 +30,9 @@ export class UserController implements IUserController {
     private readonly createUserUseCase: CreateUserUseCase,
     private readonly patientRepository: PatientRepository,
     private readonly doctorRepository: DoctorRepository,
-    private readonly editUserAccountUseCase: EditUserAccountUseCase
+    private readonly editUserAccountUseCase: EditUserAccountUseCase,
+    private readonly createPasswordChangeMailUseCase: CreatePasswordChangeMailUseCase,
+    private readonly updatePasswordUseCase: UpdatePasswordUseCase
   ) {}
 
   public login = async (req: Request, res: Response): Promise<Response> => {
@@ -107,5 +113,27 @@ export class UserController implements IUserController {
     const imageUrl = await imgurFileHandler(avatar)
 
     return res.status(200).json({ imageUrl })
+  }
+
+  public createPasswordChangeMail = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    const request = {
+      ...req.body,
+    }
+    const result = await this.createPasswordChangeMailUseCase.execute(request)
+    return res.status(200).json(result)
+  }
+
+  public updatePassword = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    const request = {
+      ...req.body,
+    }
+    const result = await this.updatePasswordUseCase.execute(request)
+    return res.status(200).json(result)
   }
 }
