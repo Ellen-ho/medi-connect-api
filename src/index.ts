@@ -131,7 +131,7 @@ import { GetGoalDurationRecordsUseCase } from './application/record/GetGoalDurat
 import SocketService from './infrastructure/network/SocketService'
 import { UpdatePasswordUseCase } from './application/user/UpdatePasswordUseCase'
 import { CreatePasswordChangeMailUseCase } from './application/user/CreatePasswordChangeMailUseCase'
-import { MailTrapService } from './infrastructure/network/MailTrapService'
+import { GoogleMailService } from './infrastructure/network/GoogleMailService'
 
 void main()
 
@@ -177,7 +177,7 @@ async function main(): Promise<void> {
   const uuidService = new UuidService()
   const hashGenerator = new BcryptHashGenerator()
   const scheduler = new Scheduler()
-  const mailService = new MailTrapService()
+  const mailService = new GoogleMailService()
 
   /**
    * Repositories

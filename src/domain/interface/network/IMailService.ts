@@ -1,7 +1,5 @@
 export interface ISendMailParams {
-  to: Array<{
-    email: string
-  }>
+  to: string[]
   subject: string
   text: string
 }

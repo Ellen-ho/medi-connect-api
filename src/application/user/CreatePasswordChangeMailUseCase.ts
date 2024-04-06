@@ -44,7 +44,7 @@ export class CreatePasswordChangeMailUseCase {
 
     try {
       await this.mailService.sendMail({
-        to: [{ email: userEmail }],
+        to: [userEmail],
         subject: 'Password Reset',
         text: `Click here to reset your password: ${passwordResetLink}`,
       })
