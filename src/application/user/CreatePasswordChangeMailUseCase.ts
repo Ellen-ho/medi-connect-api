@@ -2,6 +2,7 @@ import { IMailService } from '../../domain/interface/network/IMailService'
 import { IUserRepository } from '../../domain/user/interfaces/repositories/IUserRepository'
 import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 import jwt from 'jsonwebtoken'
+import { getResetPasswordTemplate } from './constant/MailTemplate'
 
 interface CreatePasswordChangeMailRequest {
   email: string
@@ -42,16 +43,17 @@ export class CreatePasswordChangeMailUseCase {
       process.env.CLIENT_URL as string
     }/reset-password?token=${resetToken}`
 
+    const htmlMailTemplate = getResetPasswordTemplate({
+      resetLink: passwordResetLink,
+    })
+
     try {
       await this.mailService.sendMail({
         to: [userEmail],
-        subject: 'Password Reset',
-        text: `Click here to reset your password: ${passwordResetLink}`,
+        subject: '[Medi-connet] Password Reset',
+        html: htmlMailTemplate,
       })
 
-      console.table({
-        mailLink: passwordResetLink,
-      })
       return { success: true }
     } catch (error) {
       if (error instanceof NotFoundError) {

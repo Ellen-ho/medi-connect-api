@@ -24,12 +24,12 @@ export class GoogleMailService implements IMailService {
     })
   }
 
-  async sendMail({ to, subject, text }: ISendMailParams): Promise<void> {
+  async sendMail({ to, subject, html }: ISendMailParams): Promise<void> {
     const mailOptions = {
       from: SENDER_EMAIL_ADDRESS,
       to,
       subject,
-      text,
+      html,
     }
     this.transporter.sendMail(mailOptions, (error, info) => {
       if (error != null) {
