@@ -19,8 +19,8 @@ POST {{usersPath}}/login
 Content-Type: application/json
 
 {
-  "email": "Eric@gmail.com",
-  "password": "Eric"
+  "email": "tim@gmail.com",
+  "password": "timtim"
 }
 ###
 @accessToken = Bearer {{login.response.body.token}}
@@ -262,6 +262,6 @@ Authorization: {{accessToken}}
 Content-Type: application/json
 
 ### get doctor list
-GET {{doctorPath}}?limit=3&page=1&specialties=INTERNAL_MEDICINE
+GET {{doctorPath}}?limit=3&page=1&specialties=SURGERY
 Authorization: {{accessToken}}
 Content-Type: application/json

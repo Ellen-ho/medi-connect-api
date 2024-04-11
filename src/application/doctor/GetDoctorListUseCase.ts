@@ -6,7 +6,7 @@ import { getOffset, getPagination } from '../../infrastructure/utils/Pagination'
 interface GetDoctorListRequest {
   page?: number
   limit?: number
-  specialty?: MedicalSpecialtyType
+  specialties?: MedicalSpecialtyType
 }
 
 interface GetDoctorListResponse {
@@ -34,7 +34,7 @@ export class GetDoctorListUseCase {
   public async execute(
     request: GetDoctorListRequest
   ): Promise<GetDoctorListResponse> {
-    const { specialty } = request
+    const { specialties } = request
     const page: number = request.page != null ? request.page : 1
     const limit: number = request.limit != null ? request.limit : 10
     const offset: number = getOffset(limit, page)
@@ -43,7 +43,7 @@ export class GetDoctorListUseCase {
       await this.doctorRepository.findAndCountBySpecialties(
         limit,
         offset,
-        specialty
+        specialties
       )
 
     return {

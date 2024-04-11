@@ -66,7 +66,7 @@ export class DoctorRepository
   public async findAndCountBySpecialties(
     limit: number,
     offset: number,
-    specialty?: MedicalSpecialtyType
+    specialties?: MedicalSpecialtyType
   ): Promise<{
     data: Array<{
       id: string
@@ -105,7 +105,7 @@ export class DoctorRepository
         LIMIT $2
         OFFSET $3
       `,
-        [specialty, limit, offset]
+        [specialties, limit, offset]
       )
 
       const totalCounts = entities.length > 0 ? Number(entities[0].counts) : 0
