@@ -34,7 +34,7 @@ export class CreatePasswordChangeMailUseCase {
     // 生成重置令牌
     const resetToken = jwt.sign(
       { id: existingUser.id, mail: userEmail },
-      process.env.JWT_SECRET as string,
+      process.env.RESET_PASSWORD_MAIL_JWT_SECRET as string,
       {
         expiresIn: '30min',
       }
@@ -42,7 +42,7 @@ export class CreatePasswordChangeMailUseCase {
     const passwordResetLink = `${
       process.env.CLIENT_URL as string
     }/reset-password?token=${resetToken}`
-
+    console.log(resetToken)
     const htmlMailTemplate = getResetPasswordTemplate({
       resetLink: passwordResetLink,
     })

@@ -26,7 +26,7 @@ export class UpdatePasswordUseCase {
 
     const payload = jwt.verify(
       resetToken,
-      process.env.JWT_SECRET as string
+      process.env.RESET_PASSWORD_MAIL_JWT_SECRET as string
     ) as jwt.JwtPayload
 
     // 如果令牌有效（存在且未过期），使用令牌中的信息（如用户ID或电子邮件）来查找用户

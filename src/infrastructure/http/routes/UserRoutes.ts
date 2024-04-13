@@ -45,7 +45,6 @@ export class UserRoutes {
       )
       .post(
         '/reset-password-mail',
-        // resetPasswordAuthenticated
         validator(createPasswordChangeMailSchema),
         asyncHandler(this.userController.createPasswordChangeMail)
       )
