@@ -2,7 +2,10 @@ import { Between, DataSource } from 'typeorm'
 import { IDoctorTimeSlotRepository } from '../../../domain/consultation/interfaces/repositories/IDoctorTimeSlotRepository'
 import { DoctorTimeSlotEntity } from './DoctorTimeSlotEntity'
 import { DoctorTimeSlotMapper } from './DoctorTimeSlotMapper'
-import { DoctorTimeSlot } from '../../../domain/consultation/DoctorTimeSlot'
+import {
+  AppointmentType,
+  DoctorTimeSlot,
+} from '../../../domain/consultation/DoctorTimeSlot'
 import { BaseRepository } from '../../database/BaseRepository'
 import { RepositoryError } from '../../error/RepositoryError'
 import dayjs from 'dayjs'
@@ -81,6 +84,7 @@ export class DoctorTimeSlotRepository
       startAt: Date
       endAt: Date
       isAvailable: boolean
+      type: AppointmentType
     }>
   }> {
     try {
@@ -106,6 +110,7 @@ export class DoctorTimeSlotRepository
           startAt: entity.startAt,
           endAt: entity.endAt,
           isAvailable: entity.availability,
+          type: entity.type,
         })),
       }
     } catch (e) {
