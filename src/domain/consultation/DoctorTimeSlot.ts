@@ -7,12 +7,18 @@ export interface IDoctorTimeSlotProps {
   updatedAt: Date
   deletedAt: Date | null
   availability: boolean
+  type: TimeSlotType
 }
 
 interface IDoctorTimeSlotUpdateData {
   [key: string]: any
   startAt: Date
   endAt: Date
+}
+
+export enum TimeSlotType {
+  ONLINE = 'ONLINE',
+  PHYSICAL = 'PHYSICAL',
 }
 
 export class DoctorTimeSlot {
@@ -36,6 +42,10 @@ export class DoctorTimeSlot {
 
   public get endAt(): Date {
     return this.props.endAt
+  }
+
+  public get type(): TimeSlotType {
+    return this.props.type
   }
 
   public get createdAt(): Date {
