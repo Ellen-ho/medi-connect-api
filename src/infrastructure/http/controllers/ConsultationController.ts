@@ -10,6 +10,7 @@ import { GetDoctorConsultAppointmentsUseCase } from '../../../application/consul
 import { GetDoctorTimeSlotsUseCase } from '../../../application/consultation/GetDoctorTimeSlotsUseCase'
 import { DeleteDoctorTimeSlotUseCase } from '../../../application/consultation/DeleteDoctorTimeSlotUseCase'
 import { RepositoryTx } from '../../database/RepositoryTx'
+import { TimeSlotType } from 'domain/consultation/DoctorTimeSlot'
 
 export interface IConsultationController {
   createConsultAppointment: (req: Request, res: Response) => Promise<Response>
@@ -76,7 +77,10 @@ export class ConsultationController implements IConsultationController {
     req: Request,
     res: Response
   ): Promise<Response> => {
-    const request = { ...req.body, user: req.user as User }
+    const request = {
+      ...req.body,
+      user: req.user as User,
+    }
     const result = await this.createDoctorTimeSlotUseCase.execute(request)
 
     return res.status(200).json(result)
@@ -92,6 +96,7 @@ export class ConsultationController implements IConsultationController {
       availability: req.body.availability,
       user: req.user as User,
       id: req.params.id,
+      type: req.query.type as TimeSlotType,
     }
     const result = await this.editDoctorTimeSlotUseCase.execute(request)
 
@@ -102,7 +107,10 @@ export class ConsultationController implements IConsultationController {
     req: Request,
     res: Response
   ): Promise<Response> => {
-    const request = { ...req.body, user: req.user as User }
+    const request = {
+      ...req.body,
+      user: req.user as User,
+    }
     const result = await this.createMultipleTimeSlotsUseCase.execute(request)
     return res.status(200).json(result)
   }
@@ -142,6 +150,7 @@ export class ConsultationController implements IConsultationController {
       doctorId: req.params.id,
       startTime: req.query.startTime as string,
       endTime: req.query.endTime as string,
+      type: req.query.type as TimeSlotType,
     }
 
     const result = await this.getDoctorTimeSlotsUseCase.execute(request)
