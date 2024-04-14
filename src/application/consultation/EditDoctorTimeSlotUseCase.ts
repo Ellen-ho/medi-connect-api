@@ -5,12 +5,14 @@ import dayjs from 'dayjs'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
 import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 import { ValidationError } from '../../infrastructure/error/ValidationError'
+import { TimeSlotType } from 'domain/consultation/DoctorTimeSlot'
 
 interface EditDoctorTimeSlotRequest {
   user: User
   id: string
   startAt: Date
   endAt: Date
+  type: TimeSlotType
 }
 
 interface EditDoctorTimeSlotResponse {
@@ -18,6 +20,7 @@ interface EditDoctorTimeSlotResponse {
   startAt: Date
   endAt: Date
   updatedAt: Date
+  type: TimeSlotType
 }
 
 export class EditDoctorTimeSlotUseCase {
@@ -29,7 +32,7 @@ export class EditDoctorTimeSlotUseCase {
   public async execute(
     request: EditDoctorTimeSlotRequest
   ): Promise<EditDoctorTimeSlotResponse> {
-    const { user, id, startAt, endAt } = request
+    const { user, id, startAt, endAt, type } = request
 
     const currentDate = dayjs()
     const minimumOfEndAt = dayjs(startAt).add(30, 'minute')
@@ -50,16 +53,18 @@ export class EditDoctorTimeSlotUseCase {
       throw new NotFoundError('Doctor time Slot does not exist.')
     }
 
-    const depulicatedDoctorTimeSlot =
-      await this.doctorTimeSlotRepository.findByStartAtAndDoctorId(
-        startAt,
-        existingDoctor.id
-      )
+    if (type === existingDoctorTimeSlot.type) {
+      const depulicatedDoctorTimeSlot =
+        await this.doctorTimeSlotRepository.findByStartAtAndDoctorId(
+          startAt,
+          existingDoctor.id
+        )
 
-    if (depulicatedDoctorTimeSlot != null) {
-      throw new ValidationError(
-        "This doctor's time slot has already exists and the time is duplicated."
-      )
+      if (depulicatedDoctorTimeSlot != null) {
+        throw new ValidationError(
+          "This doctor's time slot has already exists and the time is duplicated."
+        )
+      }
     }
 
     if (dayjs(startAt).isBefore(currentDate)) {
@@ -120,6 +125,7 @@ export class EditDoctorTimeSlotUseCase {
     existingDoctorTimeSlot.updateData({
       startAt,
       endAt,
+      type,
     })
 
     await this.doctorTimeSlotRepository.save(existingDoctorTimeSlot)
@@ -129,6 +135,7 @@ export class EditDoctorTimeSlotUseCase {
       startAt: existingDoctorTimeSlot.startAt,
       endAt: existingDoctorTimeSlot.endAt,
       updatedAt: existingDoctorTimeSlot.updatedAt,
+      type: existingDoctorTimeSlot.type,
     }
   }
 }
