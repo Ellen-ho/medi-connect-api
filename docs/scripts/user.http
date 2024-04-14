@@ -19,11 +19,32 @@ POST {{usersPath}}/login
 Content-Type: application/json
 
 {
-  "email": "Eric@gmail.com",
-  "password": "Eric"
+  "email": "tim@gmail.com",
+  "password": "timtim"
 }
 ###
 @accessToken = Bearer {{login.response.body.token}}
+
+### create password change mail
+POST {{usersPath}}/reset-password-mail
+Content-Type: application/json
+
+{
+  "email": "tim@gmail.com"
+}
+###
+
+@resetToken=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc5ZWQ5MzNlLTIyYzItNGU5YS1iZjcxLTE2MDg2ZjU0ZjNmMiIsIm1haWwiOiJ0aW1AZ21haWwuY29tIiwiaWF0IjoxNzExNTk2NjI3LCJleHAiOjE3MTE1OTg0Mjd9.W3F9p_K4_vuUopqLuBVZqVc6khXIA-ttzKKrQGPWfZs
+### update password 
+PATCH {{usersPath}}/reset-password
+# Authorization: {{resetToken}}
+Content-Type: application/json
+
+{
+  "newPassword": "timtim",
+  "resetToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc5ZWQ5MzNlLTIyYzItNGU5YS1iZjcxLTE2MDg2ZjU0ZjNmMiIsIm1haWwiOiJ0aW1AZ21haWwuY29tIiwiaWF0IjoxNzExNjMxNzkzLCJleHAiOjE3MTE2MzM1OTN9.QYPubnyD7sxhMm1WKJi3Yd7uHSuq9VSG2NV59IaULCo"
+}
+###
 
 ### get user account
 GET {{usersPath}}/account
@@ -241,6 +262,6 @@ Authorization: {{accessToken}}
 Content-Type: application/json
 
 ### get doctor list
-GET {{doctorPath}}?limit=3&page=1&specialties=INTERNAL_MEDICINE
+GET {{doctorPath}}?limit=3&page=1&specialties=SURGERY
 Authorization: {{accessToken}}
 Content-Type: application/json

@@ -4,9 +4,11 @@ import { asyncHandler } from '../middlewares/AsyncHandler'
 import { authenticated, authenticator } from '../middlewares/Auth'
 import { validator } from '../middlewares/Validator'
 import {
+  createPasswordChangeMailSchema,
   editUserAccountSchema,
   logInUserSchema,
   registerUserSchema,
+  updatePasswordSchema,
 } from '../../../application/user/UserValidator'
 import upload from '../middlewares/multer'
 export class UserRoutes {
@@ -40,6 +42,17 @@ export class UserRoutes {
         '/upload-avatar',
         upload.fields([{ name: 'avatar', maxCount: 1 }]),
         asyncHandler(this.userController.uploadAvatar)
+      )
+      .post(
+        '/reset-password-mail',
+        validator(createPasswordChangeMailSchema),
+        asyncHandler(this.userController.createPasswordChangeMail)
+      )
+      .patch(
+        '/reset-password',
+        // resetPasswordAuthenticated
+        validator(updatePasswordSchema),
+        asyncHandler(this.userController.updatePassword)
       )
   }
 
