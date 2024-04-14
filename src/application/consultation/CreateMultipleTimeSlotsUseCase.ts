@@ -1,5 +1,8 @@
 import dayjs from 'dayjs'
-import { DoctorTimeSlot } from '../../domain/consultation/DoctorTimeSlot'
+import {
+  DoctorTimeSlot,
+  TimeSlotType,
+} from '../../domain/consultation/DoctorTimeSlot'
 import { IDoctorTimeSlotRepository } from '../../domain/consultation/interfaces/repositories/IDoctorTimeSlotRepository'
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 import { User } from '../../domain/user/User'
@@ -9,7 +12,7 @@ import { ValidationError } from '../../infrastructure/error/ValidationError'
 
 interface CreateMultipleTimeSlotsRequest {
   user: User
-  timeSlots: Array<{ startAt: Date; endAt: Date }>
+  timeSlots: Array<{ startAt: Date; endAt: Date; type: TimeSlotType }>
 }
 
 interface CreateMultipleTimeSlotsResponse {
@@ -18,6 +21,7 @@ interface CreateMultipleTimeSlotsResponse {
     id: string
     startAt: Date
     endAt: Date
+    type: TimeSlotType
   }>
 }
 
@@ -54,8 +58,16 @@ export class CreateMultipleTimeSlotsUseCase {
     const thisMonthDivisionDate = thisMonthStartDate.set('date', 28)
     const nextMonthDivisionDate = nextMonthStartDate.set('date', 28)
 
+    const unionType = timeSlots[0].type
+
     for (const timeSlot of timeSlots) {
-      const { startAt, endAt } = timeSlot
+      const { startAt, endAt, type } = timeSlot
+
+      if (type !== unionType) {
+        throw new ValidationError(
+          'The type of time slot you input is different type.'
+        )
+      }
 
       const singleTimeSlot =
         await this.doctorTimeSlotRepository.findByStartAtAndDoctorId(
@@ -124,6 +136,7 @@ export class CreateMultipleTimeSlotsUseCase {
         createdAt: new Date(),
         updatedAt: new Date(),
         deletedAt: null,
+        type: unionType,
       })
 
       await this.doctorTimeSlotRepository.save(createdSingleTimeSlot)
@@ -137,6 +150,7 @@ export class CreateMultipleTimeSlotsUseCase {
         id: createdSingleTimeSlot.id,
         startAt: createdSingleTimeSlot.startAt,
         endAt: createdSingleTimeSlot.endAt,
+        type: createdSingleTimeSlot.type,
       })),
     }
   }
