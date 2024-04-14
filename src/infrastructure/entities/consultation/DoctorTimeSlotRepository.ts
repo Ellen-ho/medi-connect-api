@@ -3,7 +3,7 @@ import { IDoctorTimeSlotRepository } from '../../../domain/consultation/interfac
 import { DoctorTimeSlotEntity } from './DoctorTimeSlotEntity'
 import { DoctorTimeSlotMapper } from './DoctorTimeSlotMapper'
 import {
-  AppointmentType,
+  TimeSlotType,
   DoctorTimeSlot,
 } from '../../../domain/consultation/DoctorTimeSlot'
 import { BaseRepository } from '../../database/BaseRepository'
@@ -84,7 +84,7 @@ export class DoctorTimeSlotRepository
       startAt: Date
       endAt: Date
       isAvailable: boolean
-      type: AppointmentType
+      type: TimeSlotType
     }>
   }> {
     try {

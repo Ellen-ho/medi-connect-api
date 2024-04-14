@@ -1,3 +1,4 @@
+import { TimeSlotType } from 'domain/consultation/DoctorTimeSlot'
 import { IDoctorTimeSlotRepository } from '../../domain/consultation/interfaces/repositories/IDoctorTimeSlotRepository'
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 import { NotFoundError } from '../../infrastructure/error/NotFoundError'
@@ -6,6 +7,7 @@ interface GetDoctorTimeSlotsRequest {
   doctorId: string
   startTime?: string
   endTime?: string
+  type: TimeSlotType
 }
 
 interface GetDoctorTimeSlotsResponse {
@@ -15,6 +17,7 @@ interface GetDoctorTimeSlotsResponse {
     startAt: Date
     endAt: Date
     isAvailable: boolean
+    type: TimeSlotType
   }>
 }
 
