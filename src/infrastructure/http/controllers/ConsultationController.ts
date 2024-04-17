@@ -10,7 +10,7 @@ import { GetDoctorConsultAppointmentsUseCase } from '../../../application/consul
 import { GetDoctorTimeSlotsUseCase } from '../../../application/consultation/GetDoctorTimeSlotsUseCase'
 import { DeleteDoctorTimeSlotUseCase } from '../../../application/consultation/DeleteDoctorTimeSlotUseCase'
 import { RepositoryTx } from '../../database/RepositoryTx'
-import { TimeSlotType } from 'domain/consultation/DoctorTimeSlot'
+import { TimeSlotType } from '../../../domain/consultation/DoctorTimeSlot'
 
 export interface IConsultationController {
   createConsultAppointment: (req: Request, res: Response) => Promise<Response>

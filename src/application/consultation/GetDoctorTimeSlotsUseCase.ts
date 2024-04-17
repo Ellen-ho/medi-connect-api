@@ -1,4 +1,4 @@
-import { TimeSlotType } from 'domain/consultation/DoctorTimeSlot'
+import { TimeSlotType } from '../../domain/consultation/DoctorTimeSlot'
 import { IDoctorTimeSlotRepository } from '../../domain/consultation/interfaces/repositories/IDoctorTimeSlotRepository'
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 import { NotFoundError } from '../../infrastructure/error/NotFoundError'

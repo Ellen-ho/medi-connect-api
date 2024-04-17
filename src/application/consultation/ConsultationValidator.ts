@@ -1,4 +1,4 @@
-import { TimeSlotType } from 'domain/consultation/DoctorTimeSlot'
+import { TimeSlotType } from '../../domain/consultation/DoctorTimeSlot'
 import Joi from 'joi'
 
 export const createConsultAppointmentSchema = {
