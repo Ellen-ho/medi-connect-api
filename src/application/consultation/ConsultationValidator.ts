@@ -30,8 +30,6 @@ export const editDoctorTimeSlotSchema = {
   body: Joi.object({
     startAt: Joi.date().required(),
     endAt: Joi.date().required(),
-  }),
-  query: Joi.object({
     type: Joi.string()
       .valid(...Object.values(TimeSlotType))
       .required(),
@@ -57,6 +55,8 @@ export const getDoctorTimeSlotsSchema = {
     id: Joi.string().uuid().required(),
   }),
   query: Joi.object({
+    startTime: Joi.string().optional(),
+    endTime: Joi.string().optional(),
     type: Joi.string()
       .valid(...Object.values(TimeSlotType))
       .required(),
