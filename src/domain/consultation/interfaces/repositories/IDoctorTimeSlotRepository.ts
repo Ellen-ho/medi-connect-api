@@ -15,7 +15,8 @@ export interface IDoctorTimeSlotRepository {
   findByDoctorIdAndDate: (
     doctorId: string,
     startTime: string,
-    endTime: string
+    endTime: string,
+    type: TimeSlotType
   ) => Promise<{
     doctorId: string
     timeSlots: Array<{

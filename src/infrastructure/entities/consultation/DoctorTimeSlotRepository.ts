@@ -76,7 +76,8 @@ export class DoctorTimeSlotRepository
   public async findByDoctorIdAndDate(
     doctorId: string,
     startTime: string,
-    endTime: string
+    endTime: string,
+    type: TimeSlotType
   ): Promise<{
     doctorId: string
     timeSlots: Array<{
@@ -94,6 +95,7 @@ export class DoctorTimeSlotRepository
         where: {
           doctor: { id: doctorId },
           startAt: Between(startDate, endDate),
+          type,
         },
         relations: ['doctor'],
       })

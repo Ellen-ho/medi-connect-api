@@ -30,7 +30,7 @@ export class GetDoctorTimeSlotsUseCase {
   public async execute(
     request: GetDoctorTimeSlotsRequest
   ): Promise<GetDoctorTimeSlotsResponse> {
-    const { doctorId, startTime, endTime } = request
+    const { doctorId, startTime, endTime, type } = request
 
     const existingDoctor = await this.doctorRepository.findById(doctorId)
 
@@ -42,7 +42,8 @@ export class GetDoctorTimeSlotsUseCase {
       await this.doctorTimeSlotRepository.findByDoctorIdAndDate(
         doctorId,
         startTime !== undefined ? startTime : '',
-        endTime !== undefined ? endTime : ''
+        endTime !== undefined ? endTime : '',
+        type
       )
 
     return {
