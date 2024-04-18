@@ -91,7 +91,7 @@ export class GetPatientConsultAppointmentsUseCase {
         [ConsultAppointmentStatusType.UPCOMING],
         currentDate.toDate(),
         upComingEndDate.toDate(),
-        type === undefined ? undefined : type
+        type
       )
 
     const upcomingConsultAppointments: ConsultAppointmentDatas[] = []
