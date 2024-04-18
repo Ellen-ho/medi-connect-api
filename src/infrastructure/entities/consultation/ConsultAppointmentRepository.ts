@@ -135,6 +135,7 @@ export class ConsultAppointmentRepository
           AND doctor_time_slots.start_at >= $3
           AND doctor_time_slots.end_at <= $4
           ${type ? `AND doctor_time_slots.type = $5` : ''}
+        ORDER BY doctor_time_slots.start_at ASC
         `,
         type
           ? [patientId, status, startDate, endDate, type]
@@ -230,6 +231,7 @@ export class ConsultAppointmentRepository
           AND doctor_time_slots.start_at >= $3
           AND doctor_time_slots.end_at <= $4
           ${type ? `AND doctor_time_slots.type = $5` : ''}
+        ORDER BY doctor_time_slots.start_at ASC
       `,
         type
           ? [doctorId, status, startDate, endDate, type]
