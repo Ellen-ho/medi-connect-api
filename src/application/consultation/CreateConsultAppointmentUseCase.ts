@@ -16,6 +16,7 @@ import { IMeetingLinkRepository } from '../../domain/meeting/interface/IMeetingL
 import { MeetingLinkStatus } from '../../domain/meeting/MeetingLink'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
 import { ValidationError } from '../../infrastructure/error/ValidationError'
+import { TimeSlotType } from 'domain/consultation/DoctorTimeSlot'
 
 interface CreateConsultAppointmentRequest {
   user: User
@@ -119,6 +120,69 @@ export class CreateConsultAppointmentUseCase {
 
     existingDoctorTimeSlot.updateAvailability(false)
 
+    if (existingDoctorTimeSlot.type === TimeSlotType.CLINIC) {
+      const clinicConsultAppointment = new ConsultAppointment({
+        id: this.uuidService.generateUuid(),
+        patientId: existingPatient.id,
+        doctorTimeSlot: existingDoctorTimeSlot,
+        status: ConsultAppointmentStatusType.UPCOMING,
+        meetingLink: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      })
+
+      await this.consultAppointmentRepository.save(clinicConsultAppointment)
+
+      await this.notifictionHelper.createNotification({
+        title: 'Hi, You have a clinic appointment!',
+        content:
+          "You have a clinic appointment. Please proceed to view your appointment records. Your permission to access the patient's health records has been enabled.",
+        notificationType: NotificationType.CREATE_APPOINTMENT,
+        referenceId: clinicConsultAppointment.id,
+        user: appointmentDoctor.user,
+      })
+
+      const notificationTime = dayjs(existingDoctorTimeSlot.startAt)
+        .subtract(22, 'hour')
+        .toDate()
+
+      this.scheduler.createJob(
+        `${clinicConsultAppointment.id}_notification`,
+        notificationTime,
+        async () => {
+          await this.notifictionHelper.createNotification({
+            title: 'Appointment Reminder!',
+            content: 'Your appointment is coming up soon.',
+            notificationType: NotificationType.UPCOMING_APPOINTMENT,
+            referenceId: clinicConsultAppointment.id,
+            user: appointmentDoctor.user,
+          })
+          await this.notifictionHelper.createNotification({
+            title: 'Appointment Reminder!',
+            content: 'Your appointment is coming up soon.',
+            notificationType: NotificationType.UPCOMING_APPOINTMENT,
+            referenceId: clinicConsultAppointment.id,
+            user: existingPatient.user,
+          })
+
+          this.scheduler.createJob(
+            `${clinicConsultAppointment.id}_completed`,
+            clinicConsultAppointment.doctorTimeSlot.endAt,
+            async () => {
+              clinicConsultAppointment.completeAppointment()
+              await this.consultAppointmentRepository.save(
+                clinicConsultAppointment
+              )
+            }
+          )
+        }
+      )
+
+      return {
+        id: clinicConsultAppointment.id,
+      }
+    }
+
     const randomMeetingLink =
       await this.meetingLinkRepository.findRandomByStatus(
         MeetingLinkStatus.AVAILABLE
@@ -131,7 +195,7 @@ export class CreateConsultAppointmentUseCase {
     randomMeetingLink.setStatusToInUsed()
     await this.meetingLinkRepository.save(randomMeetingLink)
 
-    const consultAppointment = new ConsultAppointment({
+    const onlineConsultAppointment = new ConsultAppointment({
       id: this.uuidService.generateUuid(),
       patientId: existingPatient.id,
       doctorTimeSlot: existingDoctorTimeSlot,
@@ -141,14 +205,14 @@ export class CreateConsultAppointmentUseCase {
       updatedAt: new Date(),
     })
 
-    await this.consultAppointmentRepository.save(consultAppointment)
+    await this.consultAppointmentRepository.save(onlineConsultAppointment)
 
     await this.notifictionHelper.createNotification({
-      title: 'Hi, You have an appointment!',
+      title: 'Hi, You have an online appointment!',
       content:
-        "You have an appointment. Please proceed to view your appointment records. Your permission to access the patient's health records has been enabled.",
+        "You have an online appointment. Please proceed to view your appointment records. Your permission to access the patient's health records has been enabled.",
       notificationType: NotificationType.CREATE_APPOINTMENT,
-      referenceId: consultAppointment.id,
+      referenceId: onlineConsultAppointment.id,
       user: appointmentDoctor.user,
     })
 
@@ -157,37 +221,39 @@ export class CreateConsultAppointmentUseCase {
       .toDate()
 
     this.scheduler.createJob(
-      `${consultAppointment.id}_notification`,
+      `${onlineConsultAppointment.id}_notification`,
       notificationTime,
       async () => {
         await this.notifictionHelper.createNotification({
           title: 'Appointment Reminder!',
           content: 'Your appointment is coming up soon.',
           notificationType: NotificationType.UPCOMING_APPOINTMENT,
-          referenceId: consultAppointment.id,
+          referenceId: onlineConsultAppointment.id,
           user: appointmentDoctor.user,
         })
         await this.notifictionHelper.createNotification({
           title: 'Appointment Reminder!',
           content: 'Your appointment is coming up soon.',
           notificationType: NotificationType.UPCOMING_APPOINTMENT,
-          referenceId: consultAppointment.id,
+          referenceId: onlineConsultAppointment.id,
           user: existingPatient.user,
         })
 
         this.scheduler.createJob(
-          `${consultAppointment.id}_completed`,
-          consultAppointment.doctorTimeSlot.endAt,
+          `${onlineConsultAppointment.id}_completed`,
+          onlineConsultAppointment.doctorTimeSlot.endAt,
           async () => {
-            consultAppointment.completeAppointment()
-            await this.consultAppointmentRepository.save(consultAppointment)
+            onlineConsultAppointment.completeAppointment()
+            await this.consultAppointmentRepository.save(
+              onlineConsultAppointment
+            )
           }
         )
       }
     )
 
     return {
-      id: consultAppointment.id,
+      id: onlineConsultAppointment.id,
     }
   }
 }

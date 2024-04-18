@@ -10,6 +10,7 @@ import { ConsultAppointmentEntity } from './ConsultAppointmentEntity'
 import { ConsultAppointmentMapper } from './ConsultAppointmentMapper'
 import { MedicalSpecialtyType } from '../../../domain/question/PatientQuestion'
 import { IExecutor } from '../../../domain/shared/IRepositoryTx'
+import { TimeSlotType } from 'domain/consultation/DoctorTimeSlot'
 
 export class ConsultAppointmentRepository
   extends BaseRepository<ConsultAppointmentEntity, ConsultAppointment>
@@ -73,7 +74,8 @@ export class ConsultAppointmentRepository
     patientId: string,
     status: ConsultAppointmentStatusType[],
     startDate: Date,
-    endDate: Date
+    endDate: Date,
+    type?: TimeSlotType
   ): Promise<
     Array<{
       appointmentId: string
@@ -82,6 +84,7 @@ export class ConsultAppointmentRepository
       doctorTimeSlot: {
         startAt: Date
         endAt: Date
+        type: TimeSlotType
       }
       doctor: {
         firstName: string
@@ -105,6 +108,7 @@ export class ConsultAppointmentRepository
           avatar: string | null
           start_at: Date
           end_at: Date
+          type: TimeSlotType
           meeting_link: string | null
           cacel_availability: boolean
         }>
@@ -120,7 +124,8 @@ export class ConsultAppointmentRepository
           doctors.specialties,
           doctors.avatar,
           doctor_time_slots.start_at,
-          doctor_time_slots.end_at
+          doctor_time_slots.end_at,
+          doctor_time_slots.type
         FROM consult_appointments
         INNER JOIN doctor_time_slots ON consult_appointments.doctor_time_slot_id = doctor_time_slots.id
         INNER JOIN doctors ON doctor_time_slots.doctor_id = doctors.id
@@ -129,8 +134,11 @@ export class ConsultAppointmentRepository
           AND consult_appointments.status = ANY ($2)
           AND doctor_time_slots.start_at >= $3
           AND doctor_time_slots.end_at <= $4
+          ${type ? `AND doctor_time_slots.type = $5` : ''}
         `,
-        [patientId, status, startDate, endDate]
+        type
+          ? [patientId, status, startDate, endDate, type]
+          : [patientId, status, startDate, endDate]
       )
       return rawAppointments.map((rawItem) => ({
         patientId: rawItem.patient_id,
@@ -139,6 +147,7 @@ export class ConsultAppointmentRepository
         doctorTimeSlot: {
           startAt: rawItem.start_at,
           endAt: rawItem.end_at,
+          type: rawItem.type,
         },
         doctor: {
           firstName: rawItem.first_name,
@@ -161,7 +170,8 @@ export class ConsultAppointmentRepository
     doctorId: string,
     status: ConsultAppointmentStatusType[],
     startDate: Date,
-    endDate: Date
+    endDate: Date,
+    type?: TimeSlotType
   ): Promise<
     Array<{
       appointmentId: string
@@ -170,6 +180,7 @@ export class ConsultAppointmentRepository
         doctorId: string
         startAt: Date
         endAt: Date
+        type: TimeSlotType
       }
       patient: {
         id: string
@@ -192,6 +203,7 @@ export class ConsultAppointmentRepository
           avatar: string
           start_at: Date
           end_at: Date
+          type: TimeSlotType
           meeting_link: string | null
         }>
       >(
@@ -203,6 +215,7 @@ export class ConsultAppointmentRepository
           consult_appointments.meeting_link,
           doctor_time_slots.start_at AS "start_at",
           doctor_time_slots.end_at AS "end_at",
+          doctor_time_slots.type AS "type",
           patients.id AS "id",
           patients.first_name AS "first_name",
           patients.last_name AS "last_name",
@@ -216,9 +229,13 @@ export class ConsultAppointmentRepository
           AND consult_appointments.status = ANY ($2)
           AND doctor_time_slots.start_at >= $3
           AND doctor_time_slots.end_at <= $4
+          ${type ? `AND doctor_time_slots.type = $5` : ''}
       `,
-        [doctorId, status, startDate, endDate]
+        type
+          ? [doctorId, status, startDate, endDate, type]
+          : [doctorId, status, startDate, endDate]
       )
+
       return rawAppointments.map((rawItem) => ({
         appointmentId: rawItem.appointment_id,
         status: rawItem.status,
@@ -226,6 +243,7 @@ export class ConsultAppointmentRepository
           doctorId: rawItem.doctor_id,
           startAt: rawItem.start_at,
           endAt: rawItem.end_at,
+          type: rawItem.type,
         },
         patient: {
           id: rawItem.id,

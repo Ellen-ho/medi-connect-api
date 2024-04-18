@@ -122,6 +122,7 @@ export class ConsultationController implements IConsultationController {
     const request = {
       user: req.user as User,
       onlyUpcoming: req.query.onlyUpcoming === 'true',
+      type: req.query.type as TimeSlotType,
     }
     const result = await this.getPatientConsultAppointmentsUseCase.execute(
       request
@@ -135,6 +136,8 @@ export class ConsultationController implements IConsultationController {
   ): Promise<Response> => {
     const request = {
       user: req.user as User,
+      onlyUpcoming: req.query.onlyUpcoming === 'true',
+      type: req.query.type as TimeSlotType,
     }
     const result = await this.getDoctorConsultAppointmentsUseCase.execute(
       request

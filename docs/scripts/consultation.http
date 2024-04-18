@@ -8,8 +8,8 @@ POST {{usersPath}}/login
 Content-Type: application/json
 
 {
-  "email": "tim@gmail.com",
-  "password": "tim"
+  "email": "Eric@gmail.com",
+  "password": "Eric"
 }
 ###
 @accessToken = Bearer {{login.response.body.token}}
@@ -34,14 +34,14 @@ Content-Type: application/json
 ###
 
 ### patient get consult appointments
-Get {{consultationsPath}}/patient
+Get {{consultationsPath}}/patient?onlyUpComing=true&type=CLINIC
 Authorization: {{accessToken}}
 Content-Type: application/json
 
 ###
 
 ### doctor get consult appointments
-Get {{consultationsPath}}/doctor
+Get {{consultationsPath}}/doctor?onlyUpComing=true&type=CLINIC
 Authorization: {{accessToken}}
 Content-Type: application/json
 
@@ -53,20 +53,22 @@ Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "startAt": "2023-07-29 11:00:00.090",
-  "endAt": "2023-07-29 11:30:00.090"
+  "startAt": "2024-05-29 11:00:00.090",
+  "endAt": "2024-05-29 11:30:00.090",
+  "type":"ONLINE"
 }
 ### 
 
 ### Doctor edit a doctor time slot
-@DoctorEditTimeSlotId = a5b909a6-9c06-49ba-b6ac-33edc6721caa
-PATCH {{consultationsPath}}/time-slot/{{DoctorEditTimeSlotId}}
+@editDoctorEditTimeSlotId = a3a8512c-cb4f-41e7-aad2-55f1cef8c6d9
+PATCH {{consultationsPath}}/time-slot/{{editDoctorEditTimeSlotId}}
 Authorization: {{accessToken}}
 Content-Type: application/json
 
 {
-  "startAt": "2023-08-22 11:10:00.09",
-  "endAt": "2023-08-22 11:30:00.09"
+  "startAt": "2024-05-29 12:00:00.090",
+  "endAt": "2024-05-29 12:30:00.090",
+  "type":"ONLINE"
 }
 ### 
 
@@ -86,19 +88,21 @@ Content-Type: application/json
 
 { "timeSlots":
   [{
-  "startAt": "2023-07-19 11:00:00.090",
-  "endAt": "2023-07-19 11:30:00.090"
+  "startAt": "2024-05-19 11:00:00.090",
+  "endAt": "2024-05-19 11:30:00.090",
+  "type":"ONLINE"
 },
 {
-  "startAt": "2023-07-21 11:00:00.090",
-  "endAt": "2023-07-21 11:30:00.090"
+  "startAt": "2024-05-18 11:00:00.090",
+  "endAt": "2024-05-18 11:30:00.090",
+  "type":"ONLINE"
 }]
 }
 ### 
 
 ### get doctor time slots
 @doctorId=1fc5d738-43f9-4a77-8e1d-ab4ea15b29e3
-GET {{consultationsPath}}/time-slots/doctors/{{doctorId}}?startTime=2023-05-28&endTime=2023-08-30
+GET {{consultationsPath}}/time-slots/doctors/{{doctorId}}?startTime=2024-04-20&endTime=2024-04-30&type=ONLINE
 Authorization: {{accessToken}}
 Content-Type: application/json
 
