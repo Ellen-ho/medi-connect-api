@@ -18,7 +18,7 @@ interface IDoctorTimeSlotUpdateData {
 
 export enum TimeSlotType {
   ONLINE = 'ONLINE',
-  PHYSICAL = 'PHYSICAL',
+  CLINIC = 'CLINIC',
 }
 
 export class DoctorTimeSlot {
