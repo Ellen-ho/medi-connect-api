@@ -46,7 +46,7 @@ export interface ConsultAppointmentData {
 
 interface GetPatientConsultAppointmentsRequest {
   user: User
-  onlyUpcoming?: boolean
+  onlyUpcoming: boolean
   type?: TimeSlotType
 }
 
@@ -140,7 +140,7 @@ export class GetPatientConsultAppointmentsUseCase {
         [ConsultAppointmentStatusType.COMPLETED],
         currentMonthStartDate.toDate(),
         currentMonthEndDate.toDate(),
-        type === undefined ? undefined : type
+        type
       )
 
     const canceledAppointments =

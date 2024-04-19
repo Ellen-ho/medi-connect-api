@@ -13,6 +13,7 @@ import { GetQuestionsUseCase } from '../../../application/question/GetQuestionsU
 import { GetAnswerDetailsUseCase } from '../../../application/question/GetAnswerDetailsUseCase'
 import { GetAnswerListUseCase } from '../../../application/question/GetAnswerListUseCase'
 import { RepositoryTx } from '../../database/RepositoryTx'
+import { MedicalSpecialtyType } from 'domain/question/PatientQuestion'
 
 export interface IQuestionController {
   createAnswerAgreement: (req: Request, res: Response) => Promise<Response>
@@ -176,6 +177,7 @@ export class QuestionController implements IQuestionController {
       page: Number(req.query.page),
       askerId: req.query.askerId as string,
       searchKeyword: req.query.searchKeyword as string,
+      medicalSpecialty: req.query.medicalSpecialty as MedicalSpecialtyType,
     }
     const result = await this.getQuestionsUseCase.execute(request)
     return res.status(200).json(result)

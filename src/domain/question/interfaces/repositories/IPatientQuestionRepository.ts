@@ -1,6 +1,6 @@
 import { IBaseRepository } from '../../../shared/IBaseRepository'
 import { IExecutor } from '../../../shared/IRepositoryTx'
-import { PatientQuestion } from '../../PatientQuestion'
+import { MedicalSpecialtyType, PatientQuestion } from '../../PatientQuestion'
 
 export interface IPatientQuestionRepository
   extends IBaseRepository<PatientQuestion> {
@@ -12,7 +12,7 @@ export interface IPatientQuestionRepository
   findAndCountAll: (
     limit: number,
     offset: number,
-    askerId?: string
+    askerId: string
   ) => Promise<{
     totalCounts: number
     questions: Array<{
@@ -20,12 +20,14 @@ export interface IPatientQuestionRepository
       content: string
       createdAt: Date
       answerCounts: number
+      medicalSpecialty: MedicalSpecialtyType
     }>
   }>
   findAfterFiteredAndCountAll: (
     limit: number,
     offset: number,
-    searchKeyword: string
+    searchKeyword: string,
+    medicalSpecialty: MedicalSpecialtyType
   ) => Promise<{
     totalCounts: number
     questions: Array<{
@@ -33,6 +35,7 @@ export interface IPatientQuestionRepository
       content: string
       createdAt: Date
       answerCounts: number
+      medicalSpecialty: MedicalSpecialtyType
     }>
   }>
   delete: (question: PatientQuestion, executo?: IExecutor) => Promise<void>
