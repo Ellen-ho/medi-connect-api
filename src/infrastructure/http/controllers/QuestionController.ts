@@ -176,8 +176,9 @@ export class QuestionController implements IQuestionController {
       limit: Number(req.query.limit),
       page: Number(req.query.page),
       askerId: req.query.askerId as string,
-      searchKeyword: req.query.searchKeyword as string,
-      medicalSpecialty: req.query.medicalSpecialty as MedicalSpecialtyType,
+      searchKeyword: (req.query.searchKeyword as string) ?? undefined,
+      medicalSpecialty:
+        (req.query.medicalSpecialty as MedicalSpecialtyType) ?? undefined,
     }
     const result = await this.getQuestionsUseCase.execute(request)
     return res.status(200).json(result)

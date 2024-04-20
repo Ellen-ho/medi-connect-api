@@ -26,8 +26,8 @@ export interface IPatientQuestionRepository
   findAfterFiteredAndCountAll: (
     limit: number,
     offset: number,
-    searchKeyword: string,
-    medicalSpecialty: MedicalSpecialtyType
+    searchKeyword?: string,
+    medicalSpecialty?: MedicalSpecialtyType
   ) => Promise<{
     totalCounts: number
     questions: Array<{

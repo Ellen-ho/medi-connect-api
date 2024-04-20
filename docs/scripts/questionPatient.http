@@ -9,7 +9,7 @@ Content-Type: application/json
 
 {
   "email": "tim@gmail.com",
-  "password": "tim"
+  "password": "timtim"
 }
 ###
 @accessToken = Bearer {{login.response.body.token}}

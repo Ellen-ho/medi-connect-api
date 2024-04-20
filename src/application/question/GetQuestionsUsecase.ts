@@ -5,8 +5,8 @@ interface GetQuestionsRequest {
   page?: number
   limit?: number
   askerId: string
-  searchKeyword: string
-  medicalSpecialty: MedicalSpecialtyType
+  searchKeyword?: string
+  medicalSpecialty?: MedicalSpecialtyType
 }
 interface GetQuestionsResponse {
   totalCounts: number
@@ -33,12 +33,12 @@ export class GetQuestionsUseCase {
   public async execute(
     request: GetQuestionsRequest
   ): Promise<GetQuestionsResponse> {
-    const { askerId, searchKeyword, medicalSpecialty } = request
+    const { askerId = '', searchKeyword, medicalSpecialty } = request
     const page: number = request.page != null ? request.page : 1
     const limit: number = request.limit != null ? request.limit : 10
     const offset: number = getOffset(limit, page)
 
-    if (searchKeyword === '' && medicalSpecialty === undefined) {
+    if (searchKeyword === undefined && medicalSpecialty === undefined) {
       const existingPatientQuestions =
         await this.patientQuestionRepository.findAndCountAll(
           limit,

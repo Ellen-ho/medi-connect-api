@@ -83,28 +83,28 @@ export class PatientQuestionRepository
     }>
   }> {
     try {
-      const queryBuilder = this.getRepo().createQueryBuilder('question')
+      const queryBuilder =
+        this.getRepo().createQueryBuilder('patient_questions')
 
       queryBuilder
         .select('COUNT(answer.id)', 'answerCounts')
-        .addSelect('question.id', 'id')
-        .addSelect('question.content', 'content')
-        .addSelect('question.created_at', 'createdAt')
-        .addSelect('question.medical_specialty', 'medicalSpecialty')
+        .addSelect('patient_questions.id', 'id')
+        .addSelect('patient_questions.content', 'content')
+        .addSelect('patient_questions.created_at', 'createdAt')
+        .addSelect('patient_questions.medical_specialty', 'medicalSpecialty')
         .leftJoin(
           'patient_question_answers',
           'answer',
-          'answer.patient_question_id = question.id'
+          'answer.patient_question_id = patient_questions.id'
         )
-        .groupBy('question.id')
-        .orderBy('question.created_at', 'DESC')
+        .groupBy('patient_questions.id')
+        .orderBy('patient_questions.created_at', 'DESC')
         .limit(limit)
         .offset(offset)
 
       if (askerId !== '') {
-        queryBuilder.where('question.asker_id = :askerId', { askerId })
+        queryBuilder.where('patient_questions.asker_id = :askerId', { askerId })
       }
-
       const result = await queryBuilder.getRawMany()
 
       const totalCounts: number = await this.getRepo().count()
@@ -120,6 +120,7 @@ export class PatientQuestionRepository
         })),
       }
     } catch (e) {
+      console.log(e)
       throw new RepositoryError(
         'PatientQuestionRepository findAndCountAll error',
         e as Error
@@ -130,8 +131,8 @@ export class PatientQuestionRepository
   public async findAfterFiteredAndCountAll(
     limit: number,
     offset: number,
-    searchKeyword: string,
-    medicalSpecialty: MedicalSpecialtyType
+    searchKeyword?: string,
+    medicalSpecialty?: MedicalSpecialtyType
   ): Promise<{
     totalCounts: number
     questions: Array<{
@@ -153,13 +154,13 @@ export class PatientQuestionRepository
         .leftJoin(
           'patient_question_answers',
           'answer',
-          'answer.patient_question_id = question.id'
+          'answer.patient_question_id = patient_questions.id'
         )
-        .groupBy('question.id')
-        .orderBy('question.created_at', 'DESC')
+        .groupBy('patient_questions.id')
+        .orderBy('patient_questions.created_at', 'DESC')
 
       const whereConditions: Array<FindOptionsWhere<PatientQuestionEntity>> = []
-      if (searchKeyword !== '') {
+      if (searchKeyword !== undefined) {
         whereConditions.push({ content: Like(`%${searchKeyword}%`) })
       }
       if (medicalSpecialty !== undefined) {
