@@ -120,7 +120,6 @@ export class PatientQuestionRepository
         })),
       }
     } catch (e) {
-      console.log(e)
       throw new RepositoryError(
         'PatientQuestionRepository findAndCountAll error',
         e as Error
@@ -145,12 +144,12 @@ export class PatientQuestionRepository
   }> {
     try {
       const queryBuilder = this.getRepo()
-        .createQueryBuilder('question')
+        .createQueryBuilder('patient_questions')
         .select('COUNT(answer.id)', 'answerCounts')
-        .addSelect('question.id', 'id')
-        .addSelect('question.content', 'content')
-        .addSelect('question.created_at', 'createdAt')
-        .addSelect('question.medical_specialty', 'medicalSpecialty')
+        .addSelect('patient_questions.id', 'id')
+        .addSelect('patient_questions.content', 'content')
+        .addSelect('patient_questions.created_at', 'createdAt')
+        .addSelect('patient_questions.medical_specialty', 'medicalSpecialty')
         .leftJoin(
           'patient_question_answers',
           'answer',
