@@ -47,7 +47,7 @@ export const errorHandler: ErrorRequestHandler = (
     res.status(400).json({
       status: 'error',
       message: err.message,
-      cause: err.cause,
+      cause: err.cause?.message,
     })
     return
   }
