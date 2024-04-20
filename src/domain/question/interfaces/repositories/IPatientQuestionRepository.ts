@@ -12,7 +12,7 @@ export interface IPatientQuestionRepository
   findAndCountAll: (
     limit: number,
     offset: number,
-    askerId: string
+    askerId?: string
   ) => Promise<{
     totalCounts: number
     questions: Array<{

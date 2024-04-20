@@ -71,7 +71,7 @@ export class PatientQuestionRepository
   public async findAndCountAll(
     limit: number,
     offset: number,
-    askerId: string
+    askerId?: string
   ): Promise<{
     totalCounts: number
     questions: Array<{
@@ -102,7 +102,7 @@ export class PatientQuestionRepository
         .limit(limit)
         .offset(offset)
 
-      if (askerId !== '') {
+      if (askerId !== undefined) {
         queryBuilder.where('patient_questions.asker_id = :askerId', { askerId })
       }
       const result = await queryBuilder.getRawMany()

@@ -11,6 +11,7 @@ import {
   createAnswerAgreementSchema,
   getAnswerDetailsSchema,
   getAnswerListSchema,
+  getQuestonsSchema,
   getSingleQuestionSchema,
 } from '../../../application/question/QuestionValidator'
 import { validator } from '../middlewares/Validator'
@@ -90,6 +91,7 @@ export class QuestionRoutes {
       .get(
         '/',
         authenticated,
+        validator(getQuestonsSchema),
         asyncHandler(this.questionController.getQuestions)
       )
   }

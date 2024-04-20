@@ -4,7 +4,7 @@ import { getOffset, getPagination } from '../../infrastructure/utils/Pagination'
 interface GetQuestionsRequest {
   page?: number
   limit?: number
-  askerId: string
+  askerId?: string
   searchKeyword?: string
   medicalSpecialty?: MedicalSpecialtyType
 }
@@ -33,7 +33,7 @@ export class GetQuestionsUseCase {
   public async execute(
     request: GetQuestionsRequest
   ): Promise<GetQuestionsResponse> {
-    const { askerId = '', searchKeyword, medicalSpecialty } = request
+    const { askerId, searchKeyword, medicalSpecialty } = request
     const page: number = request.page != null ? request.page : 1
     const limit: number = request.limit != null ? request.limit : 10
     const offset: number = getOffset(limit, page)
