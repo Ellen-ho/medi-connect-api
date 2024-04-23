@@ -9,25 +9,12 @@ export interface IPatientQuestionRepository
     patientQuestionAnswerId: string,
     askerId: string
   ) => Promise<PatientQuestion | null>
-  findAndCountAll: (
-    limit: number,
-    offset: number,
-    askerId?: string
-  ) => Promise<{
-    totalCounts: number
-    questions: Array<{
-      id: string
-      content: string
-      createdAt: Date
-      answerCounts: number
-      medicalSpecialty: MedicalSpecialtyType
-    }>
-  }>
   findAfterFiteredAndCountAll: (
     limit: number,
     offset: number,
     searchKeyword?: string,
-    medicalSpecialty?: MedicalSpecialtyType
+    medicalSpecialty?: MedicalSpecialtyType,
+    askerId?: string
   ) => Promise<{
     totalCounts: number
     questions: Array<{

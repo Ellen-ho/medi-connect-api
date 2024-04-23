@@ -38,31 +38,13 @@ export class GetQuestionsUseCase {
     const limit: number = request.limit != null ? request.limit : 10
     const offset: number = getOffset(limit, page)
 
-    if (searchKeyword === undefined && medicalSpecialty === undefined) {
-      const existingPatientQuestions =
-        await this.patientQuestionRepository.findAndCountAll(
-          limit,
-          offset,
-          askerId
-        )
-
-      return {
-        totalCounts: existingPatientQuestions.totalCounts,
-        data: existingPatientQuestions.questions,
-        pagination: getPagination(
-          limit,
-          page,
-          existingPatientQuestions.totalCounts
-        ),
-      }
-    }
-
     const filteredQuestions =
       await this.patientQuestionRepository.findAfterFiteredAndCountAll(
         limit,
         offset,
         searchKeyword,
-        medicalSpecialty
+        medicalSpecialty,
+        askerId
       )
     return {
       totalCounts: filteredQuestions.totalCounts,

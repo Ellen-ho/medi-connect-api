@@ -68,70 +68,12 @@ export class PatientQuestionRepository
     }
   }
 
-  public async findAndCountAll(
-    limit: number,
-    offset: number,
-    askerId?: string
-  ): Promise<{
-    totalCounts: number
-    questions: Array<{
-      id: string
-      content: string
-      createdAt: Date
-      answerCounts: number
-      medicalSpecialty: MedicalSpecialtyType
-    }>
-  }> {
-    try {
-      const queryBuilder =
-        this.getRepo().createQueryBuilder('patient_questions')
-
-      queryBuilder
-        .select('COUNT(answer.id)', 'answerCounts')
-        .addSelect('patient_questions.id', 'id')
-        .addSelect('patient_questions.content', 'content')
-        .addSelect('patient_questions.created_at', 'createdAt')
-        .addSelect('patient_questions.medical_specialty', 'medicalSpecialty')
-        .leftJoin(
-          'patient_question_answers',
-          'answer',
-          'answer.patient_question_id = patient_questions.id'
-        )
-        .groupBy('patient_questions.id')
-        .orderBy('patient_questions.created_at', 'DESC')
-        .limit(limit)
-        .offset(offset)
-
-      if (askerId !== undefined) {
-        queryBuilder.where('patient_questions.asker_id = :askerId', { askerId })
-      }
-      const result = await queryBuilder.getRawMany()
-
-      const totalCounts: number = await this.getRepo().count()
-
-      return {
-        totalCounts,
-        questions: result.map((question) => ({
-          id: question.id,
-          content: question.content,
-          createdAt: question.createdAt,
-          answerCounts: parseInt(question.answerCounts),
-          medicalSpecialty: question.medicalSpecialty,
-        })),
-      }
-    } catch (e) {
-      throw new RepositoryError(
-        'PatientQuestionRepository findAndCountAll error',
-        e as Error
-      )
-    }
-  }
-
   public async findAfterFiteredAndCountAll(
     limit: number,
     offset: number,
     searchKeyword?: string,
-    medicalSpecialty?: MedicalSpecialtyType
+    medicalSpecialty?: MedicalSpecialtyType,
+    askerId?: string
   ): Promise<{
     totalCounts: number
     questions: Array<{
@@ -164,6 +106,10 @@ export class PatientQuestionRepository
       }
       if (medicalSpecialty !== undefined) {
         whereConditions.push({ medicalSpecialty })
+      }
+
+      if (askerId !== undefined) {
+        whereConditions.push({ askerId })
       }
 
       if (whereConditions.length > 0) {
