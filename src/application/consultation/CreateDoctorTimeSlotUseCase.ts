@@ -1,5 +1,8 @@
 import dayjs from 'dayjs'
-import { DoctorTimeSlot } from '../../domain/consultation/DoctorTimeSlot'
+import {
+  TimeSlotType,
+  DoctorTimeSlot,
+} from '../../domain/consultation/DoctorTimeSlot'
 import { IDoctorTimeSlotRepository } from '../../domain/consultation/interfaces/repositories/IDoctorTimeSlotRepository'
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 import { User } from '../../domain/user/User'
@@ -11,6 +14,7 @@ interface CreateDoctorTimeSlotRequest {
   user: User
   startAt: Date
   endAt: Date
+  type: TimeSlotType
 }
 
 interface CreateDoctorTimeSlotResponse {
@@ -20,6 +24,7 @@ interface CreateDoctorTimeSlotResponse {
   endAt: Date
   createdAt: Date
   updatedAt: Date
+  type: TimeSlotType
 }
 
 export class CreateDoctorTimeSlotUseCase {
@@ -32,7 +37,7 @@ export class CreateDoctorTimeSlotUseCase {
   public async execute(
     request: CreateDoctorTimeSlotRequest
   ): Promise<CreateDoctorTimeSlotResponse> {
-    const { user, startAt, endAt } = request
+    const { user, startAt, endAt, type } = request
 
     const existingDoctor = await this.doctorRepository.findByUserId(user.id)
 
@@ -120,6 +125,7 @@ export class CreateDoctorTimeSlotUseCase {
       createdAt: new Date(),
       updatedAt: new Date(),
       deletedAt: null,
+      type,
     })
     await this.doctorTimeSlotRepository.save(doctorTimeSlot)
 
@@ -130,6 +136,7 @@ export class CreateDoctorTimeSlotUseCase {
       endAt: doctorTimeSlot.endAt,
       createdAt: doctorTimeSlot.createdAt,
       updatedAt: doctorTimeSlot.updatedAt,
+      type: doctorTimeSlot.type,
     }
   }
 }

@@ -5,6 +5,7 @@ import { IPatientRepository } from '../../domain/patient/interfaces/repositories
 import { User } from '../../domain/user/User'
 import { MedicalSpecialtyType } from '../../domain/question/PatientQuestion'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { TimeSlotType } from 'domain/consultation/DoctorTimeSlot'
 export interface ConsultAppointmentDatas {
   appointmentId: string
   patientId: string
@@ -12,6 +13,7 @@ export interface ConsultAppointmentDatas {
   doctorTimeSlot: {
     startAt: Date
     endAt: Date
+    type: TimeSlotType
   }
   doctor: {
     firstName: string
@@ -30,6 +32,7 @@ export interface ConsultAppointmentData {
   doctorTimeSlot: {
     startAt: Date
     endAt: Date
+    type: TimeSlotType
   }
   doctor: {
     firstName: string
@@ -43,7 +46,8 @@ export interface ConsultAppointmentData {
 
 interface GetPatientConsultAppointmentsRequest {
   user: User
-  onlyUpcoming?: boolean
+  onlyUpcoming: boolean
+  type?: TimeSlotType
 }
 
 interface GetPatientConsultAppointmentsResponse {
@@ -61,7 +65,7 @@ export class GetPatientConsultAppointmentsUseCase {
   public async execute(
     request: GetPatientConsultAppointmentsRequest
   ): Promise<GetPatientConsultAppointmentsResponse> {
-    const { user, onlyUpcoming = false } = request
+    const { user, onlyUpcoming = false, type } = request
 
     const currentPatient = await this.patientRepository.findByUserId(user.id)
 
@@ -86,7 +90,8 @@ export class GetPatientConsultAppointmentsUseCase {
         currentPatient.id,
         [ConsultAppointmentStatusType.UPCOMING],
         currentDate.toDate(),
-        upComingEndDate.toDate()
+        upComingEndDate.toDate(),
+        type
       )
 
     const upcomingConsultAppointments: ConsultAppointmentDatas[] = []
@@ -102,6 +107,7 @@ export class GetPatientConsultAppointmentsUseCase {
         doctorTimeSlot: {
           startAt: appointment.doctorTimeSlot.startAt,
           endAt: appointment.doctorTimeSlot.endAt,
+          type: appointment.doctorTimeSlot.type,
         },
         doctor: {
           firstName: appointment.doctor.firstName,
@@ -109,7 +115,11 @@ export class GetPatientConsultAppointmentsUseCase {
           specialties: appointment.doctor.specialties,
           avatar: appointment.doctor.avatar,
         },
-        meetingLink: timeDifference > 22 ? null : appointment.meetingLink,
+        meetingLink:
+          timeDifference > 22 ||
+          appointment.doctorTimeSlot.type === TimeSlotType.CLINIC
+            ? null
+            : appointment.meetingLink,
         cancelAvailability: timeDifference > 24,
       }
 
@@ -129,7 +139,8 @@ export class GetPatientConsultAppointmentsUseCase {
         currentPatient.id,
         [ConsultAppointmentStatusType.COMPLETED],
         currentMonthStartDate.toDate(),
-        currentMonthEndDate.toDate()
+        currentMonthEndDate.toDate(),
+        type
       )
 
     const canceledAppointments =
@@ -137,7 +148,8 @@ export class GetPatientConsultAppointmentsUseCase {
         currentPatient.id,
         [ConsultAppointmentStatusType.PATIENT_CANCELED],
         currentMonthStartDate.toDate(),
-        currentMonthEndDate.toDate()
+        currentMonthEndDate.toDate(),
+        type === undefined ? undefined : type
       )
 
     return {
@@ -160,6 +172,7 @@ export class GetPatientConsultAppointmentsUseCase {
       doctorTimeSlot: {
         startAt: appointment.doctorTimeSlot.startAt,
         endAt: appointment.doctorTimeSlot.endAt,
+        type: appointment.doctorTimeSlot.type,
       },
       doctor: {
         firstName: appointment.doctor.firstName,

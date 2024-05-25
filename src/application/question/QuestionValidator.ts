@@ -80,3 +80,15 @@ export const getAnswerListSchema = {
     searchKeyword: Joi.string().optional(),
   }),
 }
+
+export const getQuestonsSchema = {
+  query: Joi.object({
+    limit: Joi.number().optional(),
+    page: Joi.number().optional(),
+    askerId: Joi.string().optional(),
+    searchKeyword: Joi.string().optional(),
+    medicalSpecialty: Joi.string()
+      .valid(...Object.values(MedicalSpecialtyType))
+      .optional(),
+  }),
+}

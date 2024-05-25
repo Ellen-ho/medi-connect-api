@@ -1,5 +1,5 @@
 import { IExecutor } from '../../../shared/IRepositoryTx'
-import { DoctorTimeSlot } from '../../DoctorTimeSlot'
+import { DoctorTimeSlot, TimeSlotType } from '../../DoctorTimeSlot'
 
 export interface IDoctorTimeSlotRepository {
   findById: (id: string) => Promise<DoctorTimeSlot | null>
@@ -15,7 +15,8 @@ export interface IDoctorTimeSlotRepository {
   findByDoctorIdAndDate: (
     doctorId: string,
     startTime: string,
-    endTime: string
+    endTime: string,
+    type: TimeSlotType
   ) => Promise<{
     doctorId: string
     timeSlots: Array<{
@@ -23,6 +24,7 @@ export interface IDoctorTimeSlotRepository {
       startAt: Date
       endAt: Date
       isAvailable: boolean
+      type: TimeSlotType
     }>
   }>
   delete: (doctorTimeSlot: DoctorTimeSlot, executo?: IExecutor) => Promise<void>

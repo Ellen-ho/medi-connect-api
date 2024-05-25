@@ -1,3 +1,4 @@
+import { TimeSlotType } from 'domain/consultation/DoctorTimeSlot'
 import { MedicalSpecialtyType } from '../../../question/PatientQuestion'
 import { IBaseRepository } from '../../../shared/IBaseRepository'
 import { IExecutor } from '../../../shared/IRepositoryTx'
@@ -21,7 +22,8 @@ export interface IConsultAppointmentRepository
     patientId: string,
     status: ConsultAppointmentStatusType[],
     startDate: Date,
-    endDate: Date
+    endDate: Date,
+    type?: TimeSlotType
   ) => Promise<
     Array<{
       appointmentId: string
@@ -30,6 +32,7 @@ export interface IConsultAppointmentRepository
       doctorTimeSlot: {
         startAt: Date
         endAt: Date
+        type: TimeSlotType
       }
       doctor: {
         firstName: string
@@ -45,7 +48,8 @@ export interface IConsultAppointmentRepository
     doctorId: string,
     status: ConsultAppointmentStatusType[],
     startDate: Date,
-    endDate: Date
+    endDate: Date,
+    type?: TimeSlotType
   ) => Promise<
     Array<{
       appointmentId: string
@@ -53,6 +57,7 @@ export interface IConsultAppointmentRepository
       doctorTimeSlot: {
         startAt: Date
         endAt: Date
+        type: TimeSlotType
       }
       patient: {
         id: string

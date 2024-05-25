@@ -10,6 +10,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm'
 import { DoctorEntity } from '../doctor/DoctorEntity'
+import { TimeSlotType } from '../../../domain/consultation/DoctorTimeSlot'
 
 @Entity('doctor_time_slots')
 export class DoctorTimeSlotEntity {
@@ -24,6 +25,14 @@ export class DoctorTimeSlotEntity {
 
   @Column({ name: 'availability', type: 'boolean', default: true })
   public availability!: boolean
+
+  @Column({
+    name: 'type',
+    type: 'varchar',
+    length: 20,
+    default: TimeSlotType.ONLINE,
+  })
+  public type!: TimeSlotType
 
   @CreateDateColumn({ name: 'created_at' })
   public createdAt!: Date

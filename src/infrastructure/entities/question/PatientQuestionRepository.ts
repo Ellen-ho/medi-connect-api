@@ -1,5 +1,8 @@
-import { DataSource, Like } from 'typeorm'
-import { PatientQuestion } from '../../../domain/question/PatientQuestion'
+import { DataSource, FindOptionsWhere, Like } from 'typeorm'
+import {
+  MedicalSpecialtyType,
+  PatientQuestion,
+} from '../../../domain/question/PatientQuestion'
 import { BaseRepository } from '../../database/BaseRepository'
 import { PatientQuestionEntity } from './PatientQuestionEntity'
 import { PatientQuestionMapper } from './PatientQuestionMapper'
@@ -65,9 +68,11 @@ export class PatientQuestionRepository
     }
   }
 
-  public async findAndCountAll(
+  public async findAfterFiteredAndCountAll(
     limit: number,
     offset: number,
+    searchKeyword?: string,
+    medicalSpecialty?: MedicalSpecialtyType,
     askerId?: string
   ): Promise<{
     totalCounts: number
@@ -76,89 +81,48 @@ export class PatientQuestionRepository
       content: string
       createdAt: Date
       answerCounts: number
+      medicalSpecialty: MedicalSpecialtyType
     }>
   }> {
     try {
-      const queryBuilder = this.getRepo().createQueryBuilder('question')
-
-      queryBuilder
+      const queryBuilder = this.getRepo()
+        .createQueryBuilder('patient_questions')
         .select('COUNT(answer.id)', 'answerCounts')
-        .addSelect('question.id', 'id')
-        .addSelect('question.content', 'content')
-        .addSelect('question.created_at', 'createdAt')
+        .addSelect('patient_questions.id', 'id')
+        .addSelect('patient_questions.content', 'content')
+        .addSelect('patient_questions.created_at', 'createdAt')
+        .addSelect('patient_questions.medical_specialty', 'medicalSpecialty')
         .leftJoin(
           'patient_question_answers',
           'answer',
-          'answer.patient_question_id = question.id'
+          'answer.patient_question_id = patient_questions.id'
         )
-        .groupBy('question.id')
-        .orderBy('question.created_at', 'DESC')
-        .limit(limit)
-        .offset(offset)
+        .groupBy('patient_questions.id')
+        .orderBy('patient_questions.created_at', 'DESC')
+
+      const whereConditions: Array<FindOptionsWhere<PatientQuestionEntity>> = []
+      if (searchKeyword !== undefined) {
+        whereConditions.push({ content: Like(`%${searchKeyword}%`) })
+      }
+      if (medicalSpecialty !== undefined) {
+        whereConditions.push({ medicalSpecialty })
+      }
 
       if (askerId !== undefined) {
-        queryBuilder.where('question.asker_id = :askerId', { askerId })
+        whereConditions.push({ askerId })
       }
 
+      if (whereConditions.length > 0) {
+        queryBuilder.where(whereConditions)
+      }
+
+      queryBuilder.limit(limit).offset(offset)
+
+      // Execute the query to get questions
       const result = await queryBuilder.getRawMany()
 
-      const totalCounts: number = await this.getRepo().count()
-
-      return {
-        totalCounts,
-        questions: result.map((question) => ({
-          id: question.id,
-          content: question.content,
-          createdAt: question.createdAt,
-          answerCounts: parseInt(question.answerCounts),
-        })),
-      }
-    } catch (e) {
-      throw new RepositoryError(
-        'PatientQuestionRepository findAndCountAll error',
-        e as Error
-      )
-    }
-  }
-
-  public async findAfterFiteredAndCountAll(
-    limit: number,
-    offset: number,
-    searchKeyword: string
-  ): Promise<{
-    totalCounts: number
-    questions: Array<{
-      id: string
-      content: string
-      createdAt: Date
-      answerCounts: number
-    }>
-  }> {
-    try {
-      const result = await this.getRepo()
-        .createQueryBuilder('question')
-        .select('COUNT(answer.id)', 'answerCounts')
-        .addSelect('question.id', 'id')
-        .addSelect('question.content', 'content')
-        .addSelect('question.created_at', 'createdAt')
-        .leftJoin(
-          'patient_question_answers',
-          'answer',
-          'answer.patient_question_id = question.id'
-        )
-        .where('question.content LIKE :searchKeyword', {
-          searchKeyword: `%${searchKeyword}%`,
-        })
-        .groupBy('question.id')
-        .orderBy('question.created_at', 'DESC')
-        .limit(limit)
-        .offset(offset)
-        .getRawMany()
-
       const totalCounts: number = await this.getRepo().count({
-        where: {
-          content: Like(`%${searchKeyword}%`),
-        },
+        where: whereConditions.length > 0 ? whereConditions : undefined,
       })
 
       return {
@@ -168,11 +132,12 @@ export class PatientQuestionRepository
           content: question.content,
           createdAt: question.createdAt,
           answerCounts: parseInt(question.answerCounts),
+          medicalSpecialty: question.medicalSpecialty,
         })),
       }
     } catch (e) {
       throw new RepositoryError(
-        'PatientQuestionRepository findAndCountAll error',
+        'PatientQuestionRepository findAfterFiteredAndCountAll error',
         e as Error
       )
     }

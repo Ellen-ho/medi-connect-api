@@ -9,14 +9,14 @@ Content-Type: application/json
 
 {
   "email": "tim@gmail.com",
-  "password": "tim"
+  "password": "timtim"
 }
 ###
 @accessToken = Bearer {{login.response.body.token}}
 @questionsPath = {{hostname}}/api/questions
 
 ### get questions
-GET {{questionsPath}}?limit=3&page=1
+GET {{questionsPath}}?limit=10&page=1&askerId=df5ff2e5-9d76-42ca-acfb-688267229369
 Authorization: {{accessToken}}
 Content-Type: application/json
 ###

@@ -1,3 +1,4 @@
+import { TimeSlotType } from '../../domain/consultation/DoctorTimeSlot'
 import Joi from 'joi'
 
 export const createConsultAppointmentSchema = {
@@ -16,6 +17,9 @@ export const createDoctorTimeSlotSchema = {
   body: Joi.object({
     startAt: Joi.date().required(),
     endAt: Joi.date().required(),
+    type: Joi.string()
+      .valid(...Object.values(TimeSlotType))
+      .required(),
   }),
 }
 
@@ -26,6 +30,9 @@ export const editDoctorTimeSlotSchema = {
   body: Joi.object({
     startAt: Joi.date().required(),
     endAt: Joi.date().required(),
+    type: Joi.string()
+      .valid(...Object.values(TimeSlotType))
+      .required(),
   }),
 }
 
@@ -35,6 +42,9 @@ export const createMultipleTimeSlotsSchema = {
       Joi.object({
         startAt: Joi.date().required(),
         endAt: Joi.date().required(),
+        type: Joi.string()
+          .valid(...Object.values(TimeSlotType))
+          .required(),
       })
     ),
   }),
@@ -43,6 +53,13 @@ export const createMultipleTimeSlotsSchema = {
 export const getDoctorTimeSlotsSchema = {
   params: Joi.object({
     id: Joi.string().uuid().required(),
+  }),
+  query: Joi.object({
+    startTime: Joi.string().optional(),
+    endTime: Joi.string().optional(),
+    type: Joi.string()
+      .valid(...Object.values(TimeSlotType))
+      .required(),
   }),
 }
 

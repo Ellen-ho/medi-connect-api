@@ -12,6 +12,7 @@ import { IMeetingLinkRepository } from '../../domain/meeting/interface/IMeetingL
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
 import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 import { ValidationError } from '../../infrastructure/error/ValidationError'
+import { TimeSlotType } from 'domain/consultation/DoctorTimeSlot'
 
 interface CancelConsultAppointmentRequest {
   user: User
@@ -83,17 +84,21 @@ export class CancelConsultAppointmentUseCase {
       existingConsultAppointment.doctorTimeSlot.updateAvailability(true)
       existingConsultAppointment.setCancelStatus()
 
-      if (existingConsultAppointment.meetingLink == null) {
-        throw new NotFoundError('The meeting link does not exist')
-      }
+      if (
+        existingConsultAppointment.doctorTimeSlot.type === TimeSlotType.ONLINE
+      ) {
+        if (existingConsultAppointment.meetingLink == null) {
+          throw new NotFoundError('The meeting link does not exist')
+        }
 
-      const existingMeetingLink = await this.meetingLinkRepository.findByLink(
-        existingConsultAppointment.meetingLink
-      )
+        const existingMeetingLink = await this.meetingLinkRepository.findByLink(
+          existingConsultAppointment.meetingLink
+        )
 
-      if (existingMeetingLink !== null) {
-        existingMeetingLink.setStatusToAvailable()
-        await this.meetingLinkRepository.save(existingMeetingLink, txExecutor)
+        if (existingMeetingLink !== null) {
+          existingMeetingLink.setStatusToAvailable()
+          await this.meetingLinkRepository.save(existingMeetingLink, txExecutor)
+        }
       }
 
       await this.consultAppointmentRepository.save(

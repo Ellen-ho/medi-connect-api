@@ -2,7 +2,10 @@ import { Between, DataSource } from 'typeorm'
 import { IDoctorTimeSlotRepository } from '../../../domain/consultation/interfaces/repositories/IDoctorTimeSlotRepository'
 import { DoctorTimeSlotEntity } from './DoctorTimeSlotEntity'
 import { DoctorTimeSlotMapper } from './DoctorTimeSlotMapper'
-import { DoctorTimeSlot } from '../../../domain/consultation/DoctorTimeSlot'
+import {
+  TimeSlotType,
+  DoctorTimeSlot,
+} from '../../../domain/consultation/DoctorTimeSlot'
 import { BaseRepository } from '../../database/BaseRepository'
 import { RepositoryError } from '../../error/RepositoryError'
 import dayjs from 'dayjs'
@@ -73,7 +76,8 @@ export class DoctorTimeSlotRepository
   public async findByDoctorIdAndDate(
     doctorId: string,
     startTime: string,
-    endTime: string
+    endTime: string,
+    type: TimeSlotType
   ): Promise<{
     doctorId: string
     timeSlots: Array<{
@@ -81,6 +85,7 @@ export class DoctorTimeSlotRepository
       startAt: Date
       endAt: Date
       isAvailable: boolean
+      type: TimeSlotType
     }>
   }> {
     try {
@@ -90,6 +95,7 @@ export class DoctorTimeSlotRepository
         where: {
           doctor: { id: doctorId },
           startAt: Between(startDate, endDate),
+          type,
         },
         relations: ['doctor'],
       })
@@ -106,6 +112,7 @@ export class DoctorTimeSlotRepository
           startAt: entity.startAt,
           endAt: entity.endAt,
           isAvailable: entity.availability,
+          type: entity.type,
         })),
       }
     } catch (e) {
