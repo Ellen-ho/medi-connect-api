@@ -149,12 +149,11 @@ async function main(): Promise<void> {
   }
 
   const corsOptions = {
-    origin: process.env.CORS_ORIGIN,
+    origin: '*',
     credentials: true,
   }
 
   const app: Express = express()
-  // Socket.io init
   const httpServer = createServer(app)
   const io = new Server(httpServer, {
     path: '/ws/notification',
