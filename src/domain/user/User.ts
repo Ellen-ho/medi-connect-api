@@ -49,7 +49,6 @@ export class User {
   }
 
   public updateData(data: IUserUpdateData): void {
-    // TODO: improve this
     this.props.displayName = data.displayName
     this.props.hashedPassword = data.password
   }

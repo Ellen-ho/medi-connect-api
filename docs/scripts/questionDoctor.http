@@ -29,7 +29,7 @@ Content-Type: application/json
 ###
 
 ### doctor answer a question
-@questionId=53c4e62f-9806-47ba-b3fc-02f66c14e7d8
+@questionId=4c6e8f36-4f15-4b09-8696-d7f636bbb585
 
 POST {{questionsPath}}/{{questionId}}/answers
 Authorization: {{accessToken}}

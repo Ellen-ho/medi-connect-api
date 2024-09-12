@@ -40,7 +40,7 @@ export class PatientQuestionRepository
       const entity = await this.getRepo().findOne({
         where: {
           id: patientQuestionId,
-          asker: { id: askerId }, // need to set @RelationId
+          asker: { id: askerId },
         },
       })
 
@@ -118,7 +118,6 @@ export class PatientQuestionRepository
 
       queryBuilder.limit(limit).offset(offset)
 
-      // Execute the query to get questions
       const result = await queryBuilder.getRawMany()
 
       const totalCounts: number = await this.getRepo().count({

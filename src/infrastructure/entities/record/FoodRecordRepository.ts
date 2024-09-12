@@ -39,7 +39,7 @@ export class FoodRecordRepository
       const entity = await this.getRepo().findOne({
         where: {
           id: recordId,
-          patient: { id: patientId }, // need to set @RelationId
+          patient: { id: patientId },
         },
       })
 
@@ -171,7 +171,6 @@ export class FoodRecordRepository
 
       const result = await query.getRawMany()
 
-      // Map the raw result to the desired structure
       const formattedResult = {
         total_counts: totalCountsQuery,
         patientData: {

@@ -107,7 +107,6 @@ export class PassportConfig {
           this.userRepo
             .findByEmail(email)
             .then((user) => {
-              // if user exists, just pass
               if (user !== null) {
                 done(null, user)
                 return

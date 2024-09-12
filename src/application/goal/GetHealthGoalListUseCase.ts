@@ -16,7 +16,7 @@ interface GetHealthGoalListRequest {
   user: User
   page?: number
   limit?: number
-  targetPatientId: string // validator檢查為必填
+  targetPatientId: string
 }
 
 interface GetHealthGoalListResponse {

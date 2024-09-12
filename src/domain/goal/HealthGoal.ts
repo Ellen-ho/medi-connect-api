@@ -24,7 +24,6 @@ export interface IBloodPressureValue {
   diastolicBloodPressure: number | null
 }
 
-// when the goal ends, we need to store the latest records
 export interface IHealthGoalResult {
   bloodPressureGoalAchieved: boolean
   bloodSugarGoalAchieved: boolean

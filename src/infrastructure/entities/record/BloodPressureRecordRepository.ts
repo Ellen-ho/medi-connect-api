@@ -44,7 +44,7 @@ export class BloodPressureRecordRepository
       const entity = await this.getRepo().findOne({
         where: {
           id: recordId,
-          patient: { id: patientId }, // need to set @RelationId
+          patient: { id: patientId },
         },
       })
       return entity != null ? this.getMapper().toDomainModel(entity) : null
@@ -184,7 +184,6 @@ export class BloodPressureRecordRepository
 
     const result = await query.getRawMany()
 
-    // Map the raw result to the desired structure
     const formattedResult = {
       total_counts: totalCountsQuery,
       patientData: {

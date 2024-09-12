@@ -50,7 +50,6 @@ export class UserRoutes {
       )
       .patch(
         '/reset-password',
-        // resetPasswordAuthenticated
         validator(updatePasswordSchema),
         asyncHandler(this.userController.updatePassword)
       )

@@ -18,7 +18,7 @@ interface GetBloodPressureRecordsRequest {
   limit?: string
   startDate?: string
   endDate?: string
-  targetPatientId: string // validator檢查為必填
+  targetPatientId: string
 }
 interface GetBloodPressureRecordsResponse {
   patientData: {

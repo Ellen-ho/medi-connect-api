@@ -3,7 +3,7 @@ import { Server, Socket } from 'socket.io'
 
 class SocketService implements ISocketService {
   private readonly io: Server
-  private readonly userSockets: Map<string, string> // Map a user ID to a Socket ID
+  private readonly userSockets: Map<string, string>
 
   constructor(server: Server) {
     this.io = server

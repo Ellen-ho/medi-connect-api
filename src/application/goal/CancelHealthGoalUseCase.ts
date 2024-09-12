@@ -33,7 +33,7 @@ export class CancelHealthGoalUseCase {
     }
 
     const currentDate = new Date()
-    const edgeDate = currentDate.setDate(currentDate.getDate() - 3) // pennding status allowed only 3 days
+    const edgeDate = currentDate.setDate(currentDate.getDate() - 3)
 
     const overThreeDaysPendingHealthGoals =
       await this.healthGoalRepository.findByPatientIdAndStatusAndDateEdge(

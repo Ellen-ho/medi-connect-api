@@ -65,7 +65,6 @@ export class DoctorTimeSlot {
   }
 
   public updateData(data: IDoctorTimeSlotUpdateData): void {
-    // TODO: improve this
     this.props.startAt = data.startAt
     this.props.endAt = data.endAt
   }

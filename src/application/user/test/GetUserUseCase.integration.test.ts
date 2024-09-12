@@ -13,16 +13,13 @@ describe('Integration test: GetUserUseCase', () => {
   let userRepo: UserRepository
 
   beforeAll(async () => {
-    // connect to test db
     database = await PostgresDatabase.getInstance()
-    // create user repo
     userRepo = new UserRepository(database.getDataSource())
   }, 300000)
 
   beforeEach(async () => {})
 
   afterEach(async () => {
-    // clear data in the table which had inserted data in the test
     await userRepo.clear()
   })
 

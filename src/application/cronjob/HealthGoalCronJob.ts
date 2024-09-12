@@ -118,7 +118,7 @@ export class HealthGoalCronJob implements IHealthGoalCronJob {
 
   private async checkGoalsResult(): Promise<void> {
     const yesterday = new Date()
-    yesterday.setDate(yesterday.getDate() - 1) // get the date of yesterday
+    yesterday.setDate(yesterday.getDate() - 1)
     const expiredGoals = await this.healthGoalRepository.findAllByDate(
       yesterday
     )

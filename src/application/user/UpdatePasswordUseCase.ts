@@ -29,8 +29,6 @@ export class UpdatePasswordUseCase {
       process.env.RESET_PASSWORD_MAIL_JWT_SECRET as string
     ) as jwt.JwtPayload
 
-    // 如果令牌有效（存在且未过期），使用令牌中的信息（如用户ID或电子邮件）来查找用户
-    // 在令牌的荷载中存储了用户的电子邮件地址
     const idInPayload = payload.id
     if (idInPayload == null) {
       throw new NotFoundError('Id not found in token payload.')

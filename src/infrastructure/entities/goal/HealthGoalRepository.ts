@@ -62,7 +62,7 @@ export class HealthGoalRepository
     try {
       const entities = await this.getRepo().find({
         where: {
-          patient: { id: patientId }, // need to set @RelationId
+          patient: { id: patientId },
           status: In(status),
         },
         order: { createdAt: 'DESC' },
@@ -127,7 +127,6 @@ export class HealthGoalRepository
         .offset(offset)
         .getRawMany()
 
-      // Map the raw result to the desired structure
       const formattedResult = {
         total_counts: totalCountsQuery,
         patientData: {
@@ -163,7 +162,7 @@ export class HealthGoalRepository
       const entities = await this.getRepo().find({
         where: {
           patient: { id: patientId },
-          status: In(status), // need to set @RelationId
+          status: In(status),
           createdAt: LessThanOrEqual(edgeDate),
         },
       })
