@@ -55,7 +55,6 @@ export class CreateExerciseRecordUseCase {
       throw new AuthorizationError('Patient does not exist.')
     }
 
-    // no other: kc from standard
     const exerciseRecord = new ExerciseRecord({
       id: this.uuidService.generateUuid(),
       exerciseDate,
