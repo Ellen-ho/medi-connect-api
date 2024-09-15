@@ -9,7 +9,6 @@ import {
 } from '../../../application/doctor/DoctorValidator'
 import { authenticated } from '../middlewares/Auth'
 import { validator } from '../middlewares/Validator'
-import upload from '../middlewares/multer'
 
 export class DoctorRoutes {
   private readonly routes: Router
@@ -19,14 +18,12 @@ export class DoctorRoutes {
       .post(
         '/profile',
         authenticated,
-        upload.single('image'),
         validator(creatDoctorProfileSchema),
         asyncHandler(this.doctorController.createDoctorProfile)
       )
       .patch(
         '/profile',
         authenticated,
-        upload.single('image'),
         validator(editDoctorProfileSchema),
         asyncHandler(this.doctorController.editDoctorProfile)
       )

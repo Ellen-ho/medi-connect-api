@@ -3,6 +3,7 @@ import { CreatePatientProfileUseCase } from '../../../application/patient/Create
 import { EditPatientProfileUseCase } from '../../../application/patient/EditPatientProfileUseCase'
 import { GetPatientProfileUseCase } from '../../../application/patient/GetPatientProfileUseCase'
 import { User } from '../../../domain/user/User'
+
 export interface IPatientController {
   createPatientProfile: (req: Request, res: Response) => Promise<Response>
   editPatientProfile: (req: Request, res: Response) => Promise<Response>

@@ -6,9 +6,9 @@ import jwt from 'jsonwebtoken'
 import { PatientRepository } from '../../entities/patient/PatientRepository'
 import { DoctorRepository } from '../../entities/doctor/DoctorRepository'
 import { EditUserAccountUseCase } from '../../../application/user/EditUserAccountUseCase'
-import { imgurFileHandler } from '../../helpers/FileHandler'
 import { CreatePasswordChangeMailUseCase } from 'application/user/CreatePasswordChangeMailUseCase'
 import { UpdatePasswordUseCase } from 'application/user/UpdatePasswordUseCase'
+import { EditUserAvatarUseCase } from 'application/user/EditUserAvatarUseCase'
 
 interface MulterRequest extends Request {
   files: any
@@ -19,7 +19,7 @@ export interface IUserController {
   getUserAccount: (req: Request, res: Response) => Promise<Response>
   registerNewUser: (req: Request, res: Response) => Promise<Response>
   editUserAccount: (req: Request, res: Response) => Promise<Response>
-  uploadAvatar: (req: Request, res: Response) => Promise<Response>
+  editUserAvatar: (req: Request, res: Response) => Promise<Response>
   createPasswordChangeMail: (req: Request, res: Response) => Promise<Response>
   updatePassword: (req: Request, res: Response) => Promise<Response>
 }
@@ -32,7 +32,8 @@ export class UserController implements IUserController {
     private readonly doctorRepository: DoctorRepository,
     private readonly editUserAccountUseCase: EditUserAccountUseCase,
     private readonly createPasswordChangeMailUseCase: CreatePasswordChangeMailUseCase,
-    private readonly updatePasswordUseCase: UpdatePasswordUseCase
+    private readonly updatePasswordUseCase: UpdatePasswordUseCase,
+    private readonly editUserAvatarUseCase: EditUserAvatarUseCase
   ) {}
 
   public login = async (req: Request, res: Response): Promise<Response> => {
@@ -105,14 +106,24 @@ export class UserController implements IUserController {
     return res.status(200).json(user)
   }
 
-  public uploadAvatar = async (
+  public editUserAvatar = async (
     req: Request,
     res: Response
   ): Promise<Response> => {
-    const [avatar] = (req as MulterRequest).files.avatar
-    const imageUrl = await imgurFileHandler(avatar)
+    try {
+      const [avatar] = (req as MulterRequest).files.avatar
 
-    return res.status(200).json({ imageUrl })
+      const response = await this.editUserAvatarUseCase.execute({
+        file: avatar,
+      })
+
+      return res.status(200).json({
+        message: 'Edit avatar successfully',
+        imageUrl: response.imageUrl,
+      })
+    } catch (e) {
+      throw new Error('Edit avatar error: ' + (e as Error).message)
+    }
   }
 
   public createPasswordChangeMail = async (

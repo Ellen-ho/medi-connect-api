@@ -132,6 +132,8 @@ import SocketService from './infrastructure/network/SocketService'
 import { UpdatePasswordUseCase } from './application/user/UpdatePasswordUseCase'
 import { CreatePasswordChangeMailUseCase } from './application/user/CreatePasswordChangeMailUseCase'
 import { GoogleMailService } from './infrastructure/network/GoogleMailService'
+import { S3Client } from '@aws-sdk/client-s3'
+import { EditUserAvatarUseCase } from 'application/user/EditUserAvatarUseCase'
 
 void main()
 
@@ -172,7 +174,6 @@ async function main(): Promise<void> {
   /**
    * Shared Services
    */
-  // const rawQueryRepository = new RawQueryRepository(dataSource)
   const uuidService = new UuidService()
   const hashGenerator = new BcryptHashGenerator()
   const scheduler = new Scheduler()
@@ -209,6 +210,14 @@ async function main(): Promise<void> {
   const notificationRepository = new NotificationRepository(dataSource)
   const meetingLinkRepository = new MeetingLinkRepository(dataSource)
 
+  const s3Client = new S3Client({
+    credentials: {
+      accessKeyId: process.env.ACCESS_KEY as string,
+      secretAccessKey: process.env.SECRET_ACCESS_KEY as string,
+    },
+    region: process.env.BUCKET_REGION as string,
+  })
+
   /**
    * User Domain
    */
@@ -232,6 +241,8 @@ async function main(): Promise<void> {
     userRepository,
     hashGenerator
   )
+
+  const editUserAvatarUseCase = new EditUserAvatarUseCase(s3Client, uuidService)
 
   /**
    * Doctor Domain
@@ -699,7 +710,8 @@ async function main(): Promise<void> {
     doctorRepository,
     editUserAccountUseCase,
     createPasswordChangeMailUseCase,
-    updatePasswordUseCase
+    updatePasswordUseCase,
+    editUserAvatarUseCase
   )
   const patientController = new PatientController(
     createPatientProfileUseCase,
