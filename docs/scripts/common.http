@@ -1,0 +1,9 @@
+@hostname = http://localhost:10000
+
+@commonsPath = {{hostname}}/api/commons
+
+
+### get doctors
+GET {{commonsPath}}/load_doctors
+Content-Type: application/json
+###
