@@ -15,15 +15,11 @@
 
 <br>
 
-> [!NOTE]  
-> Facebook authentication works fine in local development mode, but due to recent changes in Meta for Developers, using Facebook OAuth now requires the product to be officially launched and pass business verification. Since Medi-Connect is a side project, the Facebook authentication feature is currently not functioning as expected on production.
-
 ## Table of contents
 
 - [User Interface](#User-Interface)
 - [About Medi-Connect](#About-Medi-Connect)
 - [Features](#Features)
-- [Todos](#Todos)
 - [Local development](#local-development)
 
 ## User Interface
@@ -125,12 +121,6 @@ As a doctor member, you can...
 13. View the profile, records, and goals of the patient who has scheduled an appointment with you when the appointment status is "upcoming."
 14. Receive the Google Meet link for the respective appointment 22 hours prior to the scheduled appointment time.
 15. View the number of agreements and expressions of gratitude received for each of your responses.
-
-## Todos
-
-1. Elaborate the doctor's sign-up procedure by incorporating more comprehensive steps, including the submission of educational credentials and medical certificates.
-2. Modify the image uploading process for users to store images on other cloud storage service.
-3. Integrate additional social features, like doctors being able to share specialized articles to educate patients about different medical disciplines, and enabling patients to interact and motivate each other through mutual communication.
 
 ## Local development
 
