@@ -18,7 +18,6 @@ import { BcryptHashGenerator } from './infrastructure/utils/BcryptHashGenerator'
 import { PassportConfig } from './infrastructure/config/passportConfig'
 import { PatientRoutes } from './infrastructure/http/routes/PatientRoutes'
 import { PatientController } from './infrastructure/http/controllers/PatientController'
-import { CreatePatientProfileUseCase } from './application/patient/CreatePatientProfileUseCase'
 import { EditPatientProfileUseCase } from './application/patient/EditPatientProfileUseCase'
 import { PatientRepository } from './infrastructure/entities/patient/PatientRepository'
 import { RecordRoutes } from './infrastructure/http/routes/RecordRoutes'
@@ -46,7 +45,6 @@ import { EditGlycatedHemoglobinRecordUseCase } from './application/record/EditGl
 import { RecordController } from './infrastructure/http/controllers/RecordController'
 import { DoctorRoutes } from './infrastructure/http/routes/DoctorRoutes'
 import { DoctorController } from './infrastructure/http/controllers/DoctorController'
-import { CreateDoctorProfileUseCase } from './application/doctor/CreateDoctorProfileUseCase'
 import { EditDoctorProfileUseCase } from './application/doctor/EditDoctorProfileUseCase'
 import { DoctorRepository } from './infrastructure/entities/doctor/DoctorRepository'
 import { QuestionRoutes } from './infrastructure/http/routes/QuestionRoutes'
@@ -132,6 +130,13 @@ import SocketService from './infrastructure/network/SocketService'
 import { UpdatePasswordUseCase } from './application/user/UpdatePasswordUseCase'
 import { CreatePasswordChangeMailUseCase } from './application/user/CreatePasswordChangeMailUseCase'
 import { GoogleMailService } from './infrastructure/network/GoogleMailService'
+import { S3Client } from '@aws-sdk/client-s3'
+import { EditUserAvatarUseCase } from 'application/user/EditUserAvatarUseCase'
+import { CommonController } from 'infrastructure/http/controllers/CommonController'
+import { GetDoctorsUseCase } from 'application/common/GetDoctorsUseCase'
+import { CommonRoutes } from 'infrastructure/http/routes/CommonRoutes'
+import { CreateDoctorUseCase } from 'application/doctor/CreateDoctorUseCase'
+import { CreatePatientUseCase } from 'application/patient/CreatePatientUseCase'
 
 void main()
 
@@ -154,7 +159,6 @@ async function main(): Promise<void> {
   }
 
   const app: Express = express()
-  // Socket.io init
   const httpServer = createServer(app)
   const io = new Server(httpServer, {
     path: '/ws/notification',
@@ -173,7 +177,6 @@ async function main(): Promise<void> {
   /**
    * Shared Services
    */
-  // const rawQueryRepository = new RawQueryRepository(dataSource)
   const uuidService = new UuidService()
   const hashGenerator = new BcryptHashGenerator()
   const scheduler = new Scheduler()
@@ -210,6 +213,14 @@ async function main(): Promise<void> {
   const notificationRepository = new NotificationRepository(dataSource)
   const meetingLinkRepository = new MeetingLinkRepository(dataSource)
 
+  const s3Client = new S3Client({
+    credentials: {
+      accessKeyId: process.env.ACCESS_KEY as string,
+      secretAccessKey: process.env.SECRET_ACCESS_KEY as string,
+    },
+    region: process.env.BUCKET_REGION as string,
+  })
+
   /**
    * User Domain
    */
@@ -234,11 +245,14 @@ async function main(): Promise<void> {
     hashGenerator
   )
 
+  const editUserAvatarUseCase = new EditUserAvatarUseCase(s3Client, uuidService)
+
   /**
    * Doctor Domain
    */
-  const createDoctorProfileUseCase = new CreateDoctorProfileUseCase(
+  const createDoctorUseCase = new CreateDoctorUseCase(
     doctorRepository,
+    userRepository,
     uuidService
   )
   const editDoctorProfileUseCase = new EditDoctorProfileUseCase(
@@ -252,8 +266,9 @@ async function main(): Promise<void> {
   /**
    * Patient Domain
    */
-  const createPatientProfileUseCase = new CreatePatientProfileUseCase(
+  const createPatientUseCase = new CreatePatientUseCase(
     patientRepository,
+    userRepository,
     uuidService
   )
   const editPatientProfileUseCase = new EditPatientProfileUseCase(
@@ -367,6 +382,8 @@ async function main(): Promise<void> {
     patientQuestionAnswerRepository,
     doctorRepository
   )
+
+  const getDoctorsUseCase = new GetDoctorsUseCase(doctorRepository)
 
   /**
    * Record Domain
@@ -700,15 +717,17 @@ async function main(): Promise<void> {
     doctorRepository,
     editUserAccountUseCase,
     createPasswordChangeMailUseCase,
-    updatePasswordUseCase
+    updatePasswordUseCase,
+    editUserAvatarUseCase,
+    createDoctorUseCase,
+    createPatientUseCase
   )
+
   const patientController = new PatientController(
-    createPatientProfileUseCase,
     editPatientProfileUseCase,
     getPatientProfileUseCase
   )
   const doctorController = new DoctorController(
-    createDoctorProfileUseCase,
     editDoctorProfileUseCase,
     getDoctorProfileUseCase,
     getDoctorStatisticUseCase,
@@ -791,6 +810,8 @@ async function main(): Promise<void> {
     deleteNotificationUseCase
   )
 
+  const commonController = new CommonController(getDoctorsUseCase)
+
   app.use(express.urlencoded({ extended: true }))
   app.use(express.json())
 
@@ -818,8 +839,10 @@ async function main(): Promise<void> {
   const consultationRoutes = new ConsultationRoutes(consultationController)
   const healthGoalRoutes = new HealthGoalRoutes(healthGoalController)
   const notificationRoutes = new NotificationRoutes(notificationController)
+  const commonRoutes = new CommonRoutes(commonController)
 
   const mainRoutes = new MainRoutes(
+    commonRoutes,
     authRoutes,
     userRoutes,
     patientRoutes,

@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-import { CreateDoctorProfileUseCase } from '../../../application/doctor/CreateDoctorProfileUseCase'
 import { EditDoctorProfileUseCase } from '../../../application/doctor/EditDoctorProfileUseCase'
 import { GetDoctorStatisticUseCase } from '../../../application/doctor/GetDoctorStatisticUseCase'
 import { GetDoctorProfileUseCase } from '../../../application/doctor/GetDoctorProfileUseCase'
@@ -7,7 +6,6 @@ import { GetDoctorListUseCase } from '../../../application/doctor/GetDoctorListU
 import { MedicalSpecialtyType } from '../../../domain/question/PatientQuestion'
 
 export interface IDoctorController {
-  createDoctorProfile: (req: Request, res: Response) => Promise<Response>
   editDoctorProfile: (req: Request, res: Response) => Promise<Response>
   getDoctorProfile: (req: Request, res: Response) => Promise<Response>
   getDoctorStatistic: (req: Request, res: Response) => Promise<Response>
@@ -16,22 +14,21 @@ export interface IDoctorController {
 
 export class DoctorController implements IDoctorController {
   constructor(
-    private readonly createDoctorProfileUseCase: CreateDoctorProfileUseCase,
     private readonly editDoctorProfileUseCase: EditDoctorProfileUseCase,
     private readonly getDoctorProfileUseCase: GetDoctorProfileUseCase,
     private readonly getDoctorStatisticUseCase: GetDoctorStatisticUseCase,
     private readonly getDoctorListUseCase: GetDoctorListUseCase
   ) {}
 
-  public createDoctorProfile = async (
-    req: Request,
-    res: Response
-  ): Promise<Response> => {
-    const request = { ...req.body, user: req.user }
-    const user = await this.createDoctorProfileUseCase.execute(request)
+  // public createDoctor = async (
+  //   req: Request,
+  //   res: Response
+  // ): Promise<Response> => {
+  //   const request = {  user: req.body }
+  //   const user = await this.createDoctorUseCase.execute(request)
 
-    return res.status(200).json(user)
-  }
+  //   return res.status(200).json(user)
+  // }
 
   public editDoctorProfile = async (
     req: Request,

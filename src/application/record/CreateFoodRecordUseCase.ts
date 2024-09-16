@@ -42,7 +42,6 @@ export class CreateFoodRecordUseCase {
       throw new AuthorizationError('Patient does not exist.')
     }
 
-    // kc,foodTime,foodImage
     const foodRecord = new FoodRecord({
       id: this.uuidService.generateUuid(),
       foodImage: null,

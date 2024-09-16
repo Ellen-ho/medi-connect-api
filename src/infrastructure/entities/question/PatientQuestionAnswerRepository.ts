@@ -44,7 +44,7 @@ export class PatientQuestionAnswerRepository
       const entity = await this.getRepo().findOne({
         where: {
           id: patientQuestionAnswerId,
-          doctor: { id: doctorId }, // need to set @RelationId
+          doctor: { id: doctorId },
         },
       })
       return entity != null ? this.getMapper().toDomainModel(entity) : null
@@ -64,7 +64,7 @@ export class PatientQuestionAnswerRepository
       const entity = await this.getRepo().findOne({
         where: {
           patientQuestion: { id: patientQuestionId },
-          doctor: { id: doctorId }, // need to set @RelationId
+          doctor: { id: doctorId },
         },
         relations: ['patientQuestion'],
       })
@@ -188,7 +188,6 @@ export class PatientQuestionAnswerRepository
 
       const answerDetails: IAnswerItem[] = rawAnswerItems.map(
         (rawAnswerItem) => {
-          // hack: remove duplicated items
           const seenDoctorIds = new Set()
           const distictAgreedDoctor: Array<{
             doctorId: string

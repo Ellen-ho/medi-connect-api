@@ -41,7 +41,7 @@ export class UserRoutes {
       .post(
         '/upload-avatar',
         upload.fields([{ name: 'avatar', maxCount: 1 }]),
-        asyncHandler(this.userController.uploadAvatar)
+        asyncHandler(this.userController.editUserAvatar)
       )
       .post(
         '/reset-password-mail',
@@ -50,7 +50,6 @@ export class UserRoutes {
       )
       .patch(
         '/reset-password',
-        // resetPasswordAuthenticated
         validator(updatePasswordSchema),
         asyncHandler(this.userController.updatePassword)
       )

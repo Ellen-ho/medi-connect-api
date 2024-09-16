@@ -120,7 +120,6 @@ export class Doctor {
   }
 
   public updateData(data: IDoctorProfileUpdateData): void {
-    // TODO: improve this
     this.props.avatar = data.avatar
     this.props.firstName = data.firstName
     this.props.lastName = data.lastName

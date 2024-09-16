@@ -29,9 +29,8 @@ export class CreatePasswordChangeMailUseCase {
       throw new NotFoundError('This user does not exist.')
     }
 
-    const userEmail = existingUser.email // 用户的电子邮件
+    const userEmail = existingUser.email
 
-    // 生成重置令牌
     const resetToken = jwt.sign(
       { id: existingUser.id, mail: userEmail },
       process.env.RESET_PASSWORD_MAIL_JWT_SECRET as string,
@@ -59,7 +58,7 @@ export class CreatePasswordChangeMailUseCase {
       if (error instanceof NotFoundError) {
         return { success: false, error: error.message }
       }
-      // 其他类型的错误，继续抛出
+
       throw error
     }
   }

@@ -24,7 +24,6 @@ const facebookCallbackAuthenticator = (
 ): void => {
   const clientUrl = process.env.CLIENT_URL as string
   passport.authenticate('facebook', {
-    // setup the FE routing path
     successRedirect: `${clientUrl}/oauth`,
     failureRedirect: `${clientUrl}/signin`,
   })(req, res, next)

@@ -3,8 +3,6 @@ import { User, UserRoleType } from '../../domain/user/User'
 import { IUserRepository } from '../../domain/user/interfaces/repositories/IUserRepository'
 import { GetUserAccountUseCase } from './GetUserAccountUseCase'
 
-// Initialize the GetUserUseCase with the mock UserRepository
-
 describe('Unit test:GetUserAccountCase', () => {
   const mockUserRepo = mock<IUserRepository>()
   const getUserAccountUseCase = new GetUserAccountUseCase(mockUserRepo)
@@ -41,7 +39,6 @@ describe('Unit test:GetUserAccountCase', () => {
   })
 
   it('should throw an error when a non-existent id is provided', async () => {
-    // Create a request object for a non-existent user
     const mockRequest = {
       user: new User({
         id: '2',

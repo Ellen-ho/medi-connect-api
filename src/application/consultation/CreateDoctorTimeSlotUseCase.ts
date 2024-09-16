@@ -121,7 +121,7 @@ export class CreateDoctorTimeSlotUseCase {
       doctorId: existingDoctor.id,
       startAt: new Date(startAt),
       endAt: new Date(endAt),
-      availability: true, // after creating availability will be availability
+      availability: true,
       createdAt: new Date(),
       updatedAt: new Date(),
       deletedAt: null,

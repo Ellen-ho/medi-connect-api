@@ -158,20 +158,18 @@ export const getBloodPressureRecordsSchema = {
     endDate: Joi.string().optional(),
     targetPatientId: Joi.string().uuid().required(),
   }).custom((value, helpers) => {
-    const startDate = value.startDate as string // 显式类型转换
-    const endDate = value.endDate as string // 显式类型转换
+    const startDate = value.startDate as string
+    const endDate = value.endDate as string
 
     if (startDate !== '' && endDate !== '') {
       {
         const start = new Date(startDate).getTime()
         const end = new Date(endDate).getTime()
 
-        // Check if endDate is not earlier than startDate
         if (end < start) {
           return helpers.error('any.invalid')
         }
 
-        // Check if the difference between startDate and endDate is not more than 31 days
         const diffInDays = (end - start) / (1000 * 3600 * 24)
         if (diffInDays > 31) {
           return helpers.error('any.invalid')
@@ -191,20 +189,18 @@ export const getBloodSugarRecordsSchema = {
     endDate: Joi.string().optional(),
     targetPatientId: Joi.string().uuid().required(),
   }).custom((value, helpers) => {
-    const startDate = value.startDate as string // 显式类型转换
-    const endDate = value.endDate as string // 显式类型转换
+    const startDate = value.startDate as string
+    const endDate = value.endDate as string
 
     if (startDate !== '' && endDate !== '') {
       {
         const start = new Date(startDate).getTime()
         const end = new Date(endDate).getTime()
 
-        // Check if endDate is not earlier than startDate
         if (end < start) {
           return helpers.error('any.invalid')
         }
 
-        // Check if the difference between startDate and endDate is not more than 31 days
         const diffInDays = (end - start) / (1000 * 3600 * 24)
         if (diffInDays > 31) {
           return helpers.error('any.invalid')
@@ -224,20 +220,18 @@ export const getExerciseRecordsSchema = {
     endDate: Joi.string().optional(),
     targetPatientId: Joi.string().uuid().required(),
   }).custom((value, helpers) => {
-    const startDate = value.startDate as string // 显式类型转换
-    const endDate = value.endDate as string // 显式类型转换
+    const startDate = value.startDate as string
+    const endDate = value.endDate as string
 
     if (startDate !== '' && endDate !== '') {
       {
         const start = new Date(startDate).getTime()
         const end = new Date(endDate).getTime()
 
-        // Check if endDate is not earlier than startDate
         if (end < start) {
           return helpers.error('any.invalid')
         }
 
-        // Check if the difference between startDate and endDate is not more than 31 days
         const diffInDays = (end - start) / (1000 * 3600 * 24)
         if (diffInDays > 31) {
           return helpers.error('any.invalid')
@@ -257,20 +251,18 @@ export const getFoodRecordsSchema = {
     endDate: Joi.string().optional(),
     targetPatientId: Joi.string().uuid().required(),
   }).custom((value, helpers) => {
-    const startDate = value.startDate as string // 显式类型转换
-    const endDate = value.endDate as string // 显式类型转换
+    const startDate = value.startDate as string
+    const endDate = value.endDate as string
 
     if (startDate !== '' && endDate !== '') {
       {
         const start = new Date(startDate).getTime()
         const end = new Date(endDate).getTime()
 
-        // Check if endDate is not earlier than startDate
         if (end < start) {
           return helpers.error('any.invalid')
         }
 
-        // Check if the difference between startDate and endDate is not more than 31 days
         const diffInDays = (end - start) / (1000 * 3600 * 24)
         if (diffInDays > 31) {
           return helpers.error('any.invalid')
@@ -290,20 +282,18 @@ export const getGlycatedHemoglobinRecordsSchema = {
     endDate: Joi.string().optional(),
     targetPatientId: Joi.string().uuid().required(),
   }).custom((value, helpers) => {
-    const startDate = value.startDate as string // 显式类型转换
-    const endDate = value.endDate as string // 显式类型转换
+    const startDate = value.startDate as string
+    const endDate = value.endDate as string
 
     if (startDate !== '' && endDate !== '') {
       {
         const start = new Date(startDate).getTime()
         const end = new Date(endDate).getTime()
 
-        // Check if endDate is not earlier than startDate
         if (end < start) {
           return helpers.error('any.invalid')
         }
 
-        // Check if the difference between startDate and endDate is not more than 31 days
         const diffInDays = (end - start) / (1000 * 3600 * 24)
         if (diffInDays > 31) {
           return helpers.error('any.invalid')
@@ -323,20 +313,18 @@ export const getSleepRecordsSchema = {
     endDate: Joi.string().optional(),
     targetPatientId: Joi.string().uuid().required(),
   }).custom((value, helpers) => {
-    const startDate = value.startDate as string // 显式类型转换
-    const endDate = value.endDate as string // 显式类型转换
+    const startDate = value.startDate as string
+    const endDate = value.endDate as string
 
     if (startDate !== '' && endDate !== '') {
       {
         const start = new Date(startDate).getTime()
         const end = new Date(endDate).getTime()
 
-        // Check if endDate is not earlier than startDate
         if (end < start) {
           return helpers.error('any.invalid')
         }
 
-        // Check if the difference between startDate and endDate is not more than 31 days
         const diffInDays = (end - start) / (1000 * 3600 * 24)
         if (diffInDays > 31) {
           return helpers.error('any.invalid')
@@ -356,20 +344,18 @@ export const getWeightRecordsSchema = {
     endDate: Joi.string().optional(),
     targetPatientId: Joi.string().uuid().required(),
   }).custom((value, helpers) => {
-    const startDate = value.startDate as string // 显式类型转换
-    const endDate = value.endDate as string // 显式类型转换
+    const startDate = value.startDate as string
+    const endDate = value.endDate as string
 
     if (startDate !== '' && endDate !== '') {
       {
         const start = new Date(startDate).getTime()
         const end = new Date(endDate).getTime()
 
-        // Check if endDate is not earlier than startDate
         if (end < start) {
           return helpers.error('any.invalid')
         }
 
-        // Check if the difference between startDate and endDate is not more than 31 days
         const diffInDays = (end - start) / (1000 * 3600 * 24)
         if (diffInDays > 31) {
           return helpers.error('any.invalid')

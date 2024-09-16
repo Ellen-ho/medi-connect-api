@@ -6,8 +6,6 @@ import { IUuidService } from '../../domain/utils/IUuidService'
 import { IHashGenerator } from '../../domain/utils/IHashGenerator'
 import { ValidationError } from '../../infrastructure/error/ValidationError'
 
-// Initialize the CreateUserUseCase with the mock UserRepository
-
 describe('Unit test: CreateUserUseCase', () => {
   const mockUserRepo = mock<IUserRepository>()
   const mockUuidService = mock<IUuidService>()

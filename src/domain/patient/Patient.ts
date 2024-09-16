@@ -160,7 +160,6 @@ export class Patient {
   }
 
   public updateData(data: IPatientProfileUpdateData): void {
-    // TODO: improve this
     this.props.avatar = data.avatar
     this.props.firstName = data.firstName
     this.props.lastName = data.lastName

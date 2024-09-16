@@ -97,9 +97,8 @@ export class CreateHealthGoalUseCase {
     }
 
     const daysAgo = 14
-    const hospitalCheckDaysAgo = 45 // the interval go to hospital to check Hb1c
+    const hospitalCheckDaysAgo = 45
 
-    // Check all records
     const checkedBloodPressureRecord = await this.isBloodPressureAbnormal(
       existingPatient.id,
       daysAgo
@@ -154,7 +153,6 @@ export class CreateHealthGoalUseCase {
         ? StatusAfterCheck.ABNORMAL
         : StatusAfterCheck.NORMAL
 
-    // all records are NORMAL, no need to create new health goal
     if (
       this.allRecordsAreNormal([
         checkedBloodPressureRecord.status,
@@ -165,7 +163,6 @@ export class CreateHealthGoalUseCase {
       return null
     }
 
-    // if some of the records are ABNORMAL, create new health goal
     const healthGoal = new HealthGoal({
       id: this.uuidService.generateUuid(),
       bloodPressureTargetValue: {
@@ -281,7 +278,6 @@ export class CreateHealthGoalUseCase {
       }
     }
 
-    // abnormal but not emergency, set goal
     if (
       (avgSystolicBloodPressure > 120 && avgSystolicBloodPressure <= 139) ||
       (avgDiastolicBloodPressure > 80 && avgDiastolicBloodPressure <= 89)
@@ -350,7 +346,6 @@ export class CreateHealthGoalUseCase {
       }
     }
 
-    // abnormal but not emergency, set goal
     if (avgBloodSugarValue >= 100 && avgBloodSugarValue <= 125) {
       return {
         status: StatusAfterCheck.ABNORMAL,
@@ -416,7 +411,6 @@ export class CreateHealthGoalUseCase {
       }
     }
 
-    // abnormal but not emergency, set goal
     if (
       (avgBodyMassIndexValue >= 24 && avgBodyMassIndexValue < 27) ||
       (avgBodyMassIndexValue >= 16 && avgBodyMassIndexValue < 18.5)
@@ -483,7 +477,6 @@ export class CreateHealthGoalUseCase {
       }
     }
 
-    // abnormal but not emergency, set goal
     const hasGlycatedHemoglobinAbnormal = pastGlycatedHemoglobinRecord.some(
       (record) => {
         const roundedValue =
