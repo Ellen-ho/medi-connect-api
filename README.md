@@ -54,10 +54,9 @@ Recognizing physicians' constraints on time and presence, the platform aids in g
 - Using [`body-parser`](https://www.npmjs.com/package/body-parser) to extract information from incoming requests such as sign-up forms at the frontend.
 - Using [`cors`](https://www.npmjs.com/package/cors) to serve third-party origins.
 - Using [`express`](https://www.npmjs.com/package/express) as a web applications framework for Node.js.
-- Using [`imgur-node-api`](https://www.npmjs.com/package/imgur-node-api) and [`multer`](https://www.npmjs.com/package/multer) to upload images to imgur, especially for user's profile avatars. (Mindful of cybersecurity and medical privacy, there's a future plan to optimize by securely storing user photos on a self-hosted server.)
+- Uses [`AWS S3`](https://www.npmjs.com/package/aws-sdk) for uploading and storing user profile avatars. The image upload functionality is handled by [`Multer`](https://www.npmjs.com/package/multer) middleware in combination with AWS SDK. This approach ensures that all user images are securely uploaded to S3 buckets, and proper access control mechanisms are in place to safeguard user privacy, especially in a healthcare context.
 - Using [`day.js`](https://www.npmjs.com/package/dayjs) to customize date and time format in date conversion and processing.
 - Using [`node-schedule`](https://www.npmjs.com/package/node-schedule) to schedule tasks that need to be triggered periodically.
-- Using [passport-facebook](http://www.passportjs.org/packages/passport-facebook/) with the Facebook Strategy to authenticate users with their Facebook account.
 - Using [passport-jwt](http://www.passportjs.org/packages/passport-jwt/) for token-based authentication in RESTful APIs.
 - Using [jest](https://www.npmjs.com/package/jest) for unit tests and integration tests.
 - Using [swagger-ui-express](https://www.npmjs.com/package/swagger-ui-express) to design and document RESTful APIs.
@@ -82,7 +81,7 @@ Recognizing physicians' constraints on time and presence, the platform aids in g
 As a patient member, you can...
 
 1. Sign up for a Medi-Connect account to embark on your journey towards a healthier lifestyle.
-2. Sign in using your registered email and password, or alternatively, you can also log in with your Facebook account. (**Facebook authentication works fine in local development mode, but due to recent changes in Meta for Developers, using Facebook OAuth now requires the product to be officially launched and pass business verification. Since Medi-Connect is a side project, the Facebook authentication feature is currently not functioning as expected on production.**)
+2. Sign in using your registered email and password, or alternatively, you can also log in with your Facebook account.
 3. Create your personal profile in order to commence the use of other services on the plant.
 4. Edit your account or your personal profile.
 5. Add your health records, with the platform offering seven categories of health record classifications, including blood pressure, blood sugar, glycated hemoglobin, sleep, exercise, diet, and weight.
@@ -101,6 +100,7 @@ As a patient member, you can...
 18. Receive the health goal plan sent by the platform when you have maintained records for two consecutive weeks.
 19. Accept the health goal plan and commence your plan accordingly.
 20. Decline the health goal plan provided by the platform.
+21. Click "Forgot Password" if you forget your password, and follow the link sent to your email to reset your password.
 
 ### Doctor
 
@@ -121,6 +121,7 @@ As a doctor member, you can...
 13. View the profile, records, and goals of the patient who has scheduled an appointment with you when the appointment status is "upcoming."
 14. Receive the Google Meet link for the respective appointment 22 hours prior to the scheduled appointment time.
 15. View the number of agreements and expressions of gratitude received for each of your responses.
+16. Click "Forgot Password" if you forget your password, and follow the link sent to your email to reset your password.
 
 ## Local development
 
