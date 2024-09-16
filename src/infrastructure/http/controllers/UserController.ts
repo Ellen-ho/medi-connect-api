@@ -9,6 +9,8 @@ import { EditUserAccountUseCase } from '../../../application/user/EditUserAccoun
 import { CreatePasswordChangeMailUseCase } from 'application/user/CreatePasswordChangeMailUseCase'
 import { UpdatePasswordUseCase } from 'application/user/UpdatePasswordUseCase'
 import { EditUserAvatarUseCase } from 'application/user/EditUserAvatarUseCase'
+import { CreateDoctorUseCase } from 'application/doctor/CreateDoctorUseCase'
+import { CreatePatientUseCase } from 'application/patient/CreatePatientUseCase'
 
 interface MulterRequest extends Request {
   files: any
@@ -33,7 +35,9 @@ export class UserController implements IUserController {
     private readonly editUserAccountUseCase: EditUserAccountUseCase,
     private readonly createPasswordChangeMailUseCase: CreatePasswordChangeMailUseCase,
     private readonly updatePasswordUseCase: UpdatePasswordUseCase,
-    private readonly editUserAvatarUseCase: EditUserAvatarUseCase
+    private readonly editUserAvatarUseCase: EditUserAvatarUseCase,
+    private readonly createDoctorUseCase: CreateDoctorUseCase,
+    private readonly createPatientUseCase: CreatePatientUseCase
   ) {}
 
   public login = async (req: Request, res: Response): Promise<Response> => {
@@ -50,13 +54,17 @@ export class UserController implements IUserController {
     if (role === UserRoleType.PATIENT) {
       loginPatient = await this.patientRepository.findByUserId(id)
       avatar = loginPatient?.avatar
-      loginPatient !== null ? (hasProfile = true) : (hasProfile = false)
+      loginPatient?.firstName !== '' && loginPatient?.lastName !== ''
+        ? (hasProfile = true)
+        : (hasProfile = false)
     }
 
     if (role === UserRoleType.DOCTOR) {
       loginDoctor = await this.doctorRepository.findByUserId(id)
       avatar = loginDoctor?.avatar
-      loginDoctor !== null ? (hasProfile = true) : (hasProfile = false)
+      loginDoctor?.firstName !== '' && loginDoctor?.lastName !== ''
+        ? (hasProfile = true)
+        : (hasProfile = false)
     }
 
     return res.status(200).json({
@@ -84,14 +92,28 @@ export class UserController implements IUserController {
   ): Promise<Response> => {
     const { displayName, email, password, role } = req.body
 
-    const newUser = await this.createUserUseCase.execute({
+    const { user } = await this.createUserUseCase.execute({
       displayName,
       email,
       password,
       role,
     })
 
-    return res.status(201).json(newUser)
+    if (role === UserRoleType.DOCTOR) {
+      const doctorId = await this.createDoctorUseCase.execute({
+        user,
+      })
+
+      return res.status(201).json({ user, doctorId })
+    } else if (role === UserRoleType.PATIENT) {
+      const patientId = await this.createPatientUseCase.execute({
+        user,
+      })
+
+      return res.status(201).json({ user, patientId })
+    }
+
+    return res.status(400).json({ message: 'Invalid role' })
   }
 
   public editUserAccount = async (
