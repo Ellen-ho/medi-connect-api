@@ -21,4 +21,13 @@ export interface IDoctorRepository extends IBaseRepository<Doctor> {
     }>
     counts: number
   }>
+  findLatestDoctors: (limit: number) => Promise<{
+    data: Array<{
+      id: string
+      avatar: string | null
+      firstName: string
+      lastName: string
+      specialties: MedicalSpecialtyType[]
+    }>
+  }>
 }

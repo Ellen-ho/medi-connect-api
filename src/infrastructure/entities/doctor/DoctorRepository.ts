@@ -127,4 +127,49 @@ export class DoctorRepository
       )
     }
   }
+
+  public async findLatestDoctors(limit: number): Promise<{
+    data: Array<{
+      id: string
+      avatar: string | null
+      firstName: string
+      lastName: string
+      specialties: MedicalSpecialtyType[]
+    }>
+  }> {
+    try {
+      const result = await this.getQuery<
+        Array<{
+          id: string
+          avatar: string | null
+          first_name: string
+          last_name: string
+          specialties: MedicalSpecialtyType[]
+        }>
+      >(
+        `
+          SELECT id, avatar, first_name, last_name, specialties
+          FROM doctors
+          ORDER BY created_at ASC
+          LIMIT $1
+        `,
+        [limit]
+      )
+
+      const data = result.map((doctor) => ({
+        id: doctor.id,
+        avatar: doctor.avatar,
+        firstName: doctor.first_name,
+        lastName: doctor.last_name,
+        specialties: doctor.specialties,
+      }))
+
+      return { data }
+    } catch (e) {
+      throw new RepositoryError(
+        'DoctorRepository findLatestDoctors error',
+        e as Error
+      )
+    }
+  }
 }

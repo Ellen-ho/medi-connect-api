@@ -12,10 +12,7 @@ interface CreateUserRequest {
 }
 
 interface CreateUserResponse {
-  id: string
-  displayName: string
-  email: string
-  role: UserRoleType
+  user: User
 }
 
 export class CreateUserUseCase {
@@ -49,11 +46,6 @@ export class CreateUserUseCase {
 
     await this.userRepository.save(user)
 
-    return {
-      id: user.id,
-      displayName: user.displayName,
-      email: user.email,
-      role: user.role,
-    }
+    return { user }
   }
 }
