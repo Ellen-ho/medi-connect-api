@@ -10,6 +10,7 @@ import { GenderType } from '../../domain/patient/Patient'
 import { MedicalSpecialtyType } from '../../domain/question/PatientQuestion'
 import { Doctor } from '../../domain/doctor/Doctor'
 import { ConsultAppointmentStatusType } from '../../domain/consultation/ConsultAppointment'
+import { TimeSlotType } from 'domain/consultation/DoctorTimeSlot'
 
 describe('Unit test: GetDoctorConsultAppointmentsUseCase', () => {
   const mockConsultAppointmentRepo = mock<IConsultAppointmentRepository>()
@@ -76,6 +77,7 @@ describe('Unit test: GetDoctorConsultAppointmentsUseCase', () => {
         createdAt: mockedDate,
         updatedAt: mockedDate,
       }),
+      onlyUpcoming: true,
     }
     mockDoctorRepo.findByUserId.mockResolvedValue(null)
     await expect(
@@ -100,6 +102,7 @@ describe('Unit test: GetDoctorConsultAppointmentsUseCase', () => {
         createdAt: mockedDate,
         updatedAt: mockedDate,
       }),
+      onlyUpcoming: true,
     }
     const mockUpcomingAppointments = [
       {
@@ -108,6 +111,7 @@ describe('Unit test: GetDoctorConsultAppointmentsUseCase', () => {
         doctorTimeSlot: {
           startAt: new Date('2023-06-19T09:00:00'),
           endAt: new Date('2023-06-19T09:30:00'),
+          type: TimeSlotType.ONLINE,
         },
         patient: {
           id: '2e9915e3-43c9-4f3c-9e52-59c83bb22f36',
@@ -125,6 +129,7 @@ describe('Unit test: GetDoctorConsultAppointmentsUseCase', () => {
         doctorTimeSlot: {
           startAt: new Date('2023-06-08T14:00:00'),
           endAt: new Date('2023-06-08T14:30:00'),
+          type: TimeSlotType.ONLINE,
         },
         patient: {
           id: '67f547d7-259c-4961-8102-97bb582422de',
@@ -142,6 +147,7 @@ describe('Unit test: GetDoctorConsultAppointmentsUseCase', () => {
         doctorTimeSlot: {
           startAt: new Date('2023-06-15T14:00:00'),
           endAt: new Date('2023-06-15T15:00:00'),
+          type: TimeSlotType.ONLINE,
         },
         patient: {
           id: '88f547d7-259c-4961-8102-97bb582422de',

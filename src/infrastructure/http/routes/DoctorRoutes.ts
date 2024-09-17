@@ -2,7 +2,6 @@ import { Router } from 'express'
 import { IDoctorController } from '../controllers/DoctorController'
 import { asyncHandler } from '../middlewares/AsyncHandler'
 import {
-  creatDoctorProfileSchema,
   editDoctorProfileSchema,
   getDoctorProfileSchema,
   getDoctorStatisticSchema,
@@ -15,12 +14,6 @@ export class DoctorRoutes {
   constructor(private readonly doctorController: IDoctorController) {
     this.routes = Router()
     this.routes
-      .post(
-        '/profile',
-        authenticated,
-        validator(creatDoctorProfileSchema),
-        asyncHandler(this.doctorController.createDoctorProfile)
-      )
       .patch(
         '/profile',
         authenticated,

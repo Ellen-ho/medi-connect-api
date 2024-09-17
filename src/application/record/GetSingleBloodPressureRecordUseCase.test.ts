@@ -7,7 +7,10 @@ import { IConsultAppointmentRepository } from '../../domain/consultation/interfa
 import { Doctor, GenderType } from '../../domain/doctor/Doctor'
 import { MedicalSpecialtyType } from '../../domain/question/PatientQuestion'
 import { Patient } from '../../domain/patient/Patient'
-import { DoctorTimeSlot } from '../../domain/consultation/DoctorTimeSlot'
+import {
+  DoctorTimeSlot,
+  TimeSlotType,
+} from '../../domain/consultation/DoctorTimeSlot'
 import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 import { GetSingleBloodPressureRecordUseCase } from './GetSingleBloodPressureRecordUsecase'
 import { BloodPressureRecord } from '../../domain/record/BloodPressureRecord'
@@ -111,6 +114,7 @@ describe('Unit test: GetSingleBloodPressureRecordUseCase', () => {
     updatedAt: new Date('2023-05-20T10:00:00.000Z'),
     deletedAt: null,
     availability: false,
+    type: TimeSlotType.ONLINE,
   })
 
   const mockUpComingAppointments: ConsultAppointment[] = [

@@ -14,7 +14,10 @@ import { AuthorizationError } from '../../infrastructure/error/AuthorizationErro
 import { GenderType, Patient } from '../../domain/patient/Patient'
 import { MedicalSpecialtyType } from '../../domain/question/PatientQuestion'
 import { Doctor } from '../../domain/doctor/Doctor'
-import { DoctorTimeSlot } from '../../domain/consultation/DoctorTimeSlot'
+import {
+  DoctorTimeSlot,
+  TimeSlotType,
+} from '../../domain/consultation/DoctorTimeSlot'
 import { ValidationError } from '../../infrastructure/error/ValidationError'
 import {
   MeetingLink,
@@ -186,6 +189,7 @@ describe('Unit test: CreateConsultAppointmentUseCase', () => {
       updatedAt: mockedDate,
       deletedAt: null,
       availability: true,
+      type: TimeSlotType.ONLINE,
     })
 
     const mockExistingDoctor2 = new Doctor({
@@ -260,6 +264,7 @@ describe('Unit test: CreateConsultAppointmentUseCase', () => {
       updatedAt: mockedDate,
       deletedAt: null,
       availability: true,
+      type: TimeSlotType.ONLINE,
     })
 
     mockPatientRepo.findByUserId.mockResolvedValue(mockExistingPatient)
@@ -300,6 +305,7 @@ describe('Unit test: CreateConsultAppointmentUseCase', () => {
       updatedAt: mockedDate,
       deletedAt: null,
       availability: true,
+      type: TimeSlotType.ONLINE,
     })
 
     mockPatientRepo.findByUserId.mockResolvedValue(mockExistingPatient)
@@ -342,6 +348,7 @@ describe('Unit test: CreateConsultAppointmentUseCase', () => {
       updatedAt: mockCurrentDate,
       deletedAt: null,
       availability: true,
+      type: TimeSlotType.ONLINE,
     })
 
     mockPatientRepo.findByUserId.mockResolvedValue(mockExistingPatient)
@@ -382,6 +389,7 @@ describe('Unit test: CreateConsultAppointmentUseCase', () => {
       updatedAt: new Date('2023-05-18T13:00:00.155Z'),
       deletedAt: null,
       availability: true,
+      type: TimeSlotType.ONLINE,
     })
     const mockGeneratedUuid = 'generatedUuid'
     const mockMeetingLink = new MeetingLink({

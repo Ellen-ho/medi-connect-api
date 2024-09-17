@@ -9,7 +9,10 @@ import { User, UserRoleType } from '../../domain/user/User'
 import { ValidationError } from '../../infrastructure/error/ValidationError'
 import { Doctor, GenderType } from '../../domain/doctor/Doctor'
 import { MedicalSpecialtyType } from '../../domain/question/PatientQuestion'
-import { DoctorTimeSlot } from '../../domain/consultation/DoctorTimeSlot'
+import {
+  DoctorTimeSlot,
+  TimeSlotType,
+} from '../../domain/consultation/DoctorTimeSlot'
 import dayjs from 'dayjs'
 
 describe('Unit test: CreateDoctorTimeSlotUseCase', () => {
@@ -75,6 +78,7 @@ describe('Unit test: CreateDoctorTimeSlotUseCase', () => {
     updatedAt: mockedDate,
     deletedAt: new Date('2023-07-18T13:30:00.155Z'),
     availability: true,
+    type: TimeSlotType.ONLINE,
   })
 
   const nextMonthStartDate = dayjs(mockedDate).add(1, 'month').startOf('month')
@@ -105,6 +109,7 @@ describe('Unit test: CreateDoctorTimeSlotUseCase', () => {
       }),
       startAt: new Date('2023-07-18T13:00:00.155Z'),
       endAt: new Date('2023-07-18T13:30:00.155Z'),
+      type: TimeSlotType.ONLINE,
     }
     mockDoctorRepo.findByUserId.mockResolvedValue(null)
     await expect(
@@ -130,6 +135,7 @@ describe('Unit test: CreateDoctorTimeSlotUseCase', () => {
       }),
       startAt: new Date('2023-07-18T13:00:00.155Z'),
       endAt: new Date('2023-07-18T13:30:00.155Z'),
+      type: TimeSlotType.ONLINE,
     }
     mockDoctorRepo.findByUserId.mockResolvedValue(mockExistingDoctor)
     mockDoctorTimeSlotRepo.findByStartAtAndDoctorId.mockResolvedValue(
@@ -160,6 +166,7 @@ describe('Unit test: CreateDoctorTimeSlotUseCase', () => {
       }),
       startAt: new Date('2023-06-16T13:00:00.155Z'),
       endAt: new Date('2023-06-16T13:30:00.155Z'),
+      type: TimeSlotType.ONLINE,
     }
     mockDoctorRepo.findByUserId.mockResolvedValue(mockExistingDoctor)
     mockDoctorTimeSlotRepo.findByStartAtAndDoctorId.mockResolvedValue(null)
@@ -191,6 +198,7 @@ describe('Unit test: CreateDoctorTimeSlotUseCase', () => {
       }),
       startAt: new Date('2023-07-18T13:30:00.155Z'),
       endAt: new Date('2023-07-18T13:00:00.155Z'),
+      type: TimeSlotType.ONLINE,
     }
     mockDoctorRepo.findByUserId.mockResolvedValue(mockExistingDoctor)
     mockDoctorTimeSlotRepo.findByStartAtAndDoctorId.mockResolvedValue(null)
@@ -222,6 +230,7 @@ describe('Unit test: CreateDoctorTimeSlotUseCase', () => {
       }),
       startAt: new Date('2023-07-18T13:00:00.155Z'),
       endAt: new Date('2023-07-18T13:50:00.155Z'),
+      type: TimeSlotType.ONLINE,
     }
     const mockMinimumOfEndAt = dayjs(mockRequest.startAt).add(30, 'minute')
     mockDoctorRepo.findByUserId.mockResolvedValue(mockExistingDoctor)
@@ -256,6 +265,7 @@ describe('Unit test: CreateDoctorTimeSlotUseCase', () => {
       }),
       startAt: new Date('2023-06-28T13:00:00.155Z'),
       endAt: new Date('2023-06-28T13:30:00.155Z'),
+      type: TimeSlotType.ONLINE,
     }
     const mockMinimumOfEndAt = dayjs(mockRequest.startAt).add(30, 'minute')
     mockDoctorRepo.findByUserId.mockResolvedValue(mockExistingDoctor)
@@ -299,6 +309,7 @@ describe('Unit test: CreateDoctorTimeSlotUseCase', () => {
       }),
       startAt: new Date('2023-09-18T13:00:00.155Z'),
       endAt: new Date('2023-09-18T13:30:00.155Z'),
+      type: TimeSlotType.ONLINE,
     }
     const mockMinimumOfEndAt = dayjs(mockRequest.startAt).add(30, 'minute')
     mockDoctorRepo.findByUserId.mockResolvedValue(mockExistingDoctor)
@@ -346,6 +357,7 @@ describe('Unit test: CreateDoctorTimeSlotUseCase', () => {
       }),
       startAt: new Date('2023-07-18T13:00:00.155Z'),
       endAt: new Date('2023-07-18T13:30:00.155Z'),
+      type: TimeSlotType.ONLINE,
     }
     const mockMinimumOfEndAt = dayjs(mockRequest.startAt).add(30, 'minute')
     const mockGeneratedUuid = 'generatedUuid'

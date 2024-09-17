@@ -9,6 +9,7 @@ import { AuthorizationError } from '../../infrastructure/error/AuthorizationErro
 import dayjs from 'dayjs'
 import { ConsultAppointmentStatusType } from '../../domain/consultation/ConsultAppointment'
 import { MedicalSpecialtyType } from '../../domain/question/PatientQuestion'
+import { TimeSlotType } from 'domain/consultation/DoctorTimeSlot'
 
 describe('Unit test: GetPatientConsultAppointmentsUseCase', () => {
   const mockConsultAppointmentRepo = mock<IConsultAppointmentRepository>()
@@ -69,6 +70,7 @@ describe('Unit test: GetPatientConsultAppointmentsUseCase', () => {
         createdAt: mockedDate,
         updatedAt: mockedDate,
       }),
+      onlyUpcoming: true,
     }
     mockPatientRepo.findByUserId.mockResolvedValue(null)
     await expect(
@@ -93,6 +95,7 @@ describe('Unit test: GetPatientConsultAppointmentsUseCase', () => {
         createdAt: mockedDate,
         updatedAt: mockedDate,
       }),
+      onlyUpcoming: true,
     }
     const mockUpcomingAppointments = [
       {
@@ -102,6 +105,7 @@ describe('Unit test: GetPatientConsultAppointmentsUseCase', () => {
         doctorTimeSlot: {
           startAt: new Date('2023-06-19T10:00:00'),
           endAt: new Date('2023-06-19T11:00:00'),
+          type: TimeSlotType.ONLINE,
         },
         doctor: {
           firstName: 'John',
@@ -121,6 +125,7 @@ describe('Unit test: GetPatientConsultAppointmentsUseCase', () => {
         doctorTimeSlot: {
           startAt: new Date('2023-06-07T14:00:00'),
           endAt: new Date('2023-06-07T15:00:00'),
+          type: TimeSlotType.ONLINE,
         },
         doctor: {
           firstName: 'Jane',
@@ -140,6 +145,7 @@ describe('Unit test: GetPatientConsultAppointmentsUseCase', () => {
         doctorTimeSlot: {
           startAt: new Date('2023-06-09T09:00:00'),
           endAt: new Date('2023-06-09T10:00:00'),
+          type: TimeSlotType.ONLINE,
         },
         doctor: {
           firstName: 'Sarah',

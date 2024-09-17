@@ -15,7 +15,10 @@ import {
   ConsultAppointment,
   ConsultAppointmentStatusType,
 } from '../../domain/consultation/ConsultAppointment'
-import { DoctorTimeSlot } from '../../domain/consultation/DoctorTimeSlot'
+import {
+  DoctorTimeSlot,
+  TimeSlotType,
+} from '../../domain/consultation/DoctorTimeSlot'
 import { Doctor } from '../../domain/doctor/Doctor'
 import { MedicalSpecialtyType } from '../../domain/question/PatientQuestion'
 import {
@@ -92,6 +95,7 @@ describe('Unit test: CancelConsultAppointmentUseCase', () => {
       updatedAt: new Date('2023-05-27T09:00:00'),
       deletedAt: null,
       availability: false,
+      type: TimeSlotType.CLINIC,
     }),
     status: ConsultAppointmentStatusType.UPCOMING,
     createdAt: new Date('2023-06-10T10:00:00'),

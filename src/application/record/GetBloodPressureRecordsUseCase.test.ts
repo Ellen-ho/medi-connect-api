@@ -13,7 +13,10 @@ import {
 import { GenderType, Patient } from '../../domain/patient/Patient'
 import { MedicalSpecialtyType } from '../../domain/question/PatientQuestion'
 import { Doctor } from '../../domain/doctor/Doctor'
-import { DoctorTimeSlot } from '../../domain/consultation/DoctorTimeSlot'
+import {
+  DoctorTimeSlot,
+  TimeSlotType,
+} from '../../domain/consultation/DoctorTimeSlot'
 
 describe('Unit test: GetBloodPressureRecordsUseCase', () => {
   const mockBloodPressureRecordRepo = mock<IBloodPressureRecordRepository>()
@@ -108,6 +111,7 @@ describe('Unit test: GetBloodPressureRecordsUseCase', () => {
     updatedAt: new Date('2023-05-20T10:00:00.000Z'),
     deletedAt: null,
     availability: false,
+    type: TimeSlotType.ONLINE,
   })
 
   const mockUpComingAppointments: ConsultAppointment[] = [

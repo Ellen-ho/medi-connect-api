@@ -8,7 +8,10 @@ import { User, UserRoleType } from '../../domain/user/User'
 import { Doctor, GenderType } from '../../domain/doctor/Doctor'
 import { MedicalSpecialtyType } from '../../domain/question/PatientQuestion'
 import { NotFoundError } from '../../infrastructure/error/NotFoundError'
-import { DoctorTimeSlot } from '../../domain/consultation/DoctorTimeSlot'
+import {
+  DoctorTimeSlot,
+  TimeSlotType,
+} from '../../domain/consultation/DoctorTimeSlot'
 import { ValidationError } from '../../infrastructure/error/ValidationError'
 
 describe('Unit test: EditDoctorTimeSlotUseCase', () => {
@@ -76,6 +79,7 @@ describe('Unit test: EditDoctorTimeSlotUseCase', () => {
     id: 'Slot1',
     startAt: new Date('2023-07-21T13:00:00.155Z'),
     endAt: new Date('2023-07-21T13:30:00.155Z'),
+    type: TimeSlotType.ONLINE,
   }
 
   it('should throw AuthorizationError when the doctor does not exist', async () => {
@@ -113,6 +117,7 @@ describe('Unit test: EditDoctorTimeSlotUseCase', () => {
       updatedAt: mockedDate,
       deletedAt: new Date('2023-07-18T13:30:00.155Z'),
       availability: true,
+      type: TimeSlotType.ONLINE,
     })
 
     mockDoctorRepo.findByUserId.mockResolvedValue(mockExistingDoctor)
@@ -147,6 +152,7 @@ describe('Unit test: EditDoctorTimeSlotUseCase', () => {
       updatedAt: mockedDate,
       deletedAt: new Date('2023-07-18T13:30:00.155Z'),
       availability: true,
+      type: TimeSlotType.ONLINE,
     })
     mockDoctorRepo.findByUserId.mockResolvedValue(mockExistingDoctor)
     mockDoctorTimeSlotRepo.findByIdAndDoctorId.mockResolvedValue(
@@ -179,6 +185,7 @@ describe('Unit test: EditDoctorTimeSlotUseCase', () => {
       updatedAt: mockedDate,
       deletedAt: new Date('2023-07-18T13:30:00.155Z'),
       availability: true,
+      type: TimeSlotType.ONLINE,
     })
     mockDoctorRepo.findByUserId.mockResolvedValue(mockExistingDoctor)
     mockDoctorTimeSlotRepo.findByIdAndDoctorId.mockResolvedValue(
@@ -211,6 +218,7 @@ describe('Unit test: EditDoctorTimeSlotUseCase', () => {
       updatedAt: mockedDate,
       deletedAt: new Date('2023-07-18T13:30:00.155Z'),
       availability: true,
+      type: TimeSlotType.ONLINE,
     })
     mockDoctorRepo.findByUserId.mockResolvedValue(mockExistingDoctor)
     mockDoctorTimeSlotRepo.findByIdAndDoctorId.mockResolvedValue(
@@ -243,6 +251,7 @@ describe('Unit test: EditDoctorTimeSlotUseCase', () => {
       updatedAt: mockedDate,
       deletedAt: new Date('2023-07-18T13:30:00.155Z'),
       availability: true,
+      type: TimeSlotType.ONLINE,
     })
     mockDoctorRepo.findByUserId.mockResolvedValue(mockExistingDoctor)
     mockDoctorTimeSlotRepo.findByIdAndDoctorId.mockResolvedValue(
@@ -275,6 +284,7 @@ describe('Unit test: EditDoctorTimeSlotUseCase', () => {
       updatedAt: new Date('2023-06-19T13:30:00.155Z'),
       deletedAt: new Date('2023-07-18T13:30:00.155Z'),
       availability: true,
+      type: TimeSlotType.ONLINE,
     })
     mockDoctorRepo.findByUserId.mockResolvedValue(mockExistingDoctor)
     mockDoctorTimeSlotRepo.findByIdAndDoctorId.mockResolvedValue(

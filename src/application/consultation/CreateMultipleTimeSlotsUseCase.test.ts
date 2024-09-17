@@ -9,7 +9,10 @@ import { GenderType } from '../../domain/patient/Patient'
 import { Doctor } from '../../domain/doctor/Doctor'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
 import { CreateMultipleTimeSlotsUseCase } from './CreateMultipleTimeSlotsUseCase'
-import { DoctorTimeSlot } from '../../domain/consultation/DoctorTimeSlot'
+import {
+  DoctorTimeSlot,
+  TimeSlotType,
+} from '../../domain/consultation/DoctorTimeSlot'
 import { ValidationError } from '../../infrastructure/error/ValidationError'
 
 describe('Unit test: CreateMultipleTimeSlotsUseCase', () => {
@@ -74,6 +77,7 @@ describe('Unit test: CreateMultipleTimeSlotsUseCase', () => {
     updatedAt: mockedDate,
     deletedAt: new Date('2023-07-18T13:30:00.155Z'),
     availability: true,
+    type: TimeSlotType.ONLINE,
   })
   const mockRequest = {
     user: new User({
@@ -89,10 +93,12 @@ describe('Unit test: CreateMultipleTimeSlotsUseCase', () => {
       {
         startAt: new Date('2023-07-18T13:00:00.155Z'),
         endAt: new Date('2023-07-18T13:30:00.155Z'),
+        type: TimeSlotType.ONLINE,
       },
       {
         startAt: new Date('2023-07-19T13:00:00.155Z'),
         endAt: new Date('2023-07-19T13:30:00.155Z'),
+        type: TimeSlotType.ONLINE,
       },
     ],
   }

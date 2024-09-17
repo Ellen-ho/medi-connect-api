@@ -3,7 +3,6 @@ import { IPatientController } from '../controllers/PatientController'
 import { asyncHandler } from '../middlewares/AsyncHandler'
 import { validator } from '../middlewares/Validator'
 import {
-  creatPatientProfileSchema,
   editPatientProfileSchema,
   getPatientProfileSchema,
 } from '../../../application/patient/PatientValidator'
@@ -13,12 +12,6 @@ export class PatientRoutes {
   constructor(private readonly patientController: IPatientController) {
     this.routes = Router()
     this.routes
-      .post(
-        '/profile',
-        authenticated,
-        validator(creatPatientProfileSchema),
-        asyncHandler(this.patientController.createPatientProfile)
-      )
       .patch(
         '/profile',
         authenticated,
