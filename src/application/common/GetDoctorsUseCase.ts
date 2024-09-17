@@ -1,5 +1,5 @@
-import { IDoctorRepository } from 'domain/doctor/interfaces/repositories/IDoctorRepository'
-import { MedicalSpecialtyType } from 'domain/question/PatientQuestion'
+import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
+import { MedicalSpecialtyType } from '../../domain/question/PatientQuestion'
 
 interface GetDoctorsResponse {
   doctorData: Array<{

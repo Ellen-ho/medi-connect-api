@@ -1,10 +1,10 @@
-import { Doctor, IAddress } from 'domain/doctor/Doctor'
-import { IDoctorRepository } from 'domain/doctor/interfaces/repositories/IDoctorRepository'
-import { GenderType } from 'domain/patient/Patient'
-import { IUserRepository } from 'domain/user/interfaces/repositories/IUserRepository'
-import { User } from 'domain/user/User'
-import { IUuidService } from 'domain/utils/IUuidService'
-import { NotFoundError } from 'infrastructure/error/NotFoundError'
+import { Doctor, IAddress } from '../../domain/doctor/Doctor'
+import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
+import { GenderType } from '../../domain/patient/Patient'
+import { IUserRepository } from '../../domain/user/interfaces/repositories/IUserRepository'
+import { User } from '../../domain/user/User'
+import { IUuidService } from '../../domain/utils/IUuidService'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 
 interface CreateDoctorRequest {
   user: User

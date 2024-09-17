@@ -13,7 +13,7 @@ import { GetQuestionsUseCase } from '../../../application/question/GetQuestionsU
 import { GetAnswerDetailsUseCase } from '../../../application/question/GetAnswerDetailsUseCase'
 import { GetAnswerListUseCase } from '../../../application/question/GetAnswerListUseCase'
 import { RepositoryTx } from '../../database/RepositoryTx'
-import { MedicalSpecialtyType } from 'domain/question/PatientQuestion'
+import { MedicalSpecialtyType } from '../../../domain/question/PatientQuestion'
 
 export interface IQuestionController {
   createAnswerAgreement: (req: Request, res: Response) => Promise<Response>

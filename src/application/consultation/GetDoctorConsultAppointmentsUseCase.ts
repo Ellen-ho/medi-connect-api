@@ -4,7 +4,7 @@ import { IConsultAppointmentRepository } from '../../domain/consultation/interfa
 import { User } from '../../domain/user/User'
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
-import { TimeSlotType } from 'domain/consultation/DoctorTimeSlot'
+import { TimeSlotType } from '../../domain/consultation/DoctorTimeSlot'
 export interface ConsultAppointmentDatas {
   appointmentId: string
   status: ConsultAppointmentStatusType

@@ -1,7 +1,7 @@
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
 import { IUuidService } from '../../domain/utils/IUuidService'
 import path from 'path'
-import { getAvatarUrl } from 'infrastructure/helpers/AvatarHelper'
+import { getAvatarUrl } from '../../infrastructure/helpers/AvatarHelper'
 
 interface EditUserAvatarRequest {
   file: Express.Multer.File

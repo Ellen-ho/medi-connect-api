@@ -1,4 +1,4 @@
-import { TimeSlotType } from 'domain/consultation/DoctorTimeSlot'
+import { TimeSlotType } from '../../../../domain/consultation/DoctorTimeSlot'
 import { MedicalSpecialtyType } from '../../../question/PatientQuestion'
 import { IBaseRepository } from '../../../shared/IBaseRepository'
 import { IExecutor } from '../../../shared/IRepositoryTx'

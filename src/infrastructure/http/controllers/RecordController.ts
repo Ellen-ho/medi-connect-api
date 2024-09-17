@@ -28,7 +28,7 @@ import { GetFoodRecordsUseCase } from '../../../application/record/GetFoodRecord
 import { GetGlycatedHemoglobinRecordsUseCase } from '../../../application/record/GetGlycatedHemoglobinRecordsUseCase'
 import { GetSleepRecordsUseCase } from '../../../application/record/GetSleepRecordsUseCase'
 import { GetWeightRecordsUseCase } from '../../../application/record/GetWeightRecordsUseCase'
-import { GetGoalDurationRecordsUseCase } from 'application/record/GetGoalDurationRecordsUseCase'
+import { GetGoalDurationRecordsUseCase } from '../../../application/record/GetGoalDurationRecordsUseCase'
 export interface IRecordController {
   createWeightRecord: (req: Request, res: Response) => Promise<Response>
   editWeightRecord: (req: Request, res: Response) => Promise<Response>

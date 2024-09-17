@@ -10,7 +10,7 @@ import { ConsultAppointmentEntity } from './ConsultAppointmentEntity'
 import { ConsultAppointmentMapper } from './ConsultAppointmentMapper'
 import { MedicalSpecialtyType } from '../../../domain/question/PatientQuestion'
 import { IExecutor } from '../../../domain/shared/IRepositoryTx'
-import { TimeSlotType } from 'domain/consultation/DoctorTimeSlot'
+import { TimeSlotType } from '../../../domain/consultation/DoctorTimeSlot'
 
 export class ConsultAppointmentRepository
   extends BaseRepository<ConsultAppointmentEntity, ConsultAppointment>

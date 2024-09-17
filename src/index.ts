@@ -131,12 +131,12 @@ import { UpdatePasswordUseCase } from './application/user/UpdatePasswordUseCase'
 import { CreatePasswordChangeMailUseCase } from './application/user/CreatePasswordChangeMailUseCase'
 import { GoogleMailService } from './infrastructure/network/GoogleMailService'
 import { S3Client } from '@aws-sdk/client-s3'
-import { EditUserAvatarUseCase } from 'application/user/EditUserAvatarUseCase'
-import { CommonController } from 'infrastructure/http/controllers/CommonController'
-import { GetDoctorsUseCase } from 'application/common/GetDoctorsUseCase'
-import { CommonRoutes } from 'infrastructure/http/routes/CommonRoutes'
-import { CreateDoctorUseCase } from 'application/doctor/CreateDoctorUseCase'
-import { CreatePatientUseCase } from 'application/patient/CreatePatientUseCase'
+import { EditUserAvatarUseCase } from './application/user/EditUserAvatarUseCase'
+import { CommonController } from './infrastructure/http/controllers/CommonController'
+import { GetDoctorsUseCase } from './application/common/GetDoctorsUseCase'
+import { CommonRoutes } from './infrastructure/http/routes/CommonRoutes'
+import { CreateDoctorUseCase } from './application/doctor/CreateDoctorUseCase'
+import { CreatePatientUseCase } from './application/patient/CreatePatientUseCase'
 
 void main()
 

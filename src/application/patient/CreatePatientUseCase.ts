@@ -2,8 +2,8 @@ import { GenderType, IAllergy, Patient } from '../../domain/patient/Patient'
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { IUuidService } from '../../domain/utils/IUuidService'
 import { User } from '../../domain/user/User'
-import { IUserRepository } from 'domain/user/interfaces/repositories/IUserRepository'
-import { NotFoundError } from 'infrastructure/error/NotFoundError'
+import { IUserRepository } from '../../domain/user/interfaces/repositories/IUserRepository'
+import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 
 interface CreatePatientRequest {
   user: User

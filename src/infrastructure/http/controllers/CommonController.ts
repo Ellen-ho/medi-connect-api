@@ -1,4 +1,4 @@
-import { GetDoctorsUseCase } from 'application/common/GetDoctorsUseCase'
+import { GetDoctorsUseCase } from '../../../application/common/GetDoctorsUseCase'
 import { Request, Response } from 'express'
 
 export interface ICommonController {

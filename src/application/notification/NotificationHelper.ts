@@ -1,4 +1,4 @@
-import { ISocketService } from 'domain/interface/network/ISocketService'
+import { ISocketService } from '../../domain/interface/network/ISocketService'
 import {
   Notification,
   NotificationType,

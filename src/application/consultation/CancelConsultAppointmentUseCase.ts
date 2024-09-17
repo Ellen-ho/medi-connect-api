@@ -12,7 +12,7 @@ import { IMeetingLinkRepository } from '../../domain/meeting/interface/IMeetingL
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
 import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 import { ValidationError } from '../../infrastructure/error/ValidationError'
-import { TimeSlotType } from 'domain/consultation/DoctorTimeSlot'
+import { TimeSlotType } from '../../domain/consultation/DoctorTimeSlot'
 
 interface CancelConsultAppointmentRequest {
   user: User

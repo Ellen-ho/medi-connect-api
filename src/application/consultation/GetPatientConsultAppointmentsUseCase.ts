@@ -5,7 +5,7 @@ import { IPatientRepository } from '../../domain/patient/interfaces/repositories
 import { User } from '../../domain/user/User'
 import { MedicalSpecialtyType } from '../../domain/question/PatientQuestion'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
-import { TimeSlotType } from 'domain/consultation/DoctorTimeSlot'
+import { TimeSlotType } from '../../domain/consultation/DoctorTimeSlot'
 export interface ConsultAppointmentDatas {
   appointmentId: string
   patientId: string

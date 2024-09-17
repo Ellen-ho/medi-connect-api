@@ -16,7 +16,7 @@ import { IMeetingLinkRepository } from '../../domain/meeting/interface/IMeetingL
 import { MeetingLinkStatus } from '../../domain/meeting/MeetingLink'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
 import { ValidationError } from '../../infrastructure/error/ValidationError'
-import { TimeSlotType } from 'domain/consultation/DoctorTimeSlot'
+import { TimeSlotType } from '../../domain/consultation/DoctorTimeSlot'
 
 interface CreateConsultAppointmentRequest {
   user: User

@@ -6,11 +6,11 @@ import jwt from 'jsonwebtoken'
 import { PatientRepository } from '../../entities/patient/PatientRepository'
 import { DoctorRepository } from '../../entities/doctor/DoctorRepository'
 import { EditUserAccountUseCase } from '../../../application/user/EditUserAccountUseCase'
-import { CreatePasswordChangeMailUseCase } from 'application/user/CreatePasswordChangeMailUseCase'
-import { UpdatePasswordUseCase } from 'application/user/UpdatePasswordUseCase'
-import { EditUserAvatarUseCase } from 'application/user/EditUserAvatarUseCase'
-import { CreateDoctorUseCase } from 'application/doctor/CreateDoctorUseCase'
-import { CreatePatientUseCase } from 'application/patient/CreatePatientUseCase'
+import { CreatePasswordChangeMailUseCase } from '../../../application/user/CreatePasswordChangeMailUseCase'
+import { UpdatePasswordUseCase } from '../../../application/user/UpdatePasswordUseCase'
+import { EditUserAvatarUseCase } from '../../../application/user/EditUserAvatarUseCase'
+import { CreateDoctorUseCase } from '../../../application/doctor/CreateDoctorUseCase'
+import { CreatePatientUseCase } from '../../../application/patient/CreatePatientUseCase'
 
 interface MulterRequest extends Request {
   files: any

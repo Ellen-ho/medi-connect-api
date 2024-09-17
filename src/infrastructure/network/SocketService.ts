@@ -1,4 +1,4 @@
-import { ISocketService } from 'domain/interface/network/ISocketService'
+import { ISocketService } from '../../domain/interface/network/ISocketService'
 import { Server, Socket } from 'socket.io'
 
 class SocketService implements ISocketService {

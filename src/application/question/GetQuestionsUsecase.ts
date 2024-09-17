@@ -1,4 +1,4 @@
-import { MedicalSpecialtyType } from 'domain/question/PatientQuestion'
+import { MedicalSpecialtyType } from '../../domain/question/PatientQuestion'
 import { IPatientQuestionRepository } from '../../domain/question/interfaces/repositories/IPatientQuestionRepository'
 import { getOffset, getPagination } from '../../infrastructure/utils/Pagination'
 interface GetQuestionsRequest {
