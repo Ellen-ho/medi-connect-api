@@ -268,7 +268,6 @@ export class CreateHealthGoalUseCase {
       avgSystolicBloodPressure < 90 ||
       avgDiastolicBloodPressure < 60
     ) {
-      console.log('EMERGENCY')
       return {
         status: StatusAfterCheck.EMERGENCY,
         targetValue: {
@@ -291,7 +290,6 @@ export class CreateHealthGoalUseCase {
       }
     }
 
-    console.log('normal')
     return {
       status: StatusAfterCheck.NORMAL,
       targetValue: {
@@ -336,7 +334,6 @@ export class CreateHealthGoalUseCase {
     const avgBloodSugarValue = Math.round(sumBloodSugarValue / 14)
 
     if (avgBloodSugarValue >= 126 || avgBloodSugarValue < 70) {
-      console.log('EMERGENCY')
       return {
         status: StatusAfterCheck.EMERGENCY,
         targetValue: {
@@ -356,7 +353,6 @@ export class CreateHealthGoalUseCase {
       }
     }
 
-    console.log('normal')
     return {
       status: StatusAfterCheck.NORMAL,
       targetValue: {
@@ -401,7 +397,6 @@ export class CreateHealthGoalUseCase {
     const avgBodyMassIndexValue = Math.round(sumBodyMassIndexValue / 14)
 
     if (avgBodyMassIndexValue >= 27 || avgBodyMassIndexValue < 16) {
-      console.log('EMERGENCY')
       return {
         status: StatusAfterCheck.EMERGENCY,
         targetValue: {
@@ -423,8 +418,6 @@ export class CreateHealthGoalUseCase {
         },
       }
     }
-
-    console.log('normal')
     return {
       status: StatusAfterCheck.NORMAL,
       targetValue: {
@@ -468,7 +461,6 @@ export class CreateHealthGoalUseCase {
     )
 
     if (hasGlycatedHemoglobinEmergency) {
-      console.log('EMERGENCY')
       return {
         status: StatusAfterCheck.EMERGENCY,
         targetValue: {
@@ -495,7 +487,6 @@ export class CreateHealthGoalUseCase {
       }
     }
 
-    console.log('normal')
     return {
       status: StatusAfterCheck.NORMAL,
       targetValue: {

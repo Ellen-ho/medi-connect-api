@@ -58,7 +58,6 @@ export class GetBloodPressureRecordsUseCase {
     const limit: number | undefined =
       request.limit !== undefined ? Number(request.limit) : undefined
     const offset: number | undefined = getRecordOffset(limit, page)
-
     const firstDayOfCurrentMonth = dayjs().startOf('month').format('YYYY-MM-DD')
 
     const lastDayOfCurrentMonth = dayjs().endOf('month').format('YYYY-MM-DD')
@@ -116,7 +115,6 @@ export class GetBloodPressureRecordsUseCase {
         ),
       }
     }
-
     const currentPatient = await this.patientRepository.findByUserId(user.id)
     if (currentPatient == null) {
       throw new AuthorizationError('The current patient does not exist.')

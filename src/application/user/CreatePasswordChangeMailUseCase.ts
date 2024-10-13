@@ -41,7 +41,6 @@ export class CreatePasswordChangeMailUseCase {
     const passwordResetLink = `${
       process.env.CLIENT_URL as string
     }/reset-password?token=${resetToken}`
-    console.log(resetToken)
     const htmlMailTemplate = getResetPasswordTemplate({
       resetLink: passwordResetLink,
     })

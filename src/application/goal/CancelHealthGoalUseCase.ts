@@ -43,7 +43,6 @@ export class CancelHealthGoalUseCase {
       )
 
     if (overThreeDaysPendingHealthGoals.length === 0) {
-      console.log('There are no over time pending health goals exist.')
       return null
     }
 

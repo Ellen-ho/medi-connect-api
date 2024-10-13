@@ -170,10 +170,10 @@ export const getBloodPressureRecordsSchema = {
           return helpers.error('any.invalid')
         }
 
-        const diffInDays = (end - start) / (1000 * 3600 * 24)
-        if (diffInDays > 31) {
-          return helpers.error('any.invalid')
-        }
+        // const diffInDays = (end - start) / (1000 * 3600 * 24)
+        // if (diffInDays > 31) {
+        //   return helpers.error('any.invalid')
+        // }
       }
 
       return value
@@ -201,10 +201,10 @@ export const getBloodSugarRecordsSchema = {
           return helpers.error('any.invalid')
         }
 
-        const diffInDays = (end - start) / (1000 * 3600 * 24)
-        if (diffInDays > 31) {
-          return helpers.error('any.invalid')
-        }
+        // const diffInDays = (end - start) / (1000 * 3600 * 24)
+        // if (diffInDays > 31) {
+        //   return helpers.error('any.invalid')
+        // }
       }
 
       return value
@@ -232,10 +232,10 @@ export const getExerciseRecordsSchema = {
           return helpers.error('any.invalid')
         }
 
-        const diffInDays = (end - start) / (1000 * 3600 * 24)
-        if (diffInDays > 31) {
-          return helpers.error('any.invalid')
-        }
+        // const diffInDays = (end - start) / (1000 * 3600 * 24)
+        // if (diffInDays > 31) {
+        //   return helpers.error('any.invalid')
+        // }
       }
 
       return value
@@ -263,10 +263,10 @@ export const getFoodRecordsSchema = {
           return helpers.error('any.invalid')
         }
 
-        const diffInDays = (end - start) / (1000 * 3600 * 24)
-        if (diffInDays > 31) {
-          return helpers.error('any.invalid')
-        }
+        // const diffInDays = (end - start) / (1000 * 3600 * 24)
+        // if (diffInDays > 31) {
+        //   return helpers.error('any.invalid')
+        // }
       }
 
       return value
@@ -294,10 +294,10 @@ export const getGlycatedHemoglobinRecordsSchema = {
           return helpers.error('any.invalid')
         }
 
-        const diffInDays = (end - start) / (1000 * 3600 * 24)
-        if (diffInDays > 31) {
-          return helpers.error('any.invalid')
-        }
+        // const diffInDays = (end - start) / (1000 * 3600 * 24)
+        // if (diffInDays > 31) {
+        //   return helpers.error('any.invalid')
+        // }
       }
 
       return value
@@ -325,10 +325,10 @@ export const getSleepRecordsSchema = {
           return helpers.error('any.invalid')
         }
 
-        const diffInDays = (end - start) / (1000 * 3600 * 24)
-        if (diffInDays > 31) {
-          return helpers.error('any.invalid')
-        }
+        // const diffInDays = (end - start) / (1000 * 3600 * 24)
+        // if (diffInDays > 31) {
+        //   return helpers.error('any.invalid')
+        // }
       }
 
       return value
@@ -356,10 +356,10 @@ export const getWeightRecordsSchema = {
           return helpers.error('any.invalid')
         }
 
-        const diffInDays = (end - start) / (1000 * 3600 * 24)
-        if (diffInDays > 31) {
-          return helpers.error('any.invalid')
-        }
+        // const diffInDays = (end - start) / (1000 * 3600 * 24)
+        // if (diffInDays > 31) {
+        //   return helpers.error('any.invalid')
+        // }
       }
 
       return value

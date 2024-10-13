@@ -123,7 +123,6 @@ export class HealthGoalCronJob implements IHealthGoalCronJob {
       yesterday
     )
     if (expiredGoals.length === 0) {
-      console.log('No expired goals.')
       return
     }
 
