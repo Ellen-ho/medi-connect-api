@@ -69,13 +69,9 @@ export class CreateBloodPressureRecordUseCase {
       )
     }
 
-    const bloodPressureDateInUTC8 = dayjs(bloodPressureDate)
-      .tz('Asia/Taipei')
-      .toDate()
-
     const bloodPressureRecord = new BloodPressureRecord({
       id: this.uuidService.generateUuid(),
-      bloodPressureDate: bloodPressureDateInUTC8,
+      bloodPressureDate,
       systolicBloodPressure,
       diastolicBloodPressure,
       bloodPressureNote,

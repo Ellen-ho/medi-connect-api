@@ -194,7 +194,9 @@ export class BloodPressureRecordRepository
       },
       recordsData: result.map((record) => ({
         id: record.id,
-        date: record.bloodPressureDate,
+        date: new Date(
+          dayjs(record.bloodPressureDate).add(8, 'hour').toISOString()
+        ),
         systolicBloodPressure: record.systolicBloodPressure,
         diastolicBloodPressure: record.diastolicBloodPressure,
       })),

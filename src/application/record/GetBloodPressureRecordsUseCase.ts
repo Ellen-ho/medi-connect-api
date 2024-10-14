@@ -62,9 +62,14 @@ export class GetBloodPressureRecordsUseCase {
 
     const lastDayOfCurrentMonth = dayjs().endOf('month').format('YYYY-MM-DD')
     const startDate: string =
-      request.startDate != null ? request.startDate : firstDayOfCurrentMonth
+      request.startDate != null
+        ? dayjs(request.startDate).subtract(1, 'day').format('YYYY-MM-DD')
+        : dayjs(firstDayOfCurrentMonth).subtract(1, 'day').format('YYYY-MM-DD')
+
     const endDate: string =
-      request.endDate != null ? request.endDate : lastDayOfCurrentMonth
+      request.endDate != null
+        ? dayjs(request.endDate).subtract(1, 'day').format('YYYY-MM-DD')
+        : dayjs(lastDayOfCurrentMonth).subtract(1, 'day').format('YYYY-MM-DD')
 
     const existingBloodPressureRecords =
       await this.bloodPressureRecordRepository.findByPatientIdAndCountAll(
@@ -74,6 +79,8 @@ export class GetBloodPressureRecordsUseCase {
         offset,
         limit
       )
+
+    console.log(existingBloodPressureRecords)
 
     if (user.role === UserRoleType.DOCTOR) {
       const currentDoctor = await this.doctorRepository.findByUserId(user.id)
