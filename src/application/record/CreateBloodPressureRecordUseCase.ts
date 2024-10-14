@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { BloodPressureRecord } from '../../domain/record/BloodPressureRecord'
 import { IBloodPressureRecordRepository } from '../../domain/record/interfaces/repositories/IBloodPressureRecordRepository'
@@ -5,6 +6,11 @@ import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
 import { ValidationError } from '../../infrastructure/error/ValidationError'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 interface CreateBloodPressureRecordRequest {
   user: User
@@ -63,9 +69,13 @@ export class CreateBloodPressureRecordUseCase {
       )
     }
 
+    const bloodPressureDateInUTC8 = dayjs(bloodPressureDate)
+      .tz('Asia/Taipei')
+      .toDate()
+
     const bloodPressureRecord = new BloodPressureRecord({
       id: this.uuidService.generateUuid(),
-      bloodPressureDate,
+      bloodPressureDate: bloodPressureDateInUTC8,
       systolicBloodPressure,
       diastolicBloodPressure,
       bloodPressureNote,
