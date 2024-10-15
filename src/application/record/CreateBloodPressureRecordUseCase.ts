@@ -58,7 +58,7 @@ export class CreateBloodPressureRecordUseCase {
     }
 
     const bloodPressureDateUTC8 = dayjs(bloodPressureDate)
-      .tz('Asia/Taipei')
+      .add(8, 'hour')
       .toDate()
 
     const existingRecord =
