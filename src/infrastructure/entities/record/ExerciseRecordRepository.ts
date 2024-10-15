@@ -12,6 +12,7 @@ import { ExerciseRecordMapper } from './ExerciseRecordMapper'
 import { RepositoryError } from '../../error/RepositoryError'
 import { GenderType } from '../../../domain/patient/Patient'
 import { IExerciseRecordWithOwner } from '../../../application/record/GetSingleExerciseRecordUseCase'
+import dayjs from 'dayjs'
 
 export class ExerciseRecordRepository
   extends BaseRepository<ExerciseRecordEntity, ExerciseRecord>
@@ -193,7 +194,9 @@ export class ExerciseRecordRepository
         },
         recordsData: result.map((record) => ({
           id: record.id,
-          date: record.exerciseDate,
+          date: new Date(
+            dayjs(record.exerciseDateDate).add(8, 'hour').toISOString()
+          ),
           exerciseType: record.exerciseType,
         })),
       }

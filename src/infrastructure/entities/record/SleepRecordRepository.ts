@@ -10,6 +10,7 @@ import { ISleepRecordRepository } from '../../../domain/record/interfaces/reposi
 import { RepositoryError } from '../../error/RepositoryError'
 import { ISleepRecordWithOwner } from '../../../application/record/GetSingleSleepRecordUseCase'
 import { GenderType } from '../../../domain/patient/Patient'
+import dayjs from 'dayjs'
 
 export class SleepRecordRepository
   extends BaseRepository<SleepRecordEntity, SleepRecord>
@@ -253,7 +254,7 @@ export class SleepRecordRepository
         },
         recordsData: result.map((record) => ({
           id: record.id,
-          date: record.sleepDate,
+          date: new Date(dayjs(record.sleepDate).add(8, 'hour').toISOString()),
           sleepQuality: record.sleepQuality,
         })),
       }

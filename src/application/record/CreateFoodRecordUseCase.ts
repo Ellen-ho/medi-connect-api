@@ -1,9 +1,11 @@
+import dayjs from 'dayjs'
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { FoodCategoryType, FoodRecord } from '../../domain/record/FoodRecord'
 import { IFoodRecordRepository } from '../../domain/record/interfaces/repositories/IFoodRecordRepository'
 import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { ValidationError } from 'infrastructure/error/ValidationError'
 
 interface CreateFoodRecordRequest {
   user: User
@@ -42,10 +44,19 @@ export class CreateFoodRecordUseCase {
       throw new AuthorizationError('Patient does not exist.')
     }
 
+    const today = dayjs().startOf('day')
+    const inputDate = dayjs(foodTime).startOf('day')
+
+    if (inputDate.isAfter(today)) {
+      throw new ValidationError('The input date is not within a valid range.')
+    }
+
+    const foodTimeUTC8 = dayjs(foodTime).add(8, 'hour').toDate()
+
     const foodRecord = new FoodRecord({
       id: this.uuidService.generateUuid(),
       foodImage: null,
-      foodTime,
+      foodTime: foodTimeUTC8,
       foodItem: null,
       foodCategory,
       foodAmount,
@@ -59,7 +70,7 @@ export class CreateFoodRecordUseCase {
 
     return {
       id: foodRecord.id,
-      foodTime: foodRecord.foodTime,
+      foodTime: foodTimeUTC8,
       foodCategory: foodRecord.foodCategory,
       foodAmount: foodRecord.foodAmount,
       kcalories: foodRecord.kcalories,

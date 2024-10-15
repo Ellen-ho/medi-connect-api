@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import {
   ExerciseRecord,
@@ -8,6 +9,7 @@ import { IExerciseRecordRepository } from '../../domain/record/interfaces/reposi
 import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import { ValidationError } from 'infrastructure/error/ValidationError'
 
 export interface CreateExerciseRecordRequest {
   user: User
@@ -55,9 +57,18 @@ export class CreateExerciseRecordUseCase {
       throw new AuthorizationError('Patient does not exist.')
     }
 
+    const today = dayjs().startOf('day')
+    const inputDate = dayjs(exerciseDate).startOf('day')
+
+    if (inputDate.isAfter(today)) {
+      throw new ValidationError('The input date is not within a valid range.')
+    }
+
+    const exerciseDateUTC8 = dayjs(exerciseDate).add(8, 'hour').toDate()
+
     const exerciseRecord = new ExerciseRecord({
       id: this.uuidService.generateUuid(),
-      exerciseDate,
+      exerciseDate: exerciseDateUTC8,
       exerciseType,
       exerciseDurationMinute,
       exerciseIntensity,
@@ -74,7 +85,7 @@ export class CreateExerciseRecordUseCase {
 
     return {
       id: exerciseRecord.id,
-      exerciseDate: exerciseRecord.exerciseDate,
+      exerciseDate: exerciseDateUTC8,
       exerciseType: exerciseRecord.exerciseType,
       exerciseDurationMinute: exerciseRecord.exerciseDurationMinute,
       exerciseIntensity: exerciseRecord.exerciseIntensity,

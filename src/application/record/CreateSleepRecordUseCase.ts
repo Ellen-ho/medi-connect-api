@@ -47,6 +47,15 @@ export class CreateSleepRecordUseCase {
       throw new AuthorizationError('Patient does not exist.')
     }
 
+    const today = dayjs().startOf('day')
+    const inputDate = dayjs(sleepDate).startOf('day')
+
+    if (inputDate.isAfter(today)) {
+      throw new ValidationError('The input date is not within a valid range.')
+    }
+
+    const sleepDateUTC8 = dayjs(sleepDate).add(8, 'hour').toDate()
+
     const sleepDuration: number =
       dayjs(wakeUpTime).diff(dayjs(sleepTime), 'minute') / 60
     const sleepDurationHour: number = Math.round(sleepDuration * 10) / 10
@@ -54,7 +63,7 @@ export class CreateSleepRecordUseCase {
     const existingRecord =
       await this.sleepRecordRepository.findByPatientIdAndDate(
         existingPatient.id,
-        sleepDate
+        sleepDateUTC8
       )
 
     if (existingRecord !== null) {
@@ -63,7 +72,7 @@ export class CreateSleepRecordUseCase {
 
     const sleepRecord = new SleepRecord({
       id: this.uuidService.generateUuid(),
-      sleepDate,
+      sleepDate: sleepDateUTC8,
       sleepTime,
       wakeUpTime,
       sleepQuality,
@@ -77,7 +86,7 @@ export class CreateSleepRecordUseCase {
 
     return {
       id: sleepRecord.id,
-      sleepDate: sleepRecord.sleepDate,
+      sleepDate: sleepDateUTC8,
       sleepTime: sleepRecord.sleepTime,
       wakeUpTime: sleepRecord.wakeUpTime,
       sleepQuality: sleepRecord.sleepQuality,

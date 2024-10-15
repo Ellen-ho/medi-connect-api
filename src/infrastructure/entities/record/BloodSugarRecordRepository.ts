@@ -275,7 +275,9 @@ export class BloodSugarRecordRepository
         },
         recordsData: result.map((record) => ({
           id: record.id,
-          date: record.bloodSugarDate,
+          date: new Date(
+            dayjs(record.bloodSugarDate).add(8, 'hour').toISOString()
+          ),
           bloodSugarValue: record.bloodSugarValue,
           bloodSugarType: record.bloodSugarType,
         })),

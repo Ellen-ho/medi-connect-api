@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import {
   BloodSugarRecord,
@@ -43,10 +44,20 @@ export class CreateBloodSugarRecordUseCase {
     if (existingPatient == null) {
       throw new AuthorizationError('Patient does not exist.')
     }
+
+    const today = dayjs().startOf('day')
+    const inputDate = dayjs(bloodSugarDate).startOf('day')
+
+    if (inputDate.isAfter(today)) {
+      throw new ValidationError('The input date is not within a valid range.')
+    }
+
+    const bloodugarDateUTC8 = dayjs(bloodSugarDate).add(8, 'hour').toDate()
+
     const existingRecord =
       await this.bloodSugarRecordRepository.findByPatientIdAndDate(
         existingPatient.id,
-        bloodSugarDate
+        bloodugarDateUTC8
       )
 
     if (existingRecord !== null) {
@@ -57,7 +68,7 @@ export class CreateBloodSugarRecordUseCase {
 
     const bloodSugarRecord = new BloodSugarRecord({
       id: this.uuidService.generateUuid(),
-      bloodSugarDate,
+      bloodSugarDate: bloodugarDateUTC8,
       bloodSugarValue,
       bloodSugarType: BloodSugarType.FAST_PLASMA_GLUCOSE,
       bloodSugarNote,
@@ -69,7 +80,7 @@ export class CreateBloodSugarRecordUseCase {
 
     return {
       id: bloodSugarRecord.id,
-      bloodSugarDate: bloodSugarRecord.bloodSugarDate,
+      bloodSugarDate: bloodugarDateUTC8,
       bloodSugarValue: bloodSugarRecord.bloodSugarValue,
       bloodSugarType: bloodSugarRecord.bloodSugarType,
       bloodSugarNote: bloodSugarRecord.bloodSugarNote,

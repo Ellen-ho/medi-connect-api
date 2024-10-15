@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { GlycatedHemoglobinRecord } from '../../domain/record/GlycatedHemoglobinRecord'
 import { IGlycatedHemoglobinRecordRepository } from '../../domain/record/interfaces/repositories/IGlycatedHemoglobinRecordRepository'
@@ -39,10 +40,21 @@ export class CreateGlycatedHemoglobinRecordUseCase {
       throw new AuthorizationError('Patient does not exist.')
     }
 
+    const today = dayjs().startOf('day')
+    const inputDate = dayjs(glycatedHemoglobinDate).startOf('day')
+
+    if (inputDate.isAfter(today)) {
+      throw new ValidationError('The input date is not within a valid range.')
+    }
+
+    const glycatedHemoglobinDateUTC8 = dayjs(glycatedHemoglobinDate)
+      .add(8, 'hour')
+      .toDate()
+
     const existingRecord =
       await this.glycatedHemoglobinRecordRepository.findByPatientIdAndDate(
         existingPatient.id,
-        glycatedHemoglobinDate
+        glycatedHemoglobinDateUTC8
       )
 
     if (existingRecord !== null) {
@@ -53,7 +65,7 @@ export class CreateGlycatedHemoglobinRecordUseCase {
 
     const glycatedHemoglobinRecord = new GlycatedHemoglobinRecord({
       id: this.uuidService.generateUuid(),
-      glycatedHemoglobinDate,
+      glycatedHemoglobinDate: glycatedHemoglobinDateUTC8,
       glycatedHemoglobinValuePercent,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -63,7 +75,7 @@ export class CreateGlycatedHemoglobinRecordUseCase {
 
     return {
       id: glycatedHemoglobinRecord.id,
-      glycatedHemoglobinDate: glycatedHemoglobinRecord.glycatedHemoglobinDate,
+      glycatedHemoglobinDate: glycatedHemoglobinDateUTC8,
       glycatedHemoglobinValuePercent:
         glycatedHemoglobinRecord.glycatedHemoglobinValuePercent,
       createdAt: glycatedHemoglobinRecord.createdAt,

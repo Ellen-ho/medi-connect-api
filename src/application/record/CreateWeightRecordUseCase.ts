@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { IPatientRepository } from '../../domain/patient/interfaces/repositories/IPatientRepository'
 import { WeightRecord } from '../../domain/record/WeightRecord'
 import { IWeightRecordRepository } from '../../domain/record/interfaces/repositories/IWeightRecordRepository'
@@ -59,9 +60,18 @@ export class CreateWeightRecordUseCase {
       )
     }
 
+    const today = dayjs().startOf('day')
+    const inputDate = dayjs(weightDate).startOf('day')
+
+    if (inputDate.isAfter(today)) {
+      throw new ValidationError('The input date is not within a valid range.')
+    }
+
+    const weightDateUTC8 = dayjs(weightDate).add(8, 'hour').toDate()
+
     const weightRecord = new WeightRecord({
       id: this.uuidService.generateUuid(),
-      weightDate,
+      weightDate: weightDateUTC8,
       weightValueKg,
       bodyMassIndex,
       weightNote,
@@ -74,7 +84,7 @@ export class CreateWeightRecordUseCase {
 
     return {
       id: weightRecord.id,
-      weightDate: weightRecord.weightDate,
+      weightDate: weightDateUTC8,
       weightValueKg: weightRecord.weightValueKg,
       bodyMassIndex: weightRecord.bodyMassIndex,
       weightNote: weightRecord.weightNote,

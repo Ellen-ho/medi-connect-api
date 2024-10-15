@@ -269,7 +269,9 @@ export class GlycatedHemoglobinRecordRepository
         },
         recordsData: result.map((record) => ({
           id: record.id,
-          date: record.glycatedHemoglobinDate,
+          date: new Date(
+            dayjs(record.glycatedHemoglobinDate).add(8, 'hour').toISOString()
+          ),
           glycatedHemoglobinValuePercent: record.glycatedHemoglobinValuePercent,
         })),
       }

@@ -8,6 +8,7 @@ import { FoodRecordMapper } from './FoodRecordMapper'
 import { RepositoryError } from '../../error/RepositoryError'
 import { IFoodRecordWithOwner } from '../../../application/record/GetSingleFoodRecordUseCase'
 import { GenderType } from '../../../domain/patient/Patient'
+import dayjs from 'dayjs'
 
 export class FoodRecordRepository
   extends BaseRepository<FoodRecordEntity, FoodRecord>
@@ -181,7 +182,7 @@ export class FoodRecordRepository
         },
         recordsData: result.map((record) => ({
           id: record.id,
-          date: record.foodTime,
+          date: new Date(dayjs(record.foodTime).add(8, 'hour').toISOString()),
           foodCategory: record.foodCategory,
         })),
       }

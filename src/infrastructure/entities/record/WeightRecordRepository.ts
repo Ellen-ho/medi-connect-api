@@ -269,7 +269,7 @@ export class WeightRecordRepository
         },
         recordsData: result.map((record) => ({
           id: record.id,
-          date: record.weightDate,
+          date: new Date(dayjs(record.weightDate).add(8, 'hour').toISOString()),
           weightValueKg: record.weightValueKg,
           bodyMassIndex: record.bodyMassIndex,
         })),
