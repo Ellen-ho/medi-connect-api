@@ -57,6 +57,13 @@ export class CreateBloodPressureRecordUseCase {
       throw new AuthorizationError('Patient does not exist.')
     }
 
+    const today = dayjs().startOf('day')
+    const inputDate = dayjs(bloodPressureDate).startOf('day')
+
+    if (inputDate.isAfter(today)) {
+      throw new ValidationError('The input date is not within a valid range.')
+    }
+
     const bloodPressureDateUTC8 = dayjs(bloodPressureDate)
       .add(8, 'hour')
       .toDate()
