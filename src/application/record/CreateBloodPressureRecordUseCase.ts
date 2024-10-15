@@ -57,10 +57,14 @@ export class CreateBloodPressureRecordUseCase {
       throw new AuthorizationError('Patient does not exist.')
     }
 
+    const bloodPressureDateUTC8 = dayjs(bloodPressureDate)
+      .tz('Asia/Taipei')
+      .toDate()
+
     const existingRecord =
       await this.bloodPressureRecordRepository.findByPatientIdAndDate(
         existingPatient.id,
-        bloodPressureDate
+        bloodPressureDateUTC8
       )
 
     if (existingRecord !== null) {
@@ -71,7 +75,7 @@ export class CreateBloodPressureRecordUseCase {
 
     const bloodPressureRecord = new BloodPressureRecord({
       id: this.uuidService.generateUuid(),
-      bloodPressureDate,
+      bloodPressureDate: bloodPressureDateUTC8,
       systolicBloodPressure,
       diastolicBloodPressure,
       bloodPressureNote,
@@ -84,7 +88,7 @@ export class CreateBloodPressureRecordUseCase {
 
     return {
       id: bloodPressureRecord.id,
-      bloodPressureDate: bloodPressureRecord.bloodPressureDate,
+      bloodPressureDate: bloodPressureDateUTC8,
       systolicBloodPressure: bloodPressureRecord.systolicBloodPressure,
       diastolicBloodPressure: bloodPressureRecord.diastolicBloodPressure,
       bloodPressureNote: bloodPressureRecord.bloodPressureNote,
