@@ -5,7 +5,7 @@ import { IFoodRecordRepository } from '../../domain/record/interfaces/repositori
 import { User } from '../../domain/user/User'
 import { IUuidService } from '../../domain/utils/IUuidService'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
-import { ValidationError } from 'infrastructure/error/ValidationError'
+import { ValidationError } from '../../infrastructure/error/ValidationError'
 
 interface CreateFoodRecordRequest {
   user: User
