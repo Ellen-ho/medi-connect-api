@@ -7,6 +7,7 @@ import { User, UserRoleType } from '../../domain/user/User'
 import { IDoctorRepository } from '../../domain/doctor/interfaces/repositories/IDoctorRepository'
 import { NotFoundError } from '../../infrastructure/error/NotFoundError'
 import { AuthorizationError } from '../../infrastructure/error/AuthorizationError'
+import dayjs from 'dayjs'
 
 export interface GetSingleBloodPressureRecordRequest {
   user: User
@@ -96,10 +97,15 @@ export class GetSingleBloodPressureRecordUseCase {
           'Patient who made the appointment does not exist.'
         )
       }
+
+      const bloodPressureDateUTC8 = dayjs(existingRecord.bloodPressureDate)
+        .add(8, 'hour')
+        .toDate()
+
       return {
         data: {
           id: existingRecord.id,
-          bloodPressureDate: existingRecord.bloodPressureDate,
+          bloodPressureDate: bloodPressureDateUTC8,
           systolicBloodPressure: existingRecord.systolicBloodPressure,
           diastolicBloodPressure: existingRecord.diastolicBloodPressure,
           heartBeat: existingRecord.heartBeat,
@@ -133,10 +139,14 @@ export class GetSingleBloodPressureRecordUseCase {
       )
     }
 
+    const bloodPressureDateUTC8 = dayjs(recordWithOwner.bloodPressureDate)
+      .add(8, 'hour')
+      .toDate()
+
     return {
       data: {
         id: recordWithOwner.id,
-        bloodPressureDate: recordWithOwner.bloodPressureDate,
+        bloodPressureDate: bloodPressureDateUTC8,
         systolicBloodPressure: recordWithOwner.systolicBloodPressure,
         diastolicBloodPressure: recordWithOwner.diastolicBloodPressure,
         heartBeat: recordWithOwner.heartBeat,
