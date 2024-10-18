@@ -9,7 +9,7 @@
 <br>
 <br>
 <p align="center">
-  <a href="https://medi-connect-ui.vercel.app" target="_blank" rel="noopener noreferrer">加入 Medi Connect！</a>
+  <a href="https://medi-connect-ui.vercel.app">Join Medi Connect!</a>
   <a href="https://github.com/Ellen-ho/medi-connect-api#seeder">(test account)</a>
 </p>
 
