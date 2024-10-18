@@ -195,7 +195,7 @@ export class ExerciseRecordRepository
         recordsData: result.map((record) => ({
           id: record.id,
           date: new Date(
-            dayjs(record.exerciseDateDate).add(8, 'hour').toISOString()
+            dayjs(record.exerciseDate).add(8, 'hour').toISOString()
           ),
           exerciseType: record.exerciseType,
         })),
